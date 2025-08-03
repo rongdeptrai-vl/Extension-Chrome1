@@ -1,0 +1,38 @@
+{
+  "_tini_watermark": {
+    "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
+    "employee": "Administrator <admin@localhost.com>",
+    "commit": "initial",
+    "time": "2025-08-03T12:54:33Z",
+    "watermark_id": "TINI_1754225673_03f19d63",
+    "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
+  },
+  "appName": {
+    "message": "내 확장 프로그램",
+    "description": "확장 프로그램의 이름"
+  },
+  "appDescription": {
+    "message": "유용한 브라우저 확장 프로그램",
+    "description": "확장 프로그램의 설명"
+  },
+  "welcomeMessage": {
+    "message": "확장 프로그램에 오신 것을 환영합니다!",
+    "description": "사용자에게 표시되는 환영 메시지"
+  },
+  "settingsTitle": {
+    "message": "설정",
+    "description": "설정 페이지 제목"
+  },
+  "enableFeature": {
+    "message": "기능 활성화",
+    "description": "기능 활성화 체크박스 라벨"
+  },
+  "saveButton": {
+    "message": "저장",
+    "description": "저장 버튼 텍스트"
+  },
+  "cancelButton": {
+    "message": "취소",
+    "description": "취소 버튼 텍스트"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "_tini_watermark": {
+    "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
+    "employee": "Administrator <admin@localhost.com>",
+    "commit": "initial",
+    "time": "2025-08-03T12:54:33Z",
+    "watermark_id": "TINI_1754225673_03f19d63",
+    "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
+  },
+  "appName": {
+    "message": "My Extension",
+    "description": "The name of the extension"
+  },
+  "appDescription": {
+    "message": "A useful browser extension",
+    "description": "Description of the extension"
+  },
+  "welcomeMessage": {
+    "message": "Welcome to the extension!",
+    "description": "Welcome message shown to users"
+  },
+  "settingsTitle": {
+    "message": "Settings",
+    "description": "Title for settings page"
+  },
+  "enableFeature": {
+    "message": "Enable Feature",
+    "description": "Label for enable feature checkbox"
+  },
+  "saveButton": {
+    "message": "Save",
+    "description": "Save button text"
+  },
+  "cancelButton": {
+    "message": "Cancel",
+    "description": "Cancel button text"
+  }
+}

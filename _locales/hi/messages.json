@@ -1,0 +1,38 @@
+{
+  "_tini_watermark": {
+    "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
+    "employee": "Administrator <admin@localhost.com>",
+    "commit": "initial",
+    "time": "2025-08-03T12:54:33Z",
+    "watermark_id": "TINI_1754225673_03f19d63",
+    "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
+  },
+  "appName": {
+    "message": "मेरा एक्सटेंशन",
+    "description": "एक्सटेंशन का नाम"
+  },
+  "appDescription": {
+    "message": "एक उपयोगी ब्राउज़र एक्सटेंशन",
+    "description": "एक्सटेंशन का विवरण"
+  },
+  "welcomeMessage": {
+    "message": "एक्सटेंशन में आपका स्वागत है!",
+    "description": "उपयोगकर्ताओं को दिखाया जाने वाला स्वागत संदेश"
+  },
+  "settingsTitle": {
+    "message": "सेटिंग्स",
+    "description": "सेटिंग्स पेज का शीर्षक"
+  },
+  "enableFeature": {
+    "message": "सुविधा सक्षम करें",
+    "description": "सुविधा सक्षम करने के लिए चेकबॉक्स लेबल"
+  },
+  "saveButton": {
+    "message": "सेव करें",
+    "description": "सेव बटन टेक्स्ट"
+  },
+  "cancelButton": {
+    "message": "रद्द करें",
+    "description": "रद्द करें बटन टेक्स्ट"
+  }
+}
