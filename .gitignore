@@ -74,3 +74,9 @@ temp/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Archives & Backups
+*.tar.gz
+*.zip
+ARICHIVE/
+backups/
