@@ -1,0 +1,394 @@
+{
+  "_tini_watermark": {
+    "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
+    "employee": "rongdeptrai-vl <rongdz2307@gmail.com>",
+    "commit": "55548f4",
+    "time": "2025-08-08T06:33:01Z",
+    "watermark_id": "TINI_1754634781_e868a412",
+    "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
+  },
+  "nav_dashboard": {
+    "message": "Bảng Điều Khiển"
+  },
+  "nav_users": {
+    "message": "Quản Lý Người Dùng"
+  },
+  "nav_profile": {
+    "message": "Hồ Sơ"
+  },
+  "nav_security": {
+    "message": "Bảo Mật"
+  },
+  "nav_settings": {
+    "message": "Cài Đặt"
+  },
+  "nav_analytics": {
+    "message": "Phân Tích"
+  },
+  "nav_reports": {
+    "message": "Báo Cáo"
+  },
+  "logout": {
+    "message": "Đăng Xuất"
+  },
+  "testing_zone": {
+    "message": "Khu Vực Thử Nghiệm"
+  },
+  "super_admin": {
+    "message": "Quản Trị Cấp Cao"
+  },
+  "active_users": {
+    "message": "Người Dùng Hoạt Động"
+  },
+  "blocked_items": {
+    "message": "Mục Bị Chặn"
+  },
+  "from_last_week": {
+    "message": "từ tuần trước"
+  },
+  "system_health": {
+    "message": "Sức Khỏe Hệ Thống"
+  },
+  "from_yesterday": {
+    "message": "từ hôm qua"
+  },
+  "recent_activity": {
+    "message": "Hoạt Động Gần Đây"
+  },
+  "view_all": {
+    "message": "Xem Tất Cả"
+  },
+  "user": {
+    "message": "Người Dùng"
+  },
+  "action": {
+    "message": "Hành Động"
+  },
+  "version": {
+    "message": "Phiên Bản"
+  },
+  "time": {
+    "message": "Thời Gian"
+  },
+  "status": {
+    "message": "Trạng Thái"
+  },
+  "power_mode": {
+    "message": "Chuyển sang chế độ mạnh mẽ"
+  },
+  "login_attempt": {
+    "message": "Thử đăng nhập"
+  },
+  "settings_updated": {
+    "message": "Đã cập nhật cài đặt"
+  },
+  "register_device": {
+    "message": "Đăng ký thiết bị"
+  },
+  "pending_approval": {
+    "message": "Chờ duyệt"
+  },
+  "add_user": {
+    "message": "Thêm Người Dùng"
+  },
+  "employee_id": {
+    "message": "Mã Nhân Viên"
+  },
+  "name": {
+    "message": "Tên"
+  },
+  "role": {
+    "message": "Vai Trò"
+  },
+  "last_active": {
+    "message": "Hoạt Động Cuối"
+  },
+  "actions": {
+    "message": "Thao Tác"
+  },
+  "admin_user": {
+    "message": "Người dùng quản trị"
+  },
+  "regular_user": {
+    "message": "Người dùng thường"
+  },
+  "total_users": {
+    "message": "Tổng số người dùng"
+  },
+  "new_users_this_week": {
+    "message": "1 người dùng mới tuần này"
+  },
+  "active_sessions": {
+    "message": "Phiên hoạt động"
+  },
+  "active_rate": {
+    "message": "66% tỷ lệ hoạt động"
+  },
+  "admin_level": {
+    "message": "Cấp độ Quản trị cấp cao"
+  },
+  "profile_settings": {
+    "message": "Cài Đặt Hồ Sơ"
+  },
+  "avatar_and_cover": {
+    "message": "Ảnh Đại Diện & Ảnh Bìa"
+  },
+  "avatar": {
+    "message": "Ảnh Đại Diện"
+  },
+  "upload_image": {
+    "message": "Tải Ảnh Lên"
+  },
+  "personal_info": {
+    "message": "Thông Tin Cá Nhân"
+  },
+  "full_name": {
+    "message": "Họ và Tên"
+  },
+  "email_address": {
+    "message": "Địa Chỉ Email"
+  },
+  "options": {
+    "message": "Tùy Chọn"
+  },
+  "basic_info": {
+    "message": "Thông Tin Cơ Bản"
+  },
+  "language": {
+    "message": "Ngôn ngữ"
+  },
+  "timezone": {
+    "message": "Múi Giờ"
+  },
+  "theme": {
+    "message": "Chủ Đề Giao Diện"
+  },
+  "dark_mode": {
+    "message": "🌙 Chế Độ Tối"
+  },
+  "enable_email_notifications": {
+    "message": "Bật Thông Báo Email"
+  },
+  "auto_save": {
+    "message": "Tự Động Lưu Tùy Chọn"
+  },
+  "account_security": {
+    "message": "Bảo mật tài khoản"
+  },
+  "change_password": {
+    "message": "Đổi mật khẩu"
+  },
+  "current_password": {
+    "message": "Mật khẩu hiện tại"
+  },
+  "new_password": {
+    "message": "Mật khẩu mới"
+  },
+  "confirm_password": {
+    "message": "Xác nhận mật khẩu mới"
+  },
+  "two_factor_auth": {
+    "message": "Xác thực hai yếu tố"
+  },
+  "2fa": {
+    "message": "2FA"
+  },
+  "protected_account": {
+    "message": "Tài khoản được bảo vệ bằng xác thực hai yếu tố"
+  },
+  "sms_auth": {
+    "message": "Xác thực SMS"
+  },
+  "email_verification": {
+    "message": "Xác minh Email"
+  },
+  "view_recovery_code": {
+    "message": "Xem mã khôi phục"
+  },
+  "view_all_activity": {
+    "message": "Xem tất cả hoạt động"
+  },
+  "ip_address": {
+    "message": "Địa Chỉ IP"
+  },
+  "device": {
+    "message": "Thiết Bị"
+  },
+  "save_success": {
+    "message": "Lưu thay đổi thành công!"
+  },
+  "admin_login": {
+    "message": "Đăng nhập quản trị"
+  },
+  "windows_pc": {
+    "message": "Máy tính Windows"
+  },
+  "chrome_browser": {
+    "message": "Trình duyệt Chrome"
+  },
+  "security_settings": {
+    "message": "Cài Đặt Bảo Mật"
+  },
+  "threat_level": {
+    "message": "Mức Độ Đe Dọa"
+  },
+  "low": {
+    "message": "THẤP"
+  },
+  "all_safe": {
+    "message": "Tất cả hệ thống an toàn"
+  },
+  "security_threats": {
+    "message": "Mối Đe Dọa Bị Chặn"
+  },
+  "security_score": {
+    "message": "Điểm Bảo Mật"
+  },
+  "excellent_security": {
+    "message": "Bảo mật xuất sắc"
+  },
+  "security_control": {
+    "message": "Kiểm Soát Bảo Mật"
+  },
+  "all_systems_active": {
+    "message": "Tất Cả Hệ Thống Hoạt Động"
+  },
+  "access_control": {
+    "message": "Kiểm Soát Truy Cập"
+  },
+  "password_policy": {
+    "message": "Quy Tắc Độ Phức Tạp Mật Khẩu"
+  },
+  "session_timeout": {
+    "message": "Hết Thời Gian Phiên"
+  },
+  "threat_protection": {
+    "message": "Bảo Vệ Khỏi Mối Đe Dọa"
+  },
+  "realtime_monitoring": {
+    "message": "Giám Sát Thời Gian Thực"
+  },
+  "auto_blocking": {
+    "message": "Chặn Tự Động"
+  },
+  "emergency_response": {
+    "message": "Phản Ứng Khẩn Cấp"
+  },
+  "system_settings": {
+    "message": "Cài Đặt Hệ Thống"
+  },
+  "general_settings": {
+    "message": "Cài Đặt Chung"
+  },
+  "application_settings": {
+    "message": "Cài Đặt Ứng Dụng"
+  },
+  "default_language": {
+    "message": "Ngôn Ngữ Mặc Định"
+  },
+  "enable_notifications": {
+    "message": "Bật Thông Báo"
+  },
+  "performance_settings": {
+    "message": "Cài Đặt Hiệu Suất"
+  },
+  "update_frequency": {
+    "message": "Tần Suất Cập Nhật"
+  },
+  "log_retention": {
+    "message": "Lưu Giữ Nhật Ký (ngày)"
+  },
+  "auto_optimize": {
+    "message": "Tự Động Tối Ưu Hiệu Suất"
+  },
+  "save_changes": {
+    "message": "Lưu Thay Đổi"
+  },
+  "analytics": {
+    "message": "Phân Tích & Thông Tin Chi Tiết"
+  },
+  "page_views": {
+    "message": "Lượt Xem Trang"
+  },
+  "ads_blocked": {
+    "message": "Quảng Cáo Bị Chặn"
+  },
+  "performance_score": {
+    "message": "Điểm Hiệu Suất"
+  },
+  "excellent": {
+    "message": "Xuất Sắc"
+  },
+  "advanced_analytics": {
+    "message": "Phân Tích Chi Tiết"
+  },
+  "export_data": {
+    "message": "Xuất Dữ Liệu"
+  },
+  "charts": {
+    "message": "Biểu Đồ Tương Tác"
+  },
+  "analytics_note": {
+    "message": "Biểu đồ phân tích nâng cao sẽ được triển khai tại đây"
+  },
+  "reports": {
+    "message": "Báo Cáo & Phân Tích"
+  },
+  "create_report": {
+    "message": "Tạo Báo Cáo"
+  },
+  "user_activity_report": {
+    "message": "Báo Cáo Hoạt Động Người Dùng"
+  },
+  "security_report": {
+    "message": "Báo Cáo Bảo Mật"
+  },
+  "performance_report": {
+    "message": "Báo Cáo Hiệu Suất"
+  },
+  "recent_reports": {
+    "message": "Báo Cáo Gần Đây"
+  },
+  "report_name": {
+    "message": "Tên Báo Cáo"
+  },
+  "report_type": {
+    "message": "Loại"
+  },
+  "created_at": {
+    "message": "Được Tạo"
+  },
+  "size": {
+    "message": "Kích Thước"
+  },
+  "report_status": {
+    "message": "Trạng Thái"
+  },
+  "report_action": {
+    "message": "Thao Tác"
+  },
+  "daily_security": {
+    "message": "Báo cáo bảo mật hàng ngày"
+  },
+  "weekly_user_activity": {
+    "message": "Hoạt động người dùng hàng tuần"
+  },
+  "monthly_performance": {
+    "message": "Hiệu suất hàng tháng"
+  },
+  "processing": {
+    "message": "Đang xử lý"
+  },
+  "full_name_format": {
+    "message": "Họ Tên Đầy Đủ (Trung + Telegram + ID)"
+  },
+  "name_format_hint": {
+    "message": "Định dạng: \"Tên Trung Quốc + Tên Telegram + ID\""
+  },
+  "email": {
+    "message": "Địa Chỉ Email"
+  },
+  "preferences": {
+    "message": "Tùy Chọn & Cài Đặt"
+  }
+}

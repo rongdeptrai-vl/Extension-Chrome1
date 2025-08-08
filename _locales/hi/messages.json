@@ -1,38 +1,394 @@
 {
   "_tini_watermark": {
     "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
-    "employee": "Administrator <admin@localhost.com>",
-    "commit": "initial",
-    "time": "2025-08-03T12:54:33Z",
-    "watermark_id": "TINI_1754225673_03f19d63",
+    "employee": "rongdeptrai-vl <rongdz2307@gmail.com>",
+    "commit": "55548f4",
+    "time": "2025-08-08T06:33:01Z",
+    "watermark_id": "TINI_1754634781_e868a412",
     "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
   },
-  "appName": {
-    "message": "मेरा एक्सटेंशन",
-    "description": "एक्सटेंशन का नाम"
+  "nav_dashboard": {
+    "message": "डैशबोर्ड"
   },
-  "appDescription": {
-    "message": "एक उपयोगी ब्राउज़र एक्सटेंशन",
-    "description": "एक्सटेंशन का विवरण"
+  "nav_users": {
+    "message": "उपयोगकर्ता प्रबंधन"
   },
-  "welcomeMessage": {
-    "message": "एक्सटेंशन में आपका स्वागत है!",
-    "description": "उपयोगकर्ताओं को दिखाया जाने वाला स्वागत संदेश"
+  "nav_profile": {
+    "message": "प्रोफ़ाइल"
   },
-  "settingsTitle": {
-    "message": "सेटिंग्स",
-    "description": "सेटिंग्स पेज का शीर्षक"
+  "nav_security": {
+    "message": "सुरक्षा"
   },
-  "enableFeature": {
-    "message": "सुविधा सक्षम करें",
-    "description": "सुविधा सक्षम करने के लिए चेकबॉक्स लेबल"
+  "nav_settings": {
+    "message": "सेटिंग्स"
   },
-  "saveButton": {
-    "message": "सेव करें",
-    "description": "सेव बटन टेक्स्ट"
+  "nav_analytics": {
+    "message": "एनालिटिक्स"
   },
-  "cancelButton": {
-    "message": "रद्द करें",
-    "description": "रद्द करें बटन टेक्स्ट"
+  "nav_reports": {
+    "message": "रिपोर्ट्स"
+  },
+  "logout": {
+    "message": "लॉगआउट"
+  },
+  "testing_zone": {
+    "message": "परीक्षण क्षेत्र"
+  },
+  "super_admin": {
+    "message": "सुपर एडमिन"
+  },
+  "active_users": {
+    "message": "सक्रिय उपयोगकर्ता"
+  },
+  "blocked_items": {
+    "message": "अवरुद्ध आइटम"
+  },
+  "from_last_week": {
+    "message": "पिछले सप्ताह से"
+  },
+  "system_health": {
+    "message": "सिस्टम स्वास्थ्य"
+  },
+  "from_yesterday": {
+    "message": "कल से"
+  },
+  "recent_activity": {
+    "message": "हाल की गतिविधि"
+  },
+  "view_all": {
+    "message": "सभी देखें"
+  },
+  "user": {
+    "message": "उपयोगकर्ता"
+  },
+  "action": {
+    "message": "कार्य"
+  },
+  "version": {
+    "message": "संस्करण"
+  },
+  "time": {
+    "message": "समय"
+  },
+  "status": {
+    "message": "स्थिति"
+  },
+  "power_mode": {
+    "message": "पावर मोड"
+  },
+  "login_attempt": {
+    "message": "लॉगिन प्रयास"
+  },
+  "settings_updated": {
+    "message": "सेटिंग्स अपडेट की गईं"
+  },
+  "register_device": {
+    "message": "डिवाइस पंजीकृत करें"
+  },
+  "pending_approval": {
+    "message": "अनुमोदन लंबित"
+  },
+  "add_user": {
+    "message": "उपयोगकर्ता जोड़ें"
+  },
+  "employee_id": {
+    "message": "कर्मचारी आईडी"
+  },
+  "name": {
+    "message": "नाम"
+  },
+  "role": {
+    "message": "भूमिका"
+  },
+  "last_active": {
+    "message": "अंतिम सक्रिय"
+  },
+  "actions": {
+    "message": "कार्य"
+  },
+  "admin_user": {
+    "message": "एडमिन उपयोगकर्ता"
+  },
+  "regular_user": {
+    "message": "नियमित उपयोगकर्ता"
+  },
+  "total_users": {
+    "message": "कुल उपयोगकर्ता"
+  },
+  "new_users_this_week": {
+    "message": "इस सप्ताह नए उपयोगकर्ता"
+  },
+  "active_sessions": {
+    "message": "सक्रिय सत्र"
+  },
+  "active_rate": {
+    "message": "सक्रिय दर"
+  },
+  "admin_level": {
+    "message": "एडमिन स्तर"
+  },
+  "profile_settings": {
+    "message": "प्रोफ़ाइल सेटिंग्स"
+  },
+  "avatar_and_cover": {
+    "message": "अवतार और कवर"
+  },
+  "avatar": {
+    "message": "अवतार"
+  },
+  "upload_image": {
+    "message": "छवि अपलोड करें"
+  },
+  "personal_info": {
+    "message": "व्यक्तिगत जानकारी"
+  },
+  "full_name": {
+    "message": "पूरा नाम"
+  },
+  "email_address": {
+    "message": "ईमेल पता"
+  },
+  "options": {
+    "message": "विकल्प"
+  },
+  "basic_info": {
+    "message": "बुनियादी जानकारी"
+  },
+  "language": {
+    "message": "भाषा"
+  },
+  "timezone": {
+    "message": "समयक्षेत्र"
+  },
+  "theme": {
+    "message": "थीम"
+  },
+  "dark_mode": {
+    "message": "डार्क मोड"
+  },
+  "enable_email_notifications": {
+    "message": "ईमेल सूचनाएं सक्षम करें"
+  },
+  "auto_save": {
+    "message": "स्वचालित सहेजना"
+  },
+  "account_security": {
+    "message": "खाता सुरक्षा"
+  },
+  "change_password": {
+    "message": "पासवर्ड बदलें"
+  },
+  "current_password": {
+    "message": "वर्तमान पासवर्ड"
+  },
+  "new_password": {
+    "message": "नया पासवर्ड"
+  },
+  "confirm_password": {
+    "message": "पासवर्ड की पुष्टि करें"
+  },
+  "two_factor_auth": {
+    "message": "दो कारक प्रमाणीकरण"
+  },
+  "2fa": {
+    "message": "दो-कारक प्रमाणीकरण"
+  },
+  "protected_account": {
+    "message": "संरक्षित खाता"
+  },
+  "sms_auth": {
+    "message": "एसएमएस प्रमाणीकरण"
+  },
+  "email_verification": {
+    "message": "ईमेल सत्यापन"
+  },
+  "view_recovery_code": {
+    "message": "रिकवरी कोड देखें"
+  },
+  "view_all_activity": {
+    "message": "सभी गतिविधि देखें"
+  },
+  "ip_address": {
+    "message": "इंटरनेट प्रोटोकॉल पता"
+  },
+  "device": {
+    "message": "डिवाइस"
+  },
+  "save_success": {
+    "message": "सफलतापूर्वक सहेजा गया"
+  },
+  "admin_login": {
+    "message": "एडमिन लॉगिन"
+  },
+  "windows_pc": {
+    "message": "विंडोज़ कंप्यूटर"
+  },
+  "chrome_browser": {
+    "message": "क्रोम ब्राउज़र"
+  },
+  "security_settings": {
+    "message": "सुरक्षा सेटिंग्स"
+  },
+  "threat_level": {
+    "message": "खतरे का स्तर"
+  },
+  "low": {
+    "message": "कम"
+  },
+  "all_safe": {
+    "message": "सब सुरक्षित"
+  },
+  "security_threats": {
+    "message": "सुरक्षा खतरे"
+  },
+  "security_score": {
+    "message": "सुरक्षा स्कोर"
+  },
+  "excellent_security": {
+    "message": "उत्कृष्ट सुरक्षा"
+  },
+  "security_control": {
+    "message": "सुरक्षा नियंत्रण"
+  },
+  "all_systems_active": {
+    "message": "सभी सिस्टम सक्रिय"
+  },
+  "access_control": {
+    "message": "पहुंच नियंत्रण"
+  },
+  "password_policy": {
+    "message": "पासवर्ड नीति"
+  },
+  "session_timeout": {
+    "message": "सत्र समय समाप्ति"
+  },
+  "threat_protection": {
+    "message": "खतरा सुरक्षा"
+  },
+  "realtime_monitoring": {
+    "message": "रीयल-टाइम निगरानी"
+  },
+  "auto_blocking": {
+    "message": "स्वचालित अवरोधन"
+  },
+  "emergency_response": {
+    "message": "आपातकालीन प्रतिक्रिया"
+  },
+  "system_settings": {
+    "message": "सिस्टम सेटिंग्स"
+  },
+  "general_settings": {
+    "message": "सामान्य सेटिंग्स"
+  },
+  "application_settings": {
+    "message": "एप्लिकेशन सेटिंग्स"
+  },
+  "default_language": {
+    "message": "डिफ़ॉल्ट भाषा"
+  },
+  "enable_notifications": {
+    "message": "सूचनाएं सक्षम करें"
+  },
+  "performance_settings": {
+    "message": "प्रदर्शन सेटिंग्स"
+  },
+  "update_frequency": {
+    "message": "अपडेट आवृत्ति"
+  },
+  "log_retention": {
+    "message": "लॉग प्रतिधारण"
+  },
+  "auto_optimize": {
+    "message": "स्वचालित अनुकूलन"
+  },
+  "save_changes": {
+    "message": "परिवर्तन सहेजें"
+  },
+  "analytics": {
+    "message": "एनालिटिक्स"
+  },
+  "page_views": {
+    "message": "पेज व्यू"
+  },
+  "ads_blocked": {
+    "message": "विज्ञापन अवरुद्ध"
+  },
+  "performance_score": {
+    "message": "प्रदर्शन स्कोर"
+  },
+  "excellent": {
+    "message": "उत्कृष्ट"
+  },
+  "advanced_analytics": {
+    "message": "उन्नत एनालिटिक्स"
+  },
+  "export_data": {
+    "message": "डेटा निर्यात करें"
+  },
+  "charts": {
+    "message": "चार्ट"
+  },
+  "analytics_note": {
+    "message": "एनालिटिक्स नोट"
+  },
+  "reports": {
+    "message": "रिपोर्ट्स"
+  },
+  "create_report": {
+    "message": "रिपोर्ट बनाएं"
+  },
+  "user_activity_report": {
+    "message": "उपयोगकर्ता गतिविधि रिपोर्ट"
+  },
+  "security_report": {
+    "message": "सुरक्षा रिपोर्ट"
+  },
+  "performance_report": {
+    "message": "प्रदर्शन रिपोर्ट"
+  },
+  "recent_reports": {
+    "message": "हाल की रिपोर्ट्स"
+  },
+  "report_name": {
+    "message": "रिपोर्ट नाम"
+  },
+  "report_type": {
+    "message": "रिपोर्ट प्रकार"
+  },
+  "created_at": {
+    "message": "बनाया गया"
+  },
+  "size": {
+    "message": "आकार"
+  },
+  "report_status": {
+    "message": "रिपोर्ट स्थिति"
+  },
+  "report_action": {
+    "message": "रिपोर्ट कार्य"
+  },
+  "daily_security": {
+    "message": "दैनिक सुरक्षा"
+  },
+  "weekly_user_activity": {
+    "message": "साप्ताहिक उपयोगकर्ता गतिविधि"
+  },
+  "monthly_performance": {
+    "message": "मासिक प्रदर्शन"
+  },
+  "processing": {
+    "message": "प्रसंस्करण"
+  },
+  "full_name_format": {
+    "message": "पूरा नाम (चीनी + Telegram + ID)"
+  },
+  "name_format_hint": {
+    "message": "प्रारूप: \"चीनी नाम + Telegram नाम + ID\""
+  },
+  "email": {
+    "message": "ईमेल पता"
+  },
+  "preferences": {
+    "message": "प्राथमिकताएं और सेटिंग्स"
   }
 }

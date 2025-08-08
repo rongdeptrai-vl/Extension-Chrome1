@@ -1,0 +1,15 @@
+{
+  "_tini_watermark": {
+    "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
+    "employee": "rongdeptrai-vl <rongdz2307@gmail.com>",
+    "commit": "55548f4",
+    "time": "2025-08-08T06:33:01Z",
+    "watermark_id": "TINI_1754634781_e868a412",
+    "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
+  },
+  "10.0.0.1": {
+    "reason": "HONEYPOT_ACCESS",
+    "timestamp": 1754318905454,
+    "expiresAt": 1754405305454
+  }
+}

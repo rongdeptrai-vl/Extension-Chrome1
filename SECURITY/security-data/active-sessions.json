@@ -1,0 +1,30 @@
+{
+  "_tini_watermark": {
+    "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
+    "employee": "rongdeptrai-vl <rongdz2307@gmail.com>",
+    "commit": "55548f4",
+    "time": "2025-08-08T06:33:01Z",
+    "watermark_id": "TINI_1754634781_e868a412",
+    "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
+  },
+  "14af48b29c8bcfc6cc9772d3550d42934d16eda5b011c330143e95d88370bf67": {
+    "sessionId": "d44504eb-d1a0-478c-9540-bfd9018e4a71",
+    "token": "14af48b29c8bcfc6cc9772d3550d42934d16eda5b011c330143e95d88370bf67",
+    "username": "boss",
+    "role": "boss",
+    "level": 10000,
+    "ip": "192.168.1.150",
+    "deviceFingerprint": "1633cf8c041ff548909513c5489f976e",
+    "createdAt": 1754318905462,
+    "lastActivity": 1754318905470,
+    "expiresAt": 1754326105462,
+    "isActive": true,
+    "loginHistory": [
+      {
+        "timestamp": 1754318905462,
+        "ip": "192.168.1.150",
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+      }
+    ]
+  }
+}

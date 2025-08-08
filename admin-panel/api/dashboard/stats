@@ -1,0 +1,63 @@
+{
+  "status": "success",
+  "data": {
+    "stats": {
+      "activeUsers": 1428,
+      "blockedThreats": 24901,
+      "systemHealth": 99.9,
+      "uptime": "99.8%"
+    },
+    "recentActivities": [
+      {
+        "id": 1,
+        "user": "EMP001",
+        "action": "Chuyển sang POWER",
+        "version": "v4.0.0",
+        "time": "2 phút trước",
+        "status": "Hoạt Động"
+      },
+      {
+        "id": 2,
+        "user": "EMP003",
+        "action": "Thử đăng nhập",
+        "version": "-",
+        "time": "15 phút trước",
+        "status": "Thất Bại"
+      },
+      {
+        "id": 3,
+        "user": "EMP002",
+        "action": "Cập nhật cài đặt",
+        "version": "v3.0.0",
+        "time": "1 giờ trước",
+        "status": "Hoàn Thành"
+      },
+      {
+        "id": 4,
+        "user": "EMP005",
+        "action": "Đăng ký thiết bị",
+        "version": "-",
+        "time": "3 giờ trước",
+        "status": "Waiting Process"
+      }
+    ],
+    "users": [
+      {
+        "id": "EMP001",
+        "name": "Người Dùng Quản Trị",
+        "role": "Quản Trị",
+        "activity": "Vừa xong",
+        "devices": 2,
+        "status": "online"
+      },
+      {
+        "id": "EMP002",
+        "name": "Người Dùng Thường",
+        "role": "Người Dùng",
+        "activity": "1 giờ trước",
+        "devices": 1,
+        "status": "online"
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "status": "success",
+  "message": "Admin authentication successful",
+  "data": {
+    "user": {
+      "id": 1,
+      "username": "admin",
+      "role": "admin",
+      "full_name": "Admin User",
+      "permissions": ["full_access"]
+    },
+    "token": "admin_secure_token_67890"
+  }
+}

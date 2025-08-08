@@ -1,0 +1,121 @@
+version: '3.8'
+
+services:
+  # Unified Gateway (Primary Entry: 8099)
+  unified-gateway:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    command: node "Docker/server 8099.js"
+    ports:
+      - "8099:8099"
+    environment:
+      - NODE_ENV=production
+      - PORT=8099
+      - ALLOWED_ORIGINS=http://localhost:8080,http://localhost:3004,http://localhost:5001
+    volumes:
+      - ../:/app
+      - /app/node_modules
+    networks:
+      - tini-network
+    restart: unless-stopped
+
+  # Main API Server
+  api-server:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    command: node core/api-server.js
+    ports:
+      - "5001:5001"
+    environment:
+      - NODE_ENV=production
+      - PORT=5001
+    volumes:
+      - ../:/app
+      - /app/node_modules
+    networks:
+      - tini-network
+    restart: unless-stopped
+
+  # Admin Dashboard Server
+  admin-dashboard:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    command: node core/admin-dashboard-server.js
+    ports:
+      - "3004:3004"
+    environment:
+      - NODE_ENV=production
+      - ADMIN_PORT=3004
+      - JWT_SECRET=your-super-secret-jwt-key-that-is-long
+      - DB_HOST=mysql-db
+      - DB_PORT=3306
+      - DB_USER=admin_user
+      - DB_PASSWORD=admin_password
+      - DB_NAME=admin_dashboard
+    depends_on:
+      - mysql-db
+      - redis-cache
+    volumes:
+      - ../:/app
+      - /app/node_modules
+    networks:
+      - tini-network
+    restart: unless-stopped
+
+  # Admin Panel Server (Legacy)
+  admin-panel:
+    build:
+      context: ..
+      dockerfile: Dockerfile
+    command: node admin-panel/server.js
+    ports:
+      - "8080:8080"
+    environment:
+      - NODE_ENV=production
+      - PORT=8080
+    volumes:
+      - ../:/app
+      - /app/node_modules
+    networks:
+      - tini-network
+    restart: unless-stopped
+
+  # MySQL Database
+  mysql-db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_password_very_secure
+      - MYSQL_DATABASE=admin_dashboard
+      - MYSQL_USER=admin_user
+      - MYSQL_PASSWORD=admin_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ../admin-panel/mysql-init:/docker-entrypoint-initdb.d
+    networks:
+      - tini-network
+    restart: unless-stopped
+
+  # Redis Cache
+  redis-cache:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - tini-network
+    restart: unless-stopped
+
+volumes:
+  mysql_data:
+  redis_data:
+
+networks:
+  tini-network:
+    driver: bridge

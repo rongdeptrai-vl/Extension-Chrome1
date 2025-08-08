@@ -1,0 +1,180 @@
+# TINI Admin Panel Docker Compose Configuration
+# Complete MySQL + Redis + Admin Panel setup
+version: '3.8'
+
+services:
+  # Admin Panel Application
+  admin-panel:
+    build:
+      context: .
+      dockerfile: Dockerfile.admin
+    container_name: tini-admin-panel
+    ports:
+      - "3001:3001"  # Admin Panel Port
+    environment:
+      - NODE_ENV=production
+      - ADMIN_PORT=3001
+      
+      # Database Configuration
+      - DB_HOST=mysql-db
+      - DB_PORT=3306
+      - DB_USER=tini_admin_user
+      - DB_PASSWORD=tini_secure_db_password_2025
+      - DB_NAME=tini_admin_dashboard
+      
+      # Redis Configuration
+      - REDIS_HOST=redis-cache
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=redis_secure_password_2025
+      - REDIS_DB=0
+      
+      # JWT & Security
+      - JWT_SECRET=tini_admin_jwt_secret_key_2025_ultra_secure
+      - SESSION_SECRET=tini_admin_session_secret_2025
+      
+      # Admin Credentials
+      - ADMIN_USERNAME=admin
+      - ADMIN_PASSWORD=TiniAdminSecure2025!
+      
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      redis-cache:
+        condition: service_healthy
+    volumes:
+      - ./logs:/app/logs
+      - ./uploads:/app/uploads
+      - ./backups:/app/backups
+    networks:
+      - tini-admin-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # MySQL Database for Admin Data
+  mysql-db:
+    image: mysql:8.0
+    container_name: tini-mysql-db
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root_secure_password_2025
+      - MYSQL_DATABASE=tini_admin_dashboard
+      - MYSQL_USER=tini_admin_user
+      - MYSQL_PASSWORD=tini_secure_db_password_2025
+      
+      # MySQL Configuration
+      - MYSQL_CHARSET=utf8mb4
+      - MYSQL_COLLATION=utf8mb4_unicode_ci
+      
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+      - ./mysql-conf/my.cnf:/etc/mysql/conf.d/my.cnf
+    networks:
+      - tini-admin-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$$MYSQL_ROOT_PASSWORD"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    command: --default-authentication-plugin=mysql_native_password --innodb-buffer-pool-size=256M --max-connections=200
+
+  # Redis for Session Management & Caching
+  redis-cache:
+    image: redis:7-alpine
+    container_name: tini-redis-cache
+    ports:
+      - "6379:6379"
+    environment:
+      - REDIS_PASSWORD=redis_secure_password_2025
+    command: >
+      redis-server 
+      --requirepass redis_secure_password_2025
+      --appendonly yes
+      --maxmemory 256mb
+      --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+      - ./redis-conf/redis.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - tini-admin-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # phpMyAdmin for Database Management (Optional)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: tini-phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      - PMA_HOST=mysql-db
+      - PMA_PORT=3306
+      - PMA_USER=tini_admin_user
+      - PMA_PASSWORD=tini_secure_db_password_2025
+      - MYSQL_ROOT_PASSWORD=root_secure_password_2025
+    depends_on:
+      - mysql-db
+    networks:
+      - tini-admin-network
+    restart: unless-stopped
+
+  # Redis Commander for Redis Management (Optional)
+  redis-commander:
+    image: rediscommander/redis-commander:latest
+    container_name: tini-redis-commander
+    ports:
+      - "8081:8081"
+    environment:
+      - REDIS_HOSTS=local:redis-cache:6379:0:redis_secure_password_2025
+    depends_on:
+      - redis-cache
+    networks:
+      - tini-admin-network
+    restart: unless-stopped
+
+  # Nginx Reverse Proxy
+  nginx:
+    image: nginx:alpine
+    container_name: tini-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./ssl:/etc/nginx/ssl
+      - ./nginx-logs:/var/log/nginx
+    depends_on:
+      - admin-panel
+      - phpmyadmin
+      - redis-commander
+    networks:
+      - tini-admin-network
+    restart: unless-stopped
+
+# Persistent Data Volumes
+volumes:
+  mysql_data:
+    driver: local
+    name: tini_mysql_data
+  redis_data:
+    driver: local
+    name: tini_redis_data
+
+# Network Configuration
+networks:
+  tini-admin-network:
+    driver: bridge
+    name: tini-admin-network
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

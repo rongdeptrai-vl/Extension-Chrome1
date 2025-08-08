@@ -1,0 +1,15 @@
+{
+  "status": "success",
+  "message": "Authentication successful",
+  "data": {
+    "user": {
+      "id": 1,
+      "username": "admin",
+      "role": "admin",
+      "full_name": "Admin User",
+      "department": "IT"
+    },
+    "token": "admin_token_12345",
+    "permissions": ["read", "write", "delete", "manage_users"]
+  }
+}

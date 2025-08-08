@@ -1,0 +1,45 @@
+{
+  "_tini_watermark": {
+    "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
+    "employee": "rongdeptrai-vl <rongdz2307@gmail.com>",
+    "commit": "55548f4",
+    "time": "2025-08-08T06:33:01Z",
+    "watermark_id": "TINI_1754634781_e868a412",
+    "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
+  },
+  "name": "tini-ultimate-security",
+  "version": "4.0.0",
+  "description": "TINI Ultimate Security System",
+  "main": "core/api-server.js",
+  "scripts": {
+    "start:gateway": "cross-env PORT=8099 NODE_ENV=production node scripts/start-gateway.js",
+    "start:api": "cross-env PORT=5001 NODE_ENV=production node core/api-server.js",
+    "start:dashboard": "cross-env ADMIN_PORT=3004 ADMIN_PORT_FALLBACKS=3005,3006 NODE_ENV=production node core/admin-dashboard-server.js",
+    "start:panel": "cross-env PORT=8080 PORT_FALLBACKS=8081,8082 NODE_ENV=production node admin-panel/server.js",
+    "start:all": "concurrently -n gateway,api,dashboard,panel -c \"cyan,green,yellow,magenta\" \"npm run start:gateway\" \"npm run start:api\" \"npm run start:dashboard\" \"npm run start:panel\"",
+    "start:all:alt": "concurrently -n gateway,api,dashboard,panel -c \"cyan,green,yellow,magenta\" \"cross-env PORT=8099 npm run start:gateway\" \"cross-env PORT=5001 npm run start:api\" \"cross-env ADMIN_PORT=3005 ADMIN_PORT_FALLBACKS=3006,3007 npm run start:dashboard\" \"cross-env PORT=8081 PORT_FALLBACKS=8082,8083 npm run start:panel\"",
+    "start": "npm run start:all"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "express-rate-limit": "^8.0.1",
+    "git": "^0.1.5",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.14.3",
+    "path": "^0.12.7",
+    "path-to-regexp": "^8.2.0",
+    "redis": "^5.8.0",
+    "socket.io": "^4.8.1",
+    "sqlite3": "^5.1.7",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "cross-env": "^7.0.3",
+    "patch-package": "^8.0.0"
+  }
+}

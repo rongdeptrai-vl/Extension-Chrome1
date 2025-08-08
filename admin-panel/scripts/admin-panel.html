@@ -1,0 +1,1025 @@
+<!-- © 2024 TINI COMPANY - CONFIDENTIAL -->
+<!-- Employee: rongdeptrai-vl <rongdz2307@gmail.com> -->
+<!-- Commit: 55548f4 | Time: 2025-08-08T06:33:01Z -->
+<!-- Watermark: TINI_1754634781_e868a412 | TINI_WATERMARK -->
+<!-- WARNING: Unauthorized distribution is prohibited -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="admin_dashboard_title">TINI Admin Dashboard</title>
+    <link rel="stylesheet" href="admin-panel.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <div class="logo-icon">T</div>
+                <div class="logo-text">TINI</div>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#" class="nav-link active" data-section="dashboard" data-nav="dashboard">
+                        <i class="fas fa-tachometer-alt nav-icon"></i>
+                        <span data-i18n="nav_dashboard">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="users" data-nav="users">
+                        <i class="fas fa-users nav-icon"></i>
+                        <span data-i18n="nav_users">Users</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="profile" data-nav="profile">
+                        <i class="fas fa-user-circle nav-icon"></i>
+                        <span data-i18n="nav_profile">Profile</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="security" data-nav="security">
+                        <i class="fas fa-shield-alt nav-icon"></i>
+                        <span data-i18n="nav_security">Security</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="settings" data-nav="settings">
+                        <i class="fas fa-cog nav-icon"></i>
+                        <span data-i18n="nav_settings">Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="analytics" data-nav="analytics">
+                        <i class="fas fa-chart-line nav-icon"></i>
+                        <span data-i18n="nav_analytics">Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link" data-section="reports" data-nav="reports">
+                        <i class="fas fa-file-alt nav-icon"></i>
+                        <span data-i18n="nav_reports">Reports</span>
+                    </a>
+                </li>
+                
+                <!-- Separator -->
+                <div class="nav-separator"></div>
+                
+                <!-- LogOut Section -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link logout-btn" id="logoutBtn" data-nav="logout">
+                        <i class="fas fa-sign-out-alt nav-icon"></i>
+                        <span data-i18n="logout">Logout</span>
+                    </a>
+                </li>
+                
+                <!-- Testing Zone - Special Item -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link testing-zone" data-section="testing" data-nav="testing">
+                        <span class="nav-icon">🧪</span>
+                        <span data-i18n="testing_zone">Testing Zone</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard Section -->
+            <div id="dashboard" class="content-section active">
+                <div class="header">
+                    <h1 class="header-title" data-i18n="nav_dashboard">Bảng Điều Khiển</h1>
+                    <div class="user-profile">
+                        <div class="user-avatar">AD</div>
+                        <div>
+                            <div data-i18n="super_admin">Quản Trị Cấp Cao</div>
+                            <div class="font-size-12 color-text-secondary" data-i18n="super_admin">Quản Trị Cấp Cao</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dashboard Stats -->
+                <div class="dashboard-grid">
+                    <div class="dashboard-card animated-card">
+                        <div class="card-title" data-i18n="active_users">活跃用户</div>
+                        <div class="card-value">1,428</div>
+                        <div class="card-change positive">
+                            <i class="fas fa-arrow-up"></i> <span data-i18n="new_this_week">本周新增 12.5%</span>
+                        </div>
+                    </div>
+                    <div class="dashboard-card animated-card delay-1">
+                        <div class="card-title" data-i18n="blocked_items">被阻止项目</div>
+                        <div class="card-value">24,901</div>
+                        <div class="card-change positive">
+                            <i class="fas fa-arrow-up"></i> <span data-i18n="new_this_week">本周新增 8.3%</span>
+                        </div>
+                    </div>
+                    <div class="dashboard-card animated-card delay-2">
+                        <div class="card-title" data-i18n="system_health">Sức Khỏe Hệ Thống</div>
+                        <div class="card-value">99.9%</div>
+                        <div class="card-change negative">
+                            <i class="fas fa-arrow-down"></i> <span data-i18n="from_yesterday">0.1% từ hôm qua</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="activity-section">
+                    <div class="section-header">
+                        <h2 class="section-title" data-i18n="recent_activity_title">Hoạt Động Gần Đây</h2>
+                        <button class="btn-link" data-translate="view_all">
+                            <span data-translate="view_all">View All</span>
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th data-i18n="table_user">User</th>
+                                    <th data-i18n="table_action">Action</th>
+                                    <th data-i18n="table_version">Version</th>
+                                    <th data-i18n="table_time">Time</th>
+                                    <th data-i18n="table_status">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>EMP001</td>
+                                    <td data-i18n="switched_to_power">Switched to POWER</td>
+                                    <td>v4.0.0</td>
+                                    <td data-i18n="minutes_ago_2">2 minutes ago</td>
+                                    <td><span class="status-badge status-active" data-i18n="active">Active</span></td>
+                                </tr>
+                                <tr>
+                                    <td>EMP003</td>
+                                    <td data-i18n="login_attempt">Login attempt</td>
+                                    <td>-</td>
+                                    <td data-i18n="minutes_ago_15">15 minutes ago</td>
+                                    <td><span class="status-badge status-inactive" data-i18n="failed">Failed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>EMP002</td>
+                                    <td data-i18n="updated_settings">Updated settings</td>
+                                    <td>v3.0.0</td>
+                                    <td data-i18n="hour_ago">1 hour ago</td>
+                                    <td><span class="status-badge status-active" data-i18n="completed">Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>EMP005</td>
+                                    <td data-i18n="device_registration">Device registration</td>
+                                    <td>-</td>
+                                    <td data-i18n="hours_ago_3">3 hours ago</td>
+                                    <td><span class="status-badge status-pending" data-i18n="pending">Pending</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- User Management -->
+                <div class="activity-section">
+                    <div class="section-header">
+                        <h2 class="section-title" data-i18n="user_management_title">用户管理</h2>
+                        <button data-i18n="add_user_btn">
+                            <i class="fas fa-plus"></i> <span data-i18n="add_user_btn">添加用户</span>
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th data-i18n="employee_id_col">Mã NV</th>
+                                    <th data-i18n="name_col">Tên</th>
+                                    <th data-i18n="role_col">Vai Trò</th>
+                                    <th data-i18n="last_active_col">Hoạt Động</th>
+                                    <th data-i18n="devices_col">Thiết Bị</th>
+                                    <th data-i18n="actions_col">Thao Tác</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>EMP001</td>
+                                    <td data-i18n="admin_user">管理员用户</td>
+                                    <td data-i18n="admin">管理员</td>
+                                    <td data-i18n="just_now">刚刚</td>
+                                    <td>2</td>
+                                    <td>
+                                        <button class="edit-user-btn">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="delete-user-btn">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>EMP002</td>
+                                    <td data-i18n="regular_user">普通用户</td>
+                                    <td data-i18n="user">用户</td>
+                                    <td data-i18n="hour_ago">1小时前</td>
+                                    <td>1</td>
+                                    <td>
+                                        <button class="edit-user-btn">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="delete-user-btn">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testing Zone Section -->
+            <div id="testing" class="content-section">
+                <div class="testing-content">
+                    <div class="testing-header">
+                        <div class="testing-shield">🛡️</div>
+                        <h1 class="testing-title" data-i18n="bypass_testing_zone">BYPASS TESTING ZONE</h1>
+                        <p class="testing-subtitle" data-i18n="admin_safe_environment">🔒 100% Admin Safe Environment</p>
+                        
+                        <div>
+                            <h3 data-i18n="admin_notification">💻 管理员通知:</h3>
+                            <p data-i18n="admin_notification_text">
+                                "不要再担心了！我已经为管理员创建了这个超级安全的测试绕过环境。在这里，管理员可以测试绕过而永远不会被'卡住'或被阻止。一切都受到 BOSS 权限级别 10000 的保护！"
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="testing-grid">
+                        <div class="testing-section">
+                            <h3>
+                                <i class="fas fa-shield-check"></i>
+                                <span data-i18n="absolute_safety_guarantee">绝对安全保证</span>
+                            </h3>
+                            <div class="security-item">
+                                <span class="security-checkbox">✅</span>
+                                <span data-i18n="admin_cannot_be_blocked">管理员在此环境中不会被阻止</span>
+                            </div>
+                            <div class="security-item">
+                                <span class="security-checkbox">✅</span>
+                                <span data-i18n="all_bypass_systems_integrated">所有绕过系统已继承并集成</span>
+                            </div>
+                            <div class="security-item">
+                                <span class="security-checkbox">✅</span>
+                                <span data-i18n="boss_protection_highest_level">BOSS protection luôn hoạt động ở mức cao nhất</span>
+                            </div>
+                            <div class="security-item">
+                                <span class="security-checkbox">✅</span>
+                                <span data-i18n="emergency_rescue_ready">Emergency rescue sẵn sàng nếu có bất cứ vấn đề gì</span>
+                            </div>
+                        </div>
+
+                        <div class="testing-section">
+                            <h3>
+                                <i class="fas fa-cogs"></i>
+                                <span data-i18n="bypass_systems_status">TRẠNG THÁI BYPASS SYSTEMS</span>
+                            </h3>
+                            
+                            <div class="system-status">
+                                <span>Bypass Integration Manager:</span>
+                                <div>
+                                    <span data-i18n="active">ACTIVE</span>
+                                    <div class="status-indicator"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="system-status">
+                                <span>Core Systems (73 files):</span>
+                                <div>
+                                    <span data-i18n="all_ready">ALL READY</span>
+                                    <div class="status-indicator"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="system-status">
+                                <span>BOSS Protection:</span>
+                                <div>
+                                    <span>LEVEL 10000</span>
+                                    <div class="status-indicator"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="system-status">
+                                <span>Admin Immunity:</span>
+                                <div>
+                                    <span>ENABLED</span>
+                                    <div class="status-indicator"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="system-status">
+                                <span>Emergency Systems:</span>
+                                <div>
+                                    <span>STANDBY</span>
+                                    <div class="status-indicator"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other Sections with Real Content -->
+            <div id="users" class="content-section">
+                <div class="header">
+                    <h1 class="header-title" data-i18n="user_management">User Management</h1>
+                    <div class="user-profile">
+                        <div class="user-avatar">AD</div>
+                        <div>
+                            <div data-i18n="admin_user">管理员用户</div>
+                            <div class="font-size-12 color-text-secondary" data-i18n="super_admin">超级管理员</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Management Section -->
+                <div class="activity-section">
+                    <div class="section-header">
+                        <h2 class="section-title" data-i18n="user_management">User Management</h2>
+                        <button id="addUserBtn">
+                            <i class="fas fa-plus"></i> <span data-translate="add_user">Add User</span>
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th data-i18n="employee_id">员工ID</th>
+                                    <th data-i18n="name">姓名</th>
+                                    <th data-i18n="role">角色</th>
+                                    <th data-i18n="last_active">最后活动</th>
+                                    <th data-i18n="devices">设备</th>
+                                    <th data-i18n="actions">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userTableBody">
+                                <tr>
+                                    <td>EMP001</td>
+                                    <td data-i18n="admin_user">管理员用户</td>
+                                    <td><span class="status-badge status-active" data-i18n="admin">管理员</span></td>
+                                    <td data-i18n="just_now">刚刚</td>
+                                    <td>2</td>
+                                    <td>
+                                        <button class="edit-user-btn">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="delete-user-btn">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>EMP002</td>
+                                    <td data-i18n="regular_user">普通用户</td>
+                                    <td><span class="status-badge status-pending" data-i18n="user">用户</span></td>
+                                    <td data-i18n="hour_ago">1小时前</td>
+                                    <td>1</td>
+                                    <td>
+                                        <button class="edit-user-btn">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="delete-user-btn">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>EMP003</td>
+                                    <td data-i18n="employee_user_3">潘文勇 PanVuong 79-1</td>
+                                    <td><span class="status-badge status-pending" data-i18n="employee">Employee</span></td>
+                                    <td data-i18n="hours_ago_2">2 hours ago</td>
+                                    <td>1</td>
+                                    <td>
+                                        <button class="edit-user-btn">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="delete-user-btn">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Add/Edit User Form -->
+                    <div id="userFormContainer">
+                        <div class="section-header">
+                            <h3 id="formTitle" data-i18n="add_new_user">Add New User</h3>
+                        </div>
+                        <form id="userForm">
+                            <div>
+                                <div>
+                                    <label for="userName" data-i18n="full_name">Full Name</label>
+                                    <input type="text" id="userName" name="userName" required 
+                                          >
+                                </div>
+                                <div>
+                                    <label for="userEmail" data-i18n="email">Email</label>
+                                    <input type="email" id="userEmail" name="userEmail" required 
+                                          >
+                                </div>
+                            </div>
+                            <div>
+                                <div>
+                                    <label for="userRole" data-i18n="role">Role</label>
+                                    <select id="userRole" name="userRole" required 
+                                           >
+                                        <option value="admin" data-i18n="admin">Admin</option>
+                                        <option value="user" selected data-i18n="user">User</option>
+                                        <option value="employee" data-i18n="employee">Employee</option>
+                                        <option value="manager" data-i18n="manager">Manager</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="userStatus" data-i18n="status">Status</label>
+                                    <select id="userStatus" name="userStatus" required 
+                                           >
+                                        <option value="active" selected data-i18n="active">Active</option>
+                                        <option value="pending" data-i18n="pending">Pending</option>
+                                        <option value="inactive" data-i18n="inactive">Inactive</option>
+                                        <option value="suspended" data-i18n="suspended">Suspended</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <button type="button" id="cancelUserForm" 
+                                       >
+                                    <span data-i18n="cancel">Cancel</span>
+                                </button>
+                                <button type="submit" id="saveUserBtn" 
+                                       >
+                                    <span data-translate="add_user">Add User</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- User Statistics -->
+                <div class="dashboard-grid">
+                    <div class="dashboard-card animated-card">
+                        <div class="card-title" data-i18n="total_users">Total Users</div>
+                        <div class="card-value">3</div>
+                        <div class="card-change positive">
+                            <i class="fas fa-arrow-up"></i> <span data-i18n="new_this_week_users">1 new this week</span>
+                        </div>
+                    </div>
+                    <div class="dashboard-card animated-card delay-1">
+                        <div class="card-title" data-i18n="active_sessions">Active Sessions</div>
+                        <div class="card-value">2</div>
+                        <div class="card-change positive">
+                            <i class="fas fa-arrow-up"></i> <span data-i18n="active_rate">66% active rate</span>
+                        </div>
+                    </div>
+                    <div class="dashboard-card animated-card delay-2">
+                        <div class="card-title" data-i18n="admin_users">管理员用户</div>
+                        <div class="card-value">1</div>
+                        <div class="card-change">
+                            <i class="fas fa-shield-alt"></i> <span data-i18n="super_admin_level">超级管理员级别</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div id="profile" class="content-section">
+                <div class="header">
+                    <h1 class="header-title" data-i18n="profile_settings">Profile Settings</h1>
+                    <div class="user-profile">
+                        <div class="user-avatar" id="currentAvatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div>
+                            <div data-i18n="admin_user">管理员用户</div>
+                            <div class="font-size-12 color-text-secondary" data-i18n="super_admin">超级管理员</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Avatar & Cover Photo Section -->
+                <div class="activity-section">
+                    <div class="section-header">
+                        <h2 class="section-title" data-i18n="avatar_cover">Ảnh Đại Diện & Ảnh Bìa</h2>
+                    </div>
+                    <div>
+                        <!-- Avatar Section -->
+                        <div>
+                            <h4 data-i18n="avatar">Ảnh Đại Diện</h4>
+                            <div id="previewAvatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <input type="file" id="avatarUpload" accept="image/*">
+                            <button id="uploadAvatarBtn" data-translate="uploadAvatar">
+                                <i class="fas fa-upload"></i> <span data-translate="uploadAvatar">Upload Image</span>
+                            </button>
+                            <button id="saveAvatarBtn" data-i18n="save_changes">
+                                <i class="fas fa-save"></i> <span data-i18n="save_changes">Save Changes</span>
+                            </button>
+                        </div>
+                        
+                        <!-- Basic Information Section - Moved here -->
+                        <div>
+                            <h3 data-i18n="personal_info">Basic Information</h3>
+                            <div>
+                                <label for="fullName" data-i18n="full_name">Full Name</label>
+                                <input id="fullName" type="text" data-i18n-value="admin_user">
+                            </div>
+                            <div>
+                                <label for="email" data-i18n="email">Email Address</label>
+                                <input id="email" type="email" value="admin@tini.com">
+                            </div>
+                            <div>
+                                <label for="employeeId" data-i18n="employee_id">Employee ID</label>
+                                <input id="employeeId" type="text" value="EMP001" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preferences Section -->
+                <div class="activity-section">
+                    <div class="section-header">
+                        <h2 class="section-title" data-i18n="preferences">Preferences & Settings</h2>
+                        <button data-i18n="save" id="saveProfileBtn">
+                            <i class="fas fa-save"></i> <span data-i18n="save_changes">保存更改</span>
+                        </button>
+                    </div>
+                    <div>
+                        <div>
+                            <h3 data-i18n="basic_info">Basic Information</h3>
+                            <div>
+                                <label data-i18n="full_name">Full Name</label>
+                                <input id="fullName" type="text" data-i18n-value="admin_user">
+                            </div>
+                            <div>
+                                <label data-i18n="email">Email Address</label>
+                                <input id="email" type="email" value="admin@tini.com">
+                            </div>
+                            <div>
+                                <label data-i18n="employee_id">Employee ID</label>
+                                <input id="employeeId" type="text" value="EMP001" readonly>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 data-i18n="preferences">Preferences</h3>
+                            <div>
+                                <label for="language" data-i18n="language">🌍 Language / Ngôn ngữ / 语言</label>
+                                <select id="language">
+                                    <option value="en" selected>🇺🇸 English (United States)</option>
+                                    <option value="vi">🇻🇳 Tiếng Việt (Vietnamese)</option>
+                                    <option value="zh">🇨🇳 中文 (Chinese Simplified)</option>
+                                    <option value="hi">🇮🇳 हिन्दी (Hindi - India)</option>
+                                    <option value="ko">🇰🇷 한국어 (Korean)</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="timezone" data-i18n="timezone">Time Zone</label>
+                                <select id="timezone">
+                                    <option value="UTC+7" selected data-i18n="timezone_utc7">(UTC+7) Ho Chi Minh, Bangkok</option>
+                                    <option value="UTC+8" data-i18n="timezone_utc8">(UTC+8) Beijing, Singapore, Manila</option>
+                                    <option value="UTC+9" data-i18n="timezone_utc9">(UTC+9) Seoul, Tokyo</option>
+                                    <option value="UTC+5:30" data-i18n="timezone_utc530">(UTC+5:30) Mumbai, New Delhi</option>
+                                    <option value="UTC+0" data-i18n="timezone_utc0">(UTC+0) London, Dublin</option>
+                                    <option value="UTC-5" data-i18n="timezone_utcm5">(UTC-5) New York, Toronto</option>
+                                    <option value="UTC-8" data-i18n="timezone_utcm8">(UTC-8) Los Angeles, Vancouver</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="theme" data-i18n="theme">Theme Preference</label>
+                                <select id="theme">
+                                    <option value="dark" selected data-i18n="theme_dark">🌙 Dark Mode</option>
+                                    <option value="light" data-i18n="theme_light">☀️ Light Mode</option>
+                                    <option value="auto" data-i18n="theme_auto">🔄 Auto (System)</option>
+                                    <option value="neutral" data-i18n="theme_neutral">⚪ Neutral Theme</option>
+                                    <option value="professional" data-i18n="theme_professional">🏢 Professional Theme</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>
+                                    <input id="notifications" type="checkbox" checked>
+                                    <span data-i18n="email_notifications">📧 Enable Email Notifications</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input id="autoSave" type="checkbox" checked>
+                                    <span data-i18n="auto_save">💾 Auto-save Preferences</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Settings -->
+                <div class="activity-section">
+                    <div class="section-header">
+                        <h2 class="section-title" data-i18n="account_security">Account Security</h2>
+                        <button id="changePasswordBtn">
+                            <i class="fas fa-key"></i> <span data-i18n="change_password">Change Password</span>
+                        </button>
+                    </div>
+                    <div>
+                        <div>
+                            <h3 data-i18n="password_settings">Password Settings</h3>
+                            <div>
+                                <label data-i18n="current_password">Current Password</label>
+                                <input id="currentPassword" type="password" data-i18n-placeholder="enter_current_password">
+                            </div>
+                            <div>
+                                <label data-i18n="new_password">New Password</label>
+                                <input id="newPassword" type="password" data-i18n-placeholder="enter_new_password">
+                            </div>
+                            <div>
+                                <label data-i18n="confirm_new_password">Confirm New Password</label>
+                                <input id="confirmPassword" type="password" data-i18n-placeholder="confirm_new_password_placeholder">
+                            </div>
+                        </div>
+                        <div>
+                            <h3 data-i18n="two_factor_auth">Two-Factor Authentication</h3>
+                            <div>
+                                <div>
+                                    <i class="fas fa-shield-check"></i>
+                                    <span data-i18n="two_fa_enabled">2FA Enabled</span>
+                                </div>
+                                <p data-i18n="account_protected">Your account is protected with two-factor authentication</p>
+                            </div>
+                            <div>
+                                <label>
+                                    <input type="checkbox" checked disabled>
+                                    <span data-i18n="sms_authentication">📱 SMS Authentication</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input type="checkbox" checked>
+                                    <span data-i18n="email_verification">📧 Email Verification</span>
+                                </label>
+                            </div>
+                            <button>
+                                <i class="fas fa-qrcode"></i> <span data-i18n="view_recovery_codes">View Recovery Codes</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Activity Log -->
+                <div class="activity-section">
+                    <div class="section-header">
+                        <h2 class="section-title" data-i18n="recent_activity">Recent Activity</h2>
+                        <button data-translate="view_all_activity">
+                            View All Activity
+                        </button>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th data-i18n="activity">Activity</th>
+                                    <th data-i18n="ip_address">IP Address</th>
+                                    <th data-i18n="device">Device</th>
+                                    <th data-i18n="time">Time</th>
+                                    <th data-i18n="status">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td data-i18n="profile_updated">Profile updated</td>
+                                    <td>192.168.1.100</td>
+                                    <td data-i18n="windows_pc">Windows PC</td>
+                                    <td data-i18n="just_now">Just now</td>
+                                    <td><span class="status-badge status-active" data-i18n="success">Success</span></td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="admin_login">Admin login</td>
+                                    <td>192.168.1.100</td>
+                                    <td data-i18n="chrome_browser">Chrome Browser</td>
+                                    <td data-i18n="hours_ago">2 hours ago</td>
+                                    <td><span class="status-badge status-active" data-i18n="success">Success</span></td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="password_changed">Password changed</td>
+                                    <td>192.168.1.100</td>
+                                    <td data-i18n="windows_pc">Windows PC</td>
+                                    <td data-i18n="days_ago">2 days ago</td>
+                                    <td><span class="status-badge status-active" data-i18n="success">Success</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div id="security" class="content-section">
+                <div class="header">
+                    <h1 class="header-title" data-i18n="security_settings">Security Settings</h1>
+                </div>
+
+                <!-- Security Overview -->
+                <div class="dashboard-grid">
+                    <div class="dashboard-card animated-card">
+                        <div class="card-title" data-i18n="threat_level">Threat Level</div>
+                        <div class="card-value" data-i18n="threat_low">LOW</div>
+                        <div class="card-change positive">
+                            <i class="fas fa-shield-check"></i> <span data-i18n="all_systems_secure">All systems secure</span>
+                        </div>
+                    </div>
+                    <div class="dashboard-card animated-card delay-1">
+                        <div class="card-title" data-i18n="blocked_threats">Blocked Threats</div>
+                        <div class="card-value">24,901</div>
+                        <div class="card-change positive">
+                            <i class="fas fa-arrow-up"></i> <span data-i18n="threat_increase">8.3% from last week</span>
+                        </div>
+                    </div>
+                    <div class="dashboard-card animated-card delay-2">
+                        <div class="card-title" data-i18n="security_score">Security Score</div>
+                        <div class="card-value">98.5%</div>
+                        <div class="card-change positive">
+                            <i class="fas fa-arrow-up"></i> <span data-i18n="excellent_security">Excellent security</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Controls -->
+                <div class="activity-section">
+                    <div class="section-header">
+                        <h2 class="section-title" data-i18n="security_controls">Security Controls</h2>
+                        <button>
+                            <i class="fas fa-shield-alt"></i> <span data-i18n="all_systems_active">All Systems Active</span>
+                        </button>
+                    </div>
+                    <div>
+                        <div>
+                            <h3><i class="fas fa-lock"></i> <span data-i18n="access_control">Access Control</span></h3>
+                            <div>
+                                <label>
+                                    <input type="checkbox" checked>
+                                    <span data-i18n="two_factor_auth">Two-Factor Authentication</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input type="checkbox" checked>
+                                    <span data-i18n="password_complexity">Password Complexity Rules</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input type="checkbox" checked>
+                                    <span data-i18n="session_timeout">Session Timeout</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <h3><i class="fas fa-shield-virus"></i> <span data-i18n="threat_protection">Threat Protection</span></h3>
+                            <div>
+                                <label>
+                                    <input type="checkbox" checked>
+                                    <span data-i18n="realtime_monitoring">Real-time Monitoring</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input type="checkbox" checked>
+                                    <span data-i18n="automated_blocking">Automated Blocking</span>
+                                </label>
+                            </div>
+                            <div>
+                                <label>
+                                    <input type="checkbox" checked>
+                                    <span data-i18n="emergency_response">Emergency Response</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="settings" class="content-section">
+                <div class="header">
+                    <h1 class="header-title" data-i18n="system_settings">System Settings</h1>
+                </div>
+
+                <div class="activity-section">
+                    <div class="section-header">
+                        <h2 class="section-title" data-i18n="general_settings">General Settings</h2>
+                        <button>
+                            <i class="fas fa-save"></i> <span data-i18n="save_changes">Save Changes</span>
+                        </button>
+                    </div>
+                    <div>
+                        <div>
+                            <h3 data-i18n="application_settings">Application Settings</h3>
+                            <div>
+                                <label data-i18n="default_language">Default Language</label>
+                                <select>
+                                    <option data-i18n="english">English</option>
+                                    <option selected data-i18n="vietnamese">Tiếng Việt</option>
+                                    <option data-i18n="chinese">中文</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label data-i18n="theme">Theme</label>
+                                <select>
+                                    <option selected data-i18n="theme_dark">Dark Mode</option>
+                                    <option data-i18n="theme_light">Light Mode</option>
+                                    <option data-i18n="auto">Auto</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>
+                                    <input type="checkbox" checked>
+                                    <span data-i18n="enable_notifications">Enable Notifications</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 data-i18n="performance_settings">Performance Settings</h3>
+                            <div>
+                                <label data-i18n="update_frequency">Update Frequency</label>
+                                <select>
+                                    <option data-i18n="real_time">Real-time</option>
+                                    <option selected data-i18n="every_5_minutes">Every 5 minutes</option>
+                                    <option data-i18n="every_15_minutes">Every 15 minutes</option>
+                                    <option data-i18n="manual">Manual</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label data-i18n="log_retention">Log Retention (days)</label>
+                                <input type="number" value="30">
+                            </div>
+                            <div>
+                                <label>
+                                    <input type="checkbox" checked>
+                                    <span data-i18n="auto_optimize">Auto-optimize Performance</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="analytics" class="content-section">
+                <div class="header">
+                    <h1 class="header-title" data-i18n="analytics_insights">Analytics & Insights</h1>
+                </div>
+
+                <!-- Analytics Charts -->
+                <div class="dashboard-grid">
+                    <div class="dashboard-card animated-card">
+                        <div class="card-title" data-i18n="page_views">Page Views</div>
+                        <div class="card-value">45,291</div>
+                        <div class="card-change positive">
+                            <i class="fas fa-arrow-up"></i> <span data-i18n="views_increase">15.3% increase</span>
+                        </div>
+                    </div>
+                    <div class="dashboard-card animated-card delay-1">
+                        <div class="card-title" data-i18n="blocked_ads">Blocked Ads</div>
+                        <div class="card-value">2,847</div>
+                        <div class="card-change positive">
+                            <i class="fas fa-arrow-up"></i> <span data-i18n="ads_increase">23.7% increase</span>
+                        </div>
+                    </div>
+                    <div class="dashboard-card animated-card delay-2">
+                        <div class="card-title" data-i18n="performance_score">Performance Score</div>
+                        <div class="card-value">96.8%</div>
+                        <div class="card-change positive">
+                            <i class="fas fa-arrow-up"></i> <span data-i18n="excellent">Excellent</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Details -->
+                <div class="activity-section">
+                    <div class="section-header">
+                        <h2 class="section-title" data-i18n="detailed_analytics">Detailed Analytics</h2>
+                        <button data-translate="exportData">
+                            <span data-translate="exportData">Export Data</span>
+                        </button>
+                    </div>
+                    <div>
+                        <div>
+                            <i class="fas fa-chart-line"></i>
+                            <h3 data-i18n="interactive_charts">Interactive Charts</h3>
+                            <p data-i18n="charts_coming_soon">Advanced analytics charts will be implemented here</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="reports" class="content-section">
+                <div class="header">
+                    <h1 class="header-title" data-i18n="reports_analytics">Reports & Logs</h1>
+                </div>
+
+                <!-- Report Generation -->
+                <div class="activity-section">
+                    <div class="section-header">
+                        <h2 class="section-title" data-i18n="generate_reports">Generate Reports</h2>
+                        <button>
+                            <i class="fas fa-file-export"></i> <span data-i18n="generate_report">Generate Report</span>
+                        </button>
+                    </div>
+                    <div>
+                        <div class="dashboard-card">
+                            <div>
+                                <i class="fas fa-users"></i>
+                                <h3 data-i18n="user_activity_report">User Activity Report</h3>
+                                <p data-i18n="user_activity_desc">Detailed user activity and login statistics</p>
+                            </div>
+                        </div>
+                        <div class="dashboard-card">
+                            <div>
+                                <i class="fas fa-shield-alt"></i>
+                                <h3 data-i18n="security_report">Security Report</h3>
+                                <p data-i18n="security_report_desc">Security incidents and threat analysis</p>
+                            </div>
+                        </div>
+                        <div class="dashboard-card">
+                            <div>
+                                <i class="fas fa-chart-bar"></i>
+                                <h3 data-i18n="performance_report">Performance Report</h3>
+                                <p data-i18n="performance_report_desc">System performance and optimization data</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Reports -->
+                <div class="activity-section">
+                    <div class="section-header">
+                        <h2 class="section-title" data-i18n="recent_reports">Recent Reports</h2>
+                    </div>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th data-i18n="report_name">Report Name</th>
+                                    <th data-i18n="report_type">Type</th>
+                                    <th data-i18n="generated">Generated</th>
+                                    <th data-i18n="size">Size</th>
+                                    <th data-i18n="status">Status</th>
+                                    <th data-i18n="actions">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td data-i18n="daily_security_report">Daily Security Report</td>
+                                    <td data-i18n="security">Security</td>
+                                    <td data-i18n="hours_ago_2">2 hours ago</td>
+                                    <td>2.3 MB</td>
+                                    <td><span class="status-badge status-active" data-i18n="ready">Ready</span></td>
+                                    <td>
+                                        <button>
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="weekly_user_activity">Weekly User Activity</td>
+                                    <td data-i18n="user_activity">User Activity</td>
+                                    <td data-i18n="day_ago">1 day ago</td>
+                                    <td>5.7 MB</td>
+                                    <td><span class="status-badge status-active" data-i18n="ready">Ready</span></td>
+                                    <td>
+                                        <button>
+                                            <i class="fas fa-download"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td data-i18n="monthly_performance">Monthly Performance</td>
+                                    <td data-i18n="performance">Performance</td>
+                                    <td data-i18n="days_ago_3">3 days ago</td>
+                                    <td>12.1 MB</td>
+                                    <td><span class="status-badge status-pending" data-i18n="processing">Processing</span></td>
+                                    <td>
+                                        <button disabled>
+                                            <i class="fas fa-clock"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../config/tini-env-config.js"></script>
+    <script src="../../SECURITY/secure-input-validator-clean.js"></script>
+    <script src="../../SECURITY/secure-admin-helper.js"></script>
+    <script src="utils/secure-storage.js"></script>
+    <script src="custom-i18n.js"></script>
+    <script src="utils/language-sync.js"></script>
+    <script src="utils/i18n-system.js"></script>
+    <script type="module" src="admin-panel-main.js"></script>
+</body>
+</html>
+

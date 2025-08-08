@@ -1,0 +1,112 @@
+{
+  "_tini_watermark": {
+    "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
+    "employee": "rongdeptrai-vl <rongdz2307@gmail.com>",
+    "commit": "55548f4",
+    "time": "2025-08-08T06:33:01Z",
+    "watermark_id": "TINI_1754634781_e868a412",
+    "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
+  },
+  "timestamp": "2025-08-04T10:22:37.366Z",
+  "version": "1.0.0",
+  "environment": "production",
+  "standardPorts": {
+    "admin-dashboard": 3004,
+    "admin-api": 3002,
+    "admin-auth": 3003,
+    "security-server": 6906,
+    "security-scanner": 6900,
+    "threat-monitor": 6901,
+    "honeypot": 6902,
+    "fortress": 6903,
+    "main-api": 5001,
+    "auth-service": 5002,
+    "data-service": 5003,
+    "mysql": 3306,
+    "redis": 6379,
+    "test-server": 8000,
+    "dev-server": 8001,
+    "debug-server": 8002,
+    "ghost-system": 7008,
+    "tiktok-blocker": 8099,
+    "wazuh-dashboard": 443
+  },
+  "portRanges": {
+    "admin": {
+      "start": 3001,
+      "end": 3010,
+      "description": "Admin and management services"
+    },
+    "security": {
+      "start": 6900,
+      "end": 6920,
+      "description": "Security and monitoring services"
+    },
+    "api": {
+      "start": 5001,
+      "end": 5020,
+      "description": "API and web services"
+    },
+    "database": {
+      "ports": [
+        3306,
+        6379,
+        5432,
+        27017
+      ],
+      "description": "Database services"
+    },
+    "testing": {
+      "start": 8000,
+      "end": 8020,
+      "description": "Testing and development"
+    },
+    "general": {
+      "start": 7000,
+      "end": 7100,
+      "description": "General services"
+    }
+  },
+  "assignments": {
+    "unified_gateway": {
+      "file": "Docker\\server 8099.js",
+      "port": 8099,
+      "category": "api",
+      "description": "Unified Gateway (primary entry)"
+    },
+    "api_server": {
+      "file": "core\\api-server.js",
+      "port": 5001,
+      "category": "api",
+      "description": "Core API"
+    },
+    "admin_dashboard": {
+      "file": "core\\admin-dashboard-server.js",
+      "port": 3004,
+      "category": "admin",
+      "description": "Admin Dashboard"
+    },
+    "admin_panel": {
+      "file": "admin-panel\\server.js",
+      "port": 8080,
+      "category": "admin",
+      "description": "Static admin panel"
+    },
+    "security_server": {
+      "file": "SECURITY\\SECURITY.js",
+      "port": 6906,
+      "category": "security",
+      "description": "Security HTTP server"
+    }
+  },
+  "rules": [
+    "Admin services: 3001-3010",
+    "Security services: 6900-6920",
+    "API services: 5001-5020",
+    "Database services: Standard ports (3306, 6379, etc.)",
+    "Testing services: 8000-8020",
+    "General services: 7000-7100",
+    "Avoid system ports: < 1024",
+    "Avoid common dev ports: 3000, 8080 (unless necessary)"
+  ]
+}

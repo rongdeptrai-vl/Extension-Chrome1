@@ -1,19 +1,27 @@
-# GCC support can be specified at major, minor, or micro version
-# (e.g. 8, 8.2 or 8.2.0).
-# See https://hub.docker.com/r/library/gcc/ for all supported GCC
-# tags from Docker Hub.
-# See https://docs.docker.com/samples/library/gcc/ for more on how to use this image
-FROM gcc:latest
 
-# These commands copy your files into the specified directory in the image
-# and set that as the working location
-COPY . /usr/src/myapp
-WORKDIR /usr/src/myapp
+# Use an official Node.js runtime as a parent image
+FROM node:18-alpine
 
-# This command compiles your app using GCC, adjust for your source code
-RUN g++ -o myapp main.cpp
+# Set the working directory in the container
+WORKDIR /app
 
-# This command runs your application, comment out this line to compile only
-CMD ["./myapp"]
+# Copy package.json and package-lock.json to the working directory
+COPY package.json ./
+COPY package-lock.json ./
 
-LABEL Name=cm Version=0.0.1
+# Install any needed packages
+RUN npm install
+
+# Bundle app source
+COPY . .
+
+# Make port 80 available to the world outside this container
+# (This is a generic expose, the docker-compose file will map specific ports)
+EXPOSE 80
+
+# Define environment variable
+ENV NODE_ENV production
+
+# Run the app when the container launches
+# The actual command will be overridden by the docker-compose file
+CMD [ "node", "core/api-server.js" ]

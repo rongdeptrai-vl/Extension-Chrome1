@@ -1,0 +1,100 @@
+{
+  "_tini_watermark": {
+    "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
+    "employee": "rongdeptrai-vl <rongdz2307@gmail.com>",
+    "commit": "55548f4",
+    "time": "2025-08-08T06:33:01Z",
+    "watermark_id": "TINI_1754634781_e868a412",
+    "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
+  },
+  "manifest_version": 3,
+  "name": "TINI Ultimate Security - Smart Threat Detection",
+  "version": "4.0.0",
+  "description": "Advanced Security Extension with Smart Threat Detection and Proactive Defense Systems",
+  "default_locale": "en",
+  
+  "permissions": [
+    "storage",
+    "activeTab",
+    "tabs",
+    "scripting",
+    "background",
+    "notifications",
+    "unlimitedStorage",
+    "alarms"
+  ],
+  
+  "host_permissions": [
+    "http://localhost:*/*",
+    "http://127.0.0.1:*/*",
+    "https://*/*",
+    "http://localhost/*",
+    "https://localhost/*"
+  ],
+  
+  "content_security_policy": {
+    "extension_pages": "default-src 'self'; script-src 'self'; object-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' http://localhost:* https://*"
+  },
+  
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "TINI Security - Full Features with BOSS Login",
+    "default_icon": {
+      "16": "Icons/icon16.png",
+      "48": "Icons/icon48.png",
+      "128": "Icons/icon128.png"
+    }
+  },
+  
+  "background": {
+    "service_worker": "core/background.js"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["*://*.tiktok.com/*"],
+      "js": ["content-scripts/Tini-monster-v6.js"],
+      "run_at": "document_start"
+    },
+    {
+      "matches": ["*://*.pybass.com/*"],
+      "js": [
+        "content-scripts/Tini-smart-guardian.js",
+        "content-scripts/Tini-life-guardian.js",
+        "content-scripts/Tini-ai-ultra.js"
+      ],
+      "run_at": "document_start"
+    }
+  ],
+  
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "admin-panel/*",
+        "SECURITY/*",
+        "system/*",
+        "_locales/*",
+        "popup/*",
+        "Docker/*",
+        "ghost/*",
+        "Icons/*",
+        "content-scripts/*",
+        "tools/*",
+        "core/*",
+        "tini-*.js",
+        "*.css",
+        "*.js",
+        "*.html"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
+  ],
+  
+  "icons": {
+    "16": "Icons/icon16.png",
+    "48": "Icons/icon48.png",
+    "128": "Icons/icon128.png"
+  }
+}

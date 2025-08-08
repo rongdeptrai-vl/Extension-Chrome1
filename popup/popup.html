@@ -1,0 +1,162 @@
+<!-- © 2024 TINI COMPANY - CONFIDENTIAL -->
+<!-- Employee: rongdeptrai-vl <rongdz2307@gmail.com> -->
+<!-- Commit: 55548f4 | Time: 2025-08-08T06:33:01Z -->
+<!-- Watermark: TINI_1754634781_e868a412 | TINI_WATERMARK -->
+<!-- WARNING: Unauthorized distribution is prohibited -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TINI Extension</title>
+<link href="popup.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<div class="logo">TINI Blocker</div>
+<div class="version">Manager v1.0 BOSS</div>
+</div>
+<!-- Authentication Section -->
+<div class="auth-container active" id="authContainer">
+<div class="auth-title">TINI Network Access</div>
+<!-- Tab Navigation -->
+<div class="tab-navigation">
+<button class="tab-btn active" id="loginTab">Login</button>
+<button class="tab-btn" id="registerTab">Register</button>
+</div>
+<!-- Login Form -->
+<div class="auth-form active" id="loginForm">
+<div class="input-group">
+<label for="employeeId">Employee ID</label>
+<input id="employeeId" placeholder="Enter your Employee ID" type="text"/>
+</div>
+<div class="input-group">
+<label for="deviceId">Device ID</label>
+<input id="deviceId" placeholder="Enter your Device ID" type="text"/>
+</div>
+<div class="ip-detection">
+<span>Internal IP: </span>
+<span id="internalIp">Detecting...</span>
+</div>
+<button id="loginBtn">Authenticate</button>
+<div class="error-message" id="errorMessage"></div>
+</div>
+<!-- Registration Form -->
+<div class="auth-form" id="registerForm">
+<div class="input-group">
+<label for="employeeName">Full Name (Chinese + Telegram + ID)</label>
+<input id="employeeName" placeholder="潘文勇 Tên Telegram 79-1" type="text"/>
+<div class="name-format-hint" id="nameFormatHint">Định dạng: "潘文勇 Tên Telegram 79-1"</div>
+</div>
+<button id="registerBtn">Register New User</button>
+<!-- IP Detection Area -->
+<div class="ip-detection" id="ipDetectionArea">
+<span>Detected IP: </span>
+<span id="detectedIp">Detecting...</span>
+</div>
+</div>
+</div>
+<!-- Main Content -->
+<div class="main-content" id="mainContent">
+<div class="section-title">Select Blocker Version</div>
+<div class="blocker-card" data-version="flash">
+<div class="blocker-header">
+<div class="blocker-title">TINI FLASH</div>
+<div class="blocker-version">v3.0.0</div>
+</div>
+<div class="blocker-desc">
+                    Memory-optimized version with auto garbage collection and smart viewport scanning.
+                </div>
+<div class="blocker-stats">
+<div class="stat">Memory: <span>Optimized</span></div>
+<div class="stat">Accuracy: <span>High</span></div>
+<div class="stat">Status: <span class="status-indicator"></span></div>
+</div>
+</div>
+<div class="blocker-card" data-version="power">
+<div class="blocker-header">
+<div class="blocker-title">TINI POWER</div>
+<div class="blocker-version">v4.0.0</div>
+</div>
+<div class="blocker-desc">
+                    Professional edition with uBlock Origin-level optimization and AI-based scoring.
+                </div>
+<div class="blocker-stats">
+<div class="stat">Performance: <span>Ultra</span></div>
+<div class="stat">Accuracy: <span>Highest</span></div>
+<div class="stat">Status: <span class="status-indicator"></span></div>
+</div>
+</div>
+<div class="blocker-card" data-version="life">
+<div class="blocker-header">
+<div class="blocker-title">TINI LIFE</div>
+<div class="blocker-version">v1.0.0</div>
+</div>
+<div class="blocker-desc">
+                    Simple &amp; effective version. Lightweight with minimal resource usage.
+                </div>
+<div class="blocker-stats">
+<div class="stat">Size: <span>Tiny</span></div>
+<div class="stat">Speed: <span>Fastest</span></div>
+<div class="stat">Status: <span class="status-indicator"></span></div>
+</div>
+</div>
+<div class="blocker-card" data-version="smart">
+<div class="blocker-header">
+<div class="blocker-title">TINI SMART</div>
+<div class="blocker-version">v3.0.0</div>
+</div>
+<div class="blocker-desc">
+                    Adaptive version that learns DOM patterns. No fixed selectors.
+                </div>
+<div class="blocker-stats">
+<div class="stat">Adaptability: <span>High</span></div>
+<div class="stat">Learning: <span>Enabled</span></div>
+<div class="stat">Status: <span class="status-indicator"></span></div>
+</div>
+</div>
+<div class="blocker-card" data-version="monster">
+<div class="blocker-header">
+<div class="blocker-title">TINI MONSTER</div>
+<div class="blocker-version">v10.0.0</div>
+</div>
+<div class="blocker-desc">
+                    🦁 Advanced protection mode with enhanced blocking capabilities and smart detection.
+                </div>
+<div class="blocker-stats">
+<div class="stat">Power: <span>HIGH</span></div>
+<div class="stat">Authority: <span>ADVANCED</span></div>
+<div class="stat">Status: <span class="status-indicator active"></span></div>
+</div>
+</div>
+<!-- Admin Panel Access Bar - Dark Blue -->
+<div class="admin-panel-bar" id="adminPanelBar">
+<div class="flex-space-between">
+<div class="flex-gap-10">
+<span class="fs-16">⚙️</span>
+<span class="fs-14-bold">Admin Panel</span>
+</div>
+<span class="fs-12-dim">→</span>
+</div>
+<div class="fs-11-hint">
+                    Management &amp; Configuration Access
+                </div>
+</div>
+<div class="footer">
+                © 2025 TINI Blocker | rongdeptrai-dev |
+            </div>
+<!-- Small Admin Panel Button -->
+<div class="center-footer">
+<button class="admin-btn" id="adminBtn">
+                     Admin Panel
+                </button>
+</div>
+</div>
+</div>
+<script src="popup.js"></script>
+<!-- Only popup scripts included; external content scripts removed to avoid CSP and runtime errors -->
+<!-- Initialization moved to external file to satisfy CSP -->
+<script src="popup-init.js"></script>
+</body>
+</html>

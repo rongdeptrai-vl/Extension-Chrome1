@@ -1,0 +1,47 @@
+{
+  "_tini_watermark": {
+    "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
+    "employee": "rongdeptrai-vl <rongdz2307@gmail.com>",
+    "commit": "55548f4",
+    "time": "2025-08-08T06:33:01Z",
+    "watermark_id": "TINI_1754634781_e868a412",
+    "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
+  },
+    "logging":  {
+                    "file":  "../logs/core-system.log",
+                    "level":  "info"
+                },
+    "database":  {
+                     "type":  "sqlite",
+                     "path":  "../admin-panel/tini_admin.db"
+                 },
+    "security":  {
+                     "jwtSecret":  "your-secret-key",
+                     "bcryptRounds":  10,
+                     "sessionDuration":  "1h"
+                 },
+    "services":  {
+                     "admin":  {
+                                   "sessionTimeout":  3600000,
+                                   "port":  3004
+                               },
+                     "security":  {
+                                      "monitor":  6901,
+                                      "server":  6906,
+                                      "scanner":  6900
+                                  },
+                     "api":  {
+                                 "port":  5001,
+                                 "rateLimit":  {
+                                                   "windowMs":  900000,
+                                                   "max":  100
+                                               },
+                                 "cors":  true
+                             }
+                 },
+    "system":  {
+                   "environment":  "production",
+                   "name":  "TINI Core System",
+                   "version":  "4.0.0"
+               }
+}

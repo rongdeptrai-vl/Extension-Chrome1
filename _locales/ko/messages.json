@@ -1,38 +1,394 @@
 {
   "_tini_watermark": {
     "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
-    "employee": "Administrator <admin@localhost.com>",
-    "commit": "initial",
-    "time": "2025-08-03T12:54:33Z",
-    "watermark_id": "TINI_1754225673_03f19d63",
+    "employee": "rongdeptrai-vl <rongdz2307@gmail.com>",
+    "commit": "55548f4",
+    "time": "2025-08-08T06:33:01Z",
+    "watermark_id": "TINI_1754634781_e868a412",
     "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
   },
-  "appName": {
-    "message": "내 확장 프로그램",
-    "description": "확장 프로그램의 이름"
+  "nav_dashboard": {
+    "message": "대시보드"
   },
-  "appDescription": {
-    "message": "유용한 브라우저 확장 프로그램",
-    "description": "확장 프로그램의 설명"
+  "nav_users": {
+    "message": "사용자 관리"
   },
-  "welcomeMessage": {
-    "message": "확장 프로그램에 오신 것을 환영합니다!",
-    "description": "사용자에게 표시되는 환영 메시지"
+  "nav_profile": {
+    "message": "프로필"
   },
-  "settingsTitle": {
-    "message": "설정",
-    "description": "설정 페이지 제목"
+  "nav_security": {
+    "message": "보안"
   },
-  "enableFeature": {
-    "message": "기능 활성화",
-    "description": "기능 활성화 체크박스 라벨"
+  "nav_settings": {
+    "message": "설정"
   },
-  "saveButton": {
-    "message": "저장",
-    "description": "저장 버튼 텍스트"
+  "nav_analytics": {
+    "message": "분석"
   },
-  "cancelButton": {
-    "message": "취소",
-    "description": "취소 버튼 텍스트"
+  "nav_reports": {
+    "message": "보고서"
+  },
+  "logout": {
+    "message": "로그아웃"
+  },
+  "testing_zone": {
+    "message": "테스트 구역"
+  },
+  "super_admin": {
+    "message": "슈퍼 관리자"
+  },
+  "active_users": {
+    "message": "활성 사용자"
+  },
+  "blocked_items": {
+    "message": "차단된 항목"
+  },
+  "from_last_week": {
+    "message": "지난 주부터"
+  },
+  "system_health": {
+    "message": "시스템 상태"
+  },
+  "from_yesterday": {
+    "message": "어제부터"
+  },
+  "recent_activity": {
+    "message": "최근 활동"
+  },
+  "view_all": {
+    "message": "모두 보기"
+  },
+  "user": {
+    "message": "사용자"
+  },
+  "action": {
+    "message": "작업"
+  },
+  "version": {
+    "message": "버전"
+  },
+  "time": {
+    "message": "시간"
+  },
+  "status": {
+    "message": "상태"
+  },
+  "power_mode": {
+    "message": "파워 모드"
+  },
+  "login_attempt": {
+    "message": "로그인 시도"
+  },
+  "settings_updated": {
+    "message": "설정이 업데이트됨"
+  },
+  "register_device": {
+    "message": "장치 등록"
+  },
+  "pending_approval": {
+    "message": "승인 대기"
+  },
+  "add_user": {
+    "message": "사용자 추가"
+  },
+  "employee_id": {
+    "message": "직원 식별"
+  },
+  "name": {
+    "message": "이름"
+  },
+  "role": {
+    "message": "역할"
+  },
+  "last_active": {
+    "message": "마지막 활동"
+  },
+  "actions": {
+    "message": "작업"
+  },
+  "admin_user": {
+    "message": "관리자 사용자"
+  },
+  "regular_user": {
+    "message": "일반 사용자"
+  },
+  "total_users": {
+    "message": "총 사용자"
+  },
+  "new_users_this_week": {
+    "message": "이번 주 신규 사용자"
+  },
+  "active_sessions": {
+    "message": "활성 세션"
+  },
+  "active_rate": {
+    "message": "활성 비율"
+  },
+  "admin_level": {
+    "message": "관리자 레벨"
+  },
+  "profile_settings": {
+    "message": "프로필 설정"
+  },
+  "avatar_and_cover": {
+    "message": "아바타 및 커버"
+  },
+  "avatar": {
+    "message": "아바타"
+  },
+  "upload_image": {
+    "message": "이미지 업로드"
+  },
+  "personal_info": {
+    "message": "개인 정보"
+  },
+  "full_name": {
+    "message": "전체 이름"
+  },
+  "email_address": {
+    "message": "이메일 주소"
+  },
+  "options": {
+    "message": "옵션"
+  },
+  "basic_info": {
+    "message": "기본 정보"
+  },
+  "language": {
+    "message": "언어"
+  },
+  "timezone": {
+    "message": "시간대"
+  },
+  "theme": {
+    "message": "테마"
+  },
+  "dark_mode": {
+    "message": "다크 모드"
+  },
+  "enable_email_notifications": {
+    "message": "이메일 알림 활성화"
+  },
+  "auto_save": {
+    "message": "자동 저장"
+  },
+  "account_security": {
+    "message": "계정 보안"
+  },
+  "change_password": {
+    "message": "비밀번호 변경"
+  },
+  "current_password": {
+    "message": "현재 비밀번호"
+  },
+  "new_password": {
+    "message": "새 비밀번호"
+  },
+  "confirm_password": {
+    "message": "비밀번호 확인"
+  },
+  "two_factor_auth": {
+    "message": "인터넷 프로토콜"
+  },
+  "2fa": {
+    "message": "이중 인증"
+  },
+  "protected_account": {
+    "message": "보호된 계정"
+  },
+  "sms_auth": {
+    "message": "단문 메시지 서비스 인증"
+  },
+  "email_verification": {
+    "message": "이메일 인증"
+  },
+  "view_recovery_code": {
+    "message": "복구 코드 보기"
+  },
+  "view_all_activity": {
+    "message": "모든 활동 보기"
+  },
+  "ip_address": {
+    "message": "인터넷 프로토콜 주소"
+  },
+  "device": {
+    "message": "장치"
+  },
+  "save_success": {
+    "message": "저장 성공"
+  },
+  "admin_login": {
+    "message": "관리자 로그인"
+  },
+  "windows_pc": {
+    "message": "윈도우 개인용 컴퓨터"
+  },
+  "chrome_browser": {
+    "message": "크롬 브라우저"
+  },
+  "security_settings": {
+    "message": "보안 설정"
+  },
+  "threat_level": {
+    "message": "위협 수준"
+  },
+  "low": {
+    "message": "낮음"
+  },
+  "all_safe": {
+    "message": "모두 안전"
+  },
+  "security_threats": {
+    "message": "보안 위협"
+  },
+  "security_score": {
+    "message": "보안 점수"
+  },
+  "excellent_security": {
+    "message": "우수한 보안"
+  },
+  "security_control": {
+    "message": "보안 제어"
+  },
+  "all_systems_active": {
+    "message": "모든 시스템 활성"
+  },
+  "access_control": {
+    "message": "접근 제어"
+  },
+  "password_policy": {
+    "message": "비밀번호 정책"
+  },
+  "session_timeout": {
+    "message": "세션 타임아웃"
+  },
+  "threat_protection": {
+    "message": "위협 보호"
+  },
+  "realtime_monitoring": {
+    "message": "실시간 모니터링"
+  },
+  "auto_blocking": {
+    "message": "자동 차단"
+  },
+  "emergency_response": {
+    "message": "긴급 대응"
+  },
+  "system_settings": {
+    "message": "시스템 설정"
+  },
+  "general_settings": {
+    "message": "일반 설정"
+  },
+  "application_settings": {
+    "message": "응용 프로그램 설정"
+  },
+  "default_language": {
+    "message": "기본 언어"
+  },
+  "enable_notifications": {
+    "message": "알림 활성화"
+  },
+  "performance_settings": {
+    "message": "성능 설정"
+  },
+  "update_frequency": {
+    "message": "업데이트 빈도"
+  },
+  "log_retention": {
+    "message": "로그 보존"
+  },
+  "auto_optimize": {
+    "message": "자동 최적화"
+  },
+  "save_changes": {
+    "message": "변경사항 저장"
+  },
+  "analytics": {
+    "message": "분석"
+  },
+  "page_views": {
+    "message": "페이지 조회수"
+  },
+  "ads_blocked": {
+    "message": "차단된 광고"
+  },
+  "performance_score": {
+    "message": "성능 점수"
+  },
+  "excellent": {
+    "message": "우수"
+  },
+  "advanced_analytics": {
+    "message": "고급 분석"
+  },
+  "export_data": {
+    "message": "데이터 내보내기"
+  },
+  "charts": {
+    "message": "차트"
+  },
+  "analytics_note": {
+    "message": "분석 노트"
+  },
+  "reports": {
+    "message": "보고서"
+  },
+  "create_report": {
+    "message": "보고서 생성"
+  },
+  "user_activity_report": {
+    "message": "사용자 활동 보고서"
+  },
+  "security_report": {
+    "message": "보안 보고서"
+  },
+  "performance_report": {
+    "message": "성능 보고서"
+  },
+  "recent_reports": {
+    "message": "최근 보고서"
+  },
+  "report_name": {
+    "message": "보고서 이름"
+  },
+  "report_type": {
+    "message": "보고서 유형"
+  },
+  "created_at": {
+    "message": "생성일"
+  },
+  "size": {
+    "message": "크기"
+  },
+  "report_status": {
+    "message": "보고서 상태"
+  },
+  "report_action": {
+    "message": "보고서 작업"
+  },
+  "daily_security": {
+    "message": "일일 보안"
+  },
+  "weekly_user_activity": {
+    "message": "주간 사용자 활동"
+  },
+  "monthly_performance": {
+    "message": "월간 성능"
+  },
+  "processing": {
+    "message": "처리 중"
+  },
+  "full_name_format": {
+    "message": "전체 이름 (중국어 + Telegram + ID)"
+  },
+  "name_format_hint": {
+    "message": "형식: \"중국어 이름 + Telegram 이름 + ID\""
+  },
+  "email": {
+    "message": "이메일 주소"
+  },
+  "preferences": {
+    "message": "환경설정 및 설정"
   }
 }

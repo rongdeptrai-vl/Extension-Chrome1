@@ -1,0 +1,55 @@
+{
+  "_tini_watermark": {
+    "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
+    "employee": "rongdeptrai-vl <rongdz2307@gmail.com>",
+    "commit": "55548f4",
+    "time": "2025-08-08T06:33:01Z",
+    "watermark_id": "TINI_1754634781_e868a412",
+    "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
+  },
+    "manifest_version": 3,
+    "name": "TINI Admin Dashboard",
+    "version": "1.0.0",
+    "description": "Enterprise Admin Dashboard with Military-Grade Security",
+    "default_locale": "en",
+    "permissions": [
+        "storage",
+        "activeTab",
+        "tabs"
+    ],
+    "host_permissions": [
+        "http://127.0.0.1:3005/*",
+        "http://localhost:3005/*",
+        "http://127.0.0.1:3006/*",
+        "http://localhost:3006/*"
+    ],
+    "background": {
+        "service_worker": "background.js",
+        "type": "module"
+    },
+    "content_security_policy": {
+        "extension_pages": "script-src 'self'; style-src 'self'; font-src 'self' data:; img-src 'self' data: blob: https:; object-src 'none';"
+    },
+    "action": {
+        "default_popup": "admin dashboarh.html",
+        "default_title": "TINI Admin Dashboard",
+        "default_icon": {
+            "16": "icons/icon16.png",
+            "32": "icons/icon32.png",
+            "48": "icons/icon48.png",
+            "128": "icons/icon128.png"
+        }
+    },
+    "icons": {
+        "16": "icons/icon16.png",
+        "32": "icons/icon32.png",
+        "48": "icons/icon48.png",
+        "128": "icons/icon128.png"
+    },
+    "web_accessible_resources": [
+        {
+            "resources": ["admin-dashboard.css", "all.min.css", "admin-panel-main.js"],
+            "matches": ["<all_urls>"]
+        }
+    ]
+}
