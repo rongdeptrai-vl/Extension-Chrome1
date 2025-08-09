@@ -77,7 +77,7 @@ npm run start:all
 Stack mặc định:
 - Unified Gateway: http://localhost:8099
 - API Server: http://localhost:5001
-- Admin Panel: http://localhost:8080
+- Admin Panel: http://localhost:55055
 - Admin Dashboard: http://localhost:3004
 
 Nếu bị trùng port, các dịch vụ có fallback nội bộ.

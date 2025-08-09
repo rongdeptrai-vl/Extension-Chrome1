@@ -1,13 +1,4 @@
 {
-  "_tini_watermark": {
-    "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
-    "employee": "rongdeptrai-vl <rongdz2307@gmail.com>",
-    "commit": "ebdabf3",
-    "time": "2025-08-09T05:09:14Z",
-    "watermark_id": "TINI_1754716154_e868a412",
-    "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
-  },
-
   "nav_dashboard": {
     "message": "डैशबोर्ड"
   },
@@ -35,8 +26,44 @@
   "testing_zone": {
     "message": "परीक्षण क्षेत्र"
   },
+  "database_status": {
+    "message": "Database Status"
+  },
+  "test_connection": {
+    "message": "Test"
+  },
+  "environment_config": {
+    "message": "Environment Configuration"
+  },
+  "mysql_connected": {
+    "message": "MySQL Connected"
+  },
+  "redis_connected": {
+    "message": "Redis Connected"
+  },
+  "connection_healthy": {
+    "message": "Connection Healthy"
+  },
+  "connection_failed": {
+    "message": "Connection Failed"
+  },
+  "checking_connection": {
+    "message": "Checking Connection"
+  },
+  "database_health": {
+    "message": "Database Health"
+  },
+  "admin_dashboard_title": {
+    "message": "TINI Admin Dashboard"
+  },
   "super_admin": {
     "message": "सुपर एडमिन"
+  },
+  "welcome_back": {
+    "message": "Welcome Back"
+  },
+  "header_title": {
+    "message": "Dashboard"
   },
   "active_users": {
     "message": "सक्रिय उपयोगकर्ता"
@@ -44,50 +71,122 @@
   "blocked_items": {
     "message": "अवरुद्ध आइटम"
   },
-  "from_last_week": {
-    "message": "पिछले सप्ताह से"
-  },
   "system_health": {
     "message": "सिस्टम स्वास्थ्य"
+  },
+  "new_this_week": {
+    "message": "12.5% new this week"
   },
   "from_yesterday": {
     "message": "कल से"
   },
-  "recent_activity": {
-    "message": "हाल की गतिविधि"
+  "minutes_ago_2": {
+    "message": "2 minutes ago"
+  },
+  "minutes_ago_15": {
+    "message": "15 minutes ago"
+  },
+  "hour_ago": {
+    "message": "1 hour ago"
+  },
+  "hours_ago_2": {
+    "message": "2 hours ago"
+  },
+  "hours_ago_3": {
+    "message": "3 hours ago"
+  },
+  "just_now": {
+    "message": "Just now"
+  },
+  "recent_activity_title": {
+    "message": "Recent Activity"
   },
   "view_all": {
     "message": "सभी देखें"
   },
-  "user": {
-    "message": "उपयोगकर्ता"
+  "table_user": {
+    "message": "User"
   },
-  "action": {
-    "message": "कार्य"
+  "table_action": {
+    "message": "Action"
   },
-  "version": {
-    "message": "संस्करण"
+  "table_version": {
+    "message": "Version"
   },
-  "time": {
-    "message": "समय"
+  "table_time": {
+    "message": "Time"
   },
-  "status": {
-    "message": "स्थिति"
+  "table_status": {
+    "message": "Status"
   },
-  "power_mode": {
-    "message": "पावर मोड"
+  "switched_to_power": {
+    "message": "Switched to POWER"
   },
   "login_attempt": {
     "message": "लॉगिन प्रयास"
   },
-  "settings_updated": {
-    "message": "सेटिंग्स अपडेट की गईं"
+  "updated_settings": {
+    "message": "Updated settings"
   },
-  "register_device": {
-    "message": "डिवाइस पंजीकृत करें"
+  "device_registration": {
+    "message": "Device registration"
   },
-  "pending_approval": {
-    "message": "अनुमोदन लंबित"
+  "active": {
+    "message": "Active"
+  },
+  "failed": {
+    "message": "Failed"
+  },
+  "completed": {
+    "message": "Completed"
+  },
+  "pending": {
+    "message": "Pending"
+  },
+  "inactive": {
+    "message": "Inactive"
+  },
+  "bypass_testing_zone": {
+    "message": "BYPASS TESTING ZONE"
+  },
+  "admin_safe_environment": {
+    "message": "🔒 100% Admin Safe Environment"
+  },
+  "admin_notification": {
+    "message": "💻 Admin Notification:"
+  },
+  "admin_notification_text": {
+    "message": "Don't worry anymore! I have created this super secure testing bypass environment for administrators. Here, administrators can test bypasses and will never be 'stuck' or blocked. Everything is protected by BOSS permission level 10000!"
+  },
+  "absolute_safety_guarantee": {
+    "message": "Absolute Safety Guarantee"
+  },
+  "admin_cannot_be_blocked": {
+    "message": "Admin cannot be blocked in this environment"
+  },
+  "all_bypass_systems_integrated": {
+    "message": "All bypass systems inherited and integrated"
+  },
+  "boss_protection_highest_level": {
+    "message": "BOSS protection always operates at the highest level"
+  },
+  "emergency_rescue_ready": {
+    "message": "Emergency rescue ready if any problems arise"
+  },
+  "bypass_systems_status": {
+    "message": "BYPASS SYSTEMS STATUS"
+  },
+  "all_ready": {
+    "message": "ALL READY"
+  },
+  "user_management": {
+    "message": "User Management"
+  },
+  "user_management_title": {
+    "message": "User Management"
+  },
+  "add_user_btn": {
+    "message": "Add User"
   },
   "add_user": {
     "message": "उपयोगकर्ता जोड़ें"
@@ -95,17 +194,38 @@
   "employee_id": {
     "message": "कर्मचारी आईडी"
   },
+  "employee_id_col": {
+    "message": "Employee ID"
+  },
   "name": {
     "message": "नाम"
+  },
+  "name_col": {
+    "message": "Name"
   },
   "role": {
     "message": "भूमिका"
   },
+  "role_col": {
+    "message": "Role"
+  },
   "last_active": {
     "message": "अंतिम सक्रिय"
   },
+  "last_active_col": {
+    "message": "Last Active"
+  },
+  "devices": {
+    "message": "Devices"
+  },
+  "devices_col": {
+    "message": "Devices"
+  },
   "actions": {
     "message": "कार्य"
+  },
+  "actions_col": {
+    "message": "Actions"
   },
   "admin_user": {
     "message": "एडमिन उपयोगकर्ता"
@@ -113,32 +233,47 @@
   "regular_user": {
     "message": "नियमित उपयोगकर्ता"
   },
+  "employee_user_3": {
+    "message": "PanVuong Employee"
+  },
+  "admin": {
+    "message": "Admin"
+  },
+  "user": {
+    "message": "उपयोगकर्ता"
+  },
+  "employee": {
+    "message": "Employee"
+  },
+  "manager": {
+    "message": "Manager"
+  },
   "total_users": {
     "message": "कुल उपयोगकर्ता"
-  },
-  "new_users_this_week": {
-    "message": "इस सप्ताह नए उपयोगकर्ता"
   },
   "active_sessions": {
     "message": "सक्रिय सत्र"
   },
+  "admin_users": {
+    "message": "Admin Users"
+  },
+  "new_this_week_users": {
+    "message": "1 new this week"
+  },
   "active_rate": {
     "message": "सक्रिय दर"
   },
-  "admin_level": {
-    "message": "एडमिन स्तर"
+  "super_admin_level": {
+    "message": "Super admin level"
   },
   "profile_settings": {
     "message": "प्रोफ़ाइल सेटिंग्स"
   },
-  "avatar_and_cover": {
-    "message": "अवतार और कवर"
+  "avatar_cover": {
+    "message": "Avatar & Cover"
   },
   "avatar": {
     "message": "अवतार"
-  },
-  "upload_image": {
-    "message": "छवि अपलोड करें"
   },
   "personal_info": {
     "message": "व्यक्तिगत जानकारी"
@@ -146,14 +281,14 @@
   "full_name": {
     "message": "पूरा नाम"
   },
-  "email_address": {
+  "email": {
     "message": "ईमेल पता"
   },
-  "options": {
-    "message": "विकल्प"
+  "save_changes": {
+    "message": "परिवर्तन सहेजें"
   },
-  "basic_info": {
-    "message": "बुनियादी जानकारी"
+  "preferences": {
+    "message": "प्राथमिकताएं और सेटिंग्स"
   },
   "language": {
     "message": "भाषा"
@@ -164,68 +299,11 @@
   "theme": {
     "message": "थीम"
   },
-  "dark_mode": {
-    "message": "डार्क मोड"
+  "upload_image": {
+    "message": "छवि अपलोड करें"
   },
-  "enable_email_notifications": {
-    "message": "ईमेल सूचनाएं सक्षम करें"
-  },
-  "auto_save": {
-    "message": "स्वचालित सहेजना"
-  },
-  "account_security": {
-    "message": "खाता सुरक्षा"
-  },
-  "change_password": {
-    "message": "पासवर्ड बदलें"
-  },
-  "current_password": {
-    "message": "वर्तमान पासवर्ड"
-  },
-  "new_password": {
-    "message": "नया पासवर्ड"
-  },
-  "confirm_password": {
-    "message": "पासवर्ड की पुष्टि करें"
-  },
-  "two_factor_auth": {
-    "message": "दो कारक प्रमाणीकरण"
-  },
-  "2fa": {
-    "message": "दो-कारक प्रमाणीकरण"
-  },
-  "protected_account": {
-    "message": "संरक्षित खाता"
-  },
-  "sms_auth": {
-    "message": "एसएमएस प्रमाणीकरण"
-  },
-  "email_verification": {
-    "message": "ईमेल सत्यापन"
-  },
-  "view_recovery_code": {
-    "message": "रिकवरी कोड देखें"
-  },
-  "view_all_activity": {
-    "message": "सभी गतिविधि देखें"
-  },
-  "ip_address": {
-    "message": "इंटरनेट प्रोटोकॉल पता"
-  },
-  "device": {
-    "message": "डिवाइस"
-  },
-  "save_success": {
-    "message": "सफलतापूर्वक सहेजा गया"
-  },
-  "admin_login": {
-    "message": "एडमिन लॉगिन"
-  },
-  "windows_pc": {
-    "message": "विंडोज़ कंप्यूटर"
-  },
-  "chrome_browser": {
-    "message": "क्रोम ब्राउज़र"
+  "save_avatar": {
+    "message": "Save Avatar"
   },
   "security_settings": {
     "message": "सुरक्षा सेटिंग्स"
@@ -233,47 +311,20 @@
   "threat_level": {
     "message": "खतरे का स्तर"
   },
-  "low": {
-    "message": "कम"
-  },
-  "all_safe": {
-    "message": "सब सुरक्षित"
-  },
-  "security_threats": {
-    "message": "सुरक्षा खतरे"
+  "blocked_threats": {
+    "message": "Blocked Threats"
   },
   "security_score": {
     "message": "सुरक्षा स्कोर"
   },
+  "all_systems_secure": {
+    "message": "All systems secure"
+  },
+  "from_last_week": {
+    "message": "पिछले सप्ताह से"
+  },
   "excellent_security": {
     "message": "उत्कृष्ट सुरक्षा"
-  },
-  "security_control": {
-    "message": "सुरक्षा नियंत्रण"
-  },
-  "all_systems_active": {
-    "message": "सभी सिस्टम सक्रिय"
-  },
-  "access_control": {
-    "message": "पहुंच नियंत्रण"
-  },
-  "password_policy": {
-    "message": "पासवर्ड नीति"
-  },
-  "session_timeout": {
-    "message": "सत्र समय समाप्ति"
-  },
-  "threat_protection": {
-    "message": "खतरा सुरक्षा"
-  },
-  "realtime_monitoring": {
-    "message": "रीयल-टाइम निगरानी"
-  },
-  "auto_blocking": {
-    "message": "स्वचालित अवरोधन"
-  },
-  "emergency_response": {
-    "message": "आपातकालीन प्रतिक्रिया"
   },
   "system_settings": {
     "message": "सिस्टम सेटिंग्स"
@@ -284,370 +335,778 @@
   "application_settings": {
     "message": "एप्लिकेशन सेटिंग्स"
   },
-  "default_language": {
-    "message": "डिफ़ॉल्ट भाषा"
-  },
-  "enable_notifications": {
-    "message": "सूचनाएं सक्षम करें"
-  },
   "performance_settings": {
     "message": "प्रदर्शन सेटिंग्स"
   },
-  "update_frequency": {
-    "message": "अपडेट आवृत्ति"
+  "enable_auto_updates": {
+    "message": "Enable auto-updates"
   },
-  "log_retention": {
-    "message": "लॉग प्रतिधारण"
+  "enable_telemetry": {
+    "message": "Enable telemetry"
   },
-  "auto_optimize": {
-    "message": "स्वचालित अनुकूलन"
+  "hardware_acceleration": {
+    "message": "Hardware acceleration"
   },
-  "save_changes": {
-    "message": "परिवर्तन सहेजें"
+  "debug_mode": {
+    "message": "Debug mode"
   },
-  "analytics": {
-    "message": "एनालिटिक्स"
+  "analytics_insights": {
+    "message": "Analytics & Insights"
   },
   "page_views": {
     "message": "पेज व्यू"
   },
-  "ads_blocked": {
-    "message": "विज्ञापन अवरुद्ध"
+  "blocked_ads": {
+    "message": "Blocked Ads"
   },
   "performance_score": {
     "message": "प्रदर्शन स्कोर"
   },
+  "increase": {
+    "message": "increase"
+  },
   "excellent": {
     "message": "उत्कृष्ट"
-  },
-  "advanced_analytics": {
-    "message": "उन्नत एनालिटिक्स"
-  },
-  "export_data": {
-    "message": "डेटा निर्यात करें"
-  },
-  "charts": {
-    "message": "चार्ट"
-  },
-  "analytics_note": {
-    "message": "एनालिटिक्स नोट"
-  },
-  "reports": {
-    "message": "रिपोर्ट्स"
-  },
-  "create_report": {
-    "message": "रिपोर्ट बनाएं"
-  },
-  "user_activity_report": {
-    "message": "उपयोगकर्ता गतिविधि रिपोर्ट"
-  },
-  "security_report": {
-    "message": "सुरक्षा रिपोर्ट"
-  },
-  "performance_report": {
-    "message": "प्रदर्शन रिपोर्ट"
-  },
-  "recent_reports": {
-    "message": "हाल की रिपोर्ट्स"
-  },
-  "report_name": {
-    "message": "रिपोर्ट नाम"
-  },
-  "report_type": {
-    "message": "रिपोर्ट प्रकार"
-  },
-  "created_at": {
-    "message": "बनाया गया"
-  },
-  "size": {
-    "message": "आकार"
-  },
-  "report_status": {
-    "message": "रिपोर्ट स्थिति"
-  },
-  "report_action": {
-    "message": "रिपोर्ट कार्य"
-  },
-  "daily_security": {
-    "message": "दैनिक सुरक्षा"
-  },
-  "weekly_user_activity": {
-    "message": "साप्ताहिक उपयोगकर्ता गतिविधि"
-  },
-  "monthly_performance": {
-    "message": "मासिक प्रदर्शन"
-  },
-  "processing": {
-    "message": "प्रसंस्करण"
-  },
-  "full_name_format": {
-    "message": "पूरा नाम (चीनी + Telegram + ID)"
-  },
-  "name_format_hint": {
-    "message": "प्रारूप: \"चीनी नाम + Telegram नाम + ID\""
-  },
-  "email": {
-    "message": "ईमेल पता"
-  },
-  "preferences": {
-    "message": "प्राथमिकताएं और सेटिंग्स"
   },
   "reports_analytics": {
     "message": "रिपोर्ट एनालिटिक्स"
   },
-  "report_creation": {
-    "message": "रिपोर्ट निर्माण"
+  "generate_reports": {
+    "message": "Generate Reports"
   },
-  "user_activity_statistics": {
-    "message": "उपयोगकर्ता गतिविधि रिपोर्ट"
+  "generate_report": {
+    "message": "Generate Report"
   },
-  "user_activity_subtitle": {
-    "message": "विस्तृत उपयोगकर्ता गतिविधि और लॉगिन आंकड़े"
-  },
-  "security_protection": {
+  "security_report": {
     "message": "सुरक्षा रिपोर्ट"
   },
-  "security_subtitle": {
-    "message": "सुरक्षा घटनाएं और खतरा विश्लेषण"
+  "usage_report": {
+    "message": "Usage Report"
   },
-  "performance_data": {
-    "message": "प्रदर्शन रिपोर्ट"
+  "system_report": {
+    "message": "System Report"
   },
-  "performance_subtitle": {
-    "message": "सिस्टम प्रदर्शन और अनुकूलन डेटा"
+  "security_analysis": {
+    "message": "Generate comprehensive security analysis"
   },
-  "recent_reports_list": {
-    "message": "हाल की रिपोर्ट"
+  "usage_analysis": {
+    "message": "Analyze user activity and statistics"
   },
-  "report_category": {
-    "message": "प्रकार"
+  "system_analysis": {
+    "message": "Generate system performance report"
   },
-  "creation_time": {
-    "message": "उत्पन्न"
+  "save": {
+    "message": "Save"
+  },
+  "edit": {
+    "message": "Edit"
+  },
+  "delete": {
+    "message": "Delete"
+  },
+  "cancel": {
+    "message": "Cancel"
+  },
+  "confirm": {
+    "message": "Confirm"
+  },
+  "close": {
+    "message": "Close"
+  },
+  "open": {
+    "message": "Open"
+  },
+  "refresh": {
+    "message": "Refresh"
+  },
+  "search": {
+    "message": "Search"
+  },
+  "filter": {
+    "message": "Filter"
+  },
+  "export": {
+    "message": "Export"
+  },
+  "import": {
+    "message": "Import"
+  },
+  "loading": {
+    "message": "Loading..."
+  },
+  "saving": {
+    "message": "Saving..."
+  },
+  "saved": {
+    "message": "Saved successfully"
+  },
+  "error": {
+    "message": "Error occurred"
+  },
+  "success": {
+    "message": "Success"
+  },
+  "warning": {
+    "message": "Warning"
+  },
+  "info": {
+    "message": "Information"
+  },
+  "enable_notifications": {
+    "message": "सूचनाएं सक्षम करें"
+  },
+  "enable_auto_save": {
+    "message": "Auto-save settings"
+  },
+  "low": {
+    "message": "कम"
+  },
+  "medium": {
+    "message": "MEDIUM"
+  },
+  "high": {
+    "message": "HIGH"
+  },
+  "critical": {
+    "message": "CRITICAL"
+  },
+  "upload": {
+    "message": "Upload"
+  },
+  "download": {
+    "message": "Download"
+  },
+  "copy": {
+    "message": "Copy"
+  },
+  "paste": {
+    "message": "Paste"
+  },
+  "cut": {
+    "message": "Cut"
+  },
+  "undo": {
+    "message": "Undo"
+  },
+  "redo": {
+    "message": "Redo"
+  },
+  "select_all": {
+    "message": "Select All"
+  },
+  "no_results": {
+    "message": "No results found"
+  },
+  "empty_state": {
+    "message": "No data available"
+  },
+  "connection_error": {
+    "message": "Connection error"
+  },
+  "server_error": {
+    "message": "Server error"
+  },
+  "permission_denied": {
+    "message": "Permission denied"
+  },
+  "access_denied": {
+    "message": "Access denied"
+  },
+  "file_not_found": {
+    "message": "File not found"
+  },
+  "invalid_input": {
+    "message": "Invalid input"
+  },
+  "are_you_sure": {
+    "message": "Are you sure?"
+  },
+  "delete_confirmation": {
+    "message": "This action cannot be undone"
+  },
+  "unsaved_changes": {
+    "message": "You have unsaved changes"
+  },
+  "leave_page": {
+    "message": "Leave this page?"
+  },
+  "file_upload": {
+    "message": "File Upload"
+  },
+  "file_download": {
+    "message": "File Download"
   },
   "file_size": {
     "message": "आकार"
   },
-  "current_status": {
-    "message": "स्थिति"
+  "file_type": {
+    "message": "File Type"
   },
-  "available_actions": {
-    "message": "कार्य"
+  "file_name": {
+    "message": "File Name"
   },
-  "daily_security_analysis": {
-    "message": "दैनिक सुरक्षा रिपोर्ट"
+  "date": {
+    "message": "Date"
   },
-  "security_type": {
-    "message": "सुरक्षा"
-  },
-  "two_hours_ago": {
-    "message": "2 घंटे पहले"
-  },
-  "status_ready": {
-    "message": "तैयार"
-  },
-  "weekly_user_statistics": {
-    "message": "साप्ताहिक उपयोगकर्ता गतिविधि"
-  },
-  "user_activity_type": {
-    "message": "उपयोगकर्ता गतिविधि"
-  },
-  "one_day_ago": {
-    "message": "1 दिन पहले"
-  },
-  "monthly_performance_analysis": {
-    "message": "मासिक प्रदर्शन"
-  },
-  "performance_type": {
-    "message": "प्रदर्शन"
-  },
-  "three_days_ago": {
-    "message": "3 दिन पहले"
-  },
-  "status_processing": {
-    "message": "प्रसंस्करण"
-  },
-  "time_last_24h": {
-    "message": "पिछले 24 घंटे"
-  },
-  "time_last_7d": {
-    "message": "पिछले 7 दिन"
-  },
-  "time_last_30d": {
-    "message": "पिछले 30 दिन"
-  },
-  "btn_refresh": {
-    "message": "रीफ़्रेश"
-  },
-  "btn_apply_filters": {
-    "message": "फ़िल्टर लागू करें"
-  },
-  "btn_export": {
-    "message": "निर्यात"
-  },
-  "stat_value_placeholder": {
-    "message": "--"
-  },
-  "security_active_threats": {
-    "message": "सक्रिय खतरे"
-  },
-  "security_blocked_today": {
-    "message": "आज अवरोधित"
-  },
-  "security_risk_score": {
-    "message": "जोखिम स्कोर"
-  },
-  "security_patch_level": {
-    "message": "पैच स्तर"
-  },
-  "security_active_threats_value": {
-    "message": "12"
-  },
-  "security_blocked_today_value": {
-    "message": "248"
-  },
-  "security_risk_score_value": {
-    "message": "92%"
-  },
-  "security_patch_level_value": {
-    "message": "87%"
-  },
-  "security_threat_timeline": {
-    "message": "खतरा समयरेखा"
-  },
-  "security_controls_matrix": {
-    "message": "नियंत्रण मैट्रिक्स"
-  },
-  "security_time": {
+  "time": {
     "message": "समय"
   },
-  "security_severity": {
-    "message": "गंभीरता"
+  "datetime": {
+    "message": "Date & Time"
   },
-  "security_status": {
-    "message": "स्थिति"
+  "created_at": {
+    "message": "बनाया गया"
   },
-  "security_action": {
-    "message": "क्रिया"
+  "updated_at": {
+    "message": "Updated"
   },
-  "security_no_threats": {
-    "message": "कोई खतरे नहीं"
+  "expires_at": {
+    "message": "Expires"
   },
-  "security_control_mfa": {
-    "message": "बहु-कारक प्रमाणीकरण"
-  },
-  "security_control_password_policy": {
-    "message": "पासवर्ड नीति"
-  },
-  "security_control_ip_filtering": {
-    "message": "IP फ़िल्टरिंग"
-  },
-  "security_control_waf": {
-    "message": "WAF"
-  },
-  "security_control_rate_limit": {
-    "message": "रेट लिमिट"
-  },
-  "security_control_intrusion_detection": {
-    "message": "घुसपैठ पहचान"
-  },
-  "security_enabled": {
-    "message": "सक्रिय"
-  },
-  "security_disabled": {
-    "message": "निष्क्रिय"
-  },
-  "trend_down_12": {
-    "message": "-12%"
-  },
-  "trend_flat": {
-    "message": "0%"
-  },
-  "trend_up_secure": {
-    "message": "+5%"
-  },
-  "trend_up": {
-    "message": "+3%"
-  },
-  "analytics_stat_avg_session": {
-    "message": "औसत सत्र"
-  },
-  "analytics_stat_bounce_rate": {
-    "message": "बाउंस दर"
-  },
-  "analytics_stat_conversion": {
-    "message": "रूपांतरण"
-  },
-  "analytics_stat_retention": {
-    "message": "प्रतिधारण"
-  },
-  "analytics_chart_traffic": {
-    "message": "ट्रैफ़िक"
-  },
-  "analytics_chart_performance": {
-    "message": "प्रदर्शन"
-  },
-  "analytics_chart_retention": {
-    "message": "प्रतिधारण"
-  },
-  "analytics_chart_security": {
-    "message": "सुरक्षा"
-  },
-  "analytics_chart_placeholder": {
-    "message": "चार्ट"
-  },
-  "analytics_all_users": {
-    "message": "सभी उपयोगकर्ता"
-  },
-  "analytics_new_users": {
-    "message": "नए उपयोगकर्ता"
-  },
-  "analytics_power_users": {
-    "message": "पावर उपयोगकर्ता"
-  },
-  "reports_filter_status": {
-    "message": "स्थिति"
-  },
-  "reports_filter_search": {
-    "message": "रिपोर्ट खोजें"
-  },
-  "reports_no_results": {
-    "message": "कोई रिपोर्ट नहीं"
-  },
-  "reports_total": {
-    "message": "कुल"
-  },
-  "reports_avg_generation": {
-    "message": "औसत समय"
-  },
-  "reports_success_rate": {
-    "message": "सफलता दर"
-  },
-  "reports_in_queue": {
-    "message": "प्रतीक्षा में"
-  },
-  "reports_field_type": {
-    "message": "प्रकार"
-  },
-  "reports_field_range": {
-    "message": "सीमा"
-  },
-  "reports_field_format": {
-    "message": "प्रारूप"
-  },
-  "reports_field_notify": {
-    "message": "तैयार होने पर सूचित करें"
-  },
-  "reports_submit_generate": {
-    "message": "जनरेट"
-  },
-  "format_pdf": {
-    "message": "PDF दस्तावेज़"
-  },
-  "format_csv": {
-    "message": "CSV फ़ाइल"
-  },
-  "format_json": {
-    "message": "JSON डेटा"
+  "__obsolete": {
+    "__obsolete": {
+      "__obsolete": {
+        "__obsolete": {
+          "__obsolete": {
+            "recent_activity": {
+              "message": "हाल की गतिविधि"
+            },
+            "action": {
+              "message": "कार्य"
+            },
+            "version": {
+              "message": "संस्करण"
+            },
+            "status": {
+              "message": "स्थिति"
+            },
+            "power_mode": {
+              "message": "पावर मोड"
+            },
+            "settings_updated": {
+              "message": "सेटिंग्स अपडेट की गईं"
+            },
+            "register_device": {
+              "message": "डिवाइस पंजीकृत करें"
+            },
+            "pending_approval": {
+              "message": "अनुमोदन लंबित"
+            },
+            "new_users_this_week": {
+              "message": "इस सप्ताह नए उपयोगकर्ता"
+            },
+            "admin_level": {
+              "message": "एडमिन स्तर"
+            },
+            "avatar_and_cover": {
+              "message": "अवतार और कवर"
+            },
+            "email_address": {
+              "message": "ईमेल पता"
+            },
+            "options": {
+              "message": "विकल्प"
+            },
+            "basic_info": {
+              "message": "बुनियादी जानकारी"
+            },
+            "dark_mode": {
+              "message": "डार्क मोड"
+            },
+            "enable_email_notifications": {
+              "message": "ईमेल सूचनाएं सक्षम करें"
+            },
+            "auto_save": {
+              "message": "स्वचालित सहेजना"
+            },
+            "account_security": {
+              "message": "खाता सुरक्षा"
+            },
+            "change_password": {
+              "message": "पासवर्ड बदलें"
+            },
+            "current_password": {
+              "message": "वर्तमान पासवर्ड"
+            },
+            "new_password": {
+              "message": "नया पासवर्ड"
+            },
+            "confirm_password": {
+              "message": "पासवर्ड की पुष्टि करें"
+            },
+            "two_factor_auth": {
+              "message": "दो कारक प्रमाणीकरण"
+            },
+            "2fa": {
+              "message": "दो-कारक प्रमाणीकरण"
+            },
+            "protected_account": {
+              "message": "संरक्षित खाता"
+            },
+            "sms_auth": {
+              "message": "एसएमएस प्रमाणीकरण"
+            },
+            "email_verification": {
+              "message": "ईमेल सत्यापन"
+            },
+            "view_recovery_code": {
+              "message": "रिकवरी कोड देखें"
+            },
+            "view_all_activity": {
+              "message": "सभी गतिविधि देखें"
+            },
+            "ip_address": {
+              "message": "इंटरनेट प्रोटोकॉल पता"
+            },
+            "device": {
+              "message": "डिवाइस"
+            },
+            "save_success": {
+              "message": "सफलतापूर्वक सहेजा गया"
+            },
+            "admin_login": {
+              "message": "एडमिन लॉगिन"
+            },
+            "windows_pc": {
+              "message": "विंडोज़ कंप्यूटर"
+            },
+            "chrome_browser": {
+              "message": "क्रोम ब्राउज़र"
+            },
+            "all_safe": {
+              "message": "सब सुरक्षित"
+            },
+            "security_threats": {
+              "message": "सुरक्षा खतरे"
+            },
+            "security_control": {
+              "message": "सुरक्षा नियंत्रण"
+            },
+            "all_systems_active": {
+              "message": "सभी सिस्टम सक्रिय"
+            },
+            "access_control": {
+              "message": "पहुंच नियंत्रण"
+            },
+            "password_policy": {
+              "message": "पासवर्ड नीति"
+            },
+            "session_timeout": {
+              "message": "सत्र समय समाप्ति"
+            },
+            "threat_protection": {
+              "message": "खतरा सुरक्षा"
+            },
+            "realtime_monitoring": {
+              "message": "रीयल-टाइम निगरानी"
+            },
+            "auto_blocking": {
+              "message": "स्वचालित अवरोधन"
+            },
+            "emergency_response": {
+              "message": "आपातकालीन प्रतिक्रिया"
+            },
+            "default_language": {
+              "message": "डिफ़ॉल्ट भाषा"
+            },
+            "update_frequency": {
+              "message": "अपडेट आवृत्ति"
+            },
+            "log_retention": {
+              "message": "लॉग प्रतिधारण"
+            },
+            "auto_optimize": {
+              "message": "स्वचालित अनुकूलन"
+            },
+            "analytics": {
+              "message": "एनालिटिक्स"
+            },
+            "ads_blocked": {
+              "message": "विज्ञापन अवरुद्ध"
+            },
+            "advanced_analytics": {
+              "message": "उन्नत एनालिटिक्स"
+            },
+            "export_data": {
+              "message": "डेटा निर्यात करें"
+            },
+            "charts": {
+              "message": "चार्ट"
+            },
+            "analytics_note": {
+              "message": "एनालिटिक्स नोट"
+            },
+            "reports": {
+              "message": "रिपोर्ट्स"
+            },
+            "create_report": {
+              "message": "रिपोर्ट बनाएं"
+            },
+            "user_activity_report": {
+              "message": "उपयोगकर्ता गतिविधि रिपोर्ट"
+            },
+            "performance_report": {
+              "message": "प्रदर्शन रिपोर्ट"
+            },
+            "recent_reports": {
+              "message": "हाल की रिपोर्ट्स"
+            },
+            "report_name": {
+              "message": "रिपोर्ट नाम"
+            },
+            "report_type": {
+              "message": "रिपोर्ट प्रकार"
+            },
+            "size": {
+              "message": "आकार"
+            },
+            "report_status": {
+              "message": "रिपोर्ट स्थिति"
+            },
+            "report_action": {
+              "message": "रिपोर्ट कार्य"
+            },
+            "daily_security": {
+              "message": "दैनिक सुरक्षा"
+            },
+            "weekly_user_activity": {
+              "message": "साप्ताहिक उपयोगकर्ता गतिविधि"
+            },
+            "monthly_performance": {
+              "message": "मासिक प्रदर्शन"
+            },
+            "processing": {
+              "message": "प्रसंस्करण"
+            },
+            "full_name_format": {
+              "message": "पूरा नाम (चीनी + Telegram + ID)"
+            },
+            "name_format_hint": {
+              "message": "प्रारूप: \"चीनी नाम + Telegram नाम + ID\""
+            },
+            "report_creation": {
+              "message": "रिपोर्ट निर्माण"
+            },
+            "user_activity_statistics": {
+              "message": "उपयोगकर्ता गतिविधि रिपोर्ट"
+            },
+            "user_activity_subtitle": {
+              "message": "विस्तृत उपयोगकर्ता गतिविधि और लॉगिन आंकड़े"
+            },
+            "security_protection": {
+              "message": "सुरक्षा रिपोर्ट"
+            },
+            "security_subtitle": {
+              "message": "सुरक्षा घटनाएं और खतरा विश्लेषण"
+            },
+            "performance_data": {
+              "message": "प्रदर्शन रिपोर्ट"
+            },
+            "performance_subtitle": {
+              "message": "सिस्टम प्रदर्शन और अनुकूलन डेटा"
+            },
+            "recent_reports_list": {
+              "message": "हाल की रिपोर्ट"
+            },
+            "report_category": {
+              "message": "प्रकार"
+            },
+            "creation_time": {
+              "message": "उत्पन्न"
+            },
+            "current_status": {
+              "message": "स्थिति"
+            },
+            "available_actions": {
+              "message": "कार्य"
+            },
+            "daily_security_analysis": {
+              "message": "दैनिक सुरक्षा रिपोर्ट"
+            },
+            "security_type": {
+              "message": "सुरक्षा"
+            },
+            "two_hours_ago": {
+              "message": "2 घंटे पहले"
+            },
+            "status_ready": {
+              "message": "तैयार"
+            },
+            "weekly_user_statistics": {
+              "message": "साप्ताहिक उपयोगकर्ता गतिविधि"
+            },
+            "user_activity_type": {
+              "message": "उपयोगकर्ता गतिविधि"
+            },
+            "one_day_ago": {
+              "message": "1 दिन पहले"
+            },
+            "monthly_performance_analysis": {
+              "message": "मासिक प्रदर्शन"
+            },
+            "performance_type": {
+              "message": "प्रदर्शन"
+            },
+            "three_days_ago": {
+              "message": "3 दिन पहले"
+            },
+            "status_processing": {
+              "message": "प्रसंस्करण"
+            },
+            "time_last_24h": {
+              "message": "पिछले 24 घंटे"
+            },
+            "time_last_7d": {
+              "message": "पिछले 7 दिन"
+            },
+            "time_last_30d": {
+              "message": "पिछले 30 दिन"
+            },
+            "btn_refresh": {
+              "message": "रीफ़्रेश"
+            },
+            "btn_apply_filters": {
+              "message": "फ़िल्टर लागू करें"
+            },
+            "btn_export": {
+              "message": "निर्यात"
+            },
+            "stat_value_placeholder": {
+              "message": "--"
+            },
+            "security_active_threats": {
+              "message": "सक्रिय खतरे"
+            },
+            "security_blocked_today": {
+              "message": "आज अवरोधित"
+            },
+            "security_risk_score": {
+              "message": "जोखिम स्कोर"
+            },
+            "security_patch_level": {
+              "message": "पैच स्तर"
+            },
+            "security_active_threats_value": {
+              "message": "12"
+            },
+            "security_blocked_today_value": {
+              "message": "248"
+            },
+            "security_risk_score_value": {
+              "message": "92%"
+            },
+            "security_patch_level_value": {
+              "message": "87%"
+            },
+            "security_threat_timeline": {
+              "message": "खतरा समयरेखा"
+            },
+            "security_controls_matrix": {
+              "message": "नियंत्रण मैट्रिक्स"
+            },
+            "security_time": {
+              "message": "समय"
+            },
+            "security_severity": {
+              "message": "गंभीरता"
+            },
+            "security_status": {
+              "message": "स्थिति"
+            },
+            "security_action": {
+              "message": "क्रिया"
+            },
+            "security_no_threats": {
+              "message": "कोई खतरे नहीं"
+            },
+            "security_control_mfa": {
+              "message": "बहु-कारक प्रमाणीकरण"
+            },
+            "security_control_password_policy": {
+              "message": "पासवर्ड नीति"
+            },
+            "security_control_ip_filtering": {
+              "message": "IP फ़िल्टरिंग"
+            },
+            "security_control_waf": {
+              "message": "WAF"
+            },
+            "security_control_rate_limit": {
+              "message": "रेट लिमिट"
+            },
+            "security_control_intrusion_detection": {
+              "message": "घुसपैठ पहचान"
+            },
+            "security_enabled": {
+              "message": "सक्रिय"
+            },
+            "security_disabled": {
+              "message": "निष्क्रिय"
+            },
+            "trend_down_12": {
+              "message": "-12%"
+            },
+            "trend_flat": {
+              "message": "0%"
+            },
+            "trend_up_secure": {
+              "message": "+5%"
+            },
+            "trend_up": {
+              "message": "+3%"
+            },
+            "generate_new_report": {
+              "message": "Generate New Report"
+            },
+            "modal_report_type": {
+              "message": "Report Type:"
+            },
+            "modal_time_range": {
+              "message": "Time Range:"
+            },
+            "modal_report_format": {
+              "message": "Report Format:"
+            },
+            "last_hour": {
+              "message": "Last Hour"
+            },
+            "last_24h": {
+              "message": "Last 24 Hours"
+            },
+            "last_week": {
+              "message": "Last Week"
+            },
+            "last_month": {
+              "message": "Last Month"
+            },
+            "custom_range": {
+              "message": "Custom Range"
+            },
+            "pdf_document": {
+              "message": "PDF Document"
+            },
+            "excel_spreadsheet": {
+              "message": "Excel Spreadsheet"
+            },
+            "json_data": {
+              "message": "JSON Data"
+            },
+            "csv_file": {
+              "message": "CSV File"
+            },
+            "report_generated_success": {
+              "message": "Report generated successfully"
+            },
+            "error_generating_report": {
+              "message": "Error generating report"
+            },
+            "error_opening_generator": {
+              "message": "Error opening generator"
+            },
+            "reports_loaded_success": {
+              "message": "Reports loaded"
+            },
+            "error_loading_reports": {
+              "message": "Error loading reports"
+            },
+            "__obsolete": {
+              "analytics_stat_avg_session": {
+                "message": "औसत सत्र"
+              },
+              "analytics_stat_bounce_rate": {
+                "message": "बाउंस दर"
+              },
+              "analytics_stat_conversion": {
+                "message": "रूपांतरण"
+              },
+              "analytics_stat_retention": {
+                "message": "प्रतिधारण"
+              },
+              "analytics_chart_traffic": {
+                "message": "ट्रैफ़िक"
+              },
+              "analytics_chart_performance": {
+                "message": "प्रदर्शन"
+              },
+              "analytics_chart_retention": {
+                "message": "प्रतिधारण"
+              },
+              "analytics_chart_security": {
+                "message": "सुरक्षा"
+              },
+              "analytics_chart_placeholder": {
+                "message": "चार्ट"
+              },
+              "analytics_all_users": {
+                "message": "सभी उपयोगकर्ता"
+              },
+              "analytics_new_users": {
+                "message": "नए उपयोगकर्ता"
+              },
+              "analytics_power_users": {
+                "message": "पावर उपयोगकर्ता"
+              },
+              "reports_filter_status": {
+                "message": "स्थिति"
+              },
+              "reports_filter_search": {
+                "message": "रिपोर्ट खोजें"
+              },
+              "reports_no_results": {
+                "message": "कोई रिपोर्ट नहीं"
+              },
+              "reports_total": {
+                "message": "कुल"
+              },
+              "reports_avg_generation": {
+                "message": "औसत समय"
+              },
+              "reports_success_rate": {
+                "message": "सफलता दर"
+              },
+              "reports_in_queue": {
+                "message": "प्रतीक्षा में"
+              },
+              "reports_field_type": {
+                "message": "प्रकार"
+              },
+              "reports_field_range": {
+                "message": "सीमा"
+              },
+              "reports_field_format": {
+                "message": "प्रारूप"
+              },
+              "reports_field_notify": {
+                "message": "तैयार होने पर सूचित करें"
+              },
+              "reports_submit_generate": {
+                "message": "जनरेट"
+              },
+              "format_pdf": {
+                "message": "PDF दस्तावेज़"
+              },
+              "format_csv": {
+                "message": "CSV फ़ाइल"
+              },
+              "format_json": {
+                "message": "JSON डेटा"
+              },
+              "__obsolete": {
+                "__obsolete": {
+                  "_tini_watermark": {
+                    "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
+                    "employee": "rongdeptrai-vl <rongdz2307@gmail.com>",
+                    "commit": "ebdabf3",
+                    "time": "2025-08-09T05:09:14Z",
+                    "watermark_id": "TINI_1754716154_e868a412",
+                    "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

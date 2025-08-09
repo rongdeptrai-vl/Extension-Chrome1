@@ -113,11 +113,11 @@ const config = {
         origin: process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [
             'http://localhost:8080', 'http://localhost:8081', 'http://localhost:8082',
             'http://localhost:3004', 'http://localhost:3005', 'http://localhost:3006',
-            'http://localhost:5001'
+            'http://localhost:5001', 'http://localhost:55055', 'http://localhost:55056', 'http://localhost:55057'
         ],
         credentials: true
     },
-    adminPanelUrl: process.env.ADMIN_PANEL_URL || 'http://localhost:8080'
+    adminPanelUrl: process.env.ADMIN_PANEL_URL || 'http://localhost:55055'
 };
 
 // =====================

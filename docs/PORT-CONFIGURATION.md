@@ -81,7 +81,9 @@ This document outlines the standardized port assignments for the TINI security s
 - **7007**: `backgruond\backgound.js` (general)
 - **7008**: `SYSTEM\SYSTEM-INTEGRATION-STATUS.js` (general)
 - **7008**: `SYSTEM\MASTER-SYSTEM-INTEGRATION.js` (general)
-
+- **55055**: Admin Panel (primary)
+- **55056,55057**: Admin Panel fallbacks
+- **55080**: Honeypot Server (was 8080)
 
 ## Conflict Resolution
 

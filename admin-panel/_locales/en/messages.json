@@ -2,655 +2,573 @@
   "_tini_watermark": {
     "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
     "employee": "rongdeptrai-vl <rongdz2307@gmail.com>",
-    "commit": "ebdabf3",
-    "time": "2025-08-09T05:09:14Z",
-    "watermark_id": "TINI_1754716154_e868a412",
+    "commit": "58a24a1",
+    "time": "2025-08-09T15:18:25Z",
+    "watermark_id": "TINI_1754752705_e868a412",
     "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
   },
- 
   "nav_dashboard": {
-    "message": "Nav dashboard"
+    "message": "Dashboard"
   },
   "nav_users": {
-    "message": "Nav users"
+    "message": "Users"
   },
   "nav_profile": {
-    "message": "Nav profile"
+    "message": "Profile"
   },
   "nav_security": {
-    "message": "Nav security"
+    "message": "Security"
   },
   "nav_settings": {
-    "message": "Nav settings"
+    "message": "Settings"
   },
   "nav_analytics": {
-    "message": "Nav analytics"
+    "message": "Analytics"
   },
   "nav_reports": {
-    "message": "Nav reports"
+    "message": "Reports"
   },
   "logout": {
     "message": "Logout"
   },
   "testing_zone": {
-    "message": "Testing zone"
+    "message": "Testing Zone"
+  },
+  "database_status": {
+    "message": "Database Status"
+  },
+  "test_connection": {
+    "message": "Test"
+  },
+  "environment_config": {
+    "message": "Environment Configuration"
+  },
+  "mysql_connected": {
+    "message": "MySQL Connected"
+  },
+  "redis_connected": {
+    "message": "Redis Connected"
+  },
+  "connection_healthy": {
+    "message": "Connection Healthy"
+  },
+  "connection_failed": {
+    "message": "Connection Failed"
+  },
+  "checking_connection": {
+    "message": "Checking Connection"
+  },
+  "database_health": {
+    "message": "Database Health"
+  },
+  "admin_dashboard_title": {
+    "message": "TINI Admin Dashboard"
   },
   "super_admin": {
-    "message": "Super admin"
+    "message": "Super Administrator"
+  },
+  "welcome_back": {
+    "message": "Welcome Back"
+  },
+  "header_title": {
+    "message": "Dashboard"
   },
   "active_users": {
-    "message": "Active users"
+    "message": "Active Users"
   },
   "blocked_items": {
-    "message": "Blocked items"
-  },
-  "from_last_week": {
-    "message": "From last week"
+    "message": "Blocked Items"
   },
   "system_health": {
-    "message": "System health"
+    "message": "System Health"
+  },
+  "new_this_week": {
+    "message": "12.5% new this week"
   },
   "from_yesterday": {
-    "message": "From yesterday"
+    "message": "0.1% from yesterday"
   },
-  "recent_activity": {
-    "message": "Recent activity"
+  "minutes_ago_2": {
+    "message": "2 minutes ago"
+  },
+  "minutes_ago_15": {
+    "message": "15 minutes ago"
+  },
+  "hour_ago": {
+    "message": "1 hour ago"
+  },
+  "hours_ago_2": {
+    "message": "2 hours ago"
+  },
+  "hours_ago_3": {
+    "message": "3 hours ago"
+  },
+  "just_now": {
+    "message": "Just now"
+  },
+  "recent_activity_title": {
+    "message": "Recent Activity"
   },
   "view_all": {
-    "message": "View all"
+    "message": "View All"
   },
-  "user": {
+  "table_user": {
     "message": "User"
   },
-  "action": {
+  "table_action": {
     "message": "Action"
   },
-  "version": {
+  "table_version": {
     "message": "Version"
   },
-  "time": {
+  "table_time": {
     "message": "Time"
   },
-  "status": {
+  "table_status": {
     "message": "Status"
   },
-  "power_mode": {
-    "message": "Power mode"
+  "switched_to_power": {
+    "message": "Switched to POWER"
   },
   "login_attempt": {
     "message": "Login attempt"
   },
-  "settings_updated": {
-    "message": "Settings updated"
+  "updated_settings": {
+    "message": "Updated settings"
   },
-  "register_device": {
-    "message": "Register device"
+  "device_registration": {
+    "message": "Device registration"
   },
-  "pending_approval": {
-    "message": "Pending approval"
+  "active": {
+    "message": "Active"
+  },
+  "failed": {
+    "message": "Failed"
+  },
+  "completed": {
+    "message": "Completed"
+  },
+  "pending": {
+    "message": "Pending"
+  },
+  "inactive": {
+    "message": "Inactive"
+  },
+  "bypass_testing_zone": {
+    "message": "BYPASS TESTING ZONE"
+  },
+  "admin_safe_environment": {
+    "message": "🔒 100% Admin Safe Environment"
+  },
+  "admin_notification": {
+    "message": "💻 Admin Notification:"
+  },
+  "admin_notification_text": {
+    "message": "Don't worry anymore! I have created this super secure testing bypass environment for administrators. Here, administrators can test bypasses and will never be 'stuck' or blocked. Everything is protected by BOSS permission level 10000!"
+  },
+  "absolute_safety_guarantee": {
+    "message": "Absolute Safety Guarantee"
+  },
+  "admin_cannot_be_blocked": {
+    "message": "Admin cannot be blocked in this environment"
+  },
+  "all_bypass_systems_integrated": {
+    "message": "All bypass systems inherited and integrated"
+  },
+  "boss_protection_highest_level": {
+    "message": "BOSS protection always operates at the highest level"
+  },
+  "emergency_rescue_ready": {
+    "message": "Emergency rescue ready if any problems arise"
+  },
+  "bypass_systems_status": {
+    "message": "BYPASS SYSTEMS STATUS"
+  },
+  "all_ready": {
+    "message": "ALL READY"
+  },
+  "user_management": {
+    "message": "User Management"
+  },
+  "user_management_title": {
+    "message": "User Management"
+  },
+  "add_user_btn": {
+    "message": "Add User"
   },
   "add_user": {
-    "message": "Add user"
+    "message": "Add User"
   },
   "employee_id": {
-    "message": "Employee id"
+    "message": "Employee ID"
+  },
+  "employee_id_col": {
+    "message": "Employee ID"
   },
   "name": {
+    "message": "Name"
+  },
+  "name_col": {
     "message": "Name"
   },
   "role": {
     "message": "Role"
   },
+  "role_col": {
+    "message": "Role"
+  },
   "last_active": {
-    "message": "Last active"
+    "message": "Last Active"
+  },
+  "last_active_col": {
+    "message": "Last Active"
+  },
+  "devices": {
+    "message": "Devices"
+  },
+  "devices_col": {
+    "message": "Devices"
   },
   "actions": {
     "message": "Actions"
   },
+  "actions_col": {
+    "message": "Actions"
+  },
   "admin_user": {
-    "message": "Admin user"
+    "message": "Administrator User"
   },
   "regular_user": {
-    "message": "Regular user"
+    "message": "Regular User"
+  },
+  "employee_user_3": {
+    "message": "PanVuong Employee"
+  },
+  "admin": {
+    "message": "Admin"
+  },
+  "user": {
+    "message": "User"
+  },
+  "employee": {
+    "message": "Employee"
+  },
+  "manager": {
+    "message": "Manager"
   },
   "total_users": {
-    "message": "Total users"
-  },
-  "new_users_this_week": {
-    "message": "New users this week"
+    "message": "Total Users"
   },
   "active_sessions": {
-    "message": "Active sessions"
+    "message": "Active Sessions"
+  },
+  "admin_users": {
+    "message": "Admin Users"
+  },
+  "new_this_week_users": {
+    "message": "1 new this week"
   },
   "active_rate": {
-    "message": "Active rate"
+    "message": "66% active rate"
   },
-  "admin_level": {
-    "message": "Admin level"
+  "super_admin_level": {
+    "message": "Super admin level"
   },
   "profile_settings": {
-    "message": "Profile settings"
+    "message": "Profile Settings"
   },
-  "avatar_and_cover": {
-    "message": "Avatar and cover"
+  "avatar_cover": {
+    "message": "Avatar & Cover"
   },
   "avatar": {
     "message": "Avatar"
   },
-  "upload_image": {
-    "message": "Upload image"
-  },
   "personal_info": {
-    "message": "Personal info"
+    "message": "Personal Information"
   },
   "full_name": {
-    "message": "Full name"
-  },
-  "email_address": {
-    "message": "Email address"
-  },
-  "options": {
-    "message": "Options"
-  },
-  "basic_info": {
-    "message": "Basic info"
-  },
-  "language": {
-    "message": "Language"
-  },
-  "timezone": {
-    "message": "Timezone"
-  },
-  "theme": {
-    "message": "Theme"
-  },
-  "dark_mode": {
-    "message": "Dark mode"
-  },
-  "enable_email_notifications": {
-    "message": "Enable email notifications"
-  },
-  "auto_save": {
-    "message": "Auto save"
-  },
-  "account_security": {
-    "message": "Account security"
-  },
-  "change_password": {
-    "message": "Change password"
-  },
-  "current_password": {
-    "message": "Current password"
-  },
-  "new_password": {
-    "message": "New password"
-  },
-  "confirm_password": {
-    "message": "Confirm password"
-  },
-  "two_factor_auth": {
-    "message": "Two factor auth"
-  },
-  "2fa": {
-    "message": "2fa"
-  },
-  "protected_account": {
-    "message": "Protected account"
-  },
-  "sms_auth": {
-    "message": "Sms auth"
-  },
-  "email_verification": {
-    "message": "Email verification"
-  },
-  "view_recovery_code": {
-    "message": "View recovery code"
-  },
-  "view_all_activity": {
-    "message": "View all activity"
-  },
-  "ip_address": {
-    "message": "Ip address"
-  },
-  "device": {
-    "message": "Device"
-  },
-  "save_success": {
-    "message": "Save success"
-  },
-  "admin_login": {
-    "message": "Admin login"
-  },
-  "windows_pc": {
-    "message": "Windows pc"
-  },
-  "chrome_browser": {
-    "message": "Chrome browser"
-  },
-  "security_settings": {
-    "message": "Security settings"
-  },
-  "threat_level": {
-    "message": "Threat level"
-  },
-  "low": {
-    "message": "Low"
-  },
-  "all_safe": {
-    "message": "All safe"
-  },
-  "security_threats": {
-    "message": "Security threats"
-  },
-  "security_score": {
-    "message": "Security score"
-  },
-  "excellent_security": {
-    "message": "Excellent security"
-  },
-  "security_control": {
-    "message": "Security control"
-  },
-  "all_systems_active": {
-    "message": "All systems active"
-  },
-  "access_control": {
-    "message": "Access control"
-  },
-  "password_policy": {
-    "message": "Password policy"
-  },
-  "session_timeout": {
-    "message": "Session timeout"
-  },
-  "threat_protection": {
-    "message": "Threat protection"
-  },
-  "realtime_monitoring": {
-    "message": "Realtime monitoring"
-  },
-  "auto_blocking": {
-    "message": "Auto blocking"
-  },
-  "emergency_response": {
-    "message": "Emergency response"
-  },
-  "system_settings": {
-    "message": "System settings"
-  },
-  "general_settings": {
-    "message": "General settings"
-  },
-  "application_settings": {
-    "message": "Application settings"
-  },
-  "default_language": {
-    "message": "Default language"
-  },
-  "enable_notifications": {
-    "message": "Enable notifications"
-  },
-  "performance_settings": {
-    "message": "Performance settings"
-  },
-  "update_frequency": {
-    "message": "Update frequency"
-  },
-  "log_retention": {
-    "message": "Log retention"
-  },
-  "auto_optimize": {
-    "message": "Auto optimize"
-  },
-  "save_changes": {
-    "message": "Save changes"
-  },
-  "analytics": {
-    "message": "Analytics"
-  },
-  "page_views": {
-    "message": "Page views"
-  },
-  "ads_blocked": {
-    "message": "Ads blocked"
-  },
-  "performance_score": {
-    "message": "Performance score"
-  },
-  "excellent": {
-    "message": "Excellent"
-  },
-  "advanced_analytics": {
-    "message": "Advanced analytics"
-  },
-  "export_data": {
-    "message": "Export data"
-  },
-  "charts": {
-    "message": "Charts"
-  },
-  "analytics_note": {
-    "message": "Analytics note"
-  },
-  "reports": {
-    "message": "Reports"
-  },
-  "create_report": {
-    "message": "Create report"
-  },
-  "user_activity_report": {
-    "message": "User activity report"
-  },
-  "security_report": {
-    "message": "Security report"
-  },
-  "performance_report": {
-    "message": "Performance report"
-  },
-  "recent_reports": {
-    "message": "Recent reports"
-  },
-  "report_name": {
-    "message": "Report name"
-  },
-  "report_type": {
-    "message": "Report type"
-  },
-  "created_at": {
-    "message": "Created at"
-  },
-  "size": {
-    "message": "Size"
-  },
-  "report_status": {
-    "message": "Report status"
-  },
-  "report_action": {
-    "message": "Report action"
-  },
-  "daily_security": {
-    "message": "Daily security"
-  },
-  "weekly_user_activity": {
-    "message": "Weekly user activity"
-  },
-  "monthly_performance": {
-    "message": "Monthly performance"
-  },
-  "processing": {
-    "message": "Processing"
-  },
-  "full_name_format": {
-    "message": "Full Name (Chinese + Telegram + ID)"
-  },
-  "name_format_hint": {
-    "message": "Format: \"Chinese Name + Telegram Name + ID\""
+    "message": "Full Name"
   },
   "email": {
     "message": "Email Address"
   },
+  "save_changes": {
+    "message": "Save Changes"
+  },
   "preferences": {
     "message": "Preferences & Settings"
   },
+  "language": {
+    "message": "🌍 Language"
+  },
+  "timezone": {
+    "message": "Time Zone"
+  },
+  "theme": {
+    "message": "Theme Preference"
+  },
+  "upload_image": {
+    "message": "Upload Image"
+  },
+  "save_avatar": {
+    "message": "Save Avatar"
+  },
+  "security_settings": {
+    "message": "Security Settings"
+  },
+  "threat_level": {
+    "message": "Threat Level"
+  },
+  "blocked_threats": {
+    "message": "Blocked Threats"
+  },
+  "security_score": {
+    "message": "Security Score"
+  },
+  "all_systems_secure": {
+    "message": "All systems secure"
+  },
+  "from_last_week": {
+    "message": "from last week"
+  },
+  "excellent_security": {
+    "message": "Excellent security"
+  },
+  "system_settings": {
+    "message": "System Settings"
+  },
+  "general_settings": {
+    "message": "General Settings"
+  },
+  "application_settings": {
+    "message": "Application Settings"
+  },
+  "performance_settings": {
+    "message": "Performance Settings"
+  },
+  "enable_auto_updates": {
+    "message": "Enable auto-updates"
+  },
+  "enable_telemetry": {
+    "message": "Enable telemetry"
+  },
+  "hardware_acceleration": {
+    "message": "Hardware acceleration"
+  },
+  "debug_mode": {
+    "message": "Debug mode"
+  },
+  "analytics_insights": {
+    "message": "Analytics & Insights"
+  },
+  "page_views": {
+    "message": "Page Views"
+  },
+  "blocked_ads": {
+    "message": "Blocked Ads"
+  },
+  "performance_score": {
+    "message": "Performance Score"
+  },
+  "increase": {
+    "message": "increase"
+  },
+  "excellent": {
+    "message": "Excellent"
+  },
   "reports_analytics": {
-    "message": "Reports & Analytics"
+    "message": "Reports & Logs"
   },
-  "report_creation": {
-    "message": "Report Creation"
+  "generate_reports": {
+    "message": "Generate Reports"
   },
-  "user_activity_statistics": {
-    "message": "User Activity Report"
+  "generate_report": {
+    "message": "Generate Report"
   },
-  "user_activity_subtitle": {
-    "message": "Detailed user activity and login statistics"
-  },
-  "security_protection": {
+  "security_report": {
     "message": "Security Report"
   },
-  "security_subtitle": {
-    "message": "Security incidents and threat analysis"
+  "usage_report": {
+    "message": "Usage Report"
   },
-  "performance_data": {
-    "message": "Performance Report"
+  "system_report": {
+    "message": "System Report"
   },
-  "performance_subtitle": {
-    "message": "System performance and optimization data"
+  "security_analysis": {
+    "message": "Generate comprehensive security analysis"
   },
-  "recent_reports_list": {
-    "message": "Recent Reports"
+  "usage_analysis": {
+    "message": "Analyze user activity and statistics"
   },
-  "report_category": {
-    "message": "Type"
+  "system_analysis": {
+    "message": "Generate system performance report"
   },
-  "creation_time": {
-    "message": "Generated"
+  "save": {
+    "message": "Save"
   },
-  "file_size": {
-    "message": "Size"
+  "edit": {
+    "message": "Edit"
   },
-  "current_status": {
-    "message": "Status"
+  "delete": {
+    "message": "Delete"
   },
-  "available_actions": {
-    "message": "Actions"
+  "cancel": {
+    "message": "Cancel"
   },
-  "daily_security_analysis": {
-    "message": "Daily Security Report"
+  "confirm": {
+    "message": "Confirm"
   },
-  "security_type": {
-    "message": "Security"
+  "close": {
+    "message": "Close"
   },
-  "two_hours_ago": {
-    "message": "2 hours ago"
+  "open": {
+    "message": "Open"
   },
-  "status_ready": {
-    "message": "Ready"
-  },
-  "weekly_user_statistics": {
-    "message": "Weekly User Activity"
-  },
-  "user_activity_type": {
-    "message": "User Activity"
-  },
-  "one_day_ago": {
-    "message": "1 day ago"
-  },
-  "monthly_performance_analysis": {
-    "message": "Monthly Performance"
-  },
-  "performance_type": {
-    "message": "Performance"
-  },
-  "three_days_ago": {
-    "message": "3 days ago"
-  },
-  "status_processing": {
-    "message": "Processing"
-  },
-  "time_last_24h": {
-    "message": "Last 24h"
-  },
-  "time_last_7d": {
-    "message": "Last 7 days"
-  },
-  "time_last_30d": {
-    "message": "Last 30 days"
-  },
-  "btn_refresh": {
+  "refresh": {
     "message": "Refresh"
   },
-  "btn_apply_filters": {
-    "message": "Apply Filters"
+  "search": {
+    "message": "Search"
   },
-  "btn_export": {
+  "filter": {
+    "message": "Filter"
+  },
+  "export": {
     "message": "Export"
   },
-  "stat_value_placeholder": {
-    "message": "--"
+  "import": {
+    "message": "Import"
   },
-
-  "security_active_threats": {
-    "message": "Active Threats"
+  "loading": {
+    "message": "Loading..."
   },
-  "security_blocked_today": {
-    "message": "Blocked Today"
+  "saving": {
+    "message": "Saving..."
   },
-  "security_risk_score": {
-    "message": "Risk Score"
+  "saved": {
+    "message": "Saved successfully"
   },
-  "security_patch_level": {
-    "message": "Patch Level"
+  "error": {
+    "message": "Error occurred"
   },
-  "security_active_threats_value": {
-    "message": "12"
+  "success": {
+    "message": "Success"
   },
-  "security_blocked_today_value": {
-    "message": "248"
+  "warning": {
+    "message": "Warning"
   },
-  "security_risk_score_value": {
-    "message": "92%"
+  "info": {
+    "message": "Information"
   },
-  "security_patch_level_value": {
-    "message": "87%"
+  "enable_notifications": {
+    "message": "Enable notifications"
   },
-  "security_threat_timeline": {
-    "message": "Threat Timeline"
+  "enable_auto_save": {
+    "message": "Auto-save settings"
   },
-  "security_controls_matrix": {
-    "message": "Controls Matrix"
+  "low": {
+    "message": "LOW"
   },
-  "security_time": {
+  "medium": {
+    "message": "MEDIUM"
+  },
+  "high": {
+    "message": "HIGH"
+  },
+  "critical": {
+    "message": "CRITICAL"
+  },
+  "upload": {
+    "message": "Upload"
+  },
+  "download": {
+    "message": "Download"
+  },
+  "copy": {
+    "message": "Copy"
+  },
+  "paste": {
+    "message": "Paste"
+  },
+  "cut": {
+    "message": "Cut"
+  },
+  "undo": {
+    "message": "Undo"
+  },
+  "redo": {
+    "message": "Redo"
+  },
+  "select_all": {
+    "message": "Select All"
+  },
+  "no_results": {
+    "message": "No results found"
+  },
+  "empty_state": {
+    "message": "No data available"
+  },
+  "connection_error": {
+    "message": "Connection error"
+  },
+  "server_error": {
+    "message": "Server error"
+  },
+  "permission_denied": {
+    "message": "Permission denied"
+  },
+  "access_denied": {
+    "message": "Access denied"
+  },
+  "file_not_found": {
+    "message": "File not found"
+  },
+  "invalid_input": {
+    "message": "Invalid input"
+  },
+  "are_you_sure": {
+    "message": "Are you sure?"
+  },
+  "delete_confirmation": {
+    "message": "This action cannot be undone"
+  },
+  "unsaved_changes": {
+    "message": "You have unsaved changes"
+  },
+  "leave_page": {
+    "message": "Leave this page?"
+  },
+  "file_upload": {
+    "message": "File Upload"
+  },
+  "file_download": {
+    "message": "File Download"
+  },
+  "file_size": {
+    "message": "File Size"
+  },
+  "file_type": {
+    "message": "File Type"
+  },
+  "file_name": {
+    "message": "File Name"
+  },
+  "date": {
+    "message": "Date"
+  },
+  "time": {
     "message": "Time"
   },
-  "security_severity": {
-    "message": "Severity"
+  "datetime": {
+    "message": "Date & Time"
   },
-  "security_status": {
-    "message": "Status"
+  "created_at": {
+    "message": "Created"
   },
-  "security_action": {
-    "message": "Action"
+  "updated_at": {
+    "message": "Updated"
   },
-  "security_no_threats": {
-    "message": "No threats detected"
-  },
-  "security_control_mfa": {
-    "message": "Multi-Factor Auth"
-  },
-  "security_control_password_policy": {
-    "message": "Password Policy"
-  },
-  "security_control_ip_filtering": {
-    "message": "IP Filtering"
-  },
-  "security_control_waf": {
-    "message": "WAF"
-  },
-  "security_control_rate_limit": {
-    "message": "Rate Limiting"
-  },
-  "security_control_intrusion_detection": {
-    "message": "Intrusion Detection"
-  },
-  "security_enabled": {
-    "message": "Enabled"
-  },
-  "security_disabled": {
-    "message": "Disabled"
-  },
-  "trend_down_12": {
-    "message": "-12%"
-  },
-  "trend_flat": {
-    "message": "0%"
-  },
-  "trend_up_secure": {
-    "message": "+5%"
-  },
-  "trend_up": {
-    "message": "+3%"
-  },
-
-  "analytics_stat_avg_session": {
-    "message": "Avg. Session"
-  },
-  "analytics_stat_bounce_rate": {
-    "message": "Bounce Rate"
-  },
-  "analytics_stat_conversion": {
-    "message": "Conversion"
-  },
-  "analytics_stat_retention": {
-    "message": "Retention"
-  },
-  "analytics_chart_traffic": {
-    "message": "Traffic"
-  },
-  "analytics_chart_performance": {
-    "message": "Performance"
-  },
-  "analytics_chart_retention": {
-    "message": "Retention"
-  },
-  "analytics_chart_security": {
-    "message": "Security"
-  },
-  "analytics_chart_placeholder": {
-    "message": "Chart placeholder"
-  },
-  "analytics_all_users": {
-    "message": "All Users"
-  },
-  "analytics_new_users": {
-    "message": "New Users"
-  },
-  "analytics_power_users": {
-    "message": "Power Users"
-  },
-
-  "reports_filter_status": {
-    "message": "Status"
-  },
-  "reports_filter_search": {
-    "message": "Search reports"
-  },
-  "reports_no_results": {
-    "message": "No reports"
-  },
-  "reports_total": {
-    "message": "Total Reports"
-  },
-  "reports_avg_generation": {
-    "message": "Avg. Time"
-  },
-  "reports_success_rate": {
-    "message": "Success Rate"
-  },
-  "reports_in_queue": {
-    "message": "In Queue"
-  },
-  "reports_field_type": {
-    "message": "Type"
-  },
-  "reports_field_range": {
-    "message": "Range"
-  },
-  "reports_field_format": {
-    "message": "Format"
-  },
-  "reports_field_notify": {
-    "message": "Notify when ready"
-  },
-  "reports_submit_generate": {
-    "message": "Generate"
-  },
-  "format_pdf": {
-    "message": "PDF Document"
-  },
-  "format_csv": {
-    "message": "CSV File"
-  },
-  "format_json": {
-    "message": "JSON Data"
+  "expires_at": {
+    "message": "Expires"
   }
 }

@@ -2,12 +2,11 @@
   "_tini_watermark": {
     "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
     "employee": "rongdeptrai-vl <rongdz2307@gmail.com>",
-    "commit": "ebdabf3",
-    "time": "2025-08-09T05:09:14Z",
-    "watermark_id": "TINI_1754716154_e868a412",
+    "commit": "58a24a1",
+    "time": "2025-08-09T15:18:25Z",
+    "watermark_id": "TINI_1754752705_e868a412",
     "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
   },
- 
   "nav_dashboard": {
     "message": "仪表板"
   },
@@ -390,6 +389,6 @@
     "message": "邮箱地址"
   },
   "preferences": {
-    "message": "偏好设置"
+    "message": "Preferences & Settings"
   }
 }

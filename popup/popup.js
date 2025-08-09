@@ -26,6 +26,18 @@ if (typeof window.TINI_SYSTEM === 'undefined') {
 
 console.log('🚀 Loading TINI Popup Event Handlers...');
 
+(function initPanelBaseHelper(){
+  try {
+    if (typeof window.getPanelBase !== 'function') {
+      const DEFAULT_PORT = 55055;
+      window.__tiniPanelPort = window.__tiniPanelPort || window.TINI_PANEL_PORT || localStorage.getItem('tini_panel_port') || DEFAULT_PORT;
+      window.setPanelPort = function(p){ if(p){ window.__tiniPanelPort = p; localStorage.setItem('tini_panel_port', p); } };
+      window.getPanelBase = function(){ return `http://localhost:${window.__tiniPanelPort}`; };
+      console.log('[popup] Panel base initialized ->', window.getPanelBase());
+    }
+  } catch(e){ console.warn('[popup] Panel base init failed:', e); }
+})();
+
 // Ensure DOM is fully loaded before initialization
 function initializePopup() {
     console.log('� TINI Popup initializing...');
@@ -249,16 +261,15 @@ async function handleLogin() {
         const internalIp = await getInternalIP();
         
         // Authenticate with real server
-        const response = await fetch('http://localhost:5001/api/login', {
+        const response = await fetch(getPanelBase() + '/api/auth/validate', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
             body: JSON.stringify({ 
-                fullName: employeeId, // FIX: Send employeeId value under the `fullName` key as the API expects
-                deviceId,
-                internalIp
+                username: employeeId, // FIX: Send employeeId value under the `username` key as the API expects
+                deviceId: deviceId
             })
         });
         
@@ -373,7 +384,7 @@ function logConnectionFailure(fullName, deviceId, error) {
         deviceId,
         error,
         timestamp: new Date().toISOString(),
-        url: 'http://localhost:8080/api/login'
+        url: 'http://localhost:8080/api/auth/validate'
     });
     
     // Keep only last 5 connection failures
@@ -420,9 +431,9 @@ function switchToAuthenticatedView(user = null) {
             // Add event listeners for new buttons
             document.getElementById('openAdminPanelBtn')?.addEventListener('click', () => {
                 if (typeof chrome !== 'undefined' && chrome.tabs) {
-                    chrome.tabs.create({ url: 'http://localhost:8080' });
+                    chrome.tabs.create({ url: getPanelBase() });
                 } else {
-                    window.open('http://localhost:8080', '_blank');
+                    window.open(getPanelBase(), '_blank');
                 }
             });
             
@@ -638,7 +649,7 @@ async function handleTestServer() {
         const startTime = Date.now();
         
         // Test main API server
-        const response = await fetch('http://localhost:8080/api/health', {
+        const response = await fetch(getPanelBase() + '/api/health', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -654,7 +665,7 @@ async function handleTestServer() {
             
             // Also test database connectivity
             try {
-                const dbResponse = await fetch('http://localhost:8080/api/db/stats', {
+                const dbResponse = await fetch(getPanelBase() + '/api/db/stats', {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -684,7 +695,7 @@ async function handleTestServer() {
         console.error('🚨 Server connection test failed:', error);
         
         if (error.name === 'TypeError' && error.message.includes('fetch')) {
-            showMessage('❌ Cannot reach authentication server (http://localhost:8080). Please ensure API server is running.', 'error');
+            showMessage('❌ Cannot reach authentication server (' + getPanelBase() + '). Please ensure API server is running.', 'error');
         } else {
             showMessage(`❌ Connection failed: ${error.message}`, 'error');
         }
@@ -1327,3 +1338,4 @@ window.addEventListener('unhandledrejection', (e) => {
 
 console.log('🌟 TINI Popup Event Handlers loaded successfully!');
 // ST:TINI_1754716154_e868a412
+// ST:TINI_1754752705_e868a412

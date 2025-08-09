@@ -1,0 +1,83 @@
+/* © 2024 TINI COMPANY - CONFIDENTIAL */
+/* Employee: rongdeptrai-vl <rongdz2307@gmail.com> */
+/* Commit: 58a24a1 | Time: 2025-08-09T15:18:25Z */
+/* Watermark: TINI_1754752705_e868a412 | TINI_WATERMARK */
+/* WARNING: Unauthorized distribution is prohibited */
+/* Grid Layout Override for Perfect Distribution */
+.metric-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 20px !important; /* Optimized for viewport fit */
+    margin-bottom: 24px !important; /* Reduced space */
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Analytics Charts Grid Layout */
+.grid-2 {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 20px !important; /* Reduced gap to fit better */
+    margin-bottom: 20px !important; /* Reduced space */
+    box-sizing: border-box !important;
+}
+
+/* Full width panels with optimized sizing */
+.panel.large {
+    width: 100% !important;
+    min-height: 300px !important; /* Reduced base height */
+    box-sizing: border-box !important;
+    margin: 0 !important; /* Remove any margin */
+}
+
+.panel {
+    width: 100% !important;
+    min-height: 280px !important; /* Reduced base height */
+    box-sizing: border-box !important;
+    margin: 0 !important; /* Remove any margin */
+}
+
+/* Ensure cards fill the grid properly */
+.metric-grid .stat-card.mini {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+}
+
+/* Responsive Grid Adjustments */
+@media (max-width: 1400px) {
+    .metric-grid {
+        gap: 20px !important;
+    }
+}
+
+@media (max-width: 1200px) {
+    .metric-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 18px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .metric-grid {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+}
+
+/* Reports summary grid specific override */
+.metric-grid.reports-summary {
+    grid-template-columns: repeat(4, 1fr) !important;
+}
+
+@media (max-width: 1200px) {
+    .metric-grid.reports-summary {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .metric-grid.reports-summary {
+        grid-template-columns: 1fr !important;
+    }
+}

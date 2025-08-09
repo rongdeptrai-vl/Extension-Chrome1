@@ -10,6 +10,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="admin_dashboard_title">TINI Admin Dashboard</title>
     <link rel="stylesheet" href="scripts/admin-panel.css">
+    <link rel="stylesheet" href="styles/professional-data.css">
+    <link rel="stylesheet" href="styles/grid-layout-fix.css">
+    <link rel="stylesheet" href="styles/realtime-charts.css">
+    <link rel="stylesheet" href="styles/analytics-fullscreen.css">
+    <link rel="stylesheet" href="styles/professional-charts.css">
 </head>
 <body>
     <div class="container">
@@ -782,14 +787,20 @@
                             <table class="table-tight">
                                 <thead>
                                     <tr>
-                                        <th data-i18n="security_time"></th>
-                                        <th data-i18n="security_type"></th>
-                                        <th data-i18n="security_severity"></th>
-                                        <th data-i18n="security_status"></th>
-                                        <th data-i18n="security_action"></th>
+                                        <th>Time</th>
+                                        <th>Type</th>
+                                        <th>Severity</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody data-dynamic="threatTimeline"></tbody>
+                                <tbody data-dynamic="threatTimeline">
+                                    <tr>
+                                        <td colspan="5" style="text-align: center; color: #6b7280; padding: 20px;">
+                                            Loading threat timeline...
+                                        </td>
+                                    </tr>
+                                </tbody>
                             </table>
                             <div class="empty-state" data-empty="threatTimeline" hidden>
                                 <i class="fas fa-shield-alt"></i>
@@ -838,66 +849,84 @@
                 <div class="header">
                     <h1 class="header-title" data-i18n="analytics_insights"></h1>
                     <div class="section-toolbar">
-                        <div class="filter-group">
-                            <select data-filter="analytics-range">
-                                <option value="24h" data-i18n="time_last_24h"></option>
-                                <option value="7d" selected data-i18n="time_last_7d"></option>
-                                <option value="30d" data-i18n="time_last_30d"></option>
-                            </select>
-                            <select data-filter="segment">
-                                <option value="all" data-i18n="analytics_all_users"></option>
-                                <option value="new" data-i18n="analytics_new_users"></option>
-                                <option value="power" data-i18n="analytics_power_users"></option>
-                            </select>
-                            <button class="btn-ghost" data-i18n="btn_apply_filters" data-action="apply-analytics"></button>
-                        </div>
-                        <button class="btn-ghost" data-i18n="btn_export" data-action="export-analytics"></button>
+                        <button class="btn-primary" id="exportAnalyticsBtn" onclick="exportAnalytics()">
+                            <i class="fas fa-download"></i>
+                            <span data-i18n="btn_export">Export Data</span>
+                        </button>
                     </div>
                 </div>
                 <div class="metric-grid">
                     <div class="stat-card mini" data-stat="avg-session">
-                        <span class="stat-label" data-i18n="analytics_stat_avg_session"></span>
-                        <span class="stat-value" data-i18n="stat_value_placeholder"></span>
+                        <span class="stat-label">Average Session Duration</span>
+                        <span class="stat-value">Loading...</span>
+                        <span class="stat-trend positive">+12%</span>
                     </div>
                     <div class="stat-card mini" data-stat="bounce">
-                        <span class="stat-label" data-i18n="analytics_stat_bounce_rate"></span>
-                        <span class="stat-value" data-i18n="stat_value_placeholder"></span>
+                        <span class="stat-label">Bounce Rate</span>
+                        <span class="stat-value">Loading...</span>
+                        <span class="stat-trend positive">-5.2%</span>
                     </div>
                     <div class="stat-card mini" data-stat="conversion">
-                        <span class="stat-label" data-i18n="analytics_stat_conversion"></span>
-                        <span class="stat-value" data-i18n="stat_value_placeholder"></span>
+                        <span class="stat-label">Conversion Rate</span>
+                        <span class="stat-value">Loading...</span>
+                        <span class="stat-trend positive">+1.3%</span>
                     </div>
                     <div class="stat-card mini" data-stat="retention">
-                        <span class="stat-label" data-i18n="analytics_stat_retention"></span>
-                        <span class="stat-value" data-i18n="stat_value_placeholder"></span>
+                        <span class="stat-label">User Retention</span>
+                        <span class="stat-value">Loading...</span>
+                        <span class="stat-trend positive">+7.1%</span>
                     </div>
                 </div>
                 <div class="grid-2">
                     <div class="panel large" data-panel="traffic">
                         <div class="panel-header">
-                            <h2 class="panel-title" data-i18n="analytics_chart_traffic"></h2>
+                            <h2 class="panel-title">Traffic Analytics</h2>
+                            <div class="panel-metric">
+                                <span class="metric-label">ACTIVE USERS</span>
+                                <span class="metric-value" id="traffic-value">Loading...</span>
+                            </div>
                         </div>
-                        <div class="chart-placeholder" data-chart="traffic"><span data-i18n="analytics_chart_placeholder"></span></div>
+                        <div class="chart-placeholder" data-chart="traffic">
+                            <div class="chart-loading">Loading real-time traffic data...</div>
+                        </div>
                     </div>
                     <div class="panel large" data-panel="performance">
                         <div class="panel-header">
-                            <h2 class="panel-title" data-i18n="analytics_chart_performance"></h2>
+                            <h2 class="panel-title">Performance Metrics</h2>
+                            <div class="panel-metric">
+                                <span class="metric-label">RESPONSE TIME</span>
+                                <span class="metric-value" id="performance-value">Loading...</span>
+                            </div>
                         </div>
-                        <div class="chart-placeholder" data-chart="performance"><span data-i18n="analytics_chart_placeholder"></span></div>
+                        <div class="chart-placeholder" data-chart="performance">
+                            <div class="chart-loading">Loading performance metrics...</div>
+                        </div>
                     </div>
                 </div>
                 <div class="grid-2">
                     <div class="panel" data-panel="retention">
                         <div class="panel-header">
-                            <h2 class="panel-title" data-i18n="analytics_chart_retention"></h2>
+                            <h2 class="panel-title">User Retention Analysis</h2>
+                            <div class="panel-metric">
+                                <span class="metric-label">RETENTION RATE</span>
+                                <span class="metric-value" id="retention-value">Loading...</span>
+                            </div>
                         </div>
-                        <div class="chart-placeholder" data-chart="retention"><span data-i18n="analytics_chart_placeholder"></span></div>
+                        <div class="chart-placeholder" data-chart="retention">
+                            <div class="chart-loading">Loading retention analysis...</div>
+                        </div>
                     </div>
                     <div class="panel" data-panel="security-analytics">
                         <div class="panel-header">
-                            <h2 class="panel-title" data-i18n="analytics_chart_security"></h2>
+                            <h2 class="panel-title">Security Analytics</h2>
+                            <div class="panel-metric">
+                                <span class="metric-label">THREAT LEVEL</span>
+                                <span class="metric-value" id="security-value">Loading...</span>
+                            </div>
                         </div>
-                        <div class="chart-placeholder" data-chart="security"><span data-i18n="analytics_chart_placeholder"></span></div>
+                        <div class="chart-placeholder" data-chart="security">
+                            <div class="chart-loading">Loading security analytics...</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -926,20 +955,20 @@
                 <!-- Reports Summary -->
                 <div class="metric-grid reports-summary">
                     <div class="stat-card mini" data-summary="total">
-                        <span class="stat-label" data-i18n="reports_total"></span>
-                        <span class="stat-value" data-i18n="stat_value_placeholder"></span>
+                        <span class="stat-label">Total Reports</span>
+                        <span class="stat-value">Loading...</span>
                     </div>
                     <div class="stat-card mini" data-summary="avg-time">
-                        <span class="stat-label" data-i18n="reports_avg_generation"></span>
-                        <span class="stat-value" data-i18n="stat_value_placeholder"></span>
+                        <span class="stat-label">Average Generation Time</span>
+                        <span class="stat-value">Loading...</span>
                     </div>
                     <div class="stat-card mini" data-summary="success-rate">
-                        <span class="stat-label" data-i18n="reports_success_rate"></span>
-                        <span class="stat-value" data-i18n="stat_value_placeholder"></span>
+                        <span class="stat-label">Success Rate</span>
+                        <span class="stat-value">Loading...</span>
                     </div>
                     <div class="stat-card mini" data-summary="in-queue">
-                        <span class="stat-label" data-i18n="reports_in_queue"></span>
-                        <span class="stat-value" data-i18n="stat_value_placeholder"></span>
+                        <span class="stat-label">Reports in Queue</span>
+                        <span class="stat-value">Loading...</span>
                     </div>
                 </div>
 
@@ -955,15 +984,21 @@
                             <table class="table-tight">
                                 <thead>
                                     <tr>
-                                        <th data-i18n="report_name"></th>
-                                        <th data-i18n="report_category"></th>
-                                        <th data-i18n="creation_time"></th>
-                                        <th data-i18n="file_size"></th>
-                                        <th data-i18n="current_status"></th>
-                                        <th data-i18n="available_actions"></th>
+                                        <th>Report Name</th>
+                                        <th>Category</th>
+                                        <th>Created</th>
+                                        <th>Size</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody data-dynamic="reportsTable"></tbody>
+                                <tbody data-dynamic="reportsTable">
+                                    <tr>
+                                        <td colspan="6" style="text-align: center; color: #6b7280; padding: 20px;">
+                                            Loading reports data...
+                                        </td>
+                                    </tr>
+                                </tbody>
                             </table>
                             <div class="empty-state" data-empty="reportsTable" hidden>
                                 <i class="fas fa-folder-open"></i>
@@ -1025,7 +1060,6 @@
     <script src="scripts/security-systems-browser.js"></script>
     <!-- Existing utilities and i18n (kept after config) -->
     <script src="scripts/utils/secure-storage.js"></script>
-    <script src="scripts/custom-i18n.js"></script>
     <script src="scripts/utils/language-sync.js"></script>
     <script src="scripts/utils/i18n-system.js"></script>
     <script src="scripts/admin-panel-main.js"></script>
@@ -1038,19 +1072,23 @@
                         window.adminPanel = new window.TINIAdminPanel();
                         console.log('🚀 AdminPanel bootstrap initialized');
                     }
-                } catch (e) {
+                } catch ( e ) {
                     console.error('❌ AdminPanel bootstrap error:', e);
                 }
             }
-            if (document.readyState === 'loading') {
+            if ( document.readyState === 'loading' ) {
                 document.addEventListener('DOMContentLoaded', start);
             } else {
                 start();
             }
         })();
     </script>
+    <script src="scripts/professional-data-handler.js"></script>
+    <script src="scripts/demo-bypass.js"></script>
+    <script src="scripts/realtime-charts.js"></script>
 </body>
 </html>
 
 <!-- ST:TINI_1754644960_e868a412 -->
 <!-- ST:TINI_1754716154_e868a412 -->
+<!-- ST:TINI_1754752705_e868a412 -->

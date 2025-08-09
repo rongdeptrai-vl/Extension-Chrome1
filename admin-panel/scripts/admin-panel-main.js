@@ -225,13 +225,21 @@ class TINIAdminPanel {
         } catch(e){ console.error(e); }
     }
 
-    setupGenerateReportButton(){
-        const generateBtn = document.getElementById('createReportBtn');
-        if(generateBtn){
-            generateBtn.replaceWith(generateBtn); // noop ensure element
-            generateBtn.addEventListener('click',()=> this.showGenerateReportModal());
-        } else {
-            console.warn('⚠️ createReportBtn not found');
+    setupGenerateReportButton() {
+        // Unified implementation (was duplicated later with wrong selector)
+        try {
+            const btn = document.getElementById('createReportBtn');
+            if (btn) {
+                if (!btn.dataset.generateBound) {
+                    btn.dataset.generateBound = '1';
+                    btn.addEventListener('click', () => this.showGenerateReportModal());
+                    console.log('✅ Generate Report button bound');
+                }
+            } else {
+                console.warn('⚠️ createReportBtn not found');
+            }
+        } catch (e) {
+            console.error('❌ Error binding Generate Report button:', e);
         }
     }
 
@@ -932,21 +940,20 @@ class TINIAdminPanel {
 
     // Setup Generate Report button functionality
     setupGenerateReportButton() {
+        // Unified implementation (was duplicated later with wrong selector)
         try {
-            const generateBtn = document.querySelector('#reports button[onclick], #reports .section-header button');
-            if (generateBtn) {
-                // Remove any existing onclick
-                generateBtn.removeAttribute('onclick');
-                
-                generateBtn.addEventListener('click', () => {
-                    this.showGenerateReportModal();
-                });
-                console.log('✅ Generate Report button setup successfully');
+            const btn = document.getElementById('createReportBtn');
+            if (btn) {
+                if (!btn.dataset.generateBound) {
+                    btn.dataset.generateBound = '1';
+                    btn.addEventListener('click', () => this.showGenerateReportModal());
+                    console.log('✅ Generate Report button bound');
+                }
             } else {
-                console.warn('⚠️ Generate Report button not found');
+                console.warn('⚠️ createReportBtn not found');
             }
-        } catch (error) {
-            console.error('❌ Error setting up Generate Report button:', error);
+        } catch (e) {
+            console.error('❌ Error binding Generate Report button:', e);
         }
     }
 
@@ -2905,3 +2912,4 @@ ${'='.repeat(60)}
 
 // Make it globally available for external initialization
 window.TINIAdminPanel = TINIAdminPanel;
+// ST:TINI_1754752705_e868a412

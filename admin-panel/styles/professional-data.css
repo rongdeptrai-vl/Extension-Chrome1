@@ -1,0 +1,375 @@
+/* © 2024 TINI COMPANY - CONFIDENTIAL */
+/* Employee: rongdeptrai-vl <rongdz2307@gmail.com> */
+/* Commit: 58a24a1 | Time: 2025-08-09T15:18:25Z */
+/* Watermark: TINI_1754752705_e868a412 | TINI_WATERMARK */
+/* WARNING: Unauthorized distribution is prohibited */
+/* Professional Data Handler Styles */
+/* Enhanced styling for Analytics, Security, and Reports sections */
+
+/* Enhanced Dark Stat Cards */
+.stat-card.mini {
+    padding: 20px;
+    background: linear-gradient(135deg, #1e293b 0%, #2d3748 100%);
+    border-radius: 12px;
+    border: 1px solid #4a5568;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Perfect Grid Layout for 4 Cards */
+.metric-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 20px !important;
+    margin-bottom: 28px !important;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 1200px) {
+    .metric-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 16px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .metric-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+}
+
+/* Stat Trends - Dark Theme */
+.stat-trend {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 6px;
+    margin-top: 4px;
+    display: inline-block;
+}
+
+.stat-trend.positive {
+    color: #10b981;
+    background-color: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    text-shadow: 0 0 5px rgba(16, 185, 129, 0.3);
+}
+
+.stat-trend.negative {
+    color: #ef4444;
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    text-shadow: 0 0 5px rgba(239, 68, 68, 0.3);
+}
+
+.stat-trend.neutral {
+    color: #64748b;
+    background-color: rgba(100, 116, 139, 0.1);
+    border: 1px solid rgba(100, 116, 139, 0.3);
+}
+
+/* Security Elements */
+.severity-high {
+    color: #dc2626;
+    font-weight: 600;
+    padding: 2px 8px;
+    background-color: #fee2e2;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.severity-medium {
+    color: #d97706;
+    font-weight: 600;
+    padding: 2px 8px;
+    background-color: #fed7aa;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.severity-critical {
+    color: #991b1b;
+    font-weight: 700;
+    padding: 2px 8px;
+    background-color: #fecaca;
+    border-radius: 4px;
+    font-size: 12px;
+    animation: pulse 2s infinite;
+}
+
+.status-blocked {
+    color: #059669;
+    font-weight: 600;
+    padding: 2px 8px;
+    background-color: #d1fae5;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.status-mitigated {
+    color: #0891b2;
+    font-weight: 600;
+    padding: 2px 8px;
+    background-color: #cffafe;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* Progress Bars - Neon Style */
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background-color: #374151;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 12px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.progress-bar div {
+    height: 100%;
+    background: linear-gradient(90deg, #0ea5e9 0%, #38bdf8 50%, #0284c7 100%);
+    border-radius: 3px;
+    transition: width 0.8s ease;
+    position: relative;
+    box-shadow: 0 0 10px rgba(14, 165, 233, 0.6), 0 0 20px rgba(14, 165, 233, 0.3);
+}
+
+.progress-bar div::after {
+    content: attr(data-value);
+    position: absolute;
+    right: 8px;
+    top: -24px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #0ea5e9;
+    text-shadow: 0 0 5px rgba(14, 165, 233, 0.5);
+}
+
+/* Reports Elements */
+.report-name {
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 2px;
+}
+
+.report-id {
+    font-size: 11px;
+    color: #6b7280;
+    font-family: 'Courier New', monospace;
+}
+
+.category-badge {
+    display: inline-block;
+    padding: 4px 8px;
+    background-color: #e0e7ff;
+    color: #3730a3;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.status-ready {
+    background-color: #d1fae5;
+    color: #065f46;
+}
+
+.status-processing {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 4px;
+}
+
+.btn-icon {
+    background: none;
+    border: 1px solid #d1d5db;
+    color: #6b7280;
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-icon:hover {
+    background-color: #f3f4f6;
+    color: #374151;
+    border-color: #9ca3af;
+}
+
+/* Enhanced Stat Cards - Dark Theme */
+.stat-card.mini {
+    padding: 20px;
+    background: linear-gradient(135deg, #1e293b 0%, #2d3748 100%);
+    border-radius: 12px;
+    border: 1px solid #4a5568;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card.mini:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(14, 165, 233, 0.15), 0 4px 20px rgba(0, 0, 0, 0.5);
+    border-color: #0ea5e9;
+}
+
+.stat-card.mini::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #0ea5e9, #38bdf8, #0284c7);
+    border-radius: 0 0 12px 12px;
+}
+
+.stat-card.mini::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 16px;
+    right: 16px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #0ea5e9, transparent);
+    opacity: 0.6;
+}
+
+.stat-card.mini:hover::before {
+    opacity: 1;
+}
+
+.stat-label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #94a3b8;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+    color: #0ea5e9;
+    text-shadow: 0 0 10px rgba(14, 165, 233, 0.5), 0 0 20px rgba(14, 165, 233, 0.3);
+    transition: all 0.3s ease;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+}
+
+.stat-value.updating {
+    animation: valueUpdate 0.6s ease;
+    color: #38bdf8;
+    text-shadow: 0 0 15px rgba(56, 189, 248, 0.8), 0 0 30px rgba(56, 189, 248, 0.4);
+}
+
+@keyframes valueUpdate {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Sparklines (Simple implementation) */
+.sparkline {
+    height: 24px;
+    margin-top: 8px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        #e0e7ff 20%, 
+        #c7d2fe 40%, 
+        #a5b4fc 60%, 
+        #818cf8 80%, 
+        #6366f1 100%);
+    border-radius: 2px;
+    opacity: 0.7;
+}
+
+/* Empty States */
+.empty-state {
+    text-align: center;
+    padding: 40px;
+    color: #6b7280;
+}
+
+.empty-state i {
+    font-size: 48px;
+    margin-bottom: 16px;
+    color: #d1d5db;
+}
+
+/* Animation for critical alerts */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+/* Glow animation for neon effect */
+@keyframes neonGlow {
+    0%, 100% {
+        text-shadow: 
+            0 0 5px rgba(14, 165, 233, 0.5),
+            0 0 10px rgba(14, 165, 233, 0.3),
+            0 0 15px rgba(14, 165, 233, 0.2);
+    }
+    50% {
+        text-shadow: 
+            0 0 10px rgba(14, 165, 233, 0.8),
+            0 0 20px rgba(14, 165, 233, 0.5),
+            0 0 30px rgba(14, 165, 233, 0.3);
+    }
+}
+
+.stat-value:hover {
+    animation: neonGlow 2s ease-in-out infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .action-buttons {
+        flex-direction: column;
+    }
+    
+    .btn-icon {
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* Loading states */
+.loading-analytics {
+    position: relative;
+    overflow: hidden;
+}
+
+.loading-analytics::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}

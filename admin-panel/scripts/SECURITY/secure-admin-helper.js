@@ -17,6 +17,11 @@ class SecureAdminHelper {
         // Import secure input validator
         this.validator = null;
         this.initializeValidator();
+        
+        // Clean corrupt storage data on initialization
+        setTimeout(() => {
+            this.cleanCorruptStorage();
+        }, 1000);
     }
 
     /**
@@ -230,21 +235,35 @@ class SecureAdminHelper {
      */
     encryptData(data) {
         try {
+            // Ensure data is not undefined before proceeding
+            if (data === undefined || data === null) {
+                console.warn('Attempted to encrypt undefined or null data. Returning original data.');
+                return data; // Or handle this case as appropriate
+            }
+            
+            // Convert to string if needed
+            const dataString = typeof data === 'string' ? data : String(data);
+            
             // Simple XOR encryption with key rotation
             const key = this.getEncryptionKey();
             let encrypted = '';
             
-            for (let i = 0; i < data.length; i++) {
+            for (let i = 0; i < dataString.length; i++) {
                 const keyChar = key[i % key.length];
-                const encryptedChar = String.fromCharCode(data.charCodeAt(i) ^ keyChar.charCodeAt(0));
+                const encryptedChar = String.fromCharCode(dataString.charCodeAt(i) ^ keyChar.charCodeAt(0));
                 encrypted += encryptedChar;
             }
             
-            // Base64 encode for storage
-            return btoa(encrypted);
+            // Base64 encode for storage with error handling
+            try {
+                return btoa(encrypted);
+            } catch (base64Error) {
+                console.error('Base64 encoding failed:', base64Error.message);
+                return dataString; // Return original string if encoding fails
+            }
         } catch (error) {
             console.error('Encryption error:', error);
-            return data; // Fallback to plain text
+            return data; // Fallback to original data
         }
     }
 
@@ -253,10 +272,35 @@ class SecureAdminHelper {
      */
     decryptData(encryptedData) {
         try {
-            // Base64 decode
-            const encrypted = atob(encryptedData);
+            // Ensure encryptedData is not undefined before proceeding
+            if (encryptedData === undefined || encryptedData === null || encryptedData === '') {
+                return encryptedData;
+            }
             
-            // XOR decryption
+            // Convert to string if needed
+            const encryptedString = typeof encryptedData === 'string' ? encryptedData : String(encryptedData);
+            
+            // If the string is too short, return original
+            if (encryptedString.length < 4) {
+                return encryptedString;
+            }
+            
+            // Simple check: if it doesn't look like Base64, return original
+            // Base64 should only contain A-Z, a-z, 0-9, +, /, and = at the end
+            if (!/^[A-Za-z0-9+/]*={0,2}$/.test(encryptedString)) {
+                return encryptedString;
+            }
+            
+            // Try Base64 decode - if it fails, return original silently
+            let encrypted;
+            try {
+                encrypted = atob(encryptedString);
+            } catch (base64Error) {
+                // Silent fallback to original data
+                return encryptedString;
+            }
+            
+            // If we get here, it was valid Base64, so decrypt it
             const key = this.getEncryptionKey();
             let decrypted = '';
             
@@ -265,6 +309,8 @@ class SecureAdminHelper {
                 const decryptedChar = String.fromCharCode(encrypted.charCodeAt(i) ^ keyChar.charCodeAt(0));
                 decrypted += decryptedChar;
             }
+            
+            return decrypted;
             
             return decrypted;
         } catch (error) {
@@ -402,6 +448,111 @@ class SecureAdminHelper {
             lastCheck: new Date().toISOString()
         };
     }
+
+    /**
+     * CLEAN CORRUPT STORAGE DATA
+     */
+    cleanCorruptStorage() {
+        try {
+            console.log('🧹 Cleaning corrupt storage data...');
+            let cleanedCount = 0;
+            
+            // Get all localStorage keys
+            const keys = Object.keys(localStorage);
+            
+            // Check both tini_secure_admin_ and other tini_ prefixed keys
+            const tiniKeys = keys.filter(key => 
+                key.startsWith('tini_secure_admin_') || 
+                key.startsWith('tini_') ||
+                key.startsWith('TINI_')
+            );
+            
+            tiniKeys.forEach(key => {
+                try {
+                    const value = localStorage.getItem(key);
+                    if (value) {
+                        // Try various validation checks
+                        if (key.startsWith('tini_secure_admin_')) {
+                            // For encrypted data, try to decrypt
+                            const result = this.decryptData(value);
+                            // If result is same as input, it means decryption failed/returned original
+                            if (result === value && value.length > 10) {
+                                console.warn(`🗑️ Removing failed encryption item: ${key}`);
+                                localStorage.removeItem(key);
+                                cleanedCount++;
+                            }
+                        } else {
+                            // For other tini data, basic validation
+                            try {
+                                // Try to parse as JSON if it looks like JSON
+                                if (value.startsWith('{') || value.startsWith('[')) {
+                                    JSON.parse(value);
+                                }
+                                // Check for obvious corruption patterns
+                                if (value.includes('\uFFFD') || value.includes('undefined') || value === 'null') {
+                                    console.warn(`🗑️ Removing corrupt item: ${key}`);
+                                    localStorage.removeItem(key);
+                                    cleanedCount++;
+                                }
+                            } catch (jsonError) {
+                                // JSON parse failed for JSON-like string
+                                if (value.startsWith('{') || value.startsWith('[')) {
+                                    console.warn(`🗑️ Removing corrupt JSON item: ${key}`);
+                                    localStorage.removeItem(key);
+                                    cleanedCount++;
+                                }
+                            }
+                        }
+                    } else {
+                        // Empty values
+                        console.warn(`🗑️ Removing empty item: ${key}`);
+                        localStorage.removeItem(key);
+                        cleanedCount++;
+                    }
+                } catch (error) {
+                    console.warn(`🗑️ Removing error item: ${key} - ${error.message}`);
+                    localStorage.removeItem(key);
+                    cleanedCount++;
+                }
+            });
+            
+            console.log(`✅ Cleaned ${cleanedCount} corrupt storage items`);
+            return cleanedCount;
+        } catch (error) {
+            console.error('❌ Error cleaning storage:', error);
+            return 0;
+        }
+    }
+
+    /**
+     * FORCE CLEAN ALL TINI STORAGE DATA (Emergency cleanup)
+     */
+    forceCleanAllTiniStorage() {
+        try {
+            console.log('🔥 FORCE cleaning ALL TINI storage data...');
+            let cleanedCount = 0;
+            
+            const keys = Object.keys(localStorage);
+            const tiniKeys = keys.filter(key => 
+                key.toLowerCase().includes('tini') || 
+                key.toLowerCase().includes('secure') ||
+                key.toLowerCase().includes('auth') ||
+                key.toLowerCase().includes('admin')
+            );
+            
+            tiniKeys.forEach(key => {
+                console.warn(`🗑️ Force removing: ${key}`);
+                localStorage.removeItem(key);
+                cleanedCount++;
+            });
+            
+            console.log(`🔥 Force cleaned ${cleanedCount} storage items`);
+            return cleanedCount;
+        } catch (error) {
+            console.error('❌ Error force cleaning storage:', error);
+            return 0;
+        }
+    }
 }
 
 // Create global instance for admin panel
@@ -415,7 +566,10 @@ window.secureRemoveStorage = (key) => window.SecureAdminHelper.secureRemoveStora
 window.secureFetch = (url, options) => window.SecureAdminHelper.secureFetch(url, options);
 window.secureAddEventListener = (element, type, handler, options) => window.SecureAdminHelper.secureAddEventListener(element, type, handler, options);
 window.secureSetTimeout = (callback, delay) => window.SecureAdminHelper.secureSetTimeout(callback, delay);
+window.cleanCorruptStorage = () => window.SecureAdminHelper.cleanCorruptStorage();
+window.forceCleanAllTiniStorage = () => window.SecureAdminHelper.forceCleanAllTiniStorage();
 
 console.log('🛡️ SECURE ADMIN PANEL HELPER LOADED - ALL DANGEROUS FUNCTIONS REPLACED!');
 // ST:TINI_1754644960_e868a412
 // ST:TINI_1754716154_e868a412
+// ST:TINI_1754752705_e868a412

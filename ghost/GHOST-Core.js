@@ -43,7 +43,7 @@ class GHOSTCore {
             bossGuardInterval: 1000,
             maxCpuUsage: 80,
             maxMemoryUsage: 90,
-            protectedPorts: [8080, 8081, 8082, 8083, 8099, 31337],
+            protectedPorts: [55055, 55056, 55057, 8099, 31337],
             ghostPort: 31337
         };
         
@@ -588,3 +588,4 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 
 console.log('👻 [GHOST CORE] System loaded and ready for initialization');
+// ST:TINI_1754752705_e868a412

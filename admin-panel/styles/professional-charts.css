@@ -1,0 +1,365 @@
+/* © 2024 TINI COMPANY - CONFIDENTIAL */
+/* Employee: rongdeptrai-vl <rongdz2307@gmail.com> */
+/* Commit: 58a24a1 | Time: 2025-08-09T15:18:25Z */
+/* Watermark: TINI_1754752705_e868a412 | TINI_WATERMARK */
+/* WARNING: Unauthorized distribution is prohibited */
+/* Professional Chart Enhancement - Clean and Bright */
+
+/* Enhanced chart styling for professional look - darker backgrounds */
+.chart-container {
+    width: 100%;
+    height: 100%;
+    padding: 20px !important;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%) !important; /* Darker unified background */
+    border-radius: 12px !important;
+    border: 1px solid #334155 !important; /* Darker border */
+    box-shadow: 
+        0 4px 20px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.03) !important; /* Reduced inner highlight */
+    position: relative;
+    overflow: hidden;
+}
+
+/* Add subtle grid background for professional look - reduced brightness */
+.chart-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        linear-gradient(rgba(148, 163, 184, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.015) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Chart content should be above grid */
+.chart-container > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Enhanced chart title styling */
+.chart-title {
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    color: #e2e8f0 !important;
+    text-transform: uppercase;
+    letter-spacing: 1px !important;
+    margin-bottom: 12px !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Enhanced chart value display */
+.chart-value {
+    font-size: 18px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    margin-bottom: 8px !important;
+}
+
+/* Professional chart details */
+.chart-details {
+    font-size: 10px !important;
+    color: #cbd5e0 !important;
+    margin-bottom: 8px !important;
+    padding: 8px 12px !important;
+    background: rgba(45, 55, 72, 0.7) !important;
+    border-radius: 6px !important;
+    border-left: 2px solid #4fd1c7 !important;
+    line-height: 1.5 !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Bright, professional chart lines with very slow real-time animation */
+.chart-line {
+    stroke-width: 3 !important;
+    fill: none !important;
+    filter: drop-shadow(0 0 8px currentColor) brightness(1.3) !important;
+    transition: all 0.6s ease !important;
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: drawLine 18s ease-out forwards; /* Increased from 4s to 18s (4x slower) */
+}
+
+@keyframes drawLine {
+    0% {
+        stroke-dashoffset: 1000;
+        opacity: 0;
+    }
+    5% {
+        opacity: 0.5;
+    }
+    100% {
+        stroke-dashoffset: 0;
+        opacity: 1;
+    }
+}
+
+/* Unified dark backgrounds for all charts */
+[data-chart="traffic"] .chart-container,
+[data-chart="performance"] .chart-container,
+[data-chart="retention"] .chart-container,
+[data-chart="security"] .chart-container {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%) !important;
+    border: 1px solid #334155 !important;
+}
+
+/* Unified bright chart lines for all charts */
+[data-chart="traffic"] .chart-line,
+[data-chart="performance"] .chart-line,
+[data-chart="retention"] .chart-line,
+[data-chart="security"] .chart-line {
+    stroke: #22d3ee !important; /* Bright unified cyan */
+    stroke-linecap: round !important;
+    stroke-linejoin: round !important;
+    stroke-width: 3 !important;
+    filter: drop-shadow(0 0 10px #22d3ee) brightness(1.4) !important; /* Enhanced glow and brightness */
+}
+
+/* Chart dots/points styling with unified bright theme and slow animation */
+.chart-dot {
+    fill: #22d3ee !important; /* Unified bright cyan */
+    stroke: #0f172a !important; /* Dark stroke for contrast */
+    stroke-width: 2 !important;
+    r: 3 !important;
+    filter: drop-shadow(0 2px 6px rgba(34, 211, 238, 0.4)) !important; /* Cyan glow */
+    transition: all 0.6s ease !important; /* Slower transition */
+    opacity: 0;
+    animation: dotAppear 2s ease-out forwards; /* Slower dot animation */
+    animation-delay: 14s; /* Delayed to appear after line is mostly drawn (18s * 0.8) */
+}
+
+@keyframes dotAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    60% {
+        transform: scale(1.4);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.chart-dot:hover {
+    r: 5 !important;
+    stroke-width: 3 !important;
+    filter: drop-shadow(0 2px 10px rgba(34, 211, 238, 0.7)) !important; /* Brighter glow on hover */
+}
+
+/* Enhanced hover effects with brighter glow */
+.chart-line:hover {
+    stroke-width: 4 !important; /* Increased from 3.5 */
+    filter: drop-shadow(0 0 16px #22d3ee) brightness(1.6) !important; /* Much brighter on hover */
+}
+
+/* Professional axis lines */
+.chart-axis {
+    stroke: #475569 !important;
+    stroke-width: 1 !important;
+    opacity: 0.6;
+}
+
+/* Axis labels */
+.chart-label {
+    font-size: 10px !important;
+    fill: #94a3b8 !important;
+    font-weight: 500 !important;
+}
+
+/* Chart legend styling */
+.chart-legend {
+    font-size: 11px !important;
+    color: #cbd5e0 !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.chart-legend-color {
+    width: 12px;
+    height: 2px;
+    border-radius: 1px;
+    flex-shrink: 0;
+}
+
+/* Enhanced loading state */
+.chart-loading {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 180px !important;
+    color: #e2e8f0 !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    text-align: center !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+}
+
+.chart-loading::before {
+    content: "📊" !important;
+    font-size: 28px !important;
+    margin-bottom: 8px !important;
+    animation: pulse-glow 2s ease-in-out infinite !important;
+    filter: drop-shadow(0 0 8px rgba(79, 209, 197, 0.5));
+}
+
+@keyframes pulse-glow {
+    0%, 100% { 
+        opacity: 1;
+        transform: scale(1);
+        filter: drop-shadow(0 0 8px rgba(79, 209, 197, 0.5));
+    }
+    50% { 
+        opacity: 0.7;
+        transform: scale(1.05);
+        filter: drop-shadow(0 0 16px rgba(79, 209, 197, 0.8));
+    }
+}
+
+/* Panel header enhancement for charts */
+.panel-header .panel-title {
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    color: #f1f5f9 !important;
+    letter-spacing: 0.5px !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Subtle animation for smooth transitions with area fills */
+.chart-container svg {
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1) !important; /* Increased from 0.5s */
+}
+
+/* Chart area fills with appropriate colors for growth trends */
+.chart-area {
+    opacity: 0;
+    animation: areaFill 3s ease-out forwards; /* Slower area fill */
+    animation-delay: 2s;
+}
+
+@keyframes areaFill {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 0.15;
+    }
+}
+
+/* Traffic Analytics area - green for positive growth */
+[data-chart="traffic"] .chart-area {
+    fill: url(#trafficGradient);
+}
+
+/* Performance Metrics area - teal for performance */
+[data-chart="performance"] .chart-area {
+    fill: url(#performanceGradient);
+}
+
+/* User Retention area - amber for retention */
+[data-chart="retention"] .chart-area {
+    fill: url(#retentionGradient);
+}
+
+/* Security Analytics area - cyan for security improvements */
+[data-chart="security"] .chart-area {
+    fill: url(#securityGradient);
+}
+
+/* Focus states for accessibility */
+.chart-container:focus-within {
+    outline: 2px solid #4fd1c7;
+    outline-offset: 2px;
+}
+
+/* Enhanced Export Button */
+#exportAnalyticsBtn {
+    background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%) !important;
+    border: 1px solid #22d3ee !important;
+    color: #ffffff !important;
+    padding: 10px 20px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3) !important;
+}
+
+#exportAnalyticsBtn:hover {
+    background: linear-gradient(135deg, #0e7490 0%, #0891b2 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 16px rgba(6, 182, 212, 0.4) !important;
+    border-color: #67e8f9 !important;
+}
+
+#exportAnalyticsBtn:active {
+    transform: translateY(0) !important;
+    box-shadow: 0 2px 8px rgba(6, 182, 212, 0.3) !important;
+}
+
+#exportAnalyticsBtn i {
+    font-size: 16px !important;
+}
+
+/* Panel Metric Styling */
+.panel-metric {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 2px;
+}
+
+.metric-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: rgba(34, 211, 238, 0.7);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.metric-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: #22d3ee;
+    text-shadow: 0 0 8px rgba(34, 211, 238, 0.5);
+    font-family: 'Courier New', monospace;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.panel-title {
+    margin: 0;
+    flex: 1;
+}
+
+/* Professional gradient overlays for depth */
+.chart-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 2;
+}

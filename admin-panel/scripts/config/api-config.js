@@ -3,8 +3,8 @@
 // Commit: 55548f4 | Time: 2025-08-08T06:33:01Z
 // Watermark: TINI_1754634781_e868a412 | TINI_WATERMARK
 // WARNING: Unauthorized distribution is prohibited
-const API_CONFIG = {
-    BASE_URL: process.env.API_URL || 'http://localhost:8080/api',
+export const API_CONFIG = {
+    BASE_URL: process.env.API_URL || `http://localhost:${process.env.PORT || process.env.PANEL_PORT || 55055}/api`,
     ENDPOINTS: {
         SAVE_LANGUAGE: '/save-language',
         LOAD_PROFILE: '/load-profile',
@@ -34,3 +34,4 @@ function getApiUrl(endpoint) {
 // Export configuration
 window.API_CONFIG = API_CONFIG;
 window.getApiUrl = getApiUrl;
+// ST:TINI_1754752705_e868a412

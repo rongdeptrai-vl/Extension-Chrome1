@@ -1,0 +1,153 @@
+/* © 2024 TINI COMPANY - CONFIDENTIAL */
+/* Employee: rongdeptrai-vl <rongdz2307@gmail.com> */
+/* Commit: 58a24a1 | Time: 2025-08-09T15:18:25Z */
+/* Watermark: TINI_1754752705_e868a412 | TINI_WATERMARK */
+/* WARNING: Unauthorized distribution is prohibited */
+/* Enhanced Full Screen Analytics Layout */
+/* Optimized for large displays and full screen viewing */
+
+/* Full screen optimization for Analytics section */
+#analytics .grid-2 {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 20px !important; /* Reduced gap to fit better */
+    margin-bottom: 20px !important; /* Reduced margin */
+    width: 100% !important;
+}
+
+/* Enhanced panel sizing for full screen - optimized heights */
+#analytics .panel.large {
+    min-height: 320px !important; /* Reduced height to fit in viewport */
+    width: 100% !important;
+    border-radius: 8px !important; /* Smaller radius */
+    border: 1px solid var(--border) !important; /* Thinner border */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important; /* Lighter shadow */
+    margin: 0 !important; /* Remove any extra margin */
+}
+
+#analytics .panel {
+    min-height: 300px !important; /* Reduced height for bottom panels */
+    width: 100% !important;
+    border-radius: 8px !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    margin: 0 !important; /* Remove any extra margin */
+}
+
+/* Enhanced chart placeholder for better visibility */
+#analytics .chart-placeholder {
+    height: auto !important;
+    min-height: 240px !important; /* Reduced chart area to fit */
+    padding: 16px !important; /* Reduced padding */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    color: var(--text-secondary) !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+    border: 1px dashed var(--border) !important; /* Thinner dashed border */
+    border-radius: 6px !important; /* Smaller radius */
+    margin: 8px !important; /* Reduced margin */
+    transition: all 0.3s ease !important;
+}
+
+/* Enhanced panel headers */
+#analytics .panel-header {
+    padding: 16px 20px !important; /* Reduced padding */
+    border-bottom: 1px solid var(--border) !important; /* Thinner bottom border */
+}
+
+#analytics .panel-title {
+    font-size: 16px !important; /* Standard title size */
+    font-weight: 600 !important; /* Normal weight */
+    letter-spacing: 0.3px !important; /* Reduced letter spacing */
+}
+
+/* Enhanced metric grid for top section */
+#analytics .metric-grid {
+    display: grid !important;
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 20px !important; /* Reduced gap to fit better */
+    margin-bottom: 24px !important; /* Reduced space below */
+    width: 100% !important;
+}
+
+#analytics .stat-card.mini {
+    padding: 16px !important; /* Standard padding */
+    border-radius: 8px !important;
+    border: 1px solid var(--border) !important; /* Standard border */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08) !important; /* Lighter shadow */
+    margin: 0 !important; /* Remove any extra margin */
+}
+
+#analytics .stat-label {
+    font-size: 12px !important; /* Standard label text */
+    font-weight: 600 !important;
+    margin-bottom: 8px !important;
+}
+
+#analytics .stat-value {
+    font-size: 24px !important; /* Standard value text */
+    font-weight: 700 !important;
+    margin-bottom: 6px !important;
+}
+
+#analytics .stat-trend {
+    font-size: 11px !important; /* Standard trend text */
+    font-weight: 600 !important;
+}
+
+/* Ensure content section takes full available space without overflow */
+#analytics.content-section {
+    width: 100% !important;
+    height: calc(100vh - 120px) !important; /* Account for header height */
+    padding: 20px !important; /* Reduced consistent padding */
+    overflow-y: auto !important; /* Allow scroll if needed */
+    box-sizing: border-box !important;
+}
+
+/* Remove excessive spacing and borders */
+#analytics * {
+    box-sizing: border-box !important;
+}
+
+/* Optimize for viewport fit */
+@media (max-height: 768px) {
+    #analytics .panel.large {
+        min-height: 280px !important;
+    }
+    
+    #analytics .panel {
+        min-height: 260px !important;
+    }
+    
+    #analytics .chart-placeholder {
+        min-height: 200px !important;
+        padding: 12px !important;
+    }
+    
+    #analytics .metric-grid {
+        gap: 16px !important;
+        margin-bottom: 16px !important;
+    }
+    
+    #analytics .grid-2 {
+        gap: 16px !important;
+        margin-bottom: 16px !important;
+    }
+}
+
+/* Enhanced loading states */
+#analytics .chart-loading {
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    color: var(--text-secondary) !important;
+    opacity: 0.8;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}

@@ -26,9 +26,9 @@ function getApiUrl(endpoint) {
 
 class I18nSystem {
     constructor() {
-        this.currentLanguage = window.secureStorage.get('adminLanguage', 'zh');
+        this.currentLanguage = window.secureStorage.get('adminLanguage', 'en');
         this.translations = {};
-        this.fallbackLanguage = 'zh';
+        this.fallbackLanguage = 'en';
         this.apiConfig = window.API_CONFIG || DEFAULT_API_CONFIG;
         this.initialized = false;
         try {
@@ -66,9 +66,8 @@ class I18nSystem {
                         this.translations[this.currentLanguage][key] = chromeMessage;
                     }
                 });
-            } else if (window.tiniI18n) {
+            } else if (window.tiniI18n && typeof window.tiniI18n.getMessage === 'function') {
                 this.provider = 'tini';
-                // Keep our translations as fallback for tiniI18n
             } else {
                 this.provider = 'custom';
             }
@@ -241,7 +240,10 @@ class I18nSystem {
                 case 'chrome':
                     return chrome.i18n.getMessage(key, substitutions);
                 case 'tini':
-                    return window.tiniI18n.getMessage(key, substitutions);
+                    if (window.tiniI18n && typeof window.tiniI18n.getMessage === 'function') {
+                        return window.tiniI18n.getMessage(key, substitutions);
+                    }
+                    return this.getCustomMessage(key, substitutions);
                 case 'custom':
                     return this.getCustomMessage(key, substitutions);
                 default:
@@ -268,12 +270,25 @@ class I18nSystem {
     // Helper method to update UI elements
     updateElements(elements, keyAttribute = 'data-i18n-key') {
         elements.forEach(element => {
-            const key = element.getAttribute(keyAttribute);
+            const key = element.getAttribute(keyAttribute) || element.getAttribute('data-i18n');
             if (key) {
                 const translation = this.getMessage(key);
                 if (translation) {
-                    if (element.tagName === 'INPUT' && element.type === 'placeholder') {
-                        element.placeholder = translation;
+                    // Placeholder support
+                    if (element.hasAttribute('data-i18n-placeholder')) {
+                        const phKey = element.getAttribute('data-i18n-placeholder');
+                        const phVal = this.getMessage(phKey);
+                        if (phVal && element.placeholder !== undefined) element.placeholder = phVal;
+                    }
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        if (!element.hasAttribute('data-i18n-placeholder')) {
+                            // If key intended for placeholder
+                            if (element.type !== 'button' && element.placeholder !== undefined) {
+                                element.placeholder = translation;
+                            } else {
+                                element.value = translation;
+                            }
+                        }
                     } else {
                         element.textContent = translation;
                     }
@@ -284,12 +299,15 @@ class I18nSystem {
 
     // Refresh all translations in the UI
     refreshUI() {
-        const elements = document.querySelectorAll('[data-i18n-key]');
-        this.updateElements(elements);
-
-        window.dispatchEvent(new CustomEvent('i18n:refreshed', {
-            detail: { language: this.currentLanguage }
-        }));
+        const elements = document.querySelectorAll('[data-i18n],[data-i18n-key]');
+        this.updateElements(elements, 'data-i18n-key');
+        // Apply placeholders separately
+        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+            const k = el.getAttribute('data-i18n-placeholder');
+            const t = this.getMessage(k);
+            if (t && el.placeholder !== undefined) el.placeholder = t;
+        });
+        window.dispatchEvent(new CustomEvent('i18n:refreshed', { detail: { language: this.currentLanguage } }));
     }
 
     getFallbackTranslations() {
@@ -404,3 +422,4 @@ class I18nSystem {
     }
 })();
 // ST:TINI_1754716154_e868a412
+// ST:TINI_1754752705_e868a412

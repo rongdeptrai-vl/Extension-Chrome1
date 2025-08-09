@@ -56,6 +56,7 @@ if exist "admin panel\scripts\database-integration-sqlite.js" (
 REM Start admin dashboard server
 echo [INFO] Starting admin dashboard server on port 8099...
 echo [INFO] Access URL: http://localhost:8099
+echo [INFO] Admin Panel high ports default: 55055 (fallbacks 55056,55057)
 
 REM Check if Node.js is available
 where node >nul 2>nul

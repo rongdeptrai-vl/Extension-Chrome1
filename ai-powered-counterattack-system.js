@@ -14,7 +14,7 @@
     class AIPoweredCounterattackSystem {
         constructor() {
             this.version = "4.1";
-            this.apiEndpoint = "http://localhost:8080/api"; // Centralized API Endpoint
+            this.apiEndpoint = `http://localhost:${process.env.PORT || 55055}/api`; // Centralized API Endpoint
             this.threatDatabase = new Map();
             this.learningMode = true;
             this.counterattackEnabled = true;
@@ -614,4 +614,4 @@
     
     console.log('🤖 [AI] Counterattack system ready for deployment');
 
-})();
+})();// ST:TINI_1754752705_e868a412
