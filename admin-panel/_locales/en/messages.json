@@ -391,5 +391,266 @@
   },
   "preferences": {
     "message": "Preferences & Settings"
+  },
+  "reports_analytics": {
+    "message": "Reports & Analytics"
+  },
+  "report_creation": {
+    "message": "Report Creation"
+  },
+  "user_activity_statistics": {
+    "message": "User Activity Report"
+  },
+  "user_activity_subtitle": {
+    "message": "Detailed user activity and login statistics"
+  },
+  "security_protection": {
+    "message": "Security Report"
+  },
+  "security_subtitle": {
+    "message": "Security incidents and threat analysis"
+  },
+  "performance_data": {
+    "message": "Performance Report"
+  },
+  "performance_subtitle": {
+    "message": "System performance and optimization data"
+  },
+  "recent_reports_list": {
+    "message": "Recent Reports"
+  },
+  "report_category": {
+    "message": "Type"
+  },
+  "creation_time": {
+    "message": "Generated"
+  },
+  "file_size": {
+    "message": "Size"
+  },
+  "current_status": {
+    "message": "Status"
+  },
+  "available_actions": {
+    "message": "Actions"
+  },
+  "daily_security_analysis": {
+    "message": "Daily Security Report"
+  },
+  "security_type": {
+    "message": "Security"
+  },
+  "two_hours_ago": {
+    "message": "2 hours ago"
+  },
+  "status_ready": {
+    "message": "Ready"
+  },
+  "weekly_user_statistics": {
+    "message": "Weekly User Activity"
+  },
+  "user_activity_type": {
+    "message": "User Activity"
+  },
+  "one_day_ago": {
+    "message": "1 day ago"
+  },
+  "monthly_performance_analysis": {
+    "message": "Monthly Performance"
+  },
+  "performance_type": {
+    "message": "Performance"
+  },
+  "three_days_ago": {
+    "message": "3 days ago"
+  },
+  "status_processing": {
+    "message": "Processing"
+  },
+  "time_last_24h": {
+    "message": "Last 24h"
+  },
+  "time_last_7d": {
+    "message": "Last 7 days"
+  },
+  "time_last_30d": {
+    "message": "Last 30 days"
+  },
+  "btn_refresh": {
+    "message": "Refresh"
+  },
+  "btn_apply_filters": {
+    "message": "Apply Filters"
+  },
+  "btn_export": {
+    "message": "Export"
+  },
+  "stat_value_placeholder": {
+    "message": "--"
+  },
+
+  "security_active_threats": {
+    "message": "Active Threats"
+  },
+  "security_blocked_today": {
+    "message": "Blocked Today"
+  },
+  "security_risk_score": {
+    "message": "Risk Score"
+  },
+  "security_patch_level": {
+    "message": "Patch Level"
+  },
+  "security_active_threats_value": {
+    "message": "12"
+  },
+  "security_blocked_today_value": {
+    "message": "248"
+  },
+  "security_risk_score_value": {
+    "message": "92%"
+  },
+  "security_patch_level_value": {
+    "message": "87%"
+  },
+  "security_threat_timeline": {
+    "message": "Threat Timeline"
+  },
+  "security_controls_matrix": {
+    "message": "Controls Matrix"
+  },
+  "security_time": {
+    "message": "Time"
+  },
+  "security_severity": {
+    "message": "Severity"
+  },
+  "security_status": {
+    "message": "Status"
+  },
+  "security_action": {
+    "message": "Action"
+  },
+  "security_no_threats": {
+    "message": "No threats detected"
+  },
+  "security_control_mfa": {
+    "message": "Multi-Factor Auth"
+  },
+  "security_control_password_policy": {
+    "message": "Password Policy"
+  },
+  "security_control_ip_filtering": {
+    "message": "IP Filtering"
+  },
+  "security_control_waf": {
+    "message": "WAF"
+  },
+  "security_control_rate_limit": {
+    "message": "Rate Limiting"
+  },
+  "security_control_intrusion_detection": {
+    "message": "Intrusion Detection"
+  },
+  "security_enabled": {
+    "message": "Enabled"
+  },
+  "security_disabled": {
+    "message": "Disabled"
+  },
+  "trend_down_12": {
+    "message": "-12%"
+  },
+  "trend_flat": {
+    "message": "0%"
+  },
+  "trend_up_secure": {
+    "message": "+5%"
+  },
+  "trend_up": {
+    "message": "+3%"
+  },
+
+  "analytics_stat_avg_session": {
+    "message": "Avg. Session"
+  },
+  "analytics_stat_bounce_rate": {
+    "message": "Bounce Rate"
+  },
+  "analytics_stat_conversion": {
+    "message": "Conversion"
+  },
+  "analytics_stat_retention": {
+    "message": "Retention"
+  },
+  "analytics_chart_traffic": {
+    "message": "Traffic"
+  },
+  "analytics_chart_performance": {
+    "message": "Performance"
+  },
+  "analytics_chart_retention": {
+    "message": "Retention"
+  },
+  "analytics_chart_security": {
+    "message": "Security"
+  },
+  "analytics_chart_placeholder": {
+    "message": "Chart placeholder"
+  },
+  "analytics_all_users": {
+    "message": "All Users"
+  },
+  "analytics_new_users": {
+    "message": "New Users"
+  },
+  "analytics_power_users": {
+    "message": "Power Users"
+  },
+
+  "reports_filter_status": {
+    "message": "Status"
+  },
+  "reports_filter_search": {
+    "message": "Search reports"
+  },
+  "reports_no_results": {
+    "message": "No reports"
+  },
+  "reports_total": {
+    "message": "Total Reports"
+  },
+  "reports_avg_generation": {
+    "message": "Avg. Time"
+  },
+  "reports_success_rate": {
+    "message": "Success Rate"
+  },
+  "reports_in_queue": {
+    "message": "In Queue"
+  },
+  "reports_field_type": {
+    "message": "Type"
+  },
+  "reports_field_range": {
+    "message": "Range"
+  },
+  "reports_field_format": {
+    "message": "Format"
+  },
+  "reports_field_notify": {
+    "message": "Notify when ready"
+  },
+  "reports_submit_generate": {
+    "message": "Generate"
+  },
+  "format_pdf": {
+    "message": "PDF Document"
+  },
+  "format_csv": {
+    "message": "CSV File"
+  },
+  "format_json": {
+    "message": "JSON Data"
   }
 }

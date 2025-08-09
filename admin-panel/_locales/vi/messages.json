@@ -391,5 +391,257 @@
   },
   "preferences": {
     "message": "Tùy Chọn & Cài Đặt"
-  }
+  },
+  "reports_analytics": {
+    "message": "Báo Cáo & Phân Tích"
+  },
+  "report_creation": {
+    "message": "Tạo Báo Cáo"
+  },
+  "user_activity_statistics": {
+    "message": "Báo Cáo Hoạt Động Người Dùng"
+  },
+  "user_activity_subtitle": {
+    "message": "Chi tiết hoạt động người dùng và thống kê đăng nhập"
+  },
+  "security_protection": {
+    "message": "Báo Cáo Bảo Mật"
+  },
+  "security_subtitle": {
+    "message": "Phân tích sự cố bảo mật và mối đe dọa"
+  },
+  "performance_data": {
+    "message": "Báo Cáo Hiệu Suất"
+  },
+  "performance_subtitle": {
+    "message": "Dữ liệu hiệu suất hệ thống và tối ưu hóa"
+  },
+  "recent_reports_list": {
+    "message": "Báo Cáo Gần Đây"
+  },
+  "report_category": {
+    "message": "Loại"
+  },
+  "creation_time": {
+    "message": "Được Tạo"
+  },
+  "file_size": {
+    "message": "Kích Thước"
+  },
+  "current_status": {
+    "message": "Trạng Thái"
+  },
+  "available_actions": {
+    "message": "Thao Tác"
+  },
+  "daily_security_analysis": {
+    "message": "Báo Cáo Bảo Mật Hàng Ngày"
+  },
+  "security_type": {
+    "message": "Bảo Mật"
+  },
+  "two_hours_ago": {
+    "message": "2 giờ trước"
+  },
+  "status_ready": {
+    "message": "Sẵn Sàng"
+  },
+  "weekly_user_statistics": {
+    "message": "Hoạt Động Người Dùng Hàng Tuần"
+  },
+  "user_activity_type": {
+    "message": "Hoạt Động Người Dùng"
+  },
+  "one_day_ago": {
+    "message": "1 ngày trước"
+  },
+  "monthly_performance_analysis": {
+    "message": "Hiệu Suất Hàng Tháng"
+  },
+  "performance_type": {
+    "message": "Hiệu Suất"
+  },
+  "three_days_ago": {
+    "message": "3 ngày trước"
+  },
+  "status_processing": {
+    "message": "Đang Xử Lý"
+  },
+  "time_last_24h": {
+    "message": "24 giờ qua"
+  },
+  "time_last_7d": {
+    "message": "7 ngày qua"
+  },
+  "time_last_30d": {
+    "message": "30 ngày qua"
+  },
+  "btn_refresh": {
+    "message": "Làm mới"
+  },
+  "btn_apply_filters": {
+    "message": "Áp dụng lọc"
+  },
+  "btn_export": {
+    "message": "Xuất"
+  },
+  "stat_value_placeholder": {
+    "message": "--"
+  },
+  "security_active_threats": {
+    "message": "Mối đe dọa hoạt động"
+  },
+  "security_blocked_today": {
+    "message": "Đã chặn hôm nay"
+  },
+  "security_risk_score": {
+    "message": "Điểm rủi ro"
+  },
+  "security_patch_level": {
+    "message": "Mức vá lỗi"
+  },
+  "security_active_threats_value": {
+    "message": "12"
+  },
+  "security_blocked_today_value": {
+    "message": "248"
+  },
+  "security_risk_score_value": {
+    "message": "92%"
+  },
+  "security_patch_level_value": {
+    "message": "87%"
+  },
+  "security_threat_timeline": {
+    "message": "Dòng thời gian mối đe dọa"
+  },
+  "security_controls_matrix": {
+    "message": "Ma trận kiểm soát"
+  },
+  "security_time": {
+    "message": "Thời gian"
+  },
+  "security_severity": {
+    "message": "Mức độ"
+  },
+  "security_status": {
+    "message": "Trạng thái"
+  },
+  "security_action": {
+    "message": "Hành động"
+  },
+  "security_no_threats": {
+    "message": "Không có mối đe dọa"
+  },
+  "security_control_mfa": {
+    "message": "Xác thực đa yếu tố"
+  },
+  "security_control_password_policy": {
+    "message": "Chính sách mật khẩu"
+  },
+  "security_control_ip_filtering": {
+    "message": "Lọc IP"
+  },
+  "security_control_waf": {
+    "message": "WAF"
+  },
+  "security_control_rate_limit": {
+    "message": "Giới hạn tốc độ"
+  },
+  "security_control_intrusion_detection": {
+    "message": "Phát hiện xâm nhập"
+  },
+  "security_enabled": {
+    "message": "Bật"
+  },
+  "security_disabled": {
+    "message": "Tắt"
+  },
+  "trend_down_12": {
+    "message": "-12%"
+  },
+  "trend_flat": {
+    "message": "0%"
+  },
+  "trend_up_secure": {
+    "message": "+5%"
+  },
+  "trend_up": {
+    "message": "+3%"
+  },
+  "analytics_stat_avg_session": {
+    "message": "Phiên TB"
+  },
+  "analytics_stat_bounce_rate": {
+    "message": "Tỉ lệ thoát"
+  },
+  "analytics_stat_conversion": {
+    "message": "Chuyển đổi"
+  },
+  "analytics_stat_retention": {
+    "message": "Giữ chân"
+  },
+  "analytics_chart_traffic": {
+    "message": "Lưu lượng"
+  },
+  "analytics_chart_performance": {
+    "message": "Hiệu suất"
+  },
+  "analytics_chart_retention": {
+    "message": "Giữ chân"
+  },
+  "analytics_chart_security": {
+    "message": "Bảo mật"
+  },
+  "analytics_chart_placeholder": {
+    "message": "Biểu đồ"
+  },
+  "analytics_all_users": {
+    "message": "Tất cả"
+  },
+  "analytics_new_users": {
+    "message": "Người mới"
+  },
+  "analytics_power_users": {
+    "message": "Người dùng mạnh"
+  },
+  "reports_filter_status": {
+    "message": "Trạng thái"
+  },
+  "reports_filter_search": {
+    "message": "Tìm báo cáo"
+  },
+  "reports_no_results": {
+    "message": "Không có báo cáo"
+  },
+  "reports_total": {
+    "message": "Tổng số"
+  },
+  "reports_avg_generation": {
+    "message": "Thời gian TB"
+  },
+  "reports_success_rate": {
+    "message": "Tỷ lệ thành công"
+  },
+  "reports_in_queue": {
+    "message": "Đang chờ"
+  },
+  "reports_field_type": {
+    "message": "Loại"
+  },
+  "reports_field_range": {
+    "message": "Khoảng"
+  },
+  "reports_field_format": {
+    "message": "Định dạng"
+  },
+  "reports_field_notify": {
+    "message": "Thông báo khi xong"
+  },
+  "reports_submit_generate": {
+    "message": "Tạo"
+  },
+  "format_pdf": {"message": "Tệp PDF"},
+  "format_csv": {"message": "Tệp CSV"},
+  "format_json": {"message": "Dữ liệu JSON"}
 }

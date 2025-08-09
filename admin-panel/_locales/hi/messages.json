@@ -391,5 +391,263 @@
   },
   "preferences": {
     "message": "प्राथमिकताएं और सेटिंग्स"
+  },
+  "reports_analytics": {
+    "message": "रिपोर्ट एनालिटिक्स"
+  },
+  "report_creation": {
+    "message": "रिपोर्ट निर्माण"
+  },
+  "user_activity_statistics": {
+    "message": "उपयोगकर्ता गतिविधि रिपोर्ट"
+  },
+  "user_activity_subtitle": {
+    "message": "विस्तृत उपयोगकर्ता गतिविधि और लॉगिन आंकड़े"
+  },
+  "security_protection": {
+    "message": "सुरक्षा रिपोर्ट"
+  },
+  "security_subtitle": {
+    "message": "सुरक्षा घटनाएं और खतरा विश्लेषण"
+  },
+  "performance_data": {
+    "message": "प्रदर्शन रिपोर्ट"
+  },
+  "performance_subtitle": {
+    "message": "सिस्टम प्रदर्शन और अनुकूलन डेटा"
+  },
+  "recent_reports_list": {
+    "message": "हाल की रिपोर्ट"
+  },
+  "report_category": {
+    "message": "प्रकार"
+  },
+  "creation_time": {
+    "message": "उत्पन्न"
+  },
+  "file_size": {
+    "message": "आकार"
+  },
+  "current_status": {
+    "message": "स्थिति"
+  },
+  "available_actions": {
+    "message": "कार्य"
+  },
+  "daily_security_analysis": {
+    "message": "दैनिक सुरक्षा रिपोर्ट"
+  },
+  "security_type": {
+    "message": "सुरक्षा"
+  },
+  "two_hours_ago": {
+    "message": "2 घंटे पहले"
+  },
+  "status_ready": {
+    "message": "तैयार"
+  },
+  "weekly_user_statistics": {
+    "message": "साप्ताहिक उपयोगकर्ता गतिविधि"
+  },
+  "user_activity_type": {
+    "message": "उपयोगकर्ता गतिविधि"
+  },
+  "one_day_ago": {
+    "message": "1 दिन पहले"
+  },
+  "monthly_performance_analysis": {
+    "message": "मासिक प्रदर्शन"
+  },
+  "performance_type": {
+    "message": "प्रदर्शन"
+  },
+  "three_days_ago": {
+    "message": "3 दिन पहले"
+  },
+  "status_processing": {
+    "message": "प्रसंस्करण"
+  },
+  "time_last_24h": {
+    "message": "पिछले 24 घंटे"
+  },
+  "time_last_7d": {
+    "message": "पिछले 7 दिन"
+  },
+  "time_last_30d": {
+    "message": "पिछले 30 दिन"
+  },
+  "btn_refresh": {
+    "message": "रीफ़्रेश"
+  },
+  "btn_apply_filters": {
+    "message": "फ़िल्टर लागू करें"
+  },
+  "btn_export": {
+    "message": "निर्यात"
+  },
+  "stat_value_placeholder": {
+    "message": "--"
+  },
+  "security_active_threats": {
+    "message": "सक्रिय खतरे"
+  },
+  "security_blocked_today": {
+    "message": "आज अवरोधित"
+  },
+  "security_risk_score": {
+    "message": "जोखिम स्कोर"
+  },
+  "security_patch_level": {
+    "message": "पैच स्तर"
+  },
+  "security_active_threats_value": {
+    "message": "12"
+  },
+  "security_blocked_today_value": {
+    "message": "248"
+  },
+  "security_risk_score_value": {
+    "message": "92%"
+  },
+  "security_patch_level_value": {
+    "message": "87%"
+  },
+  "security_threat_timeline": {
+    "message": "खतरा समयरेखा"
+  },
+  "security_controls_matrix": {
+    "message": "नियंत्रण मैट्रिक्स"
+  },
+  "security_time": {
+    "message": "समय"
+  },
+  "security_severity": {
+    "message": "गंभीरता"
+  },
+  "security_status": {
+    "message": "स्थिति"
+  },
+  "security_action": {
+    "message": "क्रिया"
+  },
+  "security_no_threats": {
+    "message": "कोई खतरे नहीं"
+  },
+  "security_control_mfa": {
+    "message": "बहु-कारक प्रमाणीकरण"
+  },
+  "security_control_password_policy": {
+    "message": "पासवर्ड नीति"
+  },
+  "security_control_ip_filtering": {
+    "message": "IP फ़िल्टरिंग"
+  },
+  "security_control_waf": {
+    "message": "WAF"
+  },
+  "security_control_rate_limit": {
+    "message": "रेट लिमिट"
+  },
+  "security_control_intrusion_detection": {
+    "message": "घुसपैठ पहचान"
+  },
+  "security_enabled": {
+    "message": "सक्रिय"
+  },
+  "security_disabled": {
+    "message": "निष्क्रिय"
+  },
+  "trend_down_12": {
+    "message": "-12%"
+  },
+  "trend_flat": {
+    "message": "0%"
+  },
+  "trend_up_secure": {
+    "message": "+5%"
+  },
+  "trend_up": {
+    "message": "+3%"
+  },
+  "analytics_stat_avg_session": {
+    "message": "औसत सत्र"
+  },
+  "analytics_stat_bounce_rate": {
+    "message": "बाउंस दर"
+  },
+  "analytics_stat_conversion": {
+    "message": "रूपांतरण"
+  },
+  "analytics_stat_retention": {
+    "message": "प्रतिधारण"
+  },
+  "analytics_chart_traffic": {
+    "message": "ट्रैफ़िक"
+  },
+  "analytics_chart_performance": {
+    "message": "प्रदर्शन"
+  },
+  "analytics_chart_retention": {
+    "message": "प्रतिधारण"
+  },
+  "analytics_chart_security": {
+    "message": "सुरक्षा"
+  },
+  "analytics_chart_placeholder": {
+    "message": "चार्ट"
+  },
+  "analytics_all_users": {
+    "message": "सभी उपयोगकर्ता"
+  },
+  "analytics_new_users": {
+    "message": "नए उपयोगकर्ता"
+  },
+  "analytics_power_users": {
+    "message": "पावर उपयोगकर्ता"
+  },
+  "reports_filter_status": {
+    "message": "स्थिति"
+  },
+  "reports_filter_search": {
+    "message": "रिपोर्ट खोजें"
+  },
+  "reports_no_results": {
+    "message": "कोई रिपोर्ट नहीं"
+  },
+  "reports_total": {
+    "message": "कुल"
+  },
+  "reports_avg_generation": {
+    "message": "औसत समय"
+  },
+  "reports_success_rate": {
+    "message": "सफलता दर"
+  },
+  "reports_in_queue": {
+    "message": "प्रतीक्षा में"
+  },
+  "reports_field_type": {
+    "message": "प्रकार"
+  },
+  "reports_field_range": {
+    "message": "सीमा"
+  },
+  "reports_field_format": {
+    "message": "प्रारूप"
+  },
+  "reports_field_notify": {
+    "message": "तैयार होने पर सूचित करें"
+  },
+  "reports_submit_generate": {
+    "message": "जनरेट"
+  },
+  "format_pdf": {
+    "message": "PDF दस्तावेज़"
+  },
+  "format_csv": {
+    "message": "CSV फ़ाइल"
+  },
+  "format_json": {
+    "message": "JSON डेटा"
   }
 }

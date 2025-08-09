@@ -24,13 +24,22 @@ class SecureInputValidator {
     constructor() {
         console.log('🔐 SECURE INPUT VALIDATOR - ANTI SQL INJECTION LOADED!');
         
+        // Trusted data sources that should bypass validation
+        this.trustedSources = new Set([
+            'i18n-system',
+            'language-sync', 
+            'admin-panel-main',
+            'secure-storage',
+            'fallback-translations'
+        ]);
+        
         // Whitelist patterns (an toàn)
         this.allowedPatterns = {
             username: /^[a-zA-Z0-9_-]{3,20}$/,
             email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
             alphanumeric: /^[a-zA-Z0-9\s\-_.]{1,100}$/,
             numeric: /^[0-9]+$/,
-            url: /^https?:\/\/[^\s<>"{}|\\^`[\]]+$/,
+            url: /^https?:\/\/[^\s<>"]+$/,
             filename: /^[a-zA-Z0-9._-]+$/
         };
         
@@ -38,8 +47,8 @@ class SecureInputValidator {
         this.dangerousPatterns = [
             // SQL Injection patterns
             /(\b(SELECT|INSERT|UPDATE|DELETE|DROP|CREATE|ALTER|EXEC|UNION)\b)|('|(\\))/i,
-            /((\%27)|(\'))\s*((\%6F)|o|(\%4F))\s*((\%72)|r|(\%52))/i,
-            /((\%27)|(\'))\s*union/i,
+            /(([\%]27)|('))\s*(([\%]6F)|o|([\%]4F))\s*(([\%]72)|r|([\%]52))/i,
+            /(([\%]27)|('))\s*union/i,
             /exec(\s|\+)+(s|x)p\w+/i,
             
             // XSS patterns
@@ -51,7 +60,7 @@ class SecureInputValidator {
             /<embed/i,
             
             // Path traversal
-            /\.\.[\/\\]/,
+            /\.\.[\/]\\/,
             /\.\.[%2f|%5c]/i,
             
             // Command injection
@@ -87,17 +96,45 @@ class SecureInputValidator {
     /**
      * VALIDATE INPUT - Main validation function
      */
-    validateInput(input, type = 'text', maxLength = 1000) {
+    validateInput(input, type = 'text', maxLength = 1000, source = 'unknown') {
         this.stats.totalValidations++;
         
         try {
-            // Null/undefined check
+            // Null/undefined check first
             if (input === null || input === undefined) {
                 return { valid: false, reason: 'NULL_INPUT', sanitized: '' };
             }
             
-            // Convert to string
+            // Convert to string early
             const inputStr = String(input);
+            
+            // Skip validation for trusted sources
+            if (this.trustedSources.has(source)) {
+                this.stats.allowedInputs++;
+                return { 
+                    valid: true, 
+                    sanitized: inputStr,
+                    type: type,
+                    source: source,
+                    trusted: true
+                };
+            }
+            
+            // Only apply dangerous pattern validation to user-provided input or data from untrusted sources
+            if (this.isUserInputOrUntrusted(source)) {
+                for (const pattern of this.dangerousPatterns) {
+                    if (pattern.test(inputStr)) {
+                        this.stats.blockedInputs++;
+                        console.warn(`🚨 DANGEROUS INPUT BLOCKED: ${pattern.toString()} in "${inputStr.substring(0, 50)}..."`);
+                        return { 
+                            valid: false, 
+                            reason: 'DANGEROUS_PATTERN', 
+                            pattern: pattern.toString(),
+                            sanitized: this.sanitizeInput(inputStr)
+                        };
+                    }
+                }
+            }
             
             // Length check
             if (inputStr.length > maxLength) {
@@ -110,21 +147,7 @@ class SecureInputValidator {
                     sanitized: inputStr.substring(0, maxLength)
                 };
             }
-            
-            // Check for dangerous patterns
-            for (const pattern of this.dangerousPatterns) {
-                if (pattern.test(inputStr)) {
-                    this.stats.blockedInputs++;
-                    console.warn(`🚨 DANGEROUS INPUT BLOCKED: ${pattern.toString()} in "${inputStr.substring(0, 50)}..."`);
-                    return { 
-                        valid: false, 
-                        reason: 'DANGEROUS_PATTERN', 
-                        pattern: pattern.toString(),
-                        sanitized: this.sanitizeInput(inputStr)
-                    };
-                }
-            }
-            
+
             // Type-specific validation
             if (type && this.allowedPatterns[type]) {
                 if (!this.allowedPatterns[type].test(inputStr)) {
@@ -158,6 +181,17 @@ class SecureInputValidator {
     }
 
     /**
+     * Check if source is user input or untrusted
+     */
+    isUserInputOrUntrusted(source) {
+        // Only apply this validation to user-provided input or data from untrusted sources
+        if (this.trustedSources.has(source)) return false;
+        if (source === 'i18n-translations') return false;
+        if (source === 'admin-internal') return false;
+        return true; // Default to checking for safety
+    }
+
+    /**
      * SANITIZE INPUT - Remove dangerous characters
      */
     sanitizeInput(input) {
@@ -175,7 +209,7 @@ class SecureInputValidator {
             // Remove dangerous characters
             .replace(/[<>'"&;(){}[\]]/g, '')
             // Remove path traversal
-            .replace(/\.\.[\/\\]/g, '')
+            .replace(/\.\.[\/]\\/g, '')
             // Trim whitespace
             .trim();
     }

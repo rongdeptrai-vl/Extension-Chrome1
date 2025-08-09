@@ -279,7 +279,7 @@ class TINIBackgroundService {
         try {
             await chrome.scripting.executeScript({
                 target: { tabId: tab.id },
-                files: ['src/tini-validation-system.js', 'Script/content.js']
+                files: ['SECURITY/tini-validation-system.js', 'content-scripts/content.js']
             });
             
             console.log('✅ Content scripts injected successfully on tab:', tab.id);
@@ -733,3 +733,4 @@ const tiniBackgroundService = new TINIBackgroundService();
 globalThis.TINI_BACKGROUND_SERVICE = tiniBackgroundService;
 
 console.log('🎯 TINI Background Service Worker initialization complete');
+// ST:TINI_1754716154_e868a412

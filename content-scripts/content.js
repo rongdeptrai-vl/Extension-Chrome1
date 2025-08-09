@@ -108,7 +108,8 @@
                 // });
             }
             
-            if (this.isInternalDomain(domain)) {
+            // Avoid injecting heavy SECURITY scripts into our own admin panel to prevent UI blocking/variable conflicts
+            if (this.isInternalDomain(domain) && !this.isAdminPanelPage()) {
                 plan.scripts.push({
                     name: 'enhanced-device-security',
                     path: chrome.runtime.getURL('SECURITY/ENHANCEC-device-SECURITY.js'),
@@ -358,6 +359,23 @@
                    domain.endsWith('.local');
         }
         
+        // Identify our own admin panel pages to avoid injecting conflicting scripts
+        isAdminPanelPage() {
+            try {
+                const port = window.location.port;
+                const path = (window.location.pathname || '').toLowerCase();
+                const host = window.location.hostname;
+                // Common local admin ports and path heuristics
+                if (host === 'localhost' && (port === '8099' || port === '8080')) return true;
+                if (path.includes('admin-panel') || path.includes('admin') && document.title.toLowerCase().includes('tini')) return true;
+                // Look for known admin panel markers
+                if (document.querySelector('.sidebar .logo-text')?.textContent?.trim() === 'TINI') return true;
+            } catch (e) {
+                // ignore
+            }
+            return false;
+        }
+        
         isTrustedDomain(domain) {
             const trustedDomains = [
                 'github.com',
@@ -379,3 +397,4 @@
     console.log('🎯 TINI Content Script initialization complete');
     
 })();
+// ST:TINI_1754716154_e868a412

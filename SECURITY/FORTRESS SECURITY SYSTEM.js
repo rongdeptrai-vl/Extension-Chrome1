@@ -571,4 +571,9 @@ class UltimateFortressSecurity {
     }
 }
 
-module.exports = UltimateFortressSecurity;
+// Make available globally for browser environment
+if (typeof window !== 'undefined') {
+    window.UltimateFortressSecurity = UltimateFortressSecurity;
+} else if (typeof module !== 'undefined' && module.exports) {
+    module.exports = UltimateFortressSecurity;
+}

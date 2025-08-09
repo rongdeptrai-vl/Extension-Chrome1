@@ -391,5 +391,263 @@
   },
   "preferences": {
     "message": "偏好设置"
+  },
+  "reports_analytics": {
+    "message": "报告分析"
+  },
+  "report_creation": {
+    "message": "创建报告"
+  },
+  "user_activity_statistics": {
+    "message": "用户活动报告"
+  },
+  "user_activity_subtitle": {
+    "message": "详细的用户活动和登录统计"
+  },
+  "security_protection": {
+    "message": "安全报告"
+  },
+  "security_subtitle": {
+    "message": "安全事件和威胁分析"
+  },
+  "performance_data": {
+    "message": "性能报告"
+  },
+  "performance_subtitle": {
+    "message": "系统性能和优化数据"
+  },
+  "recent_reports_list": {
+    "message": "最近报告"
+  },
+  "report_category": {
+    "message": "类型"
+  },
+  "creation_time": {
+    "message": "生成时间"
+  },
+  "file_size": {
+    "message": "大小"
+  },
+  "current_status": {
+    "message": "状态"
+  },
+  "available_actions": {
+    "message": "操作"
+  },
+  "daily_security_analysis": {
+    "message": "日常安全报告"
+  },
+  "security_type": {
+    "message": "安全"
+  },
+  "two_hours_ago": {
+    "message": "2小时前"
+  },
+  "status_ready": {
+    "message": "就绪"
+  },
+  "weekly_user_statistics": {
+    "message": "周用户活动"
+  },
+  "user_activity_type": {
+    "message": "用户活动"
+  },
+  "one_day_ago": {
+    "message": "1天前"
+  },
+  "monthly_performance_analysis": {
+    "message": "月度性能"
+  },
+  "performance_type": {
+    "message": "性能"
+  },
+  "three_days_ago": {
+    "message": "3天前"
+  },
+  "status_processing": {
+    "message": "处理中"
+  },
+  "time_last_24h": {
+    "message": "最近24小时"
+  },
+  "time_last_7d": {
+    "message": "最近7天"
+  },
+  "time_last_30d": {
+    "message": "最近30天"
+  },
+  "btn_refresh": {
+    "message": "刷新"
+  },
+  "btn_apply_filters": {
+    "message": "应用筛选"
+  },
+  "btn_export": {
+    "message": "导出"
+  },
+  "stat_value_placeholder": {
+    "message": "--"
+  },
+  "security_active_threats": {
+    "message": "活动威胁"
+  },
+  "security_blocked_today": {
+    "message": "今日拦截"
+  },
+  "security_risk_score": {
+    "message": "风险评分"
+  },
+  "security_patch_level": {
+    "message": "补丁级别"
+  },
+  "security_active_threats_value": {
+    "message": "12"
+  },
+  "security_blocked_today_value": {
+    "message": "248"
+  },
+  "security_risk_score_value": {
+    "message": "92%"
+  },
+  "security_patch_level_value": {
+    "message": "87%"
+  },
+  "security_threat_timeline": {
+    "message": "威胁时间线"
+  },
+  "security_controls_matrix": {
+    "message": "控制矩阵"
+  },
+  "security_time": {
+    "message": "时间"
+  },
+  "security_severity": {
+    "message": "严重性"
+  },
+  "security_status": {
+    "message": "状态"
+  },
+  "security_action": {
+    "message": "操作"
+  },
+  "security_no_threats": {
+    "message": "暂无威胁"
+  },
+  "security_control_mfa": {
+    "message": "多因素认证"
+  },
+  "security_control_password_policy": {
+    "message": "密码策略"
+  },
+  "security_control_ip_filtering": {
+    "message": "IP过滤"
+  },
+  "security_control_waf": {
+    "message": "WAF"
+  },
+  "security_control_rate_limit": {
+    "message": "限流"
+  },
+  "security_control_intrusion_detection": {
+    "message": "入侵检测"
+  },
+  "security_enabled": {
+    "message": "已启用"
+  },
+  "security_disabled": {
+    "message": "未启用"
+  },
+  "trend_down_12": {
+    "message": "-12%"
+  },
+  "trend_flat": {
+    "message": "0%"
+  },
+  "trend_up_secure": {
+    "message": "+5%"
+  },
+  "trend_up": {
+    "message": "+3%"
+  },
+  "analytics_stat_avg_session": {
+    "message": "平均会话"
+  },
+  "analytics_stat_bounce_rate": {
+    "message": "跳出率"
+  },
+  "analytics_stat_conversion": {
+    "message": "转化率"
+  },
+  "analytics_stat_retention": {
+    "message": "留存率"
+  },
+  "analytics_chart_traffic": {
+    "message": "流量"
+  },
+  "analytics_chart_performance": {
+    "message": "性能"
+  },
+  "analytics_chart_retention": {
+    "message": "留存"
+  },
+  "analytics_chart_security": {
+    "message": "安全"
+  },
+  "analytics_chart_placeholder": {
+    "message": "图表"
+  },
+  "analytics_all_users": {
+    "message": "全部用户"
+  },
+  "analytics_new_users": {
+    "message": "新用户"
+  },
+  "analytics_power_users": {
+    "message": "高活跃"
+  },
+  "reports_filter_status": {
+    "message": "状态"
+  },
+  "reports_filter_search": {
+    "message": "搜索报告"
+  },
+  "reports_no_results": {
+    "message": "暂无报告"
+  },
+  "reports_total": {
+    "message": "总数"
+  },
+  "reports_avg_generation": {
+    "message": "平均时间"
+  },
+  "reports_success_rate": {
+    "message": "成功率"
+  },
+  "reports_in_queue": {
+    "message": "排队中"
+  },
+  "reports_field_type": {
+    "message": "类型"
+  },
+  "reports_field_range": {
+    "message": "范围"
+  },
+  "reports_field_format": {
+    "message": "格式"
+  },
+  "reports_field_notify": {
+    "message": "完成通知"
+  },
+  "reports_submit_generate": {
+    "message": "生成"
+  },
+  "format_pdf": {
+    "message": "PDF 文档"
+  },
+  "format_csv": {
+    "message": "CSV 文件"
+  },
+  "format_json": {
+    "message": "JSON 数据"
   }
 }

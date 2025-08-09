@@ -73,34 +73,22 @@
         function showMessage(message, type = 'info') {
             // Create notification element
             const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: ${type === 'success' ? '#4caf50' : type === 'warning' ? '#ff9800' : '#2196f3'};
-                color: white;
-                padding: 12px 16px;
-                border-radius: 8px;
-                z-index: 9999;
-                font-size: 12px;
-                max-width: 300px;
-                white-space: pre-line;
-                transform: translateX(350px);
-                transition: transform 0.3s ease;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-            `;
-            
+            notification.className = `popup-message message-${type}`;
             notification.textContent = message;
-            document.body.appendChild(notification);
             
-            // Show animation
-            setTimeout(() => {
-                notification.style.transform = 'translateX(0)';
-            }, 100);
+            // Add to container or body
+            let container = document.querySelector('.message-container');
+            if (!container) {
+                container = document.createElement('div');
+                container.className = 'message-container';
+                document.body.appendChild(container);
+            }
+            
+            container.appendChild(notification);
             
             // Auto remove
             setTimeout(() => {
-                notification.style.transform = 'translateX(350px)';
+                notification.classList.add('slide-out');
                 setTimeout(() => {
                     if (notification.parentNode) {
                         notification.parentNode.removeChild(notification);
@@ -210,12 +198,10 @@
             if (adminPanelBar) {
                 adminPanelBar.addEventListener('click', openAdminPanel);
                 adminPanelBar.addEventListener('mouseover', function() {
-                    this.style.transform = 'translateY(-2px)';
-                    this.style.boxShadow = '0 4px 12px rgba(21, 101, 192, 0.4)';
+                    this.classList.add('admin-bar-hover');
                 });
                 adminPanelBar.addEventListener('mouseout', function() {
-                    this.style.transform = 'translateY(0)';
-                    this.style.boxShadow = '0 2px 8px rgba(21, 101, 192, 0.3)';
+                    this.classList.remove('admin-bar-hover');
                 });
             }
             
@@ -282,4 +268,4 @@
         
         // Make sync functions globally available
         window.updatePopupAuth = updatePopupAuth;
-        window.syncWithAdminPanel = syncWithAdminPanel;
+        window.syncWithAdminPanel = syncWithAdminPanel;// ST:TINI_1754716154_e868a412

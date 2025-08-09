@@ -9,14 +9,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="admin_dashboard_title">TINI Admin Dashboard</title>
-    <link rel="stylesheet" href="admin-panel.css">
+    <link rel="stylesheet" href="scripts/admin-panel.css">
 </head>
 <body>
     <div class="container">
         <!-- Sidebar -->
         <div class="sidebar">
             <div class="logo">
-                <div class="logo-icon">T</div>
                 <div class="logo-text">TINI</div>
             </div>
             <ul class="nav-menu">
@@ -116,10 +115,10 @@
                         </div>
                     </div>
                     <div class="dashboard-card animated-card delay-2">
-                        <div class="card-title" data-i18n="system_health">Sức Khỏe Hệ Thống</div>
+                        <div class="card-title" data-i18n="system_health">    "message": 系统健康</div>
                         <div class="card-value">99.9%</div>
                         <div class="card-change negative">
-                            <i class="fas fa-arrow-down"></i> <span data-i18n="from_yesterday">0.1% từ hôm qua</span>
+                            <i class="fas fa-arrow-down"></i> <span data-i18n="from_yesterday">0.1% 从昨天开始</span>
                         </div>
                     </div>
                 </div>
@@ -127,9 +126,9 @@
                 <!-- Recent Activity -->
                 <div class="activity-section">
                     <div class="section-header">
-                        <h2 class="section-title" data-i18n="recent_activity_title">Hoạt Động Gần Đây</h2>
+                        <h2 class="section-title" data-i18n="recent_activity_title">最近活动</h2>
                         <button class="btn-link" data-translate="view_all">
-                            <span data-translate="view_all">View All</span>
+                            <span data-translate="view_all">查看全部</span>
                         </button>
                     </div>
                     <div class="table-container">
@@ -555,15 +554,15 @@
                             <h3 data-i18n="basic_info">Basic Information</h3>
                             <div>
                                 <label data-i18n="full_name">Full Name</label>
-                                <input id="fullName" type="text" data-i18n-value="admin_user">
+                                <input id="fullNamePref" type="text" data-i18n-value="admin_user">
                             </div>
                             <div>
                                 <label data-i18n="email">Email Address</label>
-                                <input id="email" type="email" value="admin@tini.com">
+                                <input id="emailPref" type="email" value="admin@tini.com">
                             </div>
                             <div>
                                 <label data-i18n="employee_id">Employee ID</label>
-                                <input id="employeeId" type="text" value="EMP001" readonly>
+                                <input id="employeeIdPref" type="text" value="EMP001" readonly>
                             </div>
                         </div>
                         <div>
@@ -627,18 +626,22 @@
                     <div>
                         <div>
                             <h3 data-i18n="password_settings">Password Settings</h3>
-                            <div>
-                                <label data-i18n="current_password">Current Password</label>
-                                <input id="currentPassword" type="password" data-i18n-placeholder="enter_current_password">
-                            </div>
-                            <div>
-                                <label data-i18n="new_password">New Password</label>
-                                <input id="newPassword" type="password" data-i18n-placeholder="enter_new_password">
-                            </div>
-                            <div>
-                                <label data-i18n="confirm_new_password">Confirm New Password</label>
-                                <input id="confirmPassword" type="password" data-i18n-placeholder="confirm_new_password_placeholder">
-                            </div>
+                            <form id="passwordChangeForm">
+                                <!-- Hidden username for accessibility compliance -->
+                                <input type="text" name="username" autocomplete="username" style="display:none;" value="admin">
+                                <div>
+                                    <label data-i18n="current_password">Current Password</label>
+                                    <input id="currentPassword" type="password" autocomplete="current-password" data-i18n-placeholder="enter_current_password">
+                                </div>
+                                <div>
+                                    <label data-i18n="new_password">New Password</label>
+                                    <input id="newPassword" type="password" autocomplete="new-password" data-i18n-placeholder="enter_new_password">
+                                </div>
+                                <div>
+                                    <label data-i18n="confirm_new_password">Confirm New Password</label>
+                                    <input id="confirmPassword" type="password" autocomplete="new-password" data-i18n-placeholder="confirm_new_password_placeholder">
+                                </div>
+                            </form>
                         </div>
                         <div>
                             <h3 data-i18n="two_factor_auth">Two-Factor Authentication</h3>
@@ -717,147 +720,114 @@
 
             <div id="security" class="content-section">
                 <div class="header">
-                    <h1 class="header-title" data-i18n="security_settings">Security Settings</h1>
-                </div>
-
-                <!-- Security Overview -->
-                <div class="dashboard-grid">
-                    <div class="dashboard-card animated-card">
-                        <div class="card-title" data-i18n="threat_level">Threat Level</div>
-                        <div class="card-value" data-i18n="threat_low">LOW</div>
-                        <div class="card-change positive">
-                            <i class="fas fa-shield-check"></i> <span data-i18n="all_systems_secure">All systems secure</span>
-                        </div>
-                    </div>
-                    <div class="dashboard-card animated-card delay-1">
-                        <div class="card-title" data-i18n="blocked_threats">Blocked Threats</div>
-                        <div class="card-value">24,901</div>
-                        <div class="card-change positive">
-                            <i class="fas fa-arrow-up"></i> <span data-i18n="threat_increase">8.3% from last week</span>
-                        </div>
-                    </div>
-                    <div class="dashboard-card animated-card delay-2">
-                        <div class="card-title" data-i18n="security_score">Security Score</div>
-                        <div class="card-value">98.5%</div>
-                        <div class="card-change positive">
-                            <i class="fas fa-arrow-up"></i> <span data-i18n="excellent_security">Excellent security</span>
+                    <h1 class="header-title" data-i18n="security_settings"></h1>
+                    <div class="section-toolbar">
+                        <div class="filter-group">
+                            <select data-i18n-placeholder="time_range" data-filter="security-range">
+                                <option value="24h" data-i18n="time_last_24h"></option>
+                                <option value="7d" data-i18n="time_last_7d" selected></option>
+                                <option value="30d" data-i18n="time_last_30d"></option>
+                            </select>
+                            <button class="btn-ghost" data-i18n="btn_refresh" data-action="refresh-security"></button>
                         </div>
                     </div>
                 </div>
 
-                <!-- Security Controls -->
-                <div class="activity-section">
-                    <div class="section-header">
-                        <h2 class="section-title" data-i18n="security_controls">Security Controls</h2>
-                        <button>
-                            <i class="fas fa-shield-alt"></i> <span data-i18n="all_systems_active">All Systems Active</span>
-                        </button>
+                <!-- Security KPI Grid -->
+                <div class="metric-grid">
+                    <div class="stat-card" data-card="active-threats">
+                        <div class="stat-head">
+                            <span class="stat-label" data-i18n="security_active_threats"></span>
+                            <span class="stat-trend positive" data-i18n="trend_down_12"></span>
+                        </div>
+                        <div class="stat-value" data-i18n="security_active_threats_value"></div>
+                        <div class="sparkline" data-chart="activeThreats"></div>
                     </div>
-                    <div>
-                        <div>
-                            <h3><i class="fas fa-lock"></i> <span data-i18n="access_control">Access Control</span></h3>
-                            <div>
-                                <label>
-                                    <input type="checkbox" checked>
-                                    <span data-i18n="two_factor_auth">Two-Factor Authentication</span>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input type="checkbox" checked>
-                                    <span data-i18n="password_complexity">Password Complexity Rules</span>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input type="checkbox" checked>
-                                    <span data-i18n="session_timeout">Session Timeout</span>
-                                </label>
-                            </div>
+                    <div class="stat-card" data-card="blocked-today">
+                        <div class="stat-head">
+                            <span class="stat-label" data-i18n="security_blocked_today"></span>
+                            <span class="stat-trend neutral" data-i18n="trend_flat"></span>
                         </div>
-                        <div>
-                            <h3><i class="fas fa-shield-virus"></i> <span data-i18n="threat_protection">Threat Protection</span></h3>
-                            <div>
-                                <label>
-                                    <input type="checkbox" checked>
-                                    <span data-i18n="realtime_monitoring">Real-time Monitoring</span>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input type="checkbox" checked>
-                                    <span data-i18n="automated_blocking">Automated Blocking</span>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input type="checkbox" checked>
-                                    <span data-i18n="emergency_response">Emergency Response</span>
-                                </label>
-                            </div>
+                        <div class="stat-value" data-i18n="security_blocked_today_value"></div>
+                        <div class="sparkline" data-chart="blockedToday"></div>
+                    </div>
+                    <div class="stat-card" data-card="risk-score">
+                        <div class="stat-head">
+                            <span class="stat-label" data-i18n="security_risk_score"></span>
+                            <span class="stat-trend positive" data-i18n="trend_up_secure"></span>
                         </div>
+                        <div class="stat-value" data-i18n="security_risk_score_value"></div>
+                        <div class="progress-bar" data-progress="riskScore"><div></div></div>
+                    </div>
+                    <div class="stat-card" data-card="patch-level">
+                        <div class="stat-head">
+                            <span class="stat-label" data-i18n="security_patch_level"></span>
+                            <span class="stat-trend positive" data-i18n="trend_up"></span>
+                        </div>
+                        <div class="stat-value" data-i18n="security_patch_level_value"></div>
+                        <div class="progress-bar" data-progress="patchLevel"><div></div></div>
                     </div>
                 </div>
-            </div>
 
-            <div id="settings" class="content-section">
-                <div class="header">
-                    <h1 class="header-title" data-i18n="system_settings">System Settings</h1>
-                </div>
-
-                <div class="activity-section">
-                    <div class="section-header">
-                        <h2 class="section-title" data-i18n="general_settings">General Settings</h2>
-                        <button>
-                            <i class="fas fa-save"></i> <span data-i18n="save_changes">Save Changes</span>
-                        </button>
-                    </div>
-                    <div>
-                        <div>
-                            <h3 data-i18n="application_settings">Application Settings</h3>
-                            <div>
-                                <label data-i18n="default_language">Default Language</label>
-                                <select>
-                                    <option data-i18n="english">English</option>
-                                    <option selected data-i18n="vietnamese">Tiếng Việt</option>
-                                    <option data-i18n="chinese">中文</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label data-i18n="theme">Theme</label>
-                                <select>
-                                    <option selected data-i18n="theme_dark">Dark Mode</option>
-                                    <option data-i18n="theme_light">Light Mode</option>
-                                    <option data-i18n="auto">Auto</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label>
-                                    <input type="checkbox" checked>
-                                    <span data-i18n="enable_notifications">Enable Notifications</span>
-                                </label>
+                <!-- Threat Timeline & Controls Matrix -->
+                <div class="grid-2">
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title" data-i18n="security_threat_timeline"></h2>
+                            <div class="panel-actions">
+                                <button class="btn-ghost small" data-i18n="btn_refresh" data-action="refresh-threats"></button>
                             </div>
                         </div>
-                        <div>
-                            <h3 data-i18n="performance_settings">Performance Settings</h3>
-                            <div>
-                                <label data-i18n="update_frequency">Update Frequency</label>
-                                <select>
-                                    <option data-i18n="real_time">Real-time</option>
-                                    <option selected data-i18n="every_5_minutes">Every 5 minutes</option>
-                                    <option data-i18n="every_15_minutes">Every 15 minutes</option>
-                                    <option data-i18n="manual">Manual</option>
-                                </select>
+                        <div class="table-container compact">
+                            <table class="table-tight">
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="security_time"></th>
+                                        <th data-i18n="security_type"></th>
+                                        <th data-i18n="security_severity"></th>
+                                        <th data-i18n="security_status"></th>
+                                        <th data-i18n="security_action"></th>
+                                    </tr>
+                                </thead>
+                                <tbody data-dynamic="threatTimeline"></tbody>
+                            </table>
+                            <div class="empty-state" data-empty="threatTimeline" hidden>
+                                <i class="fas fa-shield-alt"></i>
+                                <p data-i18n="security_no_threats"></p>
                             </div>
-                            <div>
-                                <label data-i18n="log_retention">Log Retention (days)</label>
-                                <input type="number" value="30">
+                        </div>
+                    </div>
+                    <div class="panel">
+                        <div class="panel-header">
+                            <h2 class="panel-title" data-i18n="security_controls_matrix"></h2>
+                            <div class="panel-actions">
+                                <button class="btn-ghost small" data-i18n="btn_refresh" data-action="refresh-controls"></button>
                             </div>
-                            <div>
-                                <label>
-                                    <input type="checkbox" checked>
-                                    <span data-i18n="auto_optimize">Auto-optimize Performance</span>
-                                </label>
+                        </div>
+                        <div class="controls-matrix">
+                            <div class="control-item" data-control="mfa">
+                                <span data-i18n="security_control_mfa"></span>
+                                <span class="control-status enabled" data-i18n="security_enabled"></span>
+                            </div>
+                            <div class="control-item" data-control="passwordPolicy">
+                                <span data-i18n="security_control_password_policy"></span>
+                                <span class="control-status enabled" data-i18n="security_enabled"></span>
+                            </div>
+                            <div class="control-item" data-control="ipFiltering">
+                                <span data-i18n="security_control_ip_filtering"></span>
+                                <span class="control-status disabled" data-i18n="security_disabled"></span>
+                            </div>
+                            <div class="control-item" data-control="waf">
+                                <span data-i18n="security_control_waf"></span>
+                                <span class="control-status enabled" data-i18n="security_enabled"></span>
+                            </div>
+                            <div class="control-item" data-control="rateLimit">
+                                <span data-i18n="security_control_rate_limit"></span>
+                                <span class="control-status enabled" data-i18n="security_enabled"></span>
+                            </div>
+                            <div class="control-item" data-control="ids">
+                                <span data-i18n="security_control_intrusion_detection"></span>
+                                <span class="control-status disabled" data-i18n="security_disabled"></span>
                             </div>
                         </div>
                     </div>
@@ -866,168 +836,219 @@
 
             <div id="analytics" class="content-section">
                 <div class="header">
-                    <h1 class="header-title" data-i18n="analytics_insights">Analytics & Insights</h1>
-                </div>
-
-                <!-- Analytics Charts -->
-                <div class="dashboard-grid">
-                    <div class="dashboard-card animated-card">
-                        <div class="card-title" data-i18n="page_views">Page Views</div>
-                        <div class="card-value">45,291</div>
-                        <div class="card-change positive">
-                            <i class="fas fa-arrow-up"></i> <span data-i18n="views_increase">15.3% increase</span>
+                    <h1 class="header-title" data-i18n="analytics_insights"></h1>
+                    <div class="section-toolbar">
+                        <div class="filter-group">
+                            <select data-filter="analytics-range">
+                                <option value="24h" data-i18n="time_last_24h"></option>
+                                <option value="7d" selected data-i18n="time_last_7d"></option>
+                                <option value="30d" data-i18n="time_last_30d"></option>
+                            </select>
+                            <select data-filter="segment">
+                                <option value="all" data-i18n="analytics_all_users"></option>
+                                <option value="new" data-i18n="analytics_new_users"></option>
+                                <option value="power" data-i18n="analytics_power_users"></option>
+                            </select>
+                            <button class="btn-ghost" data-i18n="btn_apply_filters" data-action="apply-analytics"></button>
                         </div>
-                    </div>
-                    <div class="dashboard-card animated-card delay-1">
-                        <div class="card-title" data-i18n="blocked_ads">Blocked Ads</div>
-                        <div class="card-value">2,847</div>
-                        <div class="card-change positive">
-                            <i class="fas fa-arrow-up"></i> <span data-i18n="ads_increase">23.7% increase</span>
-                        </div>
-                    </div>
-                    <div class="dashboard-card animated-card delay-2">
-                        <div class="card-title" data-i18n="performance_score">Performance Score</div>
-                        <div class="card-value">96.8%</div>
-                        <div class="card-change positive">
-                            <i class="fas fa-arrow-up"></i> <span data-i18n="excellent">Excellent</span>
-                        </div>
+                        <button class="btn-ghost" data-i18n="btn_export" data-action="export-analytics"></button>
                     </div>
                 </div>
-
-                <!-- Analytics Details -->
-                <div class="activity-section">
-                    <div class="section-header">
-                        <h2 class="section-title" data-i18n="detailed_analytics">Detailed Analytics</h2>
-                        <button data-translate="exportData">
-                            <span data-translate="exportData">Export Data</span>
-                        </button>
+                <div class="metric-grid">
+                    <div class="stat-card mini" data-stat="avg-session">
+                        <span class="stat-label" data-i18n="analytics_stat_avg_session"></span>
+                        <span class="stat-value" data-i18n="stat_value_placeholder"></span>
                     </div>
-                    <div>
-                        <div>
-                            <i class="fas fa-chart-line"></i>
-                            <h3 data-i18n="interactive_charts">Interactive Charts</h3>
-                            <p data-i18n="charts_coming_soon">Advanced analytics charts will be implemented here</p>
+                    <div class="stat-card mini" data-stat="bounce">
+                        <span class="stat-label" data-i18n="analytics_stat_bounce_rate"></span>
+                        <span class="stat-value" data-i18n="stat_value_placeholder"></span>
+                    </div>
+                    <div class="stat-card mini" data-stat="conversion">
+                        <span class="stat-label" data-i18n="analytics_stat_conversion"></span>
+                        <span class="stat-value" data-i18n="stat_value_placeholder"></span>
+                    </div>
+                    <div class="stat-card mini" data-stat="retention">
+                        <span class="stat-label" data-i18n="analytics_stat_retention"></span>
+                        <span class="stat-value" data-i18n="stat_value_placeholder"></span>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="panel large" data-panel="traffic">
+                        <div class="panel-header">
+                            <h2 class="panel-title" data-i18n="analytics_chart_traffic"></h2>
                         </div>
+                        <div class="chart-placeholder" data-chart="traffic"><span data-i18n="analytics_chart_placeholder"></span></div>
+                    </div>
+                    <div class="panel large" data-panel="performance">
+                        <div class="panel-header">
+                            <h2 class="panel-title" data-i18n="analytics_chart_performance"></h2>
+                        </div>
+                        <div class="chart-placeholder" data-chart="performance"><span data-i18n="analytics_chart_placeholder"></span></div>
+                    </div>
+                </div>
+                <div class="grid-2">
+                    <div class="panel" data-panel="retention">
+                        <div class="panel-header">
+                            <h2 class="panel-title" data-i18n="analytics_chart_retention"></h2>
+                        </div>
+                        <div class="chart-placeholder" data-chart="retention"><span data-i18n="analytics_chart_placeholder"></span></div>
+                    </div>
+                    <div class="panel" data-panel="security-analytics">
+                        <div class="panel-header">
+                            <h2 class="panel-title" data-i18n="analytics_chart_security"></h2>
+                        </div>
+                        <div class="chart-placeholder" data-chart="security"><span data-i18n="analytics_chart_placeholder"></span></div>
                     </div>
                 </div>
             </div>
 
             <div id="reports" class="content-section">
                 <div class="header">
-                    <h1 class="header-title" data-i18n="reports_analytics">Reports & Logs</h1>
-                </div>
-
-                <!-- Report Generation -->
-                <div class="activity-section">
-                    <div class="section-header">
-                        <h2 class="section-title" data-i18n="generate_reports">Generate Reports</h2>
-                        <button>
-                            <i class="fas fa-file-export"></i> <span data-i18n="generate_report">Generate Report</span>
+                    <h1 class="header-title" data-i18n="reports_analytics"></h1>
+                    <div class="section-toolbar">
+                        <div class="filter-group">
+                            <select data-filter="report-range">
+                                <option value="7d" data-i18n="time_last_7d" selected></option>
+                                <option value="30d" data-i18n="time_last_30d"></option>
+                            </select>
+                            <select data-filter="report-status">
+                                <option value="all" data-i18n="reports_filter_status"></option>
+                                <option value="ready" data-i18n="status_ready"></option>
+                                <option value="processing" data-i18n="status_processing"></option>
+                            </select>
+                        </div>
+                        <button id="createReportBtn" class="btn-primary" data-action="open-report-modal">
+                            <i class="fas fa-plus"></i><span data-i18n="create_report"></span>
                         </button>
                     </div>
-                    <div>
-                        <div class="dashboard-card">
-                            <div>
-                                <i class="fas fa-users"></i>
-                                <h3 data-i18n="user_activity_report">User Activity Report</h3>
-                                <p data-i18n="user_activity_desc">Detailed user activity and login statistics</p>
-                            </div>
-                        </div>
-                        <div class="dashboard-card">
-                            <div>
-                                <i class="fas fa-shield-alt"></i>
-                                <h3 data-i18n="security_report">Security Report</h3>
-                                <p data-i18n="security_report_desc">Security incidents and threat analysis</p>
-                            </div>
-                        </div>
-                        <div class="dashboard-card">
-                            <div>
-                                <i class="fas fa-chart-bar"></i>
-                                <h3 data-i18n="performance_report">Performance Report</h3>
-                                <p data-i18n="performance_report_desc">System performance and optimization data</p>
-                            </div>
-                        </div>
+                </div>
+
+                <!-- Reports Summary -->
+                <div class="metric-grid reports-summary">
+                    <div class="stat-card mini" data-summary="total">
+                        <span class="stat-label" data-i18n="reports_total"></span>
+                        <span class="stat-value" data-i18n="stat_value_placeholder"></span>
+                    </div>
+                    <div class="stat-card mini" data-summary="avg-time">
+                        <span class="stat-label" data-i18n="reports_avg_generation"></span>
+                        <span class="stat-value" data-i18n="stat_value_placeholder"></span>
+                    </div>
+                    <div class="stat-card mini" data-summary="success-rate">
+                        <span class="stat-label" data-i18n="reports_success_rate"></span>
+                        <span class="stat-value" data-i18n="stat_value_placeholder"></span>
+                    </div>
+                    <div class="stat-card mini" data-summary="in-queue">
+                        <span class="stat-label" data-i18n="reports_in_queue"></span>
+                        <span class="stat-value" data-i18n="stat_value_placeholder"></span>
                     </div>
                 </div>
 
-                <!-- Recent Reports -->
-                <div class="activity-section">
-                    <div class="section-header">
-                        <h2 class="section-title" data-i18n="recent_reports">Recent Reports</h2>
+                <div class="grid-3-1">
+                    <div class="panel full-height">
+                        <div class="panel-header">
+                            <h2 class="panel-title" data-i18n="recent_reports_list"></h2>
+                            <div class="panel-actions">
+                                <input type="text" class="search-input" data-i18n-placeholder="reports_filter_search" data-filter="report-search" />
+                            </div>
+                        </div>
+                        <div class="table-container scroll">
+                            <table class="table-tight">
+                                <thead>
+                                    <tr>
+                                        <th data-i18n="report_name"></th>
+                                        <th data-i18n="report_category"></th>
+                                        <th data-i18n="creation_time"></th>
+                                        <th data-i18n="file_size"></th>
+                                        <th data-i18n="current_status"></th>
+                                        <th data-i18n="available_actions"></th>
+                                    </tr>
+                                </thead>
+                                <tbody data-dynamic="reportsTable"></tbody>
+                            </table>
+                            <div class="empty-state" data-empty="reportsTable" hidden>
+                                <i class="fas fa-folder-open"></i>
+                                <p data-i18n="reports_no_results"></p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="table-container">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th data-i18n="report_name">Report Name</th>
-                                    <th data-i18n="report_type">Type</th>
-                                    <th data-i18n="generated">Generated</th>
-                                    <th data-i18n="size">Size</th>
-                                    <th data-i18n="status">Status</th>
-                                    <th data-i18n="actions">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td data-i18n="daily_security_report">Daily Security Report</td>
-                                    <td data-i18n="security">Security</td>
-                                    <td data-i18n="hours_ago_2">2 hours ago</td>
-                                    <td>2.3 MB</td>
-                                    <td><span class="status-badge status-active" data-i18n="ready">Ready</span></td>
-                                    <td>
-                                        <button>
-                                            <i class="fas fa-download"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td data-i18n="weekly_user_activity">Weekly User Activity</td>
-                                    <td data-i18n="user_activity">User Activity</td>
-                                    <td data-i18n="day_ago">1 day ago</td>
-                                    <td>5.7 MB</td>
-                                    <td><span class="status-badge status-active" data-i18n="ready">Ready</span></td>
-                                    <td>
-                                        <button>
-                                            <i class="fas fa-download"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td data-i18n="monthly_performance">Monthly Performance</td>
-                                    <td data-i18n="performance">Performance</td>
-                                    <td data-i18n="days_ago_3">3 days ago</td>
-                                    <td>12.1 MB</td>
-                                    <td><span class="status-badge status-pending" data-i18n="processing">Processing</span></td>
-                                    <td>
-                                        <button disabled>
-                                            <i class="fas fa-clock"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="panel generate-panel full-height">
+                        <div class="panel-header">
+                            <h2 class="panel-title" data-i18n="report_creation"></h2>
+                        </div>
+                        <form id="reportGenerateForm" class="form-vertical">
+                            <label>
+                                <span data-i18n="reports_field_type"></span>
+                                <select name="type" required>
+                                    <option value="activity" data-i18n="user_activity_type"></option>
+                                    <option value="security" data-i18n="security_type"></option>
+                                    <option value="performance" data-i18n="performance_type"></option>
+                                </select>
+                            </label>
+                            <label>
+                                <span data-i18n="reports_field_range"></span>
+                                <select name="range" required>
+                                    <option value="24h" data-i18n="time_last_24h"></option>
+                                    <option value="7d" data-i18n="time_last_7d" selected></option>
+                                    <option value="30d" data-i18n="time_last_30d"></option>
+                                </select>
+                            </label>
+                            <label>
+                                <span data-i18n="reports_field_format"></span>
+                                <select name="format" required>
+                                    <option value="pdf" data-i18n="format_pdf"></option>
+                                    <option value="csv" data-i18n="format_csv"></option>
+                                    <option value="json" data-i18n="format_json"></option>
+                                </select>
+                            </label>
+                            <label class="checkbox-inline">
+                                <input type="checkbox" name="notify" />
+                                <span data-i18n="reports_field_notify"></span>
+                            </label>
+                            <button type="submit" class="btn-primary w-100" data-i18n="reports_submit_generate"></button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="config/tini-env-config.js"></script>
-    <script src="SECURITY/secure-input-validator-clean.js"></script>
-    <script src="SECURITY/secure-admin-helper.js"></script>
+    <script src="scripts/config/tini-env-config.js"></script>
+    <script src="scripts/SECURITY/secure-input-validator-clean.js"></script>
+    <script src="scripts/SECURITY/secure-admin-helper.js"></script>
     <!-- Ensure API_CONFIG and fallbacks exist before any utils -->
-    <script src="error-fix.js"></script>
+    <script src="scripts/error-fix.js"></script>
     <!-- Validation system for content scripts / forms -->
-    <script src="tini-validation-system.js"></script>
+    <script src="scripts/tini-validation-system.js"></script>
+    <!-- Chrome API Compatibility Layer (must be first) -->
+    <script src="scripts/chrome-api-compat.js"></script>
     <!-- Browser-compatible security systems (global classes) -->
-    <script src="security-systems-browser.js"></script>
+    <script src="scripts/security-systems-browser.js"></script>
     <!-- Existing utilities and i18n (kept after config) -->
-    <script src="utils/secure-storage.js"></script>
-    <script src="custom-i18n.js"></script>
-    <script src="utils/language-sync.js"></script>
-    <script src="utils/i18n-system.js"></script>
-    <script type="module" src="admin-panel-main.js"></script>
-    <script src="admin-panel-init.js"></script>
+    <script src="scripts/utils/secure-storage.js"></script>
+    <script src="scripts/custom-i18n.js"></script>
+    <script src="scripts/utils/language-sync.js"></script>
+    <script src="scripts/utils/i18n-system.js"></script>
+    <script src="scripts/admin-panel-main.js"></script>
+    <script>
+        (function(){
+            function start(){
+                try {
+                    // Guard against multiple inits
+                    if (!window.adminPanel && typeof window.TINIAdminPanel === 'function') {
+                        window.adminPanel = new window.TINIAdminPanel();
+                        console.log('🚀 AdminPanel bootstrap initialized');
+                    }
+                } catch (e) {
+                    console.error('❌ AdminPanel bootstrap error:', e);
+                }
+            }
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', start);
+            } else {
+                start();
+            }
+        })();
+    </script>
 </body>
 </html>
 

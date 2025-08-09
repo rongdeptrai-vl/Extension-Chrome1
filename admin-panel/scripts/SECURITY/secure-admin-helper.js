@@ -110,7 +110,7 @@ class SecureAdminHelper {
             sanitized = sanitized.replace(regex, '');
             
             // Self-closing tags
-            const selfClosingRegex = new RegExp(`<${tag}[^>]*\/?>`, 'gi');
+            const selfClosingRegex = new RegExp(`<${tag}[^>]*\/>?`, 'gi');
             sanitized = sanitized.replace(selfClosingRegex, '');
         });
         
@@ -134,13 +134,15 @@ class SecureAdminHelper {
      */
     secureSetStorage(key, value) {
         try {
-            // Validate key and value
+            // Validate key and value using trusted source flag
             if (this.validator) {
-                const keyValidation = this.validator.validateInput(key, 'alphanumeric', 100);
-                const valueValidation = this.validator.validateInput(String(value), 'general', 10000);
+                const keyValidation = this.validator.validateInput(key, 'alphanumeric', 100, 'secure-storage');
+                const valueValidation = this.validator.validateInput(String(value), 'general', 10000, 'secure-storage');
                 
                 if (!keyValidation.valid || !valueValidation.valid) {
-                    console.error(`🚨 BLOCKED UNSAFE STORAGE: ${keyValidation.error || valueValidation.error}`);
+                    const keyError = keyValidation.error || keyValidation.reason || 'Invalid key';
+                    const valueError = valueValidation.error || valueValidation.reason || 'Invalid value';
+                    console.error(`🚨 BLOCKED UNSAFE STORAGE: Invalid key - ${keyError}, Invalid value - ${valueError}`);
                     return false;
                 }
                 
@@ -171,9 +173,10 @@ class SecureAdminHelper {
         try {
             // Validate key
             if (this.validator) {
-                const keyValidation = this.validator.validateInput(key, 'alphanumeric', 100);
+                const keyValidation = this.validator.validateInput(key, 'alphanumeric', 100, 'secure-storage');
                 if (!keyValidation.valid) {
-                    console.error(`🚨 INVALID STORAGE KEY: ${keyValidation.error}`);
+                    const keyError = keyValidation.error || keyValidation.reason || 'Invalid storage key';
+                    console.error(`🚨 INVALID STORAGE KEY: ${keyError}`);
                     return null;
                 }
                 key = keyValidation.sanitized;
@@ -344,9 +347,6 @@ class SecureAdminHelper {
                 // Prevent default dangerous events
                 if (event.type === 'submit' && !event.target.dataset.secureForm) {
                     console.warn('🚨 Form submission without security validation');
-    // Removed return statement for clarity
-    // Expose helper globally
-    window.SecureAdminHelper = SecureAdminHelper;
                     event.preventDefault();
                     return;
                 }

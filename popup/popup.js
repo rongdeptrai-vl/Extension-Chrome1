@@ -391,7 +391,6 @@ function switchToAuthenticatedView(user = null) {
         const authContainer = document.getElementById('authContainer');
         if (authContainer) {
             authContainer.classList.remove('active');
-            authContainer.style.display = 'none';
         }
         
         // Show main content or create success message
@@ -406,7 +405,7 @@ function switchToAuthenticatedView(user = null) {
                     <h2>✅ Authentication Successful!</h2>
                     <p>Welcome to TINI Network Access</p>
                     <div class="user-info">
-                        <p><strong>Status:</strong> <span style="color: #4CAF50;">Connected</span></p>
+                        <p><strong>Status:</strong> <span class="status-connected">Connected</span></p>
                         <p><strong>Device:</strong> Authorized</p>
                         <p><strong>Access Level:</strong> User</p>
                     </div>
@@ -432,7 +431,6 @@ function switchToAuthenticatedView(user = null) {
             });
         } else {
             mainContent.classList.add('active');
-            mainContent.style.display = 'block';
         }
         
         console.log('✅ Switched to authenticated view');
@@ -451,14 +449,12 @@ function handleLogout() {
     const authContainer = document.getElementById('authContainer');
     if (authContainer) {
         authContainer.classList.add('active');
-        authContainer.style.display = 'block';
     }
     
     // Hide main content
     const mainContent = document.getElementById('mainContent');
     if (mainContent) {
         mainContent.classList.remove('active');
-        mainContent.style.display = 'none';
     }
     
     // Clear form fields
@@ -730,14 +726,12 @@ function initializeBlockerSelection() {
         
         // Add hover effects
         card.addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-5px)';
-            this.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)';
+            this.classList.add('blocker-card-hover');
         });
         
         card.addEventListener('mouseleave', function() {
             if (!this.classList.contains('active')) {
-                this.style.transform = 'translateY(0)';
-                this.style.boxShadow = '';
+                this.classList.remove('blocker-card-hover');
             }
         });
     });
@@ -811,7 +805,7 @@ function initializeAdminPanel() {
                     // Show admin form
                     const adminForm = document.getElementById('adminForm');
                     if (adminForm) {
-                        adminForm.style.display = 'block';
+                        adminForm.classList.add('active');
                     }
                 }
                 return;
@@ -842,25 +836,88 @@ function openSecureAdminDashboard() {
         return;
     }
     
-    // FIXED: Ask user confirmation instead of auto-opening
-    if (confirm('Bạn có muốn mở Admin Panel không?')) {
-        try {
-            const adminUrl = 'http://localhost:8099/admin';
-            console.log('🌐 Opening authenticated admin dashboard:', adminUrl);
-            window.open(adminUrl, '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes');
-            console.log('✅ Secure admin panel opened');
-        } catch (error) {
-            console.error('❌ Error opening secure admin panel:', error);
-            showMessage('Failed to open admin panel', 'error');
+    // Create lightweight admin panel overlay instead of opening new tab
+    createAdminPanelOverlay();
+}
+
+function createAdminPanelOverlay() {
+    // Remove existing overlay if any
+    const existingOverlay = document.querySelector('.admin-overlay');
+    if (existingOverlay) {
+        existingOverlay.remove();
+    }
+
+    // Create overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'admin-overlay';
+    
+    // Create panel
+    const panel = document.createElement('div');
+    panel.className = 'admin-panel';
+    
+    // Create header
+    const header = document.createElement('div');
+    header.className = 'admin-panel-header';
+    header.innerHTML = '<h3>🛡️ TINI Admin Panel</h3><p>Do you want to open Admin Dashboard?</p>';
+    
+    // Create buttons container
+    const buttonsContainer = document.createElement('div');
+    buttonsContainer.className = 'admin-panel-buttons';
+    
+    // YES button
+    const yesBtn = document.createElement('button');
+    yesBtn.className = 'admin-link-btn primary';
+    yesBtn.textContent = '✅ YES - Open Dashboard';
+    yesBtn.addEventListener('click', openFullAdminPanel);
+    
+    // NO button
+    const noBtn = document.createElement('button');
+    noBtn.className = 'admin-link-btn secondary';
+    noBtn.textContent = '❌ NO - Cancel';
+    noBtn.addEventListener('click', closeAdminPanel);
+    
+    // Assemble panel
+    buttonsContainer.appendChild(yesBtn);
+    buttonsContainer.appendChild(noBtn);
+    panel.appendChild(header);
+    panel.appendChild(buttonsContainer);
+    
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
+    
+    // Close on overlay click
+    overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) {
+            closeAdminPanel();
         }
+    });
+}
+
+function openFullAdminPanel() {
+    // Open admin dashboard directly
+    try {
+        const adminUrl = 'http://localhost:8099/admin';
+        console.log('🌐 Opening admin dashboard:', adminUrl);
+        window.open(adminUrl, '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes');
+        console.log('✅ Admin panel opened');
+        closeAdminPanel();
+    } catch (error) {
+        console.error('❌ Error opening admin panel:', error);
+        showMessage('Failed to open admin panel', 'error');
+    }
+}
+
+function closeAdminPanel() {
+    const overlay = document.querySelector('.admin-overlay');
+    if (overlay) {
+        overlay.remove();
     }
 }
 
 function openAdminDashboard() {
-    // Open internal admin panel page
-    const url = chrome.runtime.getURL('admin-panel/scripts/admin-panel.html');
-    console.log('🌐 Opening admin panel page:', url);
-    window.open(url, '_blank');
+    // Use overlay instead of opening new tab
+    console.log('🌐 Opening admin panel overlay...');
+    createAdminPanelOverlay();
 }
 
 function openAdminURL(url) {
@@ -899,70 +956,10 @@ function openAdminFallback() {
 }
 
 function showInlineAdminPanel() {
-    console.log('📱 Showing inline admin panel...');
+    console.log('📱 Showing simplified admin panel...');
     
-    // Create admin panel overlay
-    const overlay = document.createElement('div');
-    overlay.id = 'adminOverlay';
-    overlay.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.8);
-        z-index: 9999;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    `;
-    
-    const panel = document.createElement('div');
-    panel.style.cssText = `
-        background: var(--bg-dark);
-        border-radius: 8px;
-        padding: 20px;
-        width: 300px;
-        max-width: 90%;
-        border: 1px solid var(--border);
-    `;
-    
-    panel.innerHTML = `
-        <div style="text-align: center; margin-bottom: 20px;">
-            <h3 style="color: var(--text); margin: 0 0 10px 0;">🔧 Admin Panel</h3>
-            <p style="color: var(--text-secondary); font-size: 14px; margin: 0;">Dashboard connection failed. Try manual URLs:</p>
-        </div>
-        
-        <div style="margin-bottom: 15px;">
-            <button onclick="window.open('http://localhost:8099/admin', '_blank')" 
-                    style="width: 100%; margin-bottom: 10px; padding: 10px; background: var(--accent); color: white; border: none; border-radius: 4px; cursor: pointer;">
-                🌐 Primary Admin (Port 8099)
-            </button>
-            <button onclick="window.open('http://localhost:3000/admin', '_blank')" 
-                    style="width: 100%; margin-bottom: 10px; padding: 10px; background: var(--bg-darker); color: var(--text); border: 1px solid var(--border); border-radius: 4px; cursor: pointer;">
-                🔧 Secondary Admin (Port 3000)
-            </button>
-            <button onclick="window.open('http://localhost:7001/unified', '_blank')" 
-                    style="width: 100%; margin-bottom: 15px; padding: 10px; background: var(--bg-darker); color: var(--text); border: 1px solid var(--border); border-radius: 4px; cursor: pointer;">
-                📊 Unified Dashboard (Port 7001)
-            </button>
-        </div>
-        
-        <button onclick="document.getElementById('adminOverlay').remove()" 
-                style="width: 100%; padding: 10px; background: transparent; color: var(--text-secondary); border: 1px solid var(--border); border-radius: 4px; cursor: pointer;">
-            ❌ Close
-        </button>
-    `;
-    
-    overlay.appendChild(panel);
-    document.body.appendChild(overlay);
-    
-    // Close on outside click
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-            overlay.remove();
-        }
-    });
+    // Use the same admin panel overlay as before
+    createAdminPanelOverlay();
 }
 
 // ================================================================
@@ -1044,48 +1041,15 @@ function showDiagnosticsResult(result) {
 }
 
 function showEmergencyModePanel() {
-    const overlay = document.createElement('div');
-    overlay.style.cssText = `
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0,0,0,0.8); z-index: 9999;
-        display: flex; align-items: center; justify-content: center;
-    `;
-    
-    const panel = document.createElement('div');
-    panel.style.cssText = `
-        background: var(--bg-dark); border-radius: 8px; padding: 20px;
-        width: 320px; max-width: 90%; border: 1px solid var(--border);
-    `;
-    
-    panel.innerHTML = `
-        <div style="text-align: center; margin-bottom: 20px;">
-            <h3 style="color: var(--text); margin: 0 0 10px 0;">🚨 Emergency Mode</h3>
-            <p style="color: var(--text-secondary); font-size: 14px;">Activate emergency systems:</p>
-        </div>
-        
-        <button onclick="window.emergencyActivate('AUTH_FIX'); this.parentElement.parentElement.remove();" 
-                style="width: 100%; margin-bottom: 10px; padding: 10px; background: var(--accent); color: white; border: none; border-radius: 4px; cursor: pointer;">
-            🔑 Emergency Auth Fix
-        </button>
-        
-        <button onclick="window.emergencyActivate('REBUILD'); this.parentElement.parentElement.remove();" 
-                style="width: 100%; margin-bottom: 10px; padding: 10px; background: var(--bg-darker); color: var(--text); border: 1px solid var(--border); border-radius: 4px; cursor: pointer;">
-            🔄 System Rebuild
-        </button>
-        
-        <button onclick="window.emergencyActivate('DOCKER_FIX'); this.parentElement.parentElement.remove();" 
-                style="width: 100%; margin-bottom: 15px; padding: 10px; background: var(--bg-darker); color: var(--text); border: 1px solid var(--border); border-radius: 4px; cursor: pointer;">
-            🐳 Docker Fix
-        </button>
-        
-        <button onclick="this.parentElement.parentElement.remove()" 
-                style="width: 100%; padding: 10px; background: transparent; color: var(--text-secondary); border: 1px solid var(--border); border-radius: 4px; cursor: pointer;">
-            ❌ Cancel
-        </button>
-    `;
-    
-    overlay.appendChild(panel);
-    document.body.appendChild(overlay);
+    // Use simple alert for emergency mode
+    if (confirm('🚨 Emergency Mode\n\nActivate emergency systems?\n\n1. Emergency Auth Fix\n2. System Rebuild')) {
+        if (typeof window.emergencyActivate === 'function') {
+            window.emergencyActivate('AUTH_FIX');
+        } else {
+            console.log('� Emergency auth fix activated');
+            showMessage('Emergency mode activated', 'warning');
+        }
+    }
 }
 
 // ================================================================
@@ -1147,18 +1111,10 @@ function showMessage(message, type = 'info') {
     console.log(`📢 Message (${type}): ${message}`);
     
     // Create message container if it doesn't exist
-    let container = document.getElementById('messageContainer');
+    let container = document.querySelector('.message-container');
     if (!container) {
         container = document.createElement('div');
-        container.id = 'messageContainer';
-        container.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 10000;
-            max-width: 300px;
-            pointer-events: none;
-        `;
+        container.className = 'message-container';
         document.body.appendChild(container);
     }
     
@@ -1166,20 +1122,6 @@ function showMessage(message, type = 'info') {
     const messageEl = document.createElement('div');
     messageEl.className = `popup-message message-${type}`;
     messageEl.textContent = message;
-    messageEl.style.cssText = `
-        padding: 12px 16px;
-        margin-bottom: 8px;
-        border-radius: 6px;
-        font-size: 14px;
-        font-weight: 500;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        animation: slideIn 0.3s ease;
-        pointer-events: auto;
-        cursor: pointer;
-        background: ${getMessageColor(type).bg};
-        color: ${getMessageColor(type).text};
-        border: 1px solid ${getMessageColor(type).border};
-    `;
     
     // Add click to dismiss
     messageEl.addEventListener('click', () => messageEl.remove());
@@ -1189,7 +1131,7 @@ function showMessage(message, type = 'info') {
     // Auto remove after 4 seconds
     setTimeout(() => {
         if (messageEl.parentNode) {
-            messageEl.style.animation = 'slideOut 0.3s ease';
+            messageEl.classList.add('slide-out');
             setTimeout(() => messageEl.remove(), 300);
         }
     }, 4000);
@@ -1384,3 +1326,4 @@ window.addEventListener('unhandledrejection', (e) => {
 });
 
 console.log('🌟 TINI Popup Event Handlers loaded successfully!');
+// ST:TINI_1754716154_e868a412

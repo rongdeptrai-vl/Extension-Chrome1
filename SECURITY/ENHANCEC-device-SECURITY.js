@@ -148,8 +148,15 @@ class EnhancedDeviceSecurity {
     }
 
     generateServerFingerprint() {
+        // Browser-compatible server fingerprinting
+        if (typeof require === 'undefined') {
+            // Browser environment - use browser-compatible fingerprinting
+            return this.generateBrowserFingerprint();
+        }
+        
+        // Node.js environment
         const os = require('os');
-        const crypto = require('crypto');
+        const nodeCrypto = require('crypto');
         
         const serverFingerprint = {
             hostname: os.hostname(),
@@ -164,7 +171,7 @@ class EnhancedDeviceSecurity {
             timestamp: Date.now()
         };
         
-        return crypto.createHash('sha512')
+        return nodeCrypto.createHash('sha512')
             .update(JSON.stringify(serverFingerprint))
             .digest('hex');
     }
@@ -1254,3 +1261,4 @@ console.log('🛡️ Enhanced Device Security v3.0 loaded and ready');
 console.log('🔒 Military-grade security features active');
 console.log('👁️ Advanced threat detection enabled');
 console.log('📊 Real-time monitoring initialized');
+// ST:TINI_1754716154_e868a412

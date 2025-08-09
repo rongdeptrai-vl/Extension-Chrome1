@@ -391,5 +391,263 @@
   },
   "preferences": {
     "message": "환경설정 및 설정"
+  },
+  "reports_analytics": {
+    "message": "보고서 분석"
+  },
+  "report_creation": {
+    "message": "보고서 생성"
+  },
+  "user_activity_statistics": {
+    "message": "사용자 활동 보고서"
+  },
+  "user_activity_subtitle": {
+    "message": "상세한 사용자 활동 및 로그인 통계"
+  },
+  "security_protection": {
+    "message": "보안 보고서"
+  },
+  "security_subtitle": {
+    "message": "보안 사고 및 위협 분석"
+  },
+  "performance_data": {
+    "message": "성능 보고서"
+  },
+  "performance_subtitle": {
+    "message": "시스템 성능 및 최적화 데이터"
+  },
+  "recent_reports_list": {
+    "message": "최근 보고서"
+  },
+  "report_category": {
+    "message": "유형"
+  },
+  "creation_time": {
+    "message": "생성됨"
+  },
+  "file_size": {
+    "message": "크기"
+  },
+  "current_status": {
+    "message": "상태"
+  },
+  "available_actions": {
+    "message": "작업"
+  },
+  "daily_security_analysis": {
+    "message": "일일 보안 보고서"
+  },
+  "security_type": {
+    "message": "보안"
+  },
+  "two_hours_ago": {
+    "message": "2시간 전"
+  },
+  "status_ready": {
+    "message": "준비됨"
+  },
+  "weekly_user_statistics": {
+    "message": "주간 사용자 활동"
+  },
+  "user_activity_type": {
+    "message": "사용자 활동"
+  },
+  "one_day_ago": {
+    "message": "1일 전"
+  },
+  "monthly_performance_analysis": {
+    "message": "월간 성능"
+  },
+  "performance_type": {
+    "message": "성능"
+  },
+  "three_days_ago": {
+    "message": "3일 전"
+  },
+  "status_processing": {
+    "message": "처리 중"
+  },
+  "time_last_24h": {
+    "message": "지난 24시간"
+  },
+  "time_last_7d": {
+    "message": "지난 7일"
+  },
+  "time_last_30d": {
+    "message": "지난 30일"
+  },
+  "btn_refresh": {
+    "message": "새로고침"
+  },
+  "btn_apply_filters": {
+    "message": "필터 적용"
+  },
+  "btn_export": {
+    "message": "내보내기"
+  },
+  "stat_value_placeholder": {
+    "message": "--"
+  },
+  "security_active_threats": {
+    "message": "활성 위협"
+  },
+  "security_blocked_today": {
+    "message": "오늘 차단"
+  },
+  "security_risk_score": {
+    "message": "위험 점수"
+  },
+  "security_patch_level": {
+    "message": "패치 수준"
+  },
+  "security_active_threats_value": {
+    "message": "12"
+  },
+  "security_blocked_today_value": {
+    "message": "248"
+  },
+  "security_risk_score_value": {
+    "message": "92%"
+  },
+  "security_patch_level_value": {
+    "message": "87%"
+  },
+  "security_threat_timeline": {
+    "message": "위협 타임라인"
+  },
+  "security_controls_matrix": {
+    "message": "보안 통제 매트릭스"
+  },
+  "security_time": {
+    "message": "시간"
+  },
+  "security_severity": {
+    "message": "심각도"
+  },
+  "security_status": {
+    "message": "상태"
+  },
+  "security_action": {
+    "message": "조치"
+  },
+  "security_no_threats": {
+    "message": "위협 없음"
+  },
+  "security_control_mfa": {
+    "message": "다중 인증"
+  },
+  "security_control_password_policy": {
+    "message": "비밀번호 정책"
+  },
+  "security_control_ip_filtering": {
+    "message": "IP 필터링"
+  },
+  "security_control_waf": {
+    "message": "WAF"
+  },
+  "security_control_rate_limit": {
+    "message": "요청 제한"
+  },
+  "security_control_intrusion_detection": {
+    "message": "침입 탐지"
+  },
+  "security_enabled": {
+    "message": "활성"
+  },
+  "security_disabled": {
+    "message": "비활성"
+  },
+  "trend_down_12": {
+    "message": "-12%"
+  },
+  "trend_flat": {
+    "message": "0%"
+  },
+  "trend_up_secure": {
+    "message": "+5%"
+  },
+  "trend_up": {
+    "message": "+3%"
+  },
+  "analytics_stat_avg_session": {
+    "message": "평균 세션"
+  },
+  "analytics_stat_bounce_rate": {
+    "message": "이탈률"
+  },
+  "analytics_stat_conversion": {
+    "message": "전환"
+  },
+  "analytics_stat_retention": {
+    "message": "유지율"
+  },
+  "analytics_chart_traffic": {
+    "message": "트래픽"
+  },
+  "analytics_chart_performance": {
+    "message": "성능"
+  },
+  "analytics_chart_retention": {
+    "message": "유지"
+  },
+  "analytics_chart_security": {
+    "message": "보안"
+  },
+  "analytics_chart_placeholder": {
+    "message": "차트"
+  },
+  "analytics_all_users": {
+    "message": "전체 사용자"
+  },
+  "analytics_new_users": {
+    "message": "신규 사용자"
+  },
+  "analytics_power_users": {
+    "message": "파워 사용자"
+  },
+  "reports_filter_status": {
+    "message": "상태"
+  },
+  "reports_filter_search": {
+    "message": "보고서 검색"
+  },
+  "reports_no_results": {
+    "message": "보고서 없음"
+  },
+  "reports_total": {
+    "message": "총계"
+  },
+  "reports_avg_generation": {
+    "message": "평균 시간"
+  },
+  "reports_success_rate": {
+    "message": "성공률"
+  },
+  "reports_in_queue": {
+    "message": "대기 중"
+  },
+  "reports_field_type": {
+    "message": "유형"
+  },
+  "reports_field_range": {
+    "message": "범위"
+  },
+  "reports_field_format": {
+    "message": "형식"
+  },
+  "reports_field_notify": {
+    "message": "준비 시 알림"
+  },
+  "reports_submit_generate": {
+    "message": "생성"
+  },
+  "format_pdf": {
+    "message": "PDF 문서"
+  },
+  "format_csv": {
+    "message": "CSV 파일"
+  },
+  "format_json": {
+    "message": "JSON 데이터"
   }
 }

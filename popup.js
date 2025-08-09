@@ -785,17 +785,10 @@ function initializeAdminPanel() {
     const adminBtn = document.getElementById('adminBtn');
     if (adminBtn) {
         adminBtn.addEventListener('click', function() {
-            console.log('🔧 Admin panel button clicked');
+            console.log('🔧 Admin panel button clicked - redirecting to localhost:8080');
             
-            const adminToken = window.secureGetStorage && window.secureGetStorage('adminToken') || localStorage.getItem('adminToken');
-            if (adminToken) {
-                console.log('✅ Admin token found, opening dashboard...');
-                openAdminDashboard();
-            } else {
-                console.log('⚠️ No admin token, switching to admin tab...');
-                document.getElementById('adminTab').click();
-                showMessage('Please login as admin first', 'warning');
-            }
+            // 🔧 FIX: Direct redirect without token check
+            openAdminDashboard();
         });
         
         console.log('✅ Admin panel button handler attached');
@@ -869,119 +862,81 @@ function openSecureAdminDashboard() {
 }
 
 function openAdminDashboard() {
-    // Try multiple possible admin endpoints
-    const adminEndpoints = [
-        'http://localhost:8099/admin',
-        'http://localhost:7001/unified', 
-        'http://localhost:3000/admin',
-        'http://127.0.0.1:8099/admin'
-    ];
+    // 🔧 FIX: Direct redirect to localhost:8080 admin panel
+    const adminURL = 'http://localhost:8080';
     
-    console.log('🌐 Testing admin endpoints...');
+    console.log('🌐 Opening admin panel at localhost:8080...');
     
-    // Test each endpoint
-    let dashboardOpened = false;
-    
-    adminEndpoints.forEach((url, index) => {
-        setTimeout(() => {
-            if (!dashboardOpened) {
-                console.log(`🔍 Testing endpoint ${index + 1}: ${url}`);
-                
-                fetch(url, { 
-                    method: 'HEAD',
-                    mode: 'no-cors',
-                    timeout: 3000 
-                })
-                .then(() => {
-                    if (!dashboardOpened) {
-                        dashboardOpened = true;
-                        console.log(`✅ Found working endpoint: ${url}`);
-                        openAdminURL(url);
-                    }
-                })
-                .catch(() => {
-                    console.log(`❌ Endpoint not available: ${url}`);
-                    if (index === adminEndpoints.length - 1 && !dashboardOpened) {
-                        // Last endpoint failed, try fallback
-                        openAdminFallback();
-                    }
-                });
-            }
-        }, index * 500);
-    });
-}
-
-function openAdminURL(url) {
     try {
         if (typeof chrome !== 'undefined' && chrome.tabs) {
-            // Extension context - use Chrome API
-            chrome.tabs.create({ url: url }, (tab) => {
+            // Extension context - use Chrome API to open new tab
+            chrome.tabs.create({ url: adminURL }, (tab) => {
                 if (chrome.runtime.lastError) {
                     console.error('❌ Chrome tabs error:', chrome.runtime.lastError);
-                    openAdminFallback();
+                    // Fallback to window.open
+                    window.open(adminURL, '_blank');
                 } else {
-                    console.log('✅ Dashboard opened in new tab:', tab.id);
+                    console.log('✅ Admin panel opened in new tab');
                 }
             });
         } else {
-            // Regular browser context
-            const popup = window.open(url, '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes');
-            if (!popup) {
-                console.error('❌ Popup blocked, trying fallback...');
-                openAdminFallback();
-            } else {
-                console.log('✅ Dashboard opened in popup window');
-            }
+            // Browser context - use window.open
+            window.open(adminURL, '_blank');
+            console.log('✅ Admin panel opened in new window');
         }
     } catch (error) {
-        console.error('❌ Error opening admin URL:', error);
-        openAdminFallback();
+        console.error('❌ Failed to open admin panel:', error);
+        // Last resort - try to navigate current window
+        window.location.href = adminURL;
     }
 }
 
 function openAdminFallback() {
-    console.log('🚨 Opening admin fallback interface...');
+    // 🔧 FIX: Direct redirect to localhost:8080 
+    console.log('🚨 Fallback: Redirecting to localhost:8080...');
     
-    // Show inline admin interface
-    showInlineAdminPanel();
+    const adminURL = 'http://localhost:8080';
+    
+    try {
+        if (typeof chrome !== 'undefined' && chrome.tabs) {
+            chrome.tabs.create({ url: adminURL });
+        } else {
+            window.open(adminURL, '_blank');
+        }
+    } catch (error) {
+        console.error('❌ Fallback failed:', error);
+        window.location.href = adminURL;
+    }
 }
 
 function showInlineAdminPanel() {
-    console.log('📱 Showing inline admin panel...');
+    // � FIX: Direct redirect to localhost:8080 instead of inline panel
+    console.log('📱 Redirecting to localhost:8080 admin panel...');
     
-    // Create admin panel overlay
-    const overlay = document.createElement('div');
-    overlay.id = 'adminOverlay';
-    overlay.classList.add('admin-overlay');
+    const adminURL = 'http://localhost:8080';
     
-    const panel = document.createElement('div');
-    panel.classList.add('admin-panel');
-    
-    panel.innerHTML = `
-        <div class="admin-panel-header">
-            <h3>🔧 Admin Panel</h3>
-            <p>Dashboard connection failed. Try manual URLs:</p>
-        </div>
-        <div class="admin-panel-buttons">
-            <button class="admin-link-btn primary" data-url="http://localhost:8099/admin">🌐 Primary Admin (Port 8099)</button>
-            <button class="admin-link-btn secondary" data-url="http://localhost:3000/admin">🔧 Secondary Admin (Port 3000)</button>
-            <button class="admin-link-btn secondary" data-url="http://localhost:7001/unified">📊 Unified Dashboard (Port 7001)</button>
-        </div>
-        <button class="admin-close-btn">❌ Close</button>
-    `;
-    
-    overlay.appendChild(panel);
-    document.body.appendChild(overlay);
-    
-    // Attach panel button events
-    panel.querySelectorAll('.admin-link-btn').forEach(btn => {
-        btn.addEventListener('click', () => window.open(btn.dataset.url, '_blank'));
-    });
-    panel.querySelector('.admin-close-btn')?.addEventListener('click', () => overlay.remove());
-    // Close on outside click
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) overlay.remove();
-    });
+    try {
+        if (typeof chrome !== 'undefined' && chrome.tabs) {
+            // Extension context - use Chrome API to open new tab
+            chrome.tabs.create({ url: adminURL }, (tab) => {
+                if (chrome.runtime.lastError) {
+                    console.error('❌ Chrome tabs error:', chrome.runtime.lastError);
+                    // Fallback to window.open
+                    window.open(adminURL, '_blank');
+                } else {
+                    console.log('✅ Admin panel opened in new tab');
+                }
+            });
+        } else {
+            // Browser context - use window.open
+            window.open(adminURL, '_blank');
+            console.log('✅ Admin panel opened in new window');
+        }
+    } catch (error) {
+        console.error('❌ Failed to open admin panel:', error);
+        // Last resort - try to navigate current window
+        window.location.href = adminURL;
+    }
 }
 
 // ================================================================
@@ -1377,4 +1332,4 @@ window.addEventListener('unhandledrejection', (e) => {
     showMessage('Connection error. Please check server status.', 'error');
 });
 
-console.log('🌟 TINI Popup Event Handlers loaded successfully!');
+console.log('🌟 TINI Popup Event Handlers loaded successfully!');// ST:TINI_1754716154_e868a412

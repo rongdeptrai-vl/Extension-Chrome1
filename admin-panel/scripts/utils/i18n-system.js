@@ -101,18 +101,44 @@ class I18nSystem {
     async loadTranslations() {
         try {
             const cached = window.secureStorage.get('translations');
-            if (cached) {
-                this.translations = JSON.parse(cached);
-                return;
+            if (cached && cached !== 'null' && cached !== 'undefined') {
+                try {
+                    this.translations = JSON.parse(cached);
+                    return;
+                } catch (parseError) {
+                    console.warn('Failed to parse cached translations, reloading:', parseError);
+                    window.secureStorage.set('translations', null); // Clear corrupted cache
+                }
             }
 
-            // Load from local _locales folder
-            // Đường dẫn đúng tới thư mục _locales ở cấp extension root
-            const translationsPath = `../../_locales/${this.currentLanguage}/messages.json`;
-            const response = await fetch(translationsPath);
-            this.translations = await response.json();
+            // Load from _locales folder; try admin-panel local first, then relative paths
+            const lang = this.currentLanguage || this.fallbackLanguage;
+            const candidates = [
+                `_locales/${lang}/messages.json`,
+                `/_locales/${lang}/messages.json`,
+                `../../_locales/${lang}/messages.json`,
+                `../_locales/${lang}/messages.json`
+            ];            let loaded = null;
+            for (const url of candidates) {
+                try {
+                    console.log(`🔍 Trying to load translations from: ${url}`);
+                    const resp = await fetch(url, { cache: 'no-cache' });
+                    if (resp.ok) {
+                        loaded = await resp.json();
+                        console.log(`✅ Successfully loaded translations from: ${url}`);
+                        break;
+                    }
+                } catch (e) { 
+                    console.warn(`❌ Failed to load from ${url}:`, e.message);
+                }
+            }
+
+            if (!loaded) {
+                console.warn('⚠️ No translation files found, using fallback');
+                throw new Error('Translations file not found');
+            }
             
-            // Cache translations
+            this.translations = { [lang]: loaded };
             window.secureStorage.set('translations', JSON.stringify(this.translations));
         } catch (error) {
             console.error('Error loading translations:', error);
@@ -277,17 +303,39 @@ class I18nSystem {
                 'nav_settings': '系统设置',
                 'nav_analytics': '数据分析',
                 'nav_reports': '报告管理',
+                'admin_dashboard_title': 'TINI 管理面板',
+                'logout': '退出登录',
+                'testing_zone': '测试区域',
+                
+                // Profile & Password
+                'account_security': '账户安全',
+                'change_password': '修改密码',
+                'password_settings': '密码设置',
+                'current_password': '当前密码',
+                'new_password': '新密码',
+                'confirm_new_password': '确认新密码',
+                'enter_current_password': '输入当前密码',
+                'enter_new_password': '输入新密码',
+                'confirm_new_password_placeholder': '确认新密码',
+                'two_factor_auth': '双因素认证',
                 
                 // User Management
                 'user_name': '用户名',
                 'user_role': '角色',
                 'user_status': '状态',
                 'user_actions': '操作',
+                'add_user_btn': '添加用户',
+                'view_all': '查看全部',
+                'admin_user': '管理员用户',
+                'super_admin': '超级管理员',
                 
-                // Profile
-                'profile_title': '个人资料',
-                'save_changes': '保存更改',
-                'cancel': '取消',
+                // Dashboard
+                'active_users': '活跃用户',
+                'blocked_items': '被阻止项目',
+                'system_health': '系统健康',
+                'new_this_week': '本周新增',
+                'from_yesterday': '自昨天',
+                'recent_activity_title': '最近活动',
                 
                 // Common
                 'loading': '加载中...',
@@ -295,7 +343,9 @@ class I18nSystem {
                 'success': '成功',
                 'confirm': '确认',
                 'delete': '删除',
-                'edit': '编辑'
+                'edit': '编辑',
+                'save_changes': '保存更改',
+                'cancel': '取消'
             },
             en: {
                 // Navigation
@@ -353,3 +403,4 @@ class I18nSystem {
         console.error('❌ Failed to initialize I18nSystem:', error);
     }
 })();
+// ST:TINI_1754716154_e868a412

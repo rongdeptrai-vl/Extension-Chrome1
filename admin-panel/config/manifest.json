@@ -31,7 +31,7 @@
         "extension_pages": "script-src 'self'; style-src 'self'; font-src 'self' data:; img-src 'self' data: blob: https:; object-src 'none';"
     },
     "action": {
-        "default_popup": "admin dashboarh.html",
+        "default_popup": "scripts/admin-panel.html"
         "default_title": "TINI Admin Dashboard",
         "default_icon": {
             "16": "icons/icon16.png",
@@ -48,7 +48,13 @@
     },
     "web_accessible_resources": [
         {
-            "resources": ["admin-dashboard.css", "all.min.css", "admin-panel-main.js"],
+            "resources": [
+                "scripts/admin-panel.css",
+                "scripts/admin-panel-main.js",
+                "scripts/utils/*",
+                "scripts/SECURITY/*",
+                "scripts/config/*"
+            ],
             "matches": ["<all_urls>"]
         }
     ]
