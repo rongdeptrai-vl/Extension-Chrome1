@@ -734,7 +734,8 @@ input:focus, select:focus {
 .progress-bar > div {height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-dark));transition:width .6s ease;}
 
 .grid-2 {display:grid;gap:22px;margin-bottom:30px;grid-template-columns:1fr 1fr;}
-.grid-3-1 {display:grid;gap:24px;grid-template-columns:3fr 1.2fr;align-items:start;}
+.grid-3-1 {display:grid;gap:24px;grid-template-columns:1fr 576px;align-items:start;height:733px;}
+.grid-3-1.enhanced-layout {grid-template-columns:1fr 576px !important;height:733px !important;}
 .full-height {height:100%;}
 
 .panel {background:var(--card-bg);border:1px solid var(--border);border-radius:16px;padding:0;display:flex;flex-direction:column;min-height:220px;backdrop-filter:blur(10px);} 
@@ -747,7 +748,9 @@ input:focus, select:focus {
 
 .table-tight th, .table-tight td {padding:8px 10px;font-size:12.5px;}
 .table-tight tbody tr:hover {background:rgba(255,255,255,.03);} 
+.table-tight .report-name .name-container span {font-weight:600;}
 
+/* Empty and No Data States */
 .empty-state {display:flex;flex-direction:column;align-items:center;justify-content:center;padding:35px 15px;color:var(--text-secondary);font-size:13px;}
 .empty-state i {font-size:28px;margin-bottom:10px;color:var(--accent);} 
 
@@ -766,15 +769,264 @@ input:focus, select:focus {
 .btn-ghost.small {padding:6px 10px;font-size:12px;}
 .btn-ghost:hover {color:var(--text);border-color:var(--accent);background:rgba(0,240,255,.08);} 
 
-.form-vertical {display:flex;flex-direction:column;gap:14px;padding:18px 20px;}
-.form-vertical label {display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--text-secondary);}
-.form-vertical select, .form-vertical input[type=text] {background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text);padding:10px 12px;border-radius:8px;font-size:13px;}
-.form-vertical button.w-100 {width:100%;margin-top:6px;}
+.form-vertical {display:flex;flex-direction:column;gap:8px;padding:12px;max-height:681px;overflow-y:auto;}
+.form-vertical label {display:flex;flex-direction:column;gap:4px;font-size:11px;color:var(--text-secondary);}
+.form-vertical select, .form-vertical input[type=text] {background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--text);padding:6px 10px;border-radius:8px;font-size:11px;height:32px;}
+.form-vertical button.w-100 {width:100%;margin-top:6px;height:32px;font-size:11px;}
 .checkbox-inline {display:flex;align-items:center;gap:8px;cursor:pointer;}
-.generate-panel {display:flex;flex-direction:column;}
+.generate-panel {display:flex;flex-direction:column;width:576px !important;height:733px !important;max-width:576px !important;max-height:733px !important;}
 
 .chart-placeholder {font-size:12px;}
 
-@media (max-width:1400px){.grid-3-1{grid-template-columns:2fr 1fr;}}
-@media (max-width:1100px){.grid-2,.grid-3-1{grid-template-columns:1fr;} .controls-matrix{grid-template-columns:1fr;} }
+@media (max-width:1400px){.grid-3-1{grid-template-columns:1fr 576px !important;}}
+@media (max-width:1100px){.grid-2{grid-template-columns:1fr;} .grid-3-1{grid-template-columns:1fr !important;} .controls-matrix{grid-template-columns:1fr;} .generate-panel{width:100% !important;max-width:100% !important;} }
+
+/* ========================================
+   🎨 ENHANCED DROPDOWN & BUTTON STYLING
+   ======================================== */
+
+/* Modern Select Styling */
+.modern-select {
+    background: rgba(255,255,255,.08) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text) !important;
+    padding: 10px 12px !important;
+    border-radius: 8px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+    width: 100% !important;
+    appearance: none !important;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e") !important;
+    background-position: right 8px center !important;
+    background-repeat: no-repeat !important;
+    background-size: 16px !important;
+    padding-right: 35px !important;
+}
+
+.modern-select:hover {
+    border-color: var(--accent) !important;
+    background: rgba(255,255,255,.12) !important;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.2) !important;
+}
+
+.modern-select:focus {
+    outline: none !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 15px rgba(0, 240, 255, 0.3) !important;
+    background: rgba(255,255,255,.15) !important;
+}
+
+.modern-select option {
+    background: var(--bg-dark) !important;
+    color: var(--text) !important;
+    padding: 8px 12px !important;
+    font-weight: 500 !important;
+}
+
+/* Form Group Styling */
+.form-group {
+    margin-bottom: 20px !important;
+}
+
+.form-label {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-bottom: 8px !important;
+    color: var(--text) !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+}
+
+.form-label i {
+    color: var(--accent) !important;
+    font-size: 16px !important;
+}
+
+/* Format Options Styling */
+.format-options {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 12px !important;
+    margin-top: 8px !important;
+}
+
+.format-option {
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+.format-option input[type="radio"] {
+    display: none !important;
+}
+
+.format-card {
+    background: rgba(255,255,255,.05) !important;
+    border: 2px solid var(--border) !important;
+    color: var(--text) !important;
+    padding: 16px 12px !important;
+    border-radius: 8px !important;
+    text-align: center !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px !important;
+    min-height: 80px !important;
+    justify-content: center !important;
+}
+
+.format-card i {
+    font-size: 24px !important;
+    color: var(--text-secondary) !important;
+    transition: all 0.3s ease !important;
+}
+
+.format-option:hover .format-card {
+    background: rgba(0, 240, 255, 0.1) !important;
+    border-color: var(--accent) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(0, 240, 255, 0.2) !important;
+}
+
+.format-option:hover .format-card i {
+    color: var(--accent) !important;
+    transform: scale(1.1) !important;
+}
+
+.format-option.active .format-card {
+    background: rgba(0, 240, 255, 0.2) !important;
+    border-color: var(--accent) !important;
+    color: var(--accent) !important;
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.3) !important;
+}
+
+.format-option.active .format-card i {
+    color: var(--accent) !important;
+    transform: scale(1.2) !important;
+}
+
+/* Button Styling */
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark)) !important;
+    color: var(--bg-dark) !important;
+    border: none !important;
+    padding: 12px 20px !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    font-size: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(0, 240, 255, 0.4) !important;
+    background: linear-gradient(135deg, var(--accent-dark), var(--accent)) !important;
+}
+
+.btn-primary:disabled {
+    opacity: 0.7 !important;
+    cursor: not-allowed !important;
+    transform: none !important;
+}
+
+.btn-secondary {
+    background: rgba(255,255,255,.05) !important;
+    color: var(--text) !important;
+    border: 1px solid var(--border) !important;
+    padding: 10px 20px !important;
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    font-size: 14px !important;
+}
+
+.btn-secondary:hover {
+    background: rgba(255,255,255,.1) !important;
+    border-color: var(--accent) !important;
+    color: var(--accent) !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Loading Animation */
+.btn-loading {
+    position: absolute !important;
+    right: 16px !important;
+}
+
+.btn-loading i {
+    animation: spin 1s linear infinite !important;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Checkbox Group */
+.checkbox-group {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+    margin-top: 8px !important;
+}
+
+.checkbox-option {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    cursor: pointer !important;
+    padding: 8px 0 !important;
+    transition: all 0.3s ease !important;
+}
+
+.checkbox-option:hover {
+    color: var(--accent) !important;
+}
+
+.checkbox-option input[type="checkbox"] {
+    width: 18px !important;
+    height: 18px !important;
+    accent-color: var(--accent) !important;
+}
+
+/* Form Note */
+.form-note {
+    background: rgba(0, 240, 255, 0.1) !important;
+    border: 1px solid rgba(0, 240, 255, 0.3) !important;
+    color: var(--text-secondary) !important;
+    padding: 12px !important;
+    border-radius: 6px !important;
+    font-size: 12px !important;
+    margin-top: 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+.form-note i {
+    color: var(--accent) !important;
+}
+
+/* Notification Animations */
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOut {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
+}
+
 /* ST:TINI_1754716154_e868a412 */
+/* ST:TINI_1754879322_e868a412 */

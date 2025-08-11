@@ -1,4 +1,12 @@
 {
+  "_tini_watermark": {
+    "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
+    "employee": "rongdeptrai-vl <rongdz2307@gmail.com>",
+    "commit": "8035ae4",
+    "time": "2025-08-11T02:28:42Z",
+    "watermark_id": "TINI_1754879322_e868a412",
+    "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
+  },
   "nav_dashboard": {
     "message": "仪表板"
   },
@@ -26,44 +34,8 @@
   "testing_zone": {
     "message": "测试区域"
   },
-  "database_status": {
-    "message": "Database Status"
-  },
-  "test_connection": {
-    "message": "Test"
-  },
-  "environment_config": {
-    "message": "Environment Configuration"
-  },
-  "mysql_connected": {
-    "message": "MySQL Connected"
-  },
-  "redis_connected": {
-    "message": "Redis Connected"
-  },
-  "connection_healthy": {
-    "message": "Connection Healthy"
-  },
-  "connection_failed": {
-    "message": "Connection Failed"
-  },
-  "checking_connection": {
-    "message": "Checking Connection"
-  },
-  "database_health": {
-    "message": "Database Health"
-  },
-  "admin_dashboard_title": {
-    "message": "TINI Admin Dashboard"
-  },
   "super_admin": {
     "message": "超级管理员"
-  },
-  "welcome_back": {
-    "message": "Welcome Back"
-  },
-  "header_title": {
-    "message": "Dashboard"
   },
   "active_users": {
     "message": "活跃用户"
@@ -71,122 +43,50 @@
   "blocked_items": {
     "message": "被阻止项目"
   },
+  "from_last_week": {
+    "message": "自上周"
+  },
   "system_health": {
     "message": "系统健康"
-  },
-  "new_this_week": {
-    "message": "12.5% new this week"
   },
   "from_yesterday": {
     "message": "自昨天"
   },
-  "minutes_ago_2": {
-    "message": "2 minutes ago"
-  },
-  "minutes_ago_15": {
-    "message": "15 minutes ago"
-  },
-  "hour_ago": {
-    "message": "1 hour ago"
-  },
-  "hours_ago_2": {
-    "message": "2 hours ago"
-  },
-  "hours_ago_3": {
-    "message": "3 hours ago"
-  },
-  "just_now": {
-    "message": "Just now"
-  },
-  "recent_activity_title": {
-    "message": "Recent Activity"
+  "recent_activity": {
+    "message": "最近活动"
   },
   "view_all": {
     "message": "查看全部"
   },
-  "table_user": {
-    "message": "User"
+  "user": {
+    "message": "用户"
   },
-  "table_action": {
-    "message": "Action"
+  "action": {
+    "message": "操作"
   },
-  "table_version": {
-    "message": "Version"
+  "version": {
+    "message": "版本"
   },
-  "table_time": {
-    "message": "Time"
+  "time": {
+    "message": "时间"
   },
-  "table_status": {
-    "message": "Status"
+  "status": {
+    "message": "状态"
   },
-  "switched_to_power": {
-    "message": "Switched to POWER"
+  "power_mode": {
+    "message": "性能模式"
   },
   "login_attempt": {
     "message": "登录尝试"
   },
-  "updated_settings": {
-    "message": "Updated settings"
+  "settings_updated": {
+    "message": "设置已更新"
   },
-  "device_registration": {
-    "message": "Device registration"
+  "register_device": {
+    "message": "注册设备"
   },
-  "active": {
-    "message": "Active"
-  },
-  "failed": {
-    "message": "Failed"
-  },
-  "completed": {
-    "message": "Completed"
-  },
-  "pending": {
-    "message": "Pending"
-  },
-  "inactive": {
-    "message": "Inactive"
-  },
-  "bypass_testing_zone": {
-    "message": "BYPASS TESTING ZONE"
-  },
-  "admin_safe_environment": {
-    "message": "🔒 100% Admin Safe Environment"
-  },
-  "admin_notification": {
-    "message": "💻 Admin Notification:"
-  },
-  "admin_notification_text": {
-    "message": "Don't worry anymore! I have created this super secure testing bypass environment for administrators. Here, administrators can test bypasses and will never be 'stuck' or blocked. Everything is protected by BOSS permission level 10000!"
-  },
-  "absolute_safety_guarantee": {
-    "message": "Absolute Safety Guarantee"
-  },
-  "admin_cannot_be_blocked": {
-    "message": "Admin cannot be blocked in this environment"
-  },
-  "all_bypass_systems_integrated": {
-    "message": "All bypass systems inherited and integrated"
-  },
-  "boss_protection_highest_level": {
-    "message": "BOSS protection always operates at the highest level"
-  },
-  "emergency_rescue_ready": {
-    "message": "Emergency rescue ready if any problems arise"
-  },
-  "bypass_systems_status": {
-    "message": "BYPASS SYSTEMS STATUS"
-  },
-  "all_ready": {
-    "message": "ALL READY"
-  },
-  "user_management": {
-    "message": "User Management"
-  },
-  "user_management_title": {
-    "message": "User Management"
-  },
-  "add_user_btn": {
-    "message": "Add User"
+  "pending_approval": {
+    "message": "待审批"
   },
   "add_user": {
     "message": "添加用户"
@@ -194,38 +94,17 @@
   "employee_id": {
     "message": "员工编号"
   },
-  "employee_id_col": {
-    "message": "Employee ID"
-  },
   "name": {
     "message": "姓名"
-  },
-  "name_col": {
-    "message": "Name"
   },
   "role": {
     "message": "角色"
   },
-  "role_col": {
-    "message": "Role"
-  },
   "last_active": {
     "message": "最后活跃"
   },
-  "last_active_col": {
-    "message": "Last Active"
-  },
-  "devices": {
-    "message": "Devices"
-  },
-  "devices_col": {
-    "message": "Devices"
-  },
   "actions": {
     "message": "操作"
-  },
-  "actions_col": {
-    "message": "Actions"
   },
   "admin_user": {
     "message": "管理员用户"
@@ -233,47 +112,32 @@
   "regular_user": {
     "message": "普通用户"
   },
-  "employee_user_3": {
-    "message": "PanVuong Employee"
-  },
-  "admin": {
-    "message": "Admin"
-  },
-  "user": {
-    "message": "用户"
-  },
-  "employee": {
-    "message": "Employee"
-  },
-  "manager": {
-    "message": "Manager"
-  },
   "total_users": {
     "message": "用户总数"
+  },
+  "new_users_this_week": {
+    "message": "本周新用户"
   },
   "active_sessions": {
     "message": "活跃会话"
   },
-  "admin_users": {
-    "message": "Admin Users"
-  },
-  "new_this_week_users": {
-    "message": "1 new this week"
-  },
   "active_rate": {
     "message": "活跃率"
   },
-  "super_admin_level": {
-    "message": "Super admin level"
+  "admin_level": {
+    "message": "管理员级别"
   },
   "profile_settings": {
     "message": "个人资料设置"
   },
-  "avatar_cover": {
-    "message": "Avatar & Cover"
+  "avatar_and_cover": {
+    "message": "头像和封面"
   },
   "avatar": {
     "message": "头像"
+  },
+  "upload_image": {
+    "message": "上传图片"
   },
   "personal_info": {
     "message": "个人信息"
@@ -281,14 +145,14 @@
   "full_name": {
     "message": "全名"
   },
-  "email": {
+  "email_address": {
     "message": "邮箱地址"
   },
-  "save_changes": {
-    "message": "保存更改"
+  "options": {
+    "message": "选项"
   },
-  "preferences": {
-    "message": "偏好设置"
+  "basic_info": {
+    "message": "基本信息"
   },
   "language": {
     "message": "语言"
@@ -299,11 +163,68 @@
   "theme": {
     "message": "主题"
   },
-  "upload_image": {
-    "message": "上传图片"
+  "dark_mode": {
+    "message": "暗黑模式"
   },
-  "save_avatar": {
-    "message": "Save Avatar"
+  "enable_email_notifications": {
+    "message": "启用邮件通知"
+  },
+  "auto_save": {
+    "message": "自动保存"
+  },
+  "account_security": {
+    "message": "账户安全"
+  },
+  "change_password": {
+    "message": "修改密码"
+  },
+  "current_password": {
+    "message": "当前密码"
+  },
+  "new_password": {
+    "message": "新密码"
+  },
+  "confirm_password": {
+    "message": "确认密码"
+  },
+  "two_factor_auth": {
+    "message": "双因素认证"
+  },
+  "2fa": {
+    "message": "双重认证"
+  },
+  "protected_account": {
+    "message": "受保护账户"
+  },
+  "sms_auth": {
+    "message": "短信认证"
+  },
+  "email_verification": {
+    "message": "邮箱验证"
+  },
+  "view_recovery_code": {
+    "message": "查看恢复码"
+  },
+  "view_all_activity": {
+    "message": "查看所有活动"
+  },
+  "ip_address": {
+    "message": "互联网协议地址"
+  },
+  "device": {
+    "message": "设备"
+  },
+  "save_success": {
+    "message": "保存成功"
+  },
+  "admin_login": {
+    "message": "管理员登录"
+  },
+  "windows_pc": {
+    "message": "视窗个人电脑"
+  },
+  "chrome_browser": {
+    "message": "铬浏览器"
   },
   "security_settings": {
     "message": "安全设置"
@@ -311,20 +232,47 @@
   "threat_level": {
     "message": "威胁级别"
   },
-  "blocked_threats": {
-    "message": "Blocked Threats"
+  "low": {
+    "message": "低"
+  },
+  "all_safe": {
+    "message": "全部安全"
+  },
+  "security_threats": {
+    "message": "安全威胁"
   },
   "security_score": {
     "message": "安全评分"
   },
-  "all_systems_secure": {
-    "message": "All systems secure"
-  },
-  "from_last_week": {
-    "message": "自上周"
-  },
   "excellent_security": {
     "message": "安全优秀"
+  },
+  "security_control": {
+    "message": "安全控制"
+  },
+  "all_systems_active": {
+    "message": "所有系统活跃"
+  },
+  "access_control": {
+    "message": "访问控制"
+  },
+  "password_policy": {
+    "message": "密码策略"
+  },
+  "session_timeout": {
+    "message": "会话超时"
+  },
+  "threat_protection": {
+    "message": "威胁防护"
+  },
+  "realtime_monitoring": {
+    "message": "实时监控"
+  },
+  "auto_blocking": {
+    "message": "自动阻止"
+  },
+  "emergency_response": {
+    "message": "紧急响应"
   },
   "system_settings": {
     "message": "系统设置"
@@ -335,778 +283,175 @@
   "application_settings": {
     "message": "应用设置"
   },
-  "performance_settings": {
-    "message": "性能设置"
-  },
-  "enable_auto_updates": {
-    "message": "Enable auto-updates"
-  },
-  "enable_telemetry": {
-    "message": "Enable telemetry"
-  },
-  "hardware_acceleration": {
-    "message": "Hardware acceleration"
-  },
-  "debug_mode": {
-    "message": "Debug mode"
-  },
-  "analytics_insights": {
-    "message": "Analytics & Insights"
-  },
-  "page_views": {
-    "message": "页面浏览量"
-  },
-  "blocked_ads": {
-    "message": "Blocked Ads"
-  },
-  "performance_score": {
-    "message": "性能评分"
-  },
-  "increase": {
-    "message": "increase"
-  },
-  "excellent": {
-    "message": "优秀"
-  },
-  "reports_analytics": {
-    "message": "报告分析"
-  },
-  "generate_reports": {
-    "message": "Generate Reports"
-  },
-  "generate_report": {
-    "message": "Generate Report"
-  },
-  "security_report": {
-    "message": "安全报告"
-  },
-  "usage_report": {
-    "message": "Usage Report"
-  },
-  "system_report": {
-    "message": "System Report"
-  },
-  "security_analysis": {
-    "message": "Generate comprehensive security analysis"
-  },
-  "usage_analysis": {
-    "message": "Analyze user activity and statistics"
-  },
-  "system_analysis": {
-    "message": "Generate system performance report"
-  },
-  "save": {
-    "message": "Save"
-  },
-  "edit": {
-    "message": "Edit"
-  },
-  "delete": {
-    "message": "Delete"
-  },
-  "cancel": {
-    "message": "Cancel"
-  },
-  "confirm": {
-    "message": "Confirm"
-  },
-  "close": {
-    "message": "Close"
-  },
-  "open": {
-    "message": "Open"
-  },
-  "refresh": {
-    "message": "Refresh"
-  },
-  "search": {
-    "message": "Search"
-  },
-  "filter": {
-    "message": "Filter"
-  },
-  "export": {
-    "message": "Export"
-  },
-  "import": {
-    "message": "Import"
-  },
-  "loading": {
-    "message": "Loading..."
-  },
-  "saving": {
-    "message": "Saving..."
-  },
-  "saved": {
-    "message": "Saved successfully"
-  },
-  "error": {
-    "message": "Error occurred"
-  },
-  "success": {
-    "message": "Success"
-  },
-  "warning": {
-    "message": "Warning"
-  },
-  "info": {
-    "message": "Information"
+  "default_language": {
+    "message": "默认语言"
   },
   "enable_notifications": {
     "message": "启用通知"
   },
-  "enable_auto_save": {
-    "message": "Auto-save settings"
+  "performance_settings": {
+    "message": "性能设置"
   },
-  "low": {
-    "message": "低"
+  "update_frequency": {
+    "message": "更新频率"
   },
-  "medium": {
-    "message": "MEDIUM"
+  "log_retention": {
+    "message": "日志保留"
   },
-  "high": {
-    "message": "HIGH"
+  "auto_optimize": {
+    "message": "自动优化"
   },
-  "critical": {
-    "message": "CRITICAL"
+  "save_changes": {
+    "message": "保存更改"
   },
-  "upload": {
-    "message": "Upload"
+  "analytics": {
+    "message": "数据分析"
   },
-  "download": {
-    "message": "Download"
+  "page_views": {
+    "message": "页面浏览量"
   },
-  "copy": {
-    "message": "Copy"
+  "ads_blocked": {
+    "message": "广告拦截"
   },
-  "paste": {
-    "message": "Paste"
+  "performance_score": {
+    "message": "性能评分"
   },
-  "cut": {
-    "message": "Cut"
+  "excellent": {
+    "message": "优秀"
   },
-  "undo": {
-    "message": "Undo"
+  "advanced_analytics": {
+    "message": "高级分析"
   },
-  "redo": {
-    "message": "Redo"
+  "export_data": {
+    "message": "导出数据"
   },
-  "select_all": {
-    "message": "Select All"
+  "charts": {
+    "message": "图表"
   },
-  "no_results": {
-    "message": "No results found"
+  "analytics_note": {
+    "message": "分析备注"
   },
-  "empty_state": {
-    "message": "No data available"
+  "reports": {
+    "message": "报告"
   },
-  "connection_error": {
-    "message": "Connection error"
+  "create_report": {
+    "message": "创建报告"
   },
-  "server_error": {
-    "message": "Server error"
+  "user_activity_report": {
+    "message": "用户活动报告"
   },
-  "permission_denied": {
-    "message": "Permission denied"
+  "security_report": {
+    "message": "安全报告"
   },
-  "access_denied": {
-    "message": "Access denied"
+  "performance_report": {
+    "message": "性能报告"
   },
-  "file_not_found": {
-    "message": "File not found"
+  "recent_reports": {
+    "message": "最近报告"
   },
-  "invalid_input": {
-    "message": "Invalid input"
+  "report_name": {
+    "message": "报告名称"
   },
-  "are_you_sure": {
-    "message": "Are you sure?"
-  },
-  "delete_confirmation": {
-    "message": "This action cannot be undone"
-  },
-  "unsaved_changes": {
-    "message": "You have unsaved changes"
-  },
-  "leave_page": {
-    "message": "Leave this page?"
-  },
-  "file_upload": {
-    "message": "File Upload"
-  },
-  "file_download": {
-    "message": "File Download"
-  },
-  "file_size": {
-    "message": "大小"
-  },
-  "file_type": {
-    "message": "File Type"
-  },
-  "file_name": {
-    "message": "File Name"
-  },
-  "date": {
-    "message": "Date"
-  },
-  "time": {
-    "message": "时间"
-  },
-  "datetime": {
-    "message": "Date & Time"
+  "report_type": {
+    "message": "报告类型"
   },
   "created_at": {
     "message": "创建时间"
   },
-  "updated_at": {
-    "message": "Updated"
+  "size": {
+    "message": "大小"
   },
-  "expires_at": {
-    "message": "Expires"
+  "report_status": {
+    "message": "报告状态"
   },
-  "__obsolete": {
-    "__obsolete": {
-      "__obsolete": {
-        "__obsolete": {
-          "__obsolete": {
-            "recent_activity": {
-              "message": "最近活动"
-            },
-            "action": {
-              "message": "操作"
-            },
-            "version": {
-              "message": "版本"
-            },
-            "status": {
-              "message": "状态"
-            },
-            "power_mode": {
-              "message": "性能模式"
-            },
-            "settings_updated": {
-              "message": "设置已更新"
-            },
-            "register_device": {
-              "message": "注册设备"
-            },
-            "pending_approval": {
-              "message": "待审批"
-            },
-            "new_users_this_week": {
-              "message": "本周新用户"
-            },
-            "admin_level": {
-              "message": "管理员级别"
-            },
-            "avatar_and_cover": {
-              "message": "头像和封面"
-            },
-            "email_address": {
-              "message": "邮箱地址"
-            },
-            "options": {
-              "message": "选项"
-            },
-            "basic_info": {
-              "message": "基本信息"
-            },
-            "dark_mode": {
-              "message": "暗黑模式"
-            },
-            "enable_email_notifications": {
-              "message": "启用邮件通知"
-            },
-            "auto_save": {
-              "message": "自动保存"
-            },
-            "account_security": {
-              "message": "账户安全"
-            },
-            "change_password": {
-              "message": "修改密码"
-            },
-            "current_password": {
-              "message": "当前密码"
-            },
-            "new_password": {
-              "message": "新密码"
-            },
-            "confirm_password": {
-              "message": "确认密码"
-            },
-            "two_factor_auth": {
-              "message": "双因素认证"
-            },
-            "2fa": {
-              "message": "双重认证"
-            },
-            "protected_account": {
-              "message": "受保护账户"
-            },
-            "sms_auth": {
-              "message": "短信认证"
-            },
-            "email_verification": {
-              "message": "邮箱验证"
-            },
-            "view_recovery_code": {
-              "message": "查看恢复码"
-            },
-            "view_all_activity": {
-              "message": "查看所有活动"
-            },
-            "ip_address": {
-              "message": "互联网协议地址"
-            },
-            "device": {
-              "message": "设备"
-            },
-            "save_success": {
-              "message": "保存成功"
-            },
-            "admin_login": {
-              "message": "管理员登录"
-            },
-            "windows_pc": {
-              "message": "视窗个人电脑"
-            },
-            "chrome_browser": {
-              "message": "铬浏览器"
-            },
-            "all_safe": {
-              "message": "全部安全"
-            },
-            "security_threats": {
-              "message": "安全威胁"
-            },
-            "security_control": {
-              "message": "安全控制"
-            },
-            "all_systems_active": {
-              "message": "所有系统活跃"
-            },
-            "access_control": {
-              "message": "访问控制"
-            },
-            "password_policy": {
-              "message": "密码策略"
-            },
-            "session_timeout": {
-              "message": "会话超时"
-            },
-            "threat_protection": {
-              "message": "威胁防护"
-            },
-            "realtime_monitoring": {
-              "message": "实时监控"
-            },
-            "auto_blocking": {
-              "message": "自动阻止"
-            },
-            "emergency_response": {
-              "message": "紧急响应"
-            },
-            "default_language": {
-              "message": "默认语言"
-            },
-            "update_frequency": {
-              "message": "更新频率"
-            },
-            "log_retention": {
-              "message": "日志保留"
-            },
-            "auto_optimize": {
-              "message": "自动优化"
-            },
-            "analytics": {
-              "message": "数据分析"
-            },
-            "ads_blocked": {
-              "message": "广告拦截"
-            },
-            "advanced_analytics": {
-              "message": "高级分析"
-            },
-            "export_data": {
-              "message": "导出数据"
-            },
-            "charts": {
-              "message": "图表"
-            },
-            "analytics_note": {
-              "message": "分析备注"
-            },
-            "reports": {
-              "message": "报告"
-            },
-            "create_report": {
-              "message": "创建报告"
-            },
-            "user_activity_report": {
-              "message": "用户活动报告"
-            },
-            "performance_report": {
-              "message": "性能报告"
-            },
-            "recent_reports": {
-              "message": "最近报告"
-            },
-            "report_name": {
-              "message": "报告名称"
-            },
-            "report_type": {
-              "message": "报告类型"
-            },
-            "size": {
-              "message": "大小"
-            },
-            "report_status": {
-              "message": "报告状态"
-            },
-            "report_action": {
-              "message": "报告操作"
-            },
-            "daily_security": {
-              "message": "每日安全"
-            },
-            "weekly_user_activity": {
-              "message": "每周用户活动"
-            },
-            "monthly_performance": {
-              "message": "每月性能"
-            },
-            "processing": {
-              "message": "处理中"
-            },
-            "full_name_format": {
-              "message": "全名 (中文 + Telegram + ID)"
-            },
-            "name_format_hint": {
-              "message": "格式: \"中文姓名 + Telegram名称 + ID\""
-            },
-            "report_creation": {
-              "message": "创建报告"
-            },
-            "user_activity_statistics": {
-              "message": "用户活动报告"
-            },
-            "user_activity_subtitle": {
-              "message": "详细的用户活动和登录统计"
-            },
-            "security_protection": {
-              "message": "安全报告"
-            },
-            "security_subtitle": {
-              "message": "安全事件和威胁分析"
-            },
-            "performance_data": {
-              "message": "性能报告"
-            },
-            "performance_subtitle": {
-              "message": "系统性能和优化数据"
-            },
-            "recent_reports_list": {
-              "message": "最近报告"
-            },
-            "report_category": {
-              "message": "类型"
-            },
-            "creation_time": {
-              "message": "生成时间"
-            },
-            "current_status": {
-              "message": "状态"
-            },
-            "available_actions": {
-              "message": "操作"
-            },
-            "daily_security_analysis": {
-              "message": "日常安全报告"
-            },
-            "security_type": {
-              "message": "安全"
-            },
-            "two_hours_ago": {
-              "message": "2小时前"
-            },
-            "status_ready": {
-              "message": "就绪"
-            },
-            "weekly_user_statistics": {
-              "message": "周用户活动"
-            },
-            "user_activity_type": {
-              "message": "用户活动"
-            },
-            "one_day_ago": {
-              "message": "1天前"
-            },
-            "monthly_performance_analysis": {
-              "message": "月度性能"
-            },
-            "performance_type": {
-              "message": "性能"
-            },
-            "three_days_ago": {
-              "message": "3天前"
-            },
-            "status_processing": {
-              "message": "处理中"
-            },
-            "time_last_24h": {
-              "message": "最近24小时"
-            },
-            "time_last_7d": {
-              "message": "最近7天"
-            },
-            "time_last_30d": {
-              "message": "最近30天"
-            },
-            "btn_refresh": {
-              "message": "刷新"
-            },
-            "btn_apply_filters": {
-              "message": "应用筛选"
-            },
-            "btn_export": {
-              "message": "导出"
-            },
-            "stat_value_placeholder": {
-              "message": "--"
-            },
-            "security_active_threats": {
-              "message": "活动威胁"
-            },
-            "security_blocked_today": {
-              "message": "今日拦截"
-            },
-            "security_risk_score": {
-              "message": "风险评分"
-            },
-            "security_patch_level": {
-              "message": "补丁级别"
-            },
-            "security_active_threats_value": {
-              "message": "12"
-            },
-            "security_blocked_today_value": {
-              "message": "248"
-            },
-            "security_risk_score_value": {
-              "message": "92%"
-            },
-            "security_patch_level_value": {
-              "message": "87%"
-            },
-            "security_threat_timeline": {
-              "message": "威胁时间线"
-            },
-            "security_controls_matrix": {
-              "message": "控制矩阵"
-            },
-            "security_time": {
-              "message": "时间"
-            },
-            "security_severity": {
-              "message": "严重性"
-            },
-            "security_status": {
-              "message": "状态"
-            },
-            "security_action": {
-              "message": "操作"
-            },
-            "security_no_threats": {
-              "message": "暂无威胁"
-            },
-            "security_control_mfa": {
-              "message": "多因素认证"
-            },
-            "security_control_password_policy": {
-              "message": "密码策略"
-            },
-            "security_control_ip_filtering": {
-              "message": "IP过滤"
-            },
-            "security_control_waf": {
-              "message": "WAF"
-            },
-            "security_control_rate_limit": {
-              "message": "限流"
-            },
-            "security_control_intrusion_detection": {
-              "message": "入侵检测"
-            },
-            "security_enabled": {
-              "message": "已启用"
-            },
-            "security_disabled": {
-              "message": "未启用"
-            },
-            "trend_down_12": {
-              "message": "-12%"
-            },
-            "trend_flat": {
-              "message": "0%"
-            },
-            "trend_up_secure": {
-              "message": "+5%"
-            },
-            "trend_up": {
-              "message": "+3%"
-            },
-            "generate_new_report": {
-              "message": "Generate New Report"
-            },
-            "modal_report_type": {
-              "message": "Report Type:"
-            },
-            "modal_time_range": {
-              "message": "Time Range:"
-            },
-            "modal_report_format": {
-              "message": "Report Format:"
-            },
-            "last_hour": {
-              "message": "Last Hour"
-            },
-            "last_24h": {
-              "message": "Last 24 Hours"
-            },
-            "last_week": {
-              "message": "Last Week"
-            },
-            "last_month": {
-              "message": "Last Month"
-            },
-            "custom_range": {
-              "message": "Custom Range"
-            },
-            "pdf_document": {
-              "message": "PDF Document"
-            },
-            "excel_spreadsheet": {
-              "message": "Excel Spreadsheet"
-            },
-            "json_data": {
-              "message": "JSON Data"
-            },
-            "csv_file": {
-              "message": "CSV File"
-            },
-            "report_generated_success": {
-              "message": "Report generated successfully"
-            },
-            "error_generating_report": {
-              "message": "Error generating report"
-            },
-            "error_opening_generator": {
-              "message": "Error opening generator"
-            },
-            "reports_loaded_success": {
-              "message": "Reports loaded"
-            },
-            "error_loading_reports": {
-              "message": "Error loading reports"
-            },
-            "__obsolete": {
-              "analytics_stat_avg_session": {
-                "message": "平均会话"
-              },
-              "analytics_stat_bounce_rate": {
-                "message": "跳出率"
-              },
-              "analytics_stat_conversion": {
-                "message": "转化率"
-              },
-              "analytics_stat_retention": {
-                "message": "留存率"
-              },
-              "analytics_chart_traffic": {
-                "message": "流量"
-              },
-              "analytics_chart_performance": {
-                "message": "性能"
-              },
-              "analytics_chart_retention": {
-                "message": "留存"
-              },
-              "analytics_chart_security": {
-                "message": "安全"
-              },
-              "analytics_chart_placeholder": {
-                "message": "图表"
-              },
-              "analytics_all_users": {
-                "message": "全部用户"
-              },
-              "analytics_new_users": {
-                "message": "新用户"
-              },
-              "analytics_power_users": {
-                "message": "高活跃"
-              },
-              "reports_filter_status": {
-                "message": "状态"
-              },
-              "reports_filter_search": {
-                "message": "搜索报告"
-              },
-              "reports_no_results": {
-                "message": "暂无报告"
-              },
-              "reports_total": {
-                "message": "总数"
-              },
-              "reports_avg_generation": {
-                "message": "平均时间"
-              },
-              "reports_success_rate": {
-                "message": "成功率"
-              },
-              "reports_in_queue": {
-                "message": "排队中"
-              },
-              "reports_field_type": {
-                "message": "类型"
-              },
-              "reports_field_range": {
-                "message": "范围"
-              },
-              "reports_field_format": {
-                "message": "格式"
-              },
-              "reports_field_notify": {
-                "message": "完成通知"
-              },
-              "reports_submit_generate": {
-                "message": "生成"
-              },
-              "format_pdf": {
-                "message": "PDF 文档"
-              },
-              "format_csv": {
-                "message": "CSV 文件"
-              },
-              "format_json": {
-                "message": "JSON 数据"
-              },
-              "__obsolete": {
-                "__obsolete": {
-                  "_tini_watermark": {
-                    "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
-                    "employee": "rongdeptrai-vl <rongdz2307@gmail.com>",
-                    "commit": "ebdabf3",
-                    "time": "2025-08-09T05:09:14Z",
-                    "watermark_id": "TINI_1754716154_e868a412",
-                    "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+  "report_action": {
+    "message": "报告操作"
+  },
+  "daily_security": {
+    "message": "每日安全"
+  },
+  "weekly_user_activity": {
+    "message": "每周用户活动"
+  },
+  "monthly_performance": {
+    "message": "每月性能"
+  },
+  "processing": {
+    "message": "处理中"
+  },
+  "full_name_format": {
+    "message": "全名 (中文 + Telegram + ID)"
+  },
+  "name_format_hint": {
+    "message": "格式: \"中文姓名 + Telegram名称 + ID\""
+  },
+  "email": {
+    "message": "邮箱地址"
+  },
+  "preferences": {
+    "message": "Preferences & Settings"
+  },
+  "btn_export_data": {
+    "message": "导出"
+  },
+  "analytics_avg_session": {
+    "message": "平均会话时长"
+  },
+  "analytics_bounce_rate": {
+    "message": "跳出率"
+  },
+  "analytics_conversion_rate": {
+    "message": "转化率"
+  },
+  "analytics_user_retention": {
+    "message": "用户留存"
+  },
+  "analytics_traffic_title": {
+    "message": "流量分析"
+  },
+  "analytics_performance_title": {
+    "message": "性能指标"
+  },
+  "analytics_retention_title": {
+    "message": "用户留存分析"
+  },
+  "analytics_security_title": {
+    "message": "安全分析"
+  },
+  "metric_active_users": {
+    "message": "活动用户"
+  },
+  "metric_response_time": {
+    "message": "响应时间"
+  },
+  "metric_retention_rate": {
+    "message": "留存率"
+  },
+  "metric_threat_level": {
+    "message": "威胁等级"
+  },
+  "bypass_integration_manager_label": {
+    "message": "绕过集成管理器:"
+  },
+  "core_systems_files_label": {
+    "message": "核心系统 (73 个文件):"
+  },
+  "boss_protection_label": {
+    "message": "BOSS 保护:"
+  },
+  "level_10000": {
+    "message": "级别 10000"
+  },
+  "admin_immunity_label": {
+    "message": "管理员免疫:"
+  },
+  "enabled": {
+    "message": "已启用"
+  },
+  "emergency_systems_label": {
+    "message": "紧急系统:"
+  },
+  "standby": {
+    "message": "待命"
   }
 }

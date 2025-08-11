@@ -1,0 +1,23 @@
+{
+  "_tini_watermark": {
+    "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
+    "employee": "rongdeptrai-vl <rongdz2307@gmail.com>",
+    "commit": "8035ae4",
+    "time": "2025-08-11T02:28:42Z",
+    "watermark_id": "TINI_1754879322_e868a412",
+    "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
+  },
+  "btn_export_data": { "message": "导出" },
+  "analytics_avg_session": { "message": "平均会话时长" },
+  "analytics_bounce_rate": { "message": "跳出率" },
+  "analytics_conversion_rate": { "message": "转化率" },
+  "analytics_user_retention": { "message": "用户留存" },
+  "analytics_traffic_title": { "message": "流量分析" },
+  "analytics_performance_title": { "message": "性能指标" },
+  "analytics_retention_title": { "message": "用户留存分析" },
+  "analytics_security_title": { "message": "安全分析" },
+  "metric_active_users": { "message": "活动用户" },
+  "metric_response_time": { "message": "响应时间" },
+  "metric_retention_rate": { "message": "留存率" },
+  "metric_threat_level": { "message": "威胁等级" }
+}

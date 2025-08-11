@@ -1,0 +1,547 @@
+/* © 2024 TINI COMPANY - CONFIDENTIAL */
+/* Employee: rongdeptrai-vl <rongdz2307@gmail.com> */
+/* Commit: 8035ae4 | Time: 2025-08-11T02:28:42Z */
+/* Watermark: TINI_1754879322_e868a412 | TINI_WATERMARK */
+/* WARNING: Unauthorized distribution is prohibited */
+/* This file has been consolidated into reports-unified.css */
+/* All styles moved to prevent conflicts and duplicates */
+    position: relative;
+    overflow: hidden;
+}
+
+.enhanced-cards .modern-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(34, 211, 238, 0.4);
+    box-shadow: 0 8px 32px rgba(34, 211, 238, 0.1);
+}
+
+.enhanced-cards .modern-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #22d3ee 0%, #06b6d4 100%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.enhanced-cards .modern-card:hover::before {
+    opacity: 1;
+}
+
+.modern-card .card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(34, 211, 238, 0.2) 0%, rgba(6, 182, 212, 0.1) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.modern-card .card-icon i {
+    font-size: 1.25rem;
+    color: #22d3ee;
+}
+
+.modern-card .card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.modern-card .stat-label {
+    font-size: 0.875rem;
+    color: #9ca3af;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.modern-card .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #f8fafc;
+    line-height: 1;
+}
+
+.modern-card .stat-trend {
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+.modern-card .stat-trend.positive {
+    color: #10b981;
+}
+
+.modern-card .stat-trend.neutral {
+    color: #6b7280;
+}
+
+/* Modern Form Controls */
+.modern-select,
+.modern-input {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(71, 85, 105, 0.5);
+    border-radius: 8px;
+    color: #f8fafc;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(5px);
+}
+
+.modern-select:focus,
+.modern-input:focus {
+    outline: none;
+    border-color: #22d3ee;
+    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1);
+    background: rgba(30, 41, 59, 0.9);
+}
+
+.modern-btn {
+    background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+    border: none;
+    border-radius: 8px;
+    color: #0f172a;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.modern-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 25px rgba(34, 211, 238, 0.3);
+}
+
+.modern-btn:active {
+    transform: translateY(0);
+}
+
+/* Enhanced Table Styling */
+.modern-panel {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.95) 100%);
+    border: 1px solid rgba(71, 85, 105, 0.3);
+    border-radius: 16px;
+    backdrop-filter: blur(20px);
+    overflow: hidden;
+}
+
+.modern-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.modern-table th {
+    background: rgba(15, 23, 42, 0.8);
+    color: #94a3b8;
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modern-table th:hover {
+    color: #22d3ee;
+    background: rgba(34, 211, 238, 0.1);
+}
+
+.modern-table th i {
+    margin-left: 0.5rem;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+}
+
+.modern-table th:hover i {
+    opacity: 1;
+}
+
+.report-row {
+    transition: all 0.2s ease;
+    border-bottom: 1px solid rgba(71, 85, 105, 0.2);
+}
+
+.report-row:hover {
+    background: rgba(34, 211, 238, 0.05);
+    transform: scale(1.01);
+}
+
+.report-row td {
+    padding: 1rem;
+    vertical-align: middle;
+}
+
+.name-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.name-container i {
+    font-size: 1.125rem;
+}
+
+.name-container span {
+    font-weight: 500;
+    color: #f8fafc;
+}
+
+/* Status and Category Badges */
+.category-badge,
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.category-badge.performance {
+    background: rgba(168, 85, 247, 0.2);
+    color: #c084fc;
+    border: 1px solid rgba(168, 85, 247, 0.3);
+}
+
+.category-badge.security {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.category-badge.activity {
+    background: rgba(34, 211, 238, 0.2);
+    color: #22d3ee;
+    border: 1px solid rgba(34, 211, 238, 0.3);
+}
+
+.category-badge.compliance {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-badge.ready {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-badge.processing {
+    background: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.status-badge.failed {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* Action Buttons */
+.actions-cell {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    border: none;
+    border-radius: 6px;
+    background: rgba(71, 85, 105, 0.3);
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-icon:hover:not(:disabled) {
+    background: rgba(34, 211, 238, 0.2);
+    color: #22d3ee;
+    transform: scale(1.1);
+}
+
+.btn-icon:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Search Container */
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    left: 1rem;
+    color: #6b7280;
+    z-index: 1;
+}
+
+.search-container .modern-input {
+    padding-left: 2.5rem;
+    width: 250px;
+}
+
+/* Modern Form Styling */
+.modern-form {
+    padding: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #f8fafc;
+    font-size: 0.875rem;
+}
+
+.form-label i {
+    color: #22d3ee;
+    font-size: 1rem;
+}
+
+.panel-subtitle {
+    color: #94a3b8;
+    font-size: 0.875rem;
+    font-weight: 400;
+    margin-top: 0.25rem;
+}
+
+/* Format Options */
+.format-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+}
+
+.format-option {
+    cursor: pointer;
+}
+
+.format-option input[type="radio"] {
+    display: none;
+}
+
+.format-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    border: 2px solid rgba(71, 85, 105, 0.3);
+    border-radius: 8px;
+    background: rgba(30, 41, 59, 0.5);
+    transition: all 0.2s ease;
+    color: #94a3b8;
+}
+
+.format-option input[type="radio"]:checked + .format-card {
+    border-color: #22d3ee;
+    background: rgba(34, 211, 238, 0.1);
+    color: #22d3ee;
+}
+
+.format-card i {
+    font-size: 1.5rem;
+}
+
+.format-card span {
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+/* Checkbox Styling */
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.checkbox-option:hover {
+    background: rgba(34, 211, 238, 0.05);
+}
+
+.modern-checkbox input[type="checkbox"] {
+    display: none;
+}
+
+.checkmark {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(71, 85, 105, 0.5);
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.2s ease;
+    background: rgba(30, 41, 59, 0.5);
+}
+
+.modern-checkbox input[type="checkbox"]:checked + .checkmark {
+    background: #22d3ee;
+    border-color: #22d3ee;
+}
+
+.modern-checkbox input[type="checkbox"]:checked + .checkmark::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #0f172a;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Form Actions */
+.form-actions {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(71, 85, 105, 0.3);
+}
+
+.form-note {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+    justify-content: center;
+}
+
+.btn-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Enhanced Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: #6b7280;
+}
+
+.empty-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    background: rgba(71, 85, 105, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.empty-icon i {
+    font-size: 1.5rem;
+    color: #9ca3af;
+}
+
+.empty-state h3 {
+    color: #f8fafc;
+    margin-bottom: 0.5rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.empty-state p {
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .enhanced-layout {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .format-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .search-container .modern-input {
+        width: 200px;
+    }
+}
+
+@media (max-width: 768px) {
+    .enhanced-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .modern-card {
+        padding: 1rem;
+    }
+    
+    .actions-cell {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .search-container .modern-input {
+        width: 150px;
+    }
+}
+
+/* Animation keyframes */
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.report-row {
+    animation: slideInUp 0.3s ease-out;
+}
+
+.modern-card {
+    animation: slideInUp 0.3s ease-out;
+}
+
+/* Utility Classes */
+.text-primary { color: #22d3ee; }
+.text-success { color: #10b981; }
+.text-danger { color: #ef4444; }
+.text-warning { color: #f59e0b; }

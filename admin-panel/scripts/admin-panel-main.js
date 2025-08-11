@@ -222,7 +222,189 @@ class TINIAdminPanel {
             if(btn){
                 btn.addEventListener('click',()=> this.showGenerateReportModal());
             }
+            
+            // Setup report form submission
+            this.setupReportForm();
+            
         } catch(e){ console.error(e); }
+    }
+
+    // New function to handle report form
+    setupReportForm() {
+        try {
+            const reportForm = document.getElementById('reportGenerateForm');
+            if (reportForm) {
+                reportForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.handleReportFormSubmission(reportForm);
+                });
+                console.log('✅ Report form setup complete');
+            }
+            
+            // Setup format radio buttons
+            const formatRadios = document.querySelectorAll('input[name="format"]');
+            formatRadios.forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    const selectedFormat = e.target.value;
+                    console.log(`📋 Format selected: ${selectedFormat}`);
+                    this.showNotification(`📋 选择格式: ${selectedFormat.toUpperCase()}`, 'info');
+                    
+                    // Visual feedback
+                    document.querySelectorAll('.format-option').forEach(card => {
+                        card.classList.remove('active');
+                    });
+                    e.target.closest('.format-option')?.classList.add('active');
+                });
+            });
+            
+            // Setup cancel button
+            const cancelBtn = document.querySelector('.btn-secondary');
+            if (cancelBtn) {
+                cancelBtn.addEventListener('click', () => {
+                    this.resetReportForm();
+                    this.showNotification('❌ 操作已取消', 'warning');
+                });
+            }
+            
+        } catch (error) {
+            console.error('❌ Error setting up report form:', error);
+        }
+    }
+
+    // Handle form submission
+    handleReportFormSubmission(form) {
+        try {
+            const formData = new FormData(form);
+            const reportData = {
+                type: formData.get('type'),
+                range: formData.get('range'),
+                format: formData.get('format'),
+                includeCharts: formData.get('includeCharts') === 'on',
+                notify: formData.get('notify') === 'on',
+                encrypt: formData.get('encrypt') === 'on'
+            };
+            
+            // Validation
+            if (!reportData.type) {
+                this.showNotification('❌ 请选择报告类型', 'error');
+                return;
+            }
+            
+            console.log('📊 Generating report with data:', reportData);
+            this.showNotification('🚀 正在生成报告...', 'info');
+            
+            // Show loading state
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const loadingDiv = submitBtn.querySelector('.btn-loading');
+            const spanText = submitBtn.querySelector('span');
+            
+            submitBtn.disabled = true;
+            loadingDiv.hidden = false;
+            spanText.textContent = '生成中...';
+            
+            // Simulate report generation
+            setTimeout(() => {
+                this.completeReportGeneration(reportData);
+                
+                // Reset button state
+                submitBtn.disabled = false;
+                loadingDiv.hidden = true;
+                spanText.textContent = '生成报告';
+            }, 3000);
+            
+        } catch (error) {
+            console.error('❌ Error handling form submission:', error);
+            this.showNotification('❌ 生成报告时出错', 'error');
+        }
+    }
+
+    // Complete report generation
+    completeReportGeneration(reportData) {
+        try {
+            console.log('✅ Report generation completed:', reportData);
+            this.showNotification(`✅ ${reportData.type} 报告生成成功！`, 'success');
+            
+            // Add to reports table
+            this.addNewReportToTable(reportData);
+            
+            // Reset form
+            this.resetReportForm();
+            
+        } catch (error) {
+            console.error('❌ Error completing report generation:', error);
+        }
+    }
+
+    // Reset form
+    resetReportForm() {
+        try {
+            const form = document.getElementById('reportGenerateForm');
+            if (form) {
+                form.reset();
+                
+                // Reset visual states
+                document.querySelectorAll('.format-option').forEach(card => {
+                    card.classList.remove('active');
+                });
+                
+                // Set default selection
+                const defaultRadio = form.querySelector('input[name="format"][value="pdf"]');
+                if (defaultRadio) {
+                    defaultRadio.checked = true;
+                    defaultRadio.closest('.format-option')?.classList.add('active');
+                }
+            }
+        } catch (error) {
+            console.error('❌ Error resetting form:', error);
+        }
+    }
+
+    // Add new report to table
+    addNewReportToTable(reportData) {
+        try {
+            const tbody = document.querySelector('#reports tbody');
+            if (!tbody) return;
+            
+            const reportId = `RPT-${Date.now()}`;
+            const currentTime = new Date().toLocaleString('zh-CN');
+            const fileSize = `${(Math.random() * 5 + 1).toFixed(1)}MB`;
+            
+            const typeNames = {
+                'activity': '👥 用户活动报告',
+                'security': '🔒 安全分析报告', 
+                'performance': '📊 性能监控报告',
+                'compliance': '✅ 合规审计报告'
+            };
+            
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${reportId}</td>
+                <td>${typeNames[reportData.type] || reportData.type}</td>
+                <td>${currentTime}</td>
+                <td>${fileSize}</td>
+                <td><span class="status-badge status-active">✅ 已完成</span></td>
+                <td>
+                    <button class="btn-download" onclick="window.open('#')" title="下载报告">
+                        <i class="fas fa-download"></i>
+                    </button>
+                </td>
+            `;
+            
+            // Insert at top
+            tbody.insertBefore(newRow, tbody.firstChild);
+            
+            // Animation
+            newRow.style.opacity = '0';
+            newRow.style.transform = 'translateY(-20px)';
+            setTimeout(() => {
+                newRow.style.transition = 'all 0.3s ease';
+                newRow.style.opacity = '1';
+                newRow.style.transform = 'translateY(0)';
+            }, 100);
+            
+        } catch (error) {
+            console.error('❌ Error adding report to table:', error);
+        }
     }
 
     setupGenerateReportButton() {
@@ -2913,3 +3095,4 @@ ${'='.repeat(60)}
 // Make it globally available for external initialization
 window.TINIAdminPanel = TINIAdminPanel;
 // ST:TINI_1754752705_e868a412
+// ST:TINI_1754879322_e868a412

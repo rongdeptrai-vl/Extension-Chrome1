@@ -12,6 +12,7 @@ class TINI_I18n {
         this.translations = {};
         this.fallbackLanguage = 'en';
         this.supportedLanguages = ['en', 'vi', 'zh', 'hi', 'ko'];
+        this.externalLocales = {};
         
         this.init();
     }
@@ -19,7 +20,19 @@ class TINI_I18n {
     init() {
         this.loadTranslations();
         this.detectLanguage();
-        this.setupLanguageObserver();
+        
+        // Preload fallback and current
+        this.loadExternalLocale(this.fallbackLanguage).finally(()=>{
+            if (this.currentLanguage !== this.fallbackLanguage) {
+                this.loadExternalLocale(this.currentLanguage).finally(()=>{
+                    this.setupLanguageObserver();
+                    this.updateAllTranslations();
+                });
+            } else {
+                this.setupLanguageObserver();
+                this.updateAllTranslations();
+            }
+        });
         
         console.log('🌍 [I18N] Multi-language system initialized');
     }
@@ -598,6 +611,21 @@ class TINI_I18n {
             usage_analysis: "分析用户活动和统计数据",
             system_analysis: "生成系统性能报告",
             
+            // Added analytics metric keys
+            btn_export_data: "导出",
+            analytics_avg_session: "平均会话时长",
+            analytics_bounce_rate: "跳出率",
+            analytics_conversion_rate: "转化率",
+            analytics_user_retention: "用户留存",
+            analytics_traffic_title: "流量分析",
+            analytics_performance_title: "性能指标",
+            analytics_retention_title: "用户留存分析",
+            analytics_security_title: "安全分析",
+            metric_active_users: "活跃用户",
+            metric_response_time: "响应时间",
+            metric_retention_rate: "留存率",
+            metric_threat_level: "威胁等级",
+            
             // Form Actions & Buttons
             save: "保存",
             edit: "编辑",
@@ -1023,52 +1051,72 @@ class TINI_I18n {
         console.log(`🌍 [I18N] Language detected: ${this.currentLanguage}`);
     }
 
+    loadExternalLocale(lang) {
+        if (!this.supportedLanguages.includes(lang)) return Promise.resolve();
+        const url = `../_locales/${lang}/messages.json`;
+        return fetch(url).then(r => r.ok ? r.json() : null).then(json => {
+            if (json) this.externalLocales = this.externalLocales || {}; this.externalLocales[lang] = json;
+        }).catch(()=>{});
+    }
+
     translate(key) {
-        const translation = this.translations[this.currentLanguage]?.[key] 
-            || this.translations[this.fallbackLanguage]?.[key] 
-            || key;
-            
-        return translation;
+        // Heuristic: prefer external locale, but if external value is still fallback-style English and internal has a localized value, use internal.
+        const lang = this.currentLanguage;
+        const fallback = this.fallbackLanguage;
+        const ext = this.externalLocales?.[lang]?.[key]?.message;
+        const internal = this.translations[lang]?.[key];
+        const fallbackExt = this.externalLocales?.[fallback]?.[key]?.message;
+        const fallbackInternal = this.translations[fallback]?.[key];
+
+        if (ext) {
+            if (lang !== fallback && internal) {
+                const looksEnglish = /^[A-Za-z0-9 .,'%&()\-:]+$/.test(ext);
+                const isSameAsFallback = (fallbackExt && ext === fallbackExt) || (fallbackInternal && ext === fallbackInternal);
+                const internalHasCJK = /[\u4e00-\u9fff]/.test(internal); // detect Chinese chars
+                if ((looksEnglish || isSameAsFallback) && internalHasCJK && ext !== internal) {
+                    return internal; // prefer proper localized internal string
+                }
+            }
+            return ext;
+        }
+        if (internal) return internal;
+        if (fallbackExt) return fallbackExt;
+        if (fallbackInternal) return fallbackInternal;
+        return key;
     }
 
     setLanguage(lang) {
-        if (!this.supportedLanguages.includes(lang)) {
-            console.warn(`🌍 [I18N] Unsupported language: ${lang}`);
-            return;
-        }
+        if (!this.supportedLanguages.includes(lang)) { console.warn(`🌍 [I18N] Unsupported language: ${lang}`); return; }
+        const apply = () => { this.currentLanguage = lang; localStorage.setItem('tini_admin_language', lang); this.updateAllTranslations(); console.log(`🌍 [I18N] Language changed to: ${lang}`); };
+        if (!this.externalLocales?.[lang]) { this.loadExternalLocale(lang).finally(apply); } else { apply(); }
+    }
+
+    init() {
+        this.loadTranslations();
+        this.detectLanguage();
         
-        this.currentLanguage = lang;
-        localStorage.setItem('tini_admin_language', lang);
-        this.updateAllTranslations();
+        // Preload fallback and current
+        this.loadExternalLocale(this.fallbackLanguage).finally(()=>{
+            if (this.currentLanguage !== this.fallbackLanguage) {
+                this.loadExternalLocale(this.currentLanguage).finally(()=>{
+                    this.setupLanguageObserver();
+                    this.updateAllTranslations();
+                });
+            } else {
+                this.setupLanguageObserver();
+                this.updateAllTranslations();
+            }
+        });
         
-        console.log(`🌍 [I18N] Language changed to: ${lang}`);
+        console.log('🌍 [I18N] Multi-language system initialized');
     }
 
     updateAllTranslations() {
-        // Update all elements with data-i18n attribute
         const elements = document.querySelectorAll('[data-i18n]');
-        elements.forEach(element => {
-            const key = element.getAttribute('data-i18n');
-            const translation = this.translate(key);
-            
-            if (element.tagName === 'INPUT' && (element.type === 'text' || element.type === 'email')) {
-                element.placeholder = translation;
-            } else {
-                element.textContent = translation;
-            }
-        });
-
-        // Update title
+        elements.forEach(el => { const key = el.getAttribute('data-i18n'); const tr = this.translate(key); el.textContent = tr || ''; });
         const titleElements = document.querySelectorAll('title[data-i18n]');
-        titleElements.forEach(element => {
-            const key = element.getAttribute('data-i18n');
-            element.textContent = this.translate(key);
-        });
-
-        // Trigger custom event for other systems
-        document.dispatchEvent(new CustomEvent('languageChanged', {
-            detail: { language: this.currentLanguage }
-        }));
+        titleElements.forEach(el => { const key = el.getAttribute('data-i18n'); el.textContent = this.translate(key); });
+        document.dispatchEvent(new CustomEvent('languageChanged',{detail:{language:this.currentLanguage}}));
     }
 
     setupLanguageObserver() {
@@ -1121,3 +1169,4 @@ window.updateI18n = function(lang) {
 };
 
 console.log('🌍 [I18N] TINI Advanced I18n System loaded successfully');
+// ST:TINI_1754879322_e868a412

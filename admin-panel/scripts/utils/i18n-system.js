@@ -110,13 +110,15 @@ class I18nSystem {
                 }
             }
 
-            // Load from _locales folder; try admin-panel local first, then relative paths
+            // Load from _locales folder; server serves from root with /_locales path
             const lang = this.currentLanguage || this.fallbackLanguage;
             const candidates = [
-                `_locales/${lang}/messages.json`,
                 `/_locales/${lang}/messages.json`,
+                `_locales/${lang}/messages.json`,
+                `admin-panel/_locales/${lang}/messages.json`,
+                `../_locales/${lang}/messages.json`,
                 `../../_locales/${lang}/messages.json`,
-                `../_locales/${lang}/messages.json`
+                `locales/${lang}/messages.json`
             ];            let loaded = null;
             for (const url of candidates) {
                 try {
@@ -233,6 +235,25 @@ class I18nSystem {
         this.refreshUI();
         return true;
     }
+
+    // Simple language setter
+    async setLanguage(lang) {
+        if (lang === this.currentLanguage) return true;
+        
+        this.currentLanguage = lang;
+        window.secureStorage.set('adminLanguage', lang);
+        document.documentElement.setAttribute('lang', lang);
+        
+        // Reload translations for the new language
+        await this.loadTranslations();
+        
+        // Refresh UI
+        this.refreshUI();
+        
+        console.log(`✅ Language changed to: ${lang}`);
+        return true;
+    }
+
     // Get message based on key and optional substitutions
     getMessage(key, substitutions = null) {
         try {
@@ -256,10 +277,28 @@ class I18nSystem {
     }
 
     getCustomMessage(key, substitutions = null) {
-        const message = this.translations[this.currentLanguage]?.[key] 
-            || this.translations[this.fallbackLanguage]?.[key]
-            || key;
+        // Tìm message từ current language hoặc fallback
+        let messageData = this.translations[this.currentLanguage]?.[key] 
+            || this.translations[this.fallbackLanguage]?.[key];
+        
+        // Nếu không tìm thấy, trả về key
+        if (!messageData) {
+            console.warn(`Translation not found for key: ${key}`);
+            return key;
+        }
 
+        // Xử lý cấu trúc Chrome extension {message: "..."} hoặc string thường
+        let message;
+        if (typeof messageData === 'object' && messageData.message) {
+            message = messageData.message;
+        } else if (typeof messageData === 'string') {
+            message = messageData;
+        } else {
+            console.warn(`Invalid message format for key: ${key}`, messageData);
+            return key;
+        }
+
+        // Xử lý substitutions nếu có
         if (!substitutions) return message;
 
         return message.replace(/\{(\d+)\}/g, (match, index) => {
@@ -268,12 +307,13 @@ class I18nSystem {
     }
 
     // Helper method to update UI elements
-    updateElements(elements, keyAttribute = 'data-i18n-key') {
+    updateElements(elements, keyAttribute = 'data-i18n') {
         elements.forEach(element => {
-            const key = element.getAttribute(keyAttribute) || element.getAttribute('data-i18n');
+            const key = element.getAttribute('data-i18n') || element.getAttribute(keyAttribute) || element.getAttribute('data-i18n-key');
             if (key) {
                 const translation = this.getMessage(key);
-                if (translation) {
+                console.log(`Translating "${key}" to "${translation}"`);
+                if (translation && translation !== key) {
                     // Placeholder support
                     if (element.hasAttribute('data-i18n-placeholder')) {
                         const phKey = element.getAttribute('data-i18n-placeholder');
@@ -292,6 +332,8 @@ class I18nSystem {
                     } else {
                         element.textContent = translation;
                     }
+                } else {
+                    console.warn(`No translation found for key: ${key}`);
                 }
             }
         });
@@ -299,8 +341,10 @@ class I18nSystem {
 
     // Refresh all translations in the UI
     refreshUI() {
+        console.log('🔄 Refreshing UI translations...');
         const elements = document.querySelectorAll('[data-i18n],[data-i18n-key]');
-        this.updateElements(elements, 'data-i18n-key');
+        console.log(`Found ${elements.length} elements to translate`);
+        this.updateElements(elements);
         // Apply placeholders separately
         document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
             const k = el.getAttribute('data-i18n-placeholder');
@@ -308,10 +352,77 @@ class I18nSystem {
             if (t && el.placeholder !== undefined) el.placeholder = t;
         });
         window.dispatchEvent(new CustomEvent('i18n:refreshed', { detail: { language: this.currentLanguage } }));
+        console.log('✅ UI refresh completed');
     }
 
     getFallbackTranslations() {
         return {
+            en: {
+                // Navigation
+                'nav_dashboard': 'Dashboard',
+                'nav_users': 'Users',
+                'nav_profile': 'Profile',
+                'nav_security': 'Security',
+                'nav_settings': 'Settings',
+                'nav_analytics': 'Analytics',
+                'nav_reports': 'Reports',
+                'admin_dashboard_title': 'TINI Admin Dashboard',
+                'logout': 'Logout',
+                'testing_zone': 'Testing Zone',
+                'super_admin': 'Super Admin',
+                'active_users': 'Active Users',
+                'view_all': 'View All',
+                // Metrics
+                'metric_active_users': 'ACTIVE USERS',
+                'metric_response_time': 'RESPONSE TIME',
+                'metric_retention_rate': 'RETENTION RATE',
+                'metric_threat_level': 'THREAT LEVEL',
+                'incidents': 'incidents',
+                // Security
+                'security_no_threats': 'No active threats detected',
+                'security_controls_matrix': 'Security Controls Matrix',
+                'btn_refresh': 'Refresh',
+                // Headers
+                'header_total_reports': 'Total Reports',
+                'header_pending_reports': 'Pending Reports', 
+                'header_completed_reports': 'Completed Reports',
+                'header_critical_reports': 'Critical Reports',
+                // Months
+                'month_january': 'January',
+                'month_february': 'February',
+                'month_march': 'March',
+                'month_april': 'April',
+                'month_may': 'May',
+                'month_june': 'June',
+                'month_july': 'July',
+                'month_august': 'August',
+                'month_september': 'September',
+                'month_october': 'October',
+                'month_november': 'November',
+                'month_december': 'December'
+            },
+            vi: {
+                // Navigation
+                'nav_dashboard': 'Bảng Điều Khiển',
+                'nav_users': 'Quản Lý Người Dùng',
+                'nav_profile': 'Hồ Sơ',
+                'nav_security': 'Bảo Mật',
+                'nav_settings': 'Cài Đặt',
+                'nav_analytics': 'Phân Tích',
+                'nav_reports': 'Báo Cáo',
+                'admin_dashboard_title': 'Bảng Điều Khiển TINI',
+                'logout': 'Đăng Xuất',
+                'testing_zone': 'Khu Vực Thử Nghiệm',
+                'super_admin': 'Quản Trị Cấp Cao',
+                'active_users': 'Người Dùng Hoạt Động',
+                'view_all': 'Xem Tất Cả',
+                // Metrics
+                'metric_active_users': 'NGƯỜI DÙNG HOẠT ĐỘNG',
+                'metric_response_time': 'THỜI GIAN PHẢN HỒI',
+                'metric_retention_rate': 'TỶ LỆ GIỮ CHÂN',
+                'metric_threat_level': 'MỨC ĐỘ NGUY HIỂM',
+                'incidents': 'sự cố'
+            },
             zh: {
                 // Navigation
                 'nav_dashboard': '仪表板',
@@ -324,79 +435,109 @@ class I18nSystem {
                 'admin_dashboard_title': 'TINI 管理面板',
                 'logout': '退出登录',
                 'testing_zone': '测试区域',
-                
-                // Profile & Password
-                'account_security': '账户安全',
-                'change_password': '修改密码',
-                'password_settings': '密码设置',
-                'current_password': '当前密码',
-                'new_password': '新密码',
-                'confirm_new_password': '确认新密码',
-                'enter_current_password': '输入当前密码',
-                'enter_new_password': '输入新密码',
-                'confirm_new_password_placeholder': '确认新密码',
-                'two_factor_auth': '双因素认证',
-                
-                // User Management
-                'user_name': '用户名',
-                'user_role': '角色',
-                'user_status': '状态',
-                'user_actions': '操作',
-                'add_user_btn': '添加用户',
-                'view_all': '查看全部',
-                'admin_user': '管理员用户',
                 'super_admin': '超级管理员',
-                
-                // Dashboard
                 'active_users': '活跃用户',
-                'blocked_items': '被阻止项目',
-                'system_health': '系统健康',
-                'new_this_week': '本周新增',
-                'from_yesterday': '自昨天',
-                'recent_activity_title': '最近活动',
-                
-                // Common
-                'loading': '加载中...',
-                'error': '错误',
-                'success': '成功',
-                'confirm': '确认',
-                'delete': '删除',
-                'edit': '编辑',
-                'save_changes': '保存更改',
-                'cancel': '取消'
+                'view_all': '查看全部',
+                // Metrics
+                'metric_active_users': '活跃用户',
+                'metric_response_time': '响应时间',
+                'metric_retention_rate': '留存率',
+                'metric_threat_level': '威胁等级',
+                'incidents': '事件',
+                // Security
+                'security_no_threats': '未检测到活动威胁',
+                'security_controls_matrix': '安全控制矩阵',
+                'btn_refresh': '刷新',
+                // Headers
+                'header_total_reports': '总报告',
+                'header_pending_reports': '待处理报告',
+                'header_completed_reports': '已完成报告',
+                'header_critical_reports': '关键报告',
+                // Months
+                'month_january': '一月',
+                'month_february': '二月',
+                'month_march': '三月',
+                'month_april': '四月',
+                'month_may': '五月',
+                'month_june': '六月',
+                'month_july': '七月',
+                'month_august': '八月',
+                'month_september': '九月',
+                'month_october': '十月',
+                'month_november': '十一月',
+                'month_december': '十二月'
             },
-            en: {
+            hi: {
                 // Navigation
-                'nav_dashboard': 'Dashboard',
-                'nav_users': 'User Management',
-                'nav_profile': 'Profile',
-                'nav_security': 'Security',
-                'nav_settings': 'Settings',
-                'nav_analytics': 'Analytics',
-                'nav_reports': 'Reports',
-                
-                // User Management
-                'user_name': 'Username',
-                'user_role': 'Role',
-                'user_status': 'Status',
-                'user_actions': 'Actions',
-                
-                // Profile
-                'profile_title': 'Profile Settings',
-                'save_changes': 'Save Changes',
-                'cancel': 'Cancel',
-                
-                // Common
-                'loading': 'Loading...',
-                'error': 'Error',
-                'success': 'Success',
-                'confirm': 'Confirm',
-                'delete': 'Delete',
-                'edit': 'Edit'
+                'nav_dashboard': 'डैशबोर्ड',
+                'nav_users': 'उपयोगकर्ता प्रबंधन',
+                'nav_profile': 'प्रोफ़ाइल',
+                'nav_security': 'सुरक्षा',
+                'nav_settings': 'सेटिंग्स',
+                'nav_analytics': 'विश्लेषण',
+                'nav_reports': 'रिपोर्ट',
+                'admin_dashboard_title': 'TINI एडमिन डैशबोर्ड',
+                'logout': 'लॉग आउट',
+                'testing_zone': 'परीक्षण क्षेत्र',
+                'super_admin': 'सुपर एडमिन',
+                'active_users': 'सक्रिय उपयोगकर्ता',
+                'view_all': 'सभी देखें',
+                // Metrics
+                'metric_active_users': 'सक्रिय उपयोगकर्ता',
+                'metric_response_time': 'प्रतिक्रिया समय',
+                'metric_retention_rate': 'प्रतिधारण दर',
+                'metric_threat_level': 'खतरे का स्तर',
+                'incidents': 'घटनाएं'
+            },
+            ko: {
+                // Navigation
+                'nav_dashboard': '대시보드',
+                'nav_users': '사용자 관리',
+                'nav_profile': '프로필',
+                'nav_security': '보안',
+                'nav_settings': '설정',
+                'nav_analytics': '분석',
+                'nav_reports': '보고서',
+                'admin_dashboard_title': 'TINI 관리자 대시보드',
+                'logout': '로그아웃',
+                'testing_zone': '테스트 영역',
+                'super_admin': '슈퍼 관리자',
+                'active_users': '활성 사용자',
+                'view_all': '모두 보기',
+                // Metrics
+                'metric_active_users': '활성 사용자',
+                'metric_response_time': '응답 시간',
+                'metric_retention_rate': '유지율',
+                'metric_threat_level': '위험 수준',
+                'incidents': '인시던트'
             }
         };
     }
+
+    // Global helper methods
+    static getInstance() {
+        return window.i18n;
+    }
+
+    static t(key, substitutions = null) {
+        return window.i18n ? window.i18n.getMessage(key, substitutions) : key;
+    }
+
+    // Helper method to load message from structured data
 }
+
+// Global helper functions for easy access
+window.t = function(key, substitutions = null) {
+    return window.i18n ? window.i18n.getMessage(key, substitutions) : key;
+};
+
+window.setLanguage = function(lang) {
+    return window.i18n ? window.i18n.setLanguage(lang) : false;
+};
+
+window.getCurrentLanguage = function() {
+    return window.i18n ? window.i18n.currentLanguage : 'en';
+};
 
 // Initialize singleton instance with safety checks
 (async function() {
@@ -413,8 +554,24 @@ class I18nSystem {
         // Make globally available
         window.i18n = i18n;
 
-        // Initial UI refresh
-        i18n.refreshUI();
+        // Initial UI refresh - wait for DOM if needed
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setTimeout(() => i18n.refreshUI(), 100);
+            });
+        } else {
+            setTimeout(() => i18n.refreshUI(), 100);
+        }
+
+        // Also refresh when any dynamic content is added
+        const observer = new MutationObserver(() => {
+            const newElements = document.querySelectorAll('[data-i18n]:not([data-i18n-processed])');
+            if (newElements.length > 0) {
+                i18n.updateElements(newElements);
+                newElements.forEach(el => el.setAttribute('data-i18n-processed', 'true'));
+            }
+        });
+        observer.observe(document.body, { childList: true, subtree: true });
 
         console.log('✅ I18nSystem initialized successfully');
     } catch (error) {
@@ -423,3 +580,4 @@ class I18nSystem {
 })();
 // ST:TINI_1754716154_e868a412
 // ST:TINI_1754752705_e868a412
+// ST:TINI_1754879322_e868a412

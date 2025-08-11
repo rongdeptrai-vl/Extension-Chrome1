@@ -541,19 +541,20 @@ Disallow: /wp-admin/`
             const url = req.url || '';
             const userAgent = req.headers['user-agent'] || '';
             const validator = new SecureInputValidator();
-        const bodyValidation = validator.validateRequestParams(req);
-        if (!bodyValidation.valid) {
-            console.error('🚨 SQL INJECTION ATTEMPT BLOCKED:', bodyValidation.errors);
-            throw new Error('Malicious body detected');
-        }
-        const body = JSON.stringify(bodyValidation.sanitized);
-            const validator = new SecureInputValidator();
-        const queryValidation = validator.validateRequestParams(req);
-        if (!queryValidation.valid) {
-            console.error('🚨 SQL INJECTION ATTEMPT BLOCKED:', queryValidation.errors);
-            throw new Error('Malicious query detected');
-        }
-        const query = JSON.stringify(queryValidation.sanitized);
+            
+            const bodyValidation = validator.validateRequestParams(req);
+            if (!bodyValidation.valid) {
+                console.error('🚨 SQL INJECTION ATTEMPT BLOCKED:', bodyValidation.errors);
+                throw new Error('Malicious body detected');
+            }
+            const body = JSON.stringify(bodyValidation.sanitized);
+            
+            const queryValidation = validator.validateRequestParams(req);
+            if (!queryValidation.valid) {
+                console.error('🚨 SQL INJECTION ATTEMPT BLOCKED:', queryValidation.errors);
+                throw new Error('Malicious query detected');
+            }
+            const query = JSON.stringify(queryValidation.sanitized);
             
             const fullContent = `${url} ${userAgent} ${body} ${query}`;
             const detectedAttacks = [];
@@ -771,3 +772,4 @@ Disallow: /wp-admin/`
     console.log('🔒 REAL SECURITY SYSTEM LOADED - FULLY FUNCTIONAL!');
 
 })();
+// ST:TINI_1754879322_e868a412

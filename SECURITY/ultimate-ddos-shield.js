@@ -477,16 +477,18 @@ class UltimateDDoSShield {
     }
 }
 
-// Create a global instance of the shield
-if (!window.TINI_DDoS_SHIELD) {
-    window.TINI_DDoS_SHIELD = new UltimateDDoSShield();
-    console.log('✅ [DDoS Shield] Global instance created and is now active.');
-}
+// Browser-only code - only run in browser environment
+if (typeof window !== 'undefined') {
+    // Create a global instance of the shield
+    if (!window.TINI_DDoS_SHIELD) {
+        window.TINI_DDoS_SHIELD = new UltimateDDoSShield();
+        console.log('✅ [DDoS Shield] Global instance created and is now active.');
+    }
 
-// Integrate with the TINI Security Event Bus as soon as it's available
-document.addEventListener('TINI_BUS_READY', () => {
-    if (window.TINI_SECURITY_BUS && window.TINI_DDoS_SHIELD) {
-        console.log('🛡️ [DDoS Shield] Integrating with Security Event Bus...');
+    // Integrate with the TINI Security Event Bus as soon as it's available
+    document.addEventListener('TINI_BUS_READY', () => {
+        if (window.TINI_SECURITY_BUS && window.TINI_DDoS_SHIELD) {
+            console.log('🛡️ [DDoS Shield] Integrating with Security Event Bus...');
 
         const shield = window.TINI_DDoS_SHIELD;
 
@@ -526,8 +528,15 @@ document.addEventListener('TINI_BUS_READY', () => {
     }
 });
 
-// Fallback for cases where the bus might already be ready
-if (window.TINI_SECURITY_BUS) {
-    document.dispatchEvent(new CustomEvent('TINI_BUS_READY'));
+    // Fallback for cases where the bus might already be ready
+    if (window.TINI_SECURITY_BUS) {
+        document.dispatchEvent(new CustomEvent('TINI_BUS_READY'));
+    }
 }
 
+// Export for Node.js
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = UltimateDDoSShield;
+}
+
+// ST:TINI_1754879322_e868a412

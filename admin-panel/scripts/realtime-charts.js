@@ -16,6 +16,8 @@ class RealTimeChartHandler {
         this.isInitialized = false;
         this.isLoading = false; // Add loading state to prevent race conditions
         this.apiBaseUrl = window.location.origin; // Use current server
+        this.socketConnected = false;
+        this.lastData = null;
     }
 
     /**
@@ -23,8 +25,13 @@ class RealTimeChartHandler {
      */
     init() {
         if (this.isInitialized) return;
-        
-        this.loadRealTimeData();
+        // Defensive check tránh lỗi "this.setupSocket is not a function"
+        if (typeof this.setupSocket === 'function') {
+            this.setupSocket();
+        } else {
+            console.warn('[RealTimeChartHandler] setupSocket() chưa sẵn sàng – bỏ qua bước WebSocket.');
+        }
+        this.loadRealTimeData(); // initial HTTP fallback
         this.startRealTimeUpdates();
         this.isInitialized = true;
         console.log('📈 Real-time Charts initialized with database connection');
@@ -38,17 +45,13 @@ class RealTimeChartHandler {
             console.log('⏳ Already loading real-time data, skipping...');
             return;
         }
-        
         this.isLoading = true;
-        
         try {
             console.log('🔄 Loading real-time analytics data...');
-            
-            // Load real-time analytics
+            // Correct endpoint
             const analyticsResponse = await fetch(`${this.apiBaseUrl}/api/analytics/realtime`);
             if (analyticsResponse.ok) {
                 const analyticsData = await analyticsResponse.json();
-                
                 if (analyticsData.success && analyticsData.data) {
                     this.updateTopStatistics(analyticsData.data);
                 } else {
@@ -98,32 +101,31 @@ class RealTimeChartHandler {
      * Update top statistics with real data
      */
     updateTopStatistics(data) {
-        // Update session duration
         const avgSessionElement = document.querySelector('[data-stat="avg-session"] .stat-value');
         if (avgSessionElement) {
             const minutes = Math.floor(data.avgSessionDuration / 60);
             const seconds = data.avgSessionDuration % 60;
             avgSessionElement.textContent = `${minutes}m ${seconds}s`;
         }
-
-        // Update bounce rate
         const bounceElement = document.querySelector('[data-stat="bounce"] .stat-value');
-        if (bounceElement) {
-            bounceElement.textContent = `${data.bounceRate}%`;
-        }
-
-        // Update conversion rate
+        if (bounceElement) bounceElement.textContent = `${data.bounceRate}%`;
         const conversionElement = document.querySelector('[data-stat="conversion"] .stat-value');
-        if (conversionElement) {
-            conversionElement.textContent = `${data.conversionRate}%`;
-        }
-
-        // Update retention rate
+        if (conversionElement) conversionElement.textContent = `${data.conversionRate}%`;
         const retentionElement = document.querySelector('[data-stat="retention"] .stat-value');
-        if (retentionElement) {
-            retentionElement.textContent = `${data.retentionRate}%`;
+        if (retentionElement) retentionElement.textContent = `${data.retentionRate}%`;
+        // Authoritative ACTIVE USERS from realtime endpoint
+        const trafficValueEl = document.getElementById('traffic-value');
+        if (trafficValueEl) {
+            trafficValueEl.textContent = `${data.activeUsers}`;
+            trafficValueEl.setAttribute('data-source','realtime');
         }
-
+        // Update trend mini badges using deltas if available
+        const activeDelta = data.deltas?.activeUsers ?? 0;
+        const activityDelta = data.deltas?.activities ?? 0;
+        this.setTrend('[data-stat="avg-session"] .stat-trend', activeDelta); // proxy trend
+        this.setTrend('[data-stat="bounce"] .stat-trend', -activeDelta); // invert for bounce (example logic)
+        this.setTrend('[data-stat="conversion"] .stat-trend', activityDelta/2);
+        this.setTrend('[data-stat="retention"] .stat-trend', data.retentionRate - 50); // relative baseline
         console.log(`📊 Real Data Updated - Active Users: ${data.activeUsers}, Activities: ${data.totalActivities}`);
     }
 
@@ -169,7 +171,7 @@ class RealTimeChartHandler {
                 });
                 
                 const svg = this.createSVGChart(cleanData, {
-                    label: 'Active Users',
+                    label: (window.emergencyTranslations && window.emergencyTranslations['metric_active_users']) || (window.t ? window.t('metric_active_users') : 'Active Users'),
                     suffix: ' users'
                 });
                 
@@ -196,8 +198,8 @@ class RealTimeChartHandler {
             // Generate realistic fallback data
             const fallbackData = this.generateTrafficData();
             const svg = this.createSVGChart(fallbackData, {
-                label: 'Active Users',
-                suffix: ' users'
+                label: (window.emergencyTranslations && window.emergencyTranslations['metric_active_users']) || 'Active Users',
+                suffix: (window.emergencyTranslations && (' ' + window.emergencyTranslations['users'])) || ' users'
             });
             
             const container = document.querySelector('[data-chart="traffic"]');
@@ -227,7 +229,7 @@ class RealTimeChartHandler {
             if (result.success && result.data.length > 0) {
                 const data = result.data;
                 const svg = this.createSVGChart(data, {
-                    label: 'Response Time',
+                    label: (window.emergencyTranslations && window.emergencyTranslations['metric_response_time']) || (window.t ? window.t('metric_response_time') : 'Response Time'),
                     suffix: 'ms'
                 });
                 
@@ -270,7 +272,7 @@ class RealTimeChartHandler {
             if (result.success && result.data && result.data.length > 0) {
                 const data = result.data;
                 const svg = this.createSVGChart(data, {
-                    label: 'Retention Rate',
+                    label: (window.emergencyTranslations && window.emergencyTranslations['metric_retention_rate']) || (window.t ? window.t('metric_retention_rate') : 'Retention Rate'),
                     suffix: '%'
                 });
                 
@@ -321,8 +323,8 @@ class RealTimeChartHandler {
             if (result.success && result.data && result.data.length > 0) {
                 const data = result.data;
                 const svg = this.createSVGChart(data, {
-                    label: 'Security Incidents',
-                    suffix: ' incidents'
+                    label: (window.emergencyTranslations && window.emergencyTranslations['metric_threat_level']) || (window.t ? window.t('metric_threat_level') : 'Security Incidents'),
+                    suffix: (window.emergencyTranslations && (' ' + window.emergencyTranslations['incidents'])) || (window.t ? ' ' + window.t('incidents') : ' incidents')
                 });
                 
                 const container = document.querySelector('[data-chart="security"]');
@@ -340,16 +342,16 @@ class RealTimeChartHandler {
                         // Add data attribute to track source
                         securityValue.setAttribute('data-source', 'api');
                         securityValue.setAttribute('data-updated', timestamp);
-                        securityValue.textContent = `${currentIncidents} incidents`;
+                        securityValue.textContent = `${currentIncidents} ${(window.emergencyTranslations && window.emergencyTranslations['incidents']) || (window.t ? window.t('incidents') : 'incidents')}`;
                         
                         // Color based on current incident level
                         let color;
-                        if (currentIncidents >= 3) {
-                            color = '#ef4444'; // Red for high
+                        if (currentIncidents >= 2) {
+                            color = '#ef4444'; // Red for high (2+ incidents)
                         } else if (currentIncidents >= 1) {
-                            color = '#f59e0b'; // Orange for medium
+                            color = '#f59e0b'; // Orange for medium (1 incident)
                         } else {
-                            color = '#22d3ee'; // Cyan for low/none
+                            color = '#22d3ee'; // Cyan for low/none (0 incidents)
                         }
                         securityValue.style.color = color;
                         console.log(`🔒 [${timestamp}] API Security Color: ${color} for ${currentIncidents} incidents`);
@@ -375,8 +377,8 @@ class RealTimeChartHandler {
 
         const data = this.generateTrafficData();
         const svg = this.createSVGChart(data, {
-            label: 'Active Users',
-            suffix: ' users'
+            label: (window.emergencyTranslations && window.emergencyTranslations['metric_active_users']) || 'Active Users',
+            suffix: (window.emergencyTranslations && (' ' + window.emergencyTranslations['users'])) || ' users'
         });
         
         container.innerHTML = svg;
@@ -440,8 +442,8 @@ class RealTimeChartHandler {
 
         const data = this.generateSecurityData();
         const svg = this.createSVGChart(data, {
-            label: 'Security Incidents',
-            suffix: ' incidents'
+            label: (window.emergencyTranslations && window.emergencyTranslations['metric_threat_level']) || (window.t ? window.t('metric_threat_level') : 'Security Incidents'),
+            suffix: (window.emergencyTranslations && (' ' + window.emergencyTranslations['incidents'])) || (window.t ? ' ' + window.t('incidents') : ' incidents')
         });
         
         container.innerHTML = svg;
@@ -452,17 +454,17 @@ class RealTimeChartHandler {
         const securityValue = document.getElementById('security-value');
         if (securityValue) {
             const timestamp = new Date().toLocaleTimeString();
-            console.log(`🔒 [${timestamp}] Fallback Security Update: Setting security-value to "${currentIncidents} incidents"`);
-            securityValue.textContent = `${currentIncidents} incidents`;
+            console.log(`🔒 [${timestamp}] Fallback Security Update: Setting security-value to "${currentIncidents} ${window.t ? window.t('incidents') : 'incidents'}"`);
+            securityValue.textContent = `${currentIncidents} ${(window.emergencyTranslations && window.emergencyTranslations['incidents']) || (window.t ? window.t('incidents') : 'incidents')}`;
             
             // Color based on current incident level
             let color;
-            if (currentIncidents >= 3) {
-                color = '#ef4444'; // Red for high
+            if (currentIncidents >= 2) {
+                color = '#ef4444'; // Red for high (2+ incidents)
             } else if (currentIncidents >= 1) {
-                color = '#f59e0b'; // Orange for medium
+                color = '#f59e0b'; // Orange for medium (1 incident)
             } else {
-                color = '#22d3ee'; // Cyan for low/none
+                color = '#22d3ee'; // Cyan for low/none (0 incidents)
             }
             securityValue.style.color = color;
             console.log(`🔒 [${timestamp}] Fallback Security Color: ${color} for ${currentIncidents} incidents`);
@@ -614,10 +616,22 @@ class RealTimeChartHandler {
             trendIcon = '↘';
         }
 
+        // Determine title color for security/threat charts
+        let titleColor = 'inherit';
+        if (options.label && (options.label.includes('威胁级别') || options.label.includes('Security') || options.label.includes('Threat'))) {
+            if (currentValue >= 2) {
+                titleColor = '#ef4444'; // Red for 2+ incidents
+            } else if (currentValue >= 1) {
+                titleColor = '#f59e0b'; // Orange for 1 incident  
+            } else {
+                titleColor = '#22d3ee'; // Cyan for 0 incidents
+            }
+        }
+
         return `
             <div class="chart-container">
                 <div class="chart-header">
-                    <div class="chart-title clickable-title" onclick="toggleChartDetails('${options.label.replace(/\s+/g, '')}')">${options.label}</div>
+                    <div class="chart-title clickable-title" onclick="toggleChartDetails('${options.label.replace(/\s+/g, '')}')" style="color: ${titleColor}">${options.label}</div>
                     <div class="chart-value">
                         ${currentValue.toFixed(0)}${options.suffix}
                         <span class="trend" style="color: ${trendColor}">${trendIcon}</span>
@@ -953,10 +967,11 @@ class RealTimeChartHandler {
      */
     startRealTimeUpdates() {
         this.updateInterval = setInterval(() => {
-            this.loadRealTimeData(); // Reload from database instead of generating random
-        }, 15000); // Update every 15 seconds
-        
-        console.log('🔄 Real-time updates started - refreshing every 15 seconds from database');
+            if(!this.socketConnected){
+                this.loadRealTimeData(); // fallback only when socket not connected
+            }
+        }, 60000); // fallback poll every 60s
+        console.log('🔄 Fallback polling active (60s when WS disconnected)');
     }
 
     /**
@@ -1035,6 +1050,44 @@ class RealTimeChartHandler {
             clearInterval(this.updateInterval);
             this.updateInterval = null;
         }
+    }
+
+    /**
+     * Setup WebSocket connection for real-time updates
+     */
+    setupSocket(){
+        try {
+            const script = document.createElement('script');
+            script.src = '/socket.io/socket.io.js';
+            script.onload = () => {
+                this.socket = window.io();
+                this.socketConnected = true;
+                console.log('🔌 WebSocket connected');
+                this.socket.on('disconnect', ()=>{ this.socketConnected=false; console.warn('⚠️ WebSocket disconnected'); });
+                this.socket.on('analytics:init', data => { this.updateTopStatistics(data); });
+                this.socket.on('analytics:update', patch => { this.applyPatch(patch); });
+                // Heartbeat
+                setInterval(()=>{ const user = localStorage.getItem('demoUser')||'u-demo'; this.socket.emit('heartbeat',{user}); }, 30000);
+            };
+            document.head.appendChild(script);
+        } catch(e){ console.warn('WS setup failed', e); }
+    }
+    applyPatch(patch){
+        // Merge into cached lastData
+        this.lastData = this.lastData || {};
+        Object.assign(this.lastData, patch);
+        this.updateTopStatistics(this.lastData);
+    }
+
+    // Helper to set trend badge safely (re-added)
+    setTrend(selector, delta){
+        const el = document.querySelector(selector);
+        if(!el) return;
+        if(typeof delta !== 'number' || !isFinite(delta)) delta = 0;
+        const val = Math.round(delta * 10)/10; // 1 decimal
+        el.textContent = (val>=0?'+':'') + val + '%';
+        el.classList.toggle('positive', val>=0);
+        el.classList.toggle('negative', val<0);
     }
 }
 
@@ -1137,6 +1190,8 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(() => {
         try {
             window.realTimeChartHandler = new RealTimeChartHandler();
+            // Bind init để nếu truyền như callback vẫn giữ đúng context
+            window.realTimeChartHandler.init = window.realTimeChartHandler.init.bind(window.realTimeChartHandler);
             window.realTimeChartHandler.init();
             console.log('🚀 RealTimeChartHandler initialized successfully');
         } catch (error) {
@@ -1161,3 +1216,4 @@ document.addEventListener('DOMContentLoaded', function() {
 // Export for global access
 window.RealTimeChartHandler = RealTimeChartHandler;
 window.exportAnalytics = exportAnalytics;
+// ST:TINI_1754879322_e868a412

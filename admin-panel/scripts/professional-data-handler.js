@@ -124,43 +124,43 @@ class ProfessionalDataHandler {
             },
             reports: [
                 {
-                    name: 'System Performance Report',
-                    category: 'Performance',
-                    created: '2 hours ago',
+                    name: '系统性能报告', // System Performance Report
+                    category: '性能',
+                    created: '2小时前',
                     size: '2.4 MB',
-                    status: 'Ready',
+                    status: '已完成',
                     id: 'RPT-' + Date.now().toString().slice(-6)
                 },
                 {
-                    name: 'Security Audit Summary',
-                    category: 'Security',
-                    created: '4 hours ago',
+                    name: '安全审计摘要', // Security Audit Summary
+                    category: '安全',
+                    created: '4小时前',
                     size: '1.8 MB',
-                    status: 'Ready',
+                    status: '已完成',
                     id: 'RPT-' + (Date.now() - 1000).toString().slice(-6)
                 },
                 {
-                    name: 'User Activity Analytics',
-                    category: 'Activity',
-                    created: '6 hours ago',
+                    name: '用户活动分析', // User Activity Analytics
+                    category: '活动',
+                    created: '6小时前',
                     size: '3.1 MB',
-                    status: 'Ready',
+                    status: '已完成',
                     id: 'RPT-' + (Date.now() - 2000).toString().slice(-6)
                 },
                 {
-                    name: 'Weekly Performance Metrics',
-                    category: 'Performance',
-                    created: '1 day ago',
+                    name: '每周性能指标', // Weekly Performance Metrics
+                    category: '性能',
+                    created: '1天前',
                     size: '4.2 MB',
-                    status: 'Processing',
+                    status: '处理中',
                     id: 'RPT-' + (Date.now() - 3000).toString().slice(-6)
                 },
                 {
-                    name: 'Compliance Audit Report',
-                    category: 'Compliance',
-                    created: '2 days ago',
+                    name: '合规审计报告', // Compliance Audit Report
+                    category: '合规',
+                    created: '2天前',
                     size: '5.7 MB',
-                    status: 'Ready',
+                    status: '已完成',
                     id: 'RPT-' + (Date.now() - 4000).toString().slice(-6)
                 }
             ]
@@ -368,3 +368,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Export for global access
 window.ProfessionalDataHandler = ProfessionalDataHandler;
+// ST:TINI_1754879322_e868a412

@@ -1,0 +1,1 @@
+Merged analytics-messages.json into messages.json on 2025-08-09. Safe to delete analytics-messages.json if no loader expects it separately.
