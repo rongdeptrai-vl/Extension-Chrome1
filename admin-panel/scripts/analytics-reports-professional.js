@@ -278,7 +278,7 @@ class TINIAnalyticsReports {
             data: {
                 labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
                 datasets: [{
-                    label: 'Active Users',
+                    label: (window.t && window.t('active_users_label')) || '活跃用户',
                     data: [450, 520, 480, 600, 580, 320, 280],
                     backgroundColor: 'var(--accent)',
                     borderRadius: 4
@@ -636,3 +636,4 @@ if (document.readyState === 'loading') {
     window.analyticsReports = new TINIAnalyticsReports();
     window.analyticsReports.init();
 }
+// ST:TINI_1754998490_e868a412

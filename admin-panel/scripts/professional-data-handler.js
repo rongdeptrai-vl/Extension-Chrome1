@@ -94,11 +94,11 @@ class ProfessionalDataHandler {
                 'patch-level': { value: '100%', label: 'Patch Coverage', trend: 'positive', change: '+0.3%' }
             },
             threats: [
-                { time: new Date().toLocaleTimeString('en-US', {hour12: false}).slice(0,5), type: 'WAF Block', severity: 'High', status: 'Blocked', action: 'Auto' },
-                { time: this.formatTime(-3), type: 'Brute Force', severity: 'Medium', status: 'Mitigated', action: 'Rate Limit' },
-                { time: this.formatTime(-85), type: 'SQL Injection', severity: 'Critical', status: 'Blocked', action: 'WAF' },
-                { time: this.formatTime(-120), type: 'Port Scan', severity: 'Low', status: 'Logged', action: 'Monitor' },
-                { time: this.formatTime(-145), type: 'XSS Attempt', severity: 'Medium', status: 'Blocked', action: 'Filter' }
+                { time: new Date().toLocaleTimeString('en-US', {hour12: false}).slice(0,5), type: (window.t && window.t('threat_waf_block')) || 'WAF阻止', severity: (window.t && window.t('severity_high')) || '高', status: (window.t && window.t('status_blocked')) || '已阻止', action: (window.t && window.t('action_auto')) || '自动' },
+                { time: this.formatTime(-3), type: (window.t && window.t('threat_brute_force')) || '暴力破解', severity: (window.t && window.t('severity_medium')) || '中', status: (window.t && window.t('status_mitigated')) || '已缓解', action: (window.t && window.t('action_rate_limit')) || '速率限制' },
+                { time: this.formatTime(-85), type: (window.t && window.t('threat_sql_injection')) || 'SQL注入', severity: (window.t && window.t('severity_critical')) || '严重', status: (window.t && window.t('status_blocked')) || '已阻止', action: (window.t && window.t('action_waf')) || 'WAF' },
+                { time: this.formatTime(-120), type: (window.t && window.t('threat_port_scan')) || '端口扫描', severity: (window.t && window.t('severity_low')) || '低', status: (window.t && window.t('status_logged')) || '已记录', action: (window.t && window.t('action_monitor')) || '监控' },
+                { time: this.formatTime(-145), type: (window.t && window.t('threat_xss_attempt')) || 'XSS攻击', severity: (window.t && window.t('severity_medium')) || '中', status: (window.t && window.t('status_blocked')) || '已阻止', action: (window.t && window.t('action_filter')) || '过滤' }
             ],
             controls: [
                 { name: 'Firewall Protection', status: 'active', level: '95%' },
@@ -369,3 +369,4 @@ document.addEventListener('DOMContentLoaded', function() {
 // Export for global access
 window.ProfessionalDataHandler = ProfessionalDataHandler;
 // ST:TINI_1754879322_e868a412
+// ST:TINI_1754998490_e868a412

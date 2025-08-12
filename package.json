@@ -18,10 +18,7 @@
     "start:panel": "cross-env PORT=55055 PORT_FALLBACKS=55056,55057 NODE_ENV=production node admin-panel/server.js",
     "start:all": "concurrently -n gateway,api,dashboard,panel -c \"cyan,green,yellow,magenta\" \"npm run start:gateway\" \"npm run start:api\" \"npm run start:dashboard\" \"npm run start:panel\"",
     "start:all:alt": "concurrently -n gateway,api,dashboard,panel -c \"cyan,green,yellow,magenta\" \"cross-env PORT=8099 npm run start:gateway\" \"cross-env PORT=5001 npm run start:api\" \"cross-env ADMIN_PORT=3005 ADMIN_PORT_FALLBACKS=3006,3007 npm run start:dashboard\" \"cross-env PORT=8081 PORT_FALLBACKS=8082,8083 npm run start:panel\"",
-    "start": "npm run start:all",
-    "i18n:sync": "node scripts/sync-i18n.js",
-    "i18n:sync:fill": "node scripts/sync-i18n.js --fill=en",
-    "regen:en": "node scripts/regenerate-en.js && npm run i18n:sync:fill"
+    "start": "npm run start:all"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

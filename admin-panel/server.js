@@ -10,6 +10,8 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 const url = require('url');
+const zlib = require('zlib');
+const crypto = require('crypto');
 const sqlite3 = require('sqlite3').verbose();
 const { Server: IOServer } = require('socket.io');
 let io; // socket.io instance
@@ -21,6 +23,60 @@ const envConfig = new TiniEnvironmentConfig();
 // Database connection
 const dbPath = path.join(__dirname, 'tini_admin.db');
 let db;
+
+// File cache for frequently accessed files
+const fileCache = new Map();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
+// Preload important files
+function preloadCriticalFiles() {
+    const criticalFiles = [
+        '../i18n-master.js',
+        '../_locales/zh/messages.json',
+        '../_locales/en/messages.json',
+        'admin-panel.html'
+    ];
+    
+    criticalFiles.forEach(file => {
+        const filePath = path.join(__dirname, file);
+        fs.readFile(filePath, (err, data) => {
+            if (!err) {
+                fileCache.set(filePath, {
+                    data: data,
+                    timestamp: Date.now(),
+                    etag: crypto.createHash('md5').update(data).digest('hex').substring(0, 8)
+                });
+                console.log(`[CACHE] Preloaded: ${file}`);
+            }
+        });
+    });
+}
+
+// Get file from cache or disk
+function getCachedFile(filePath, callback) {
+    const cached = fileCache.get(filePath);
+    const now = Date.now();
+    
+    if (cached && (now - cached.timestamp) < CACHE_DURATION) {
+        callback(null, cached.data, cached.etag);
+        return;
+    }
+    
+    fs.readFile(filePath, (err, data) => {
+        if (err) {
+            callback(err);
+            return;
+        }
+        
+        const etag = crypto.createHash('md5').update(data).digest('hex').substring(0, 8);
+        fileCache.set(filePath, {
+            data: data,
+            timestamp: now,
+            etag: etag
+        });
+        callback(null, data, etag);
+    });
+}
 
 // In-memory realtime metrics
 const activeUsersMap = new Map(); // userId -> lastSeen ms
@@ -153,16 +209,27 @@ function createServer() {
             pathname = '/admin-panel.html';
         }
         
-        const filePath = path.join(__dirname, pathname);
+        // Special handling for files from parent directory
+        let filePath;
+        if (pathname === '/i18n-master.js') {
+            filePath = path.join(__dirname, '..', 'i18n-master.js');
+        } else if (pathname.startsWith('/_locales/')) {
+            // Serve locales from parent directory
+            filePath = path.join(__dirname, '..', pathname);
+        } else {
+            filePath = path.join(__dirname, pathname);
+        }
         
         // Security check - prevent directory traversal
-        if (!filePath.startsWith(__dirname)) {
+        const projectRoot = path.resolve(__dirname, '..');
+        const adminPanelDir = __dirname;
+        if (!filePath.startsWith(adminPanelDir) && !filePath.startsWith(projectRoot)) {
             res.writeHead(403);
             res.end('Access forbidden');
             return;
         }
         
-        fs.readFile(filePath, (err, data) => {
+        getCachedFile(filePath, (err, data, etag) => {
             if (err) {
                 if (err.code === 'ENOENT') {
                     res.writeHead(404);
@@ -177,15 +244,54 @@ function createServer() {
             const ext = path.extname(pathname);
             const mimeType = mimeTypes[ext] || 'text/plain';
             
-            res.writeHead(200, {
+            // Set appropriate cache headers based on file type
+            let cacheControl = 'no-cache, no-store, must-revalidate'; // Default for dynamic content
+            if (ext === '.js' || ext === '.css' || ext === '.json') {
+                cacheControl = 'public, max-age=300'; // 5 minutes cache for static assets
+            } else if (ext === '.png' || ext === '.jpg' || ext === '.gif' || ext === '.ico' || ext === '.svg') {
+                cacheControl = 'public, max-age=3600'; // 1 hour cache for images
+            }
+            
+            const headers = {
                 'Content-Type': mimeType,
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
                 'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-                'Cache-Control': 'no-cache, no-store, must-revalidate'
-            });
+                'Cache-Control': cacheControl
+            };
             
-            res.end(data);
+            // Add ETag for better caching
+            if (ext === '.js' || ext === '.css' || ext === '.json') {
+                headers['ETag'] = `"${etag}"`;
+                
+                // Check if client has cached version
+                const clientETag = req.headers['if-none-match'];
+                if (clientETag === `"${etag}"`) {
+                    res.writeHead(304, headers);
+                    res.end();
+                    return;
+                }
+            }
+            
+            // Apply compression for text-based files
+            const acceptEncoding = req.headers['accept-encoding'] || '';
+            const shouldCompress = (ext === '.js' || ext === '.css' || ext === '.json' || ext === '.html') && data.length > 1024;
+            
+            if (shouldCompress && acceptEncoding.includes('gzip')) {
+                headers['Content-Encoding'] = 'gzip';
+                zlib.gzip(data, (err, compressed) => {
+                    if (err) {
+                        res.writeHead(500);
+                        res.end('Compression error');
+                        return;
+                    }
+                    res.writeHead(200, headers);
+                    res.end(compressed);
+                });
+            } else {
+                res.writeHead(200, headers);
+                res.end(data);
+            }
         });
     });
 }
@@ -416,6 +522,8 @@ function startWithFallback(ports, maxRetriesPerPort = 2) {
             console.log(`  BIND_HOST=${process.env.BIND_HOST || ''}`);
             console.log(`  PORT_FALLBACKS=${process.env.PORT_FALLBACKS || ''}`);
             console.log('');
+            console.log('🔄 Preloading critical files...');
+            preloadCriticalFiles();
             console.log('Press Ctrl+C to stop the server');
             console.log('========================================');
         });
@@ -868,3 +976,4 @@ function handleSecurityAnalytics(req, res) {
     });
 }
 // ST:TINI_1754879322_e868a412
+// ST:TINI_1754998490_e868a412

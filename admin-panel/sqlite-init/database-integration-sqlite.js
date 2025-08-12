@@ -62,10 +62,10 @@ class TINIDatabaseIntegration {
                     </div>
                 </div>
                 <div class="db-statistics" id="db-statistics">
-                    <div class="stat-item"><div class="stat-label">Total Users</div><div class="stat-value" id="stat-total-users">-</div></div>
-                    <div class="stat-item"><div class="stat-label">Active Users</div><div class="stat-value" id="stat-active-users">-</div></div>
-                    <div class="stat-item"><div class="stat-label">Today's Activities</div><div class="stat-value" id="stat-today-activities">-</div></div>
-                    <div class="stat-item"><div class="stat-label">Security Events</div><div class="stat-value" id="stat-security-events">-</div></div>
+                    <div class="stat-item"><div class="stat-label" data-i18n="total_users">Total Users</div><div class="stat-value" id="stat-total-users">-</div></div>
+                    <div class="stat-item"><div class="stat-label" data-i18n="active_users">Active Users</div><div class="stat-value" id="stat-active-users">-</div></div>
+                    <div class="stat-item"><div class="stat-label" data-i18n="today_activities">Today's Activities</div><div class="stat-value" id="stat-today-activities">-</div></div>
+                    <div class="stat-item"><div class="stat-label" data-i18n="security_events">Security Events</div><div class="stat-value" id="stat-security-events">-</div></div>
                 </div>
             </div>`;
             container.insertAdjacentHTML('beforeend', dbStatusHTML);
@@ -203,3 +203,4 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = TINIDatabaseIntegration;
 }
 // ST:TINI_1754752705_e868a412
+// ST:TINI_1754998490_e868a412

@@ -15,10 +15,48 @@
     // Listen for when i18n system is ready
     document.addEventListener('DOMContentLoaded', () => {
         setTimeout(async () => {
-            if (window.i18n) {
-                console.log('Setting language to Chinese...');
-                await window.i18n.setLanguage('zh');
-                window.i18n.refreshUI();
+            if (window.setLanguage) {
+                console.log('Setting language to Chinese via global function...');
+                await window.setLanguage('zh');
+            } else if (window.tiniUnifiedI18n && typeof window.tiniUnifiedI18n.setLanguage === 'function') {
+                console.log('Setting language via unified i18n...');
+                await window.tiniUnifiedI18n.setLanguage('zh');
+            } else {
+                console.log('Setting language via fallback method...');
+                if (localStorage) {
+                    localStorage.setItem('language', 'zh');
+                }
+                if (sessionStorage) {
+                    sessionStorage.setItem('currentLanguage', 'zh');
+                }
+            }
+            
+            // Update page content after language change
+            if (window.updatePageTranslations) {
+                console.log('Updating page translations...');
+                window.updatePageTranslations();
+            } else if (window.loadTranslations) {
+                console.log('Loading translations...');
+                window.loadTranslations();
+            } else {
+                console.log('I18n system not ready yet, waiting...');
+                // Wait for i18n system instead of reloading
+                let attempts = 0;
+                const waitForI18n = setInterval(() => {
+                    attempts++;
+                    if (window.updatePageTranslations || window.loadTranslations || attempts > 10) {
+                        clearInterval(waitForI18n);
+                        if (window.updatePageTranslations) {
+                            console.log('I18n system ready, updating translations...');
+                            window.updatePageTranslations();
+                        } else if (window.loadTranslations) {
+                            console.log('I18n system ready, loading translations...');
+                            window.loadTranslations();
+                        } else {
+                            console.log('I18n system timeout, proceeding with manual update...');
+                        }
+                    }
+                }, 500);
             }
             
             // Backup manual update
@@ -51,3 +89,4 @@
         }, 1000);
     });
 })();
+// ST:TINI_1754998490_e868a412

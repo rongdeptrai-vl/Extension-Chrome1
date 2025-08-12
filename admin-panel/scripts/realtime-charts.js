@@ -113,7 +113,7 @@ class RealTimeChartHandler {
         if (conversionElement) conversionElement.textContent = `${data.conversionRate}%`;
         const retentionElement = document.querySelector('[data-stat="retention"] .stat-value');
         if (retentionElement) retentionElement.textContent = `${data.retentionRate}%`;
-        // Authoritative ACTIVE USERS from realtime endpoint
+        // Authoritative active users from realtime endpoint
         const trafficValueEl = document.getElementById('traffic-value');
         if (trafficValueEl) {
             trafficValueEl.textContent = `${data.activeUsers}`;
@@ -171,8 +171,8 @@ class RealTimeChartHandler {
                 });
                 
                 const svg = this.createSVGChart(cleanData, {
-                    label: (window.emergencyTranslations && window.emergencyTranslations['metric_active_users']) || (window.t ? window.t('metric_active_users') : 'Active Users'),
-                    suffix: ' users'
+                    label: (window.emergencyTranslations && window.emergencyTranslations['metric_active_users']) || (window.t ? window.t('metric_active_users') : '活跃用户'),
+                    suffix: (window.emergencyTranslations && (' ' + window.emergencyTranslations['users_suffix'])) || (window.t ? ' ' + window.t('users_suffix') : ' 用户')
                 });
                 
                 const container = document.querySelector('[data-chart="traffic"]');
@@ -198,8 +198,8 @@ class RealTimeChartHandler {
             // Generate realistic fallback data
             const fallbackData = this.generateTrafficData();
             const svg = this.createSVGChart(fallbackData, {
-                label: (window.emergencyTranslations && window.emergencyTranslations['metric_active_users']) || 'Active Users',
-                suffix: (window.emergencyTranslations && (' ' + window.emergencyTranslations['users'])) || ' users'
+                label: (window.emergencyTranslations && window.emergencyTranslations['metric_active_users']) || (window.t ? window.t('metric_active_users') : '活跃用户'),
+                suffix: (window.emergencyTranslations && (' ' + window.emergencyTranslations['users_suffix'])) || (window.t ? ' ' + window.t('users_suffix') : ' 用户')
             });
             
             const container = document.querySelector('[data-chart="traffic"]');
@@ -229,7 +229,7 @@ class RealTimeChartHandler {
             if (result.success && result.data.length > 0) {
                 const data = result.data;
                 const svg = this.createSVGChart(data, {
-                    label: (window.emergencyTranslations && window.emergencyTranslations['metric_response_time']) || (window.t ? window.t('metric_response_time') : 'Response Time'),
+                    label: (window.emergencyTranslations && window.emergencyTranslations['metric_response_time']) || (window.t ? window.t('metric_response_time') : window.t ? window.t('response_time') : '响应时间'),
                     suffix: 'ms'
                 });
                 
@@ -272,7 +272,7 @@ class RealTimeChartHandler {
             if (result.success && result.data && result.data.length > 0) {
                 const data = result.data;
                 const svg = this.createSVGChart(data, {
-                    label: (window.emergencyTranslations && window.emergencyTranslations['metric_retention_rate']) || (window.t ? window.t('metric_retention_rate') : 'Retention Rate'),
+                    label: (window.emergencyTranslations && window.emergencyTranslations['metric_retention_rate']) || (window.t ? window.t('metric_retention_rate') : window.t ? window.t('retention_rate') : '留存率'),
                     suffix: '%'
                 });
                 
@@ -323,8 +323,8 @@ class RealTimeChartHandler {
             if (result.success && result.data && result.data.length > 0) {
                 const data = result.data;
                 const svg = this.createSVGChart(data, {
-                    label: (window.emergencyTranslations && window.emergencyTranslations['metric_threat_level']) || (window.t ? window.t('metric_threat_level') : 'Security Incidents'),
-                    suffix: (window.emergencyTranslations && (' ' + window.emergencyTranslations['incidents'])) || (window.t ? ' ' + window.t('incidents') : ' incidents')
+                    label: (window.emergencyTranslations && window.emergencyTranslations['metric_threat_level']) || (window.t ? window.t('metric_threat_level') : window.t ? window.t('security_incidents') : '安全事件'),
+                    suffix: (window.emergencyTranslations && (' ' + window.emergencyTranslations['incidents'])) || (window.t ? ' ' + window.t('incidents') : ' 事件')
                 });
                 
                 const container = document.querySelector('[data-chart="security"]');
@@ -351,7 +351,7 @@ class RealTimeChartHandler {
                         } else if (currentIncidents >= 1) {
                             color = '#f59e0b'; // Orange for medium (1 incident)
                         } else {
-                            color = '#22d3ee'; // Cyan for low/none (0 incidents)
+                            color = '#22d3ee'; // Cyan for low/none (0 events)
                         }
                         securityValue.style.color = color;
                         console.log(`🔒 [${timestamp}] API Security Color: ${color} for ${currentIncidents} incidents`);
@@ -377,8 +377,8 @@ class RealTimeChartHandler {
 
         const data = this.generateTrafficData();
         const svg = this.createSVGChart(data, {
-            label: (window.emergencyTranslations && window.emergencyTranslations['metric_active_users']) || 'Active Users',
-            suffix: (window.emergencyTranslations && (' ' + window.emergencyTranslations['users'])) || ' users'
+            label: (window.emergencyTranslations && window.emergencyTranslations['metric_active_users']) || (window.t ? window.t('metric_active_users') : '活跃用户'),
+            suffix: (window.emergencyTranslations && (' ' + window.emergencyTranslations['users_suffix'])) || (window.t ? ' ' + window.t('users_suffix') : ' 用户')
         });
         
         container.innerHTML = svg;
@@ -394,7 +394,7 @@ class RealTimeChartHandler {
 
         const data = this.generatePerformanceData();
         const svg = this.createSVGChart(data, {
-            label: 'Response Time',
+            label: (window.t && window.t('response_time_label')) || '响应时间',
             suffix: 'ms'
         });
         
@@ -411,7 +411,7 @@ class RealTimeChartHandler {
 
         const data = this.generateRetentionData();
         const svg = this.createSVGChart(data, {
-            label: 'Retention Rate',
+            label: (window.t && window.t('retention_rate_label')) || '留存率',
             suffix: '%'
         });
         
@@ -442,8 +442,8 @@ class RealTimeChartHandler {
 
         const data = this.generateSecurityData();
         const svg = this.createSVGChart(data, {
-            label: (window.emergencyTranslations && window.emergencyTranslations['metric_threat_level']) || (window.t ? window.t('metric_threat_level') : 'Security Incidents'),
-            suffix: (window.emergencyTranslations && (' ' + window.emergencyTranslations['incidents'])) || (window.t ? ' ' + window.t('incidents') : ' incidents')
+            label: (window.emergencyTranslations && window.emergencyTranslations['metric_threat_level']) || (window.t ? window.t('metric_threat_level') : '安全事件'),
+            suffix: (window.emergencyTranslations && (' ' + window.emergencyTranslations['incidents'])) || (window.t ? ' ' + window.t('incidents') : ' 事件')
         });
         
         container.innerHTML = svg;
@@ -464,7 +464,7 @@ class RealTimeChartHandler {
             } else if (currentIncidents >= 1) {
                 color = '#f59e0b'; // Orange for medium (1 incident)
             } else {
-                color = '#22d3ee'; // Cyan for low/none (0 incidents)
+                color = '#22d3ee'; // Cyan for low/none (0 events)
             }
             securityValue.style.color = color;
             console.log(`🔒 [${timestamp}] Fallback Security Color: ${color} for ${currentIncidents} incidents`);
@@ -624,7 +624,7 @@ class RealTimeChartHandler {
             } else if (currentValue >= 1) {
                 titleColor = '#f59e0b'; // Orange for 1 incident  
             } else {
-                titleColor = '#22d3ee'; // Cyan for 0 incidents
+                titleColor = '#22d3ee'; // Cyan for 0 events
             }
         }
 
@@ -739,11 +739,13 @@ class RealTimeChartHandler {
             case 'Active Users':
                 return `Peak Hour: ${new Date().getHours()}:${String(new Date().getMinutes()).padStart(2, '0')} | Growth: ${changePercent.toFixed(1)}% vs last period | Avg: ${avgValue.toFixed(0)} users`;
                 
+            case 'response_time':
             case 'Response Time':
                 const uptime = Math.random() * 10 + 95; // 95-99%
                 const serverLoad = Math.random() * 30 + 50; // 50-80%
                 return `Avg Response: ${avgValue.toFixed(0)}ms | Uptime: ${uptime.toFixed(2)}% | Server Load: ${serverLoad.toFixed(0)}%`;
                 
+            case 'retention_rate':
             case 'Retention Rate':
                 const cohortStrength = changePercent > 0 ? 'Strong' : changePercent > -5 ? 'Moderate' : 'Weak';
                 return `7-Day Retention: ${currentValue.toFixed(1)}% | 30-Day: ${(currentValue * 0.85).toFixed(1)}% | Cohort Analysis: ${cohortStrength}`;
@@ -908,7 +910,7 @@ class RealTimeChartHandler {
      */
     updateMetricValues() {
         // Generate consistent data for synchronization
-        const activeUsers = Math.floor(Math.random() * 10) + 1; // 1-10 users realistically
+        const activeUsers = Math.floor(Math.random() * 10) + 1; // 1-10 active users realistically
         const avgSessionMinutes = Math.floor(Math.random() * 8) + 2; // 2-10 minutes
         const avgSessionSeconds = Math.floor(Math.random() * 60);
         const bounceRate = Math.floor(Math.random() * 40) + 15; // 15-55%
@@ -1011,7 +1013,7 @@ class RealTimeChartHandler {
         let newValue;
         switch (chartType) {
             case 'traffic':
-                newValue = Math.max(1, Math.min(10, lastValue + (Math.random() - 0.5) * 2)); // Keep 1-10 users range
+                newValue = Math.max(1, Math.min(10, lastValue + (Math.random() - 0.5) * 2)); // Keep 1-10 active users range
                 break;
             case 'performance':
                 newValue = Math.max(80, Math.min(200, lastValue + (Math.random() - 0.5) * 20));
@@ -1034,10 +1036,10 @@ class RealTimeChartHandler {
      */
     getChartOptions(chartType) {
         const options = {
-            traffic: { color: '#0ea5e9', gradient: ['#0ea5e9', '#38bdf8'], label: 'Active Users', suffix: ' users' },
-            performance: { color: '#10b981', gradient: ['#10b981', '#34d399'], label: 'Response Time', suffix: 'ms' },
-            retention: { color: '#8b5cf6', gradient: ['#8b5cf6', '#a78bfa'], label: 'Retention Rate', suffix: '%' },
-            security: { color: '#f59e0b', gradient: ['#f59e0b', '#fbbf24'], label: 'Threat Level', suffix: ' incidents' }
+            traffic: { color: '#0ea5e9', gradient: ['#0ea5e9', '#38bdf8'], label: '活跃用户', suffix: ' 用户' },
+            performance: { color: '#10b981', gradient: ['#10b981', '#34d399'], label: '响应时间', suffix: 'ms' },
+            retention: { color: '#8b5cf6', gradient: ['#8b5cf6', '#a78bfa'], label: '留存率', suffix: '%' },
+            security: { color: '#f59e0b', gradient: ['#f59e0b', '#fbbf24'], label: '威胁级别', suffix: ' 事件' }
         };
         return options[chartType];
     }
@@ -1217,3 +1219,4 @@ document.addEventListener('DOMContentLoaded', function() {
 window.RealTimeChartHandler = RealTimeChartHandler;
 window.exportAnalytics = exportAnalytics;
 // ST:TINI_1754879322_e868a412
+// ST:TINI_1754998490_e868a412

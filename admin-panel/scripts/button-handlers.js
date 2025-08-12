@@ -44,6 +44,9 @@ class AdminPanelButtons {
         // Setup report buttons
         this.setupReportButtons();
         
+        // Setup settings buttons
+        this.setupSettingsButtons();
+        
         console.log('✅ [BUTTONS] All button handlers setup complete');
     }
 
@@ -199,16 +202,31 @@ class AdminPanelButtons {
     setupReportButtons() {
         console.log('📋 [BUTTONS] Setting up report buttons...');
         
-        // Generate Report buttons
-        const generateReportBtns = document.querySelectorAll('button');
-        generateReportBtns.forEach(btn => {
-            const text = btn.textContent.toLowerCase();
-            if (text.includes('generate report') || text.includes('tạo báo cáo') || btn.hasAttribute('data-i18n') && btn.getAttribute('data-i18n').includes('generate_report')) {
-                btn.addEventListener('click', () => {
-                    this.handleGenerateReport();
-                });
-            }
-        });
+        // Report form submit handler
+        const reportForm = document.getElementById('reportGenerateForm');
+        if (reportForm) {
+            reportForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.handleGenerateReport();
+            });
+        }
+        
+        // Generate Report button
+        const generateBtn = document.getElementById('generateReportBtn');
+        if (generateBtn) {
+            generateBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.handleGenerateReport();
+            });
+        }
+        
+        // Cancel Report button
+        const cancelBtn = document.getElementById('cancelReportForm');
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', () => {
+                this.handleCancelReport();
+            });
+        }
 
         // Download buttons in reports
         const downloadBtns = document.querySelectorAll('button .fa-download');
@@ -425,11 +443,77 @@ class AdminPanelButtons {
 
     handleGenerateReport() {
         console.log('📋 [BUTTONS] Generate report');
-        this.showNotification('📋 Đang tạo báo cáo...', 'info');
         
+        // Get form data
+        const form = document.getElementById('reportGenerateForm');
+        if (!form) return;
+        
+        const formData = new FormData(form);
+        const reportType = formData.get('type');
+        const reportRange = formData.get('range');
+        const reportFormat = formData.get('format');
+        
+        if (!reportType) {
+            this.showNotification('⚠️ 请选择报告类型', 'warning');
+            return;
+        }
+        
+        // Show loading state
+        const generateBtn = document.getElementById('generateReportBtn');
+        if (generateBtn) {
+            const loadingDiv = generateBtn.querySelector('.btn-loading');
+            const textSpan = generateBtn.querySelector('span');
+            if (loadingDiv && textSpan) {
+                loadingDiv.hidden = false;
+                textSpan.textContent = '正在生成...';
+                generateBtn.disabled = true;
+            }
+        }
+        
+        this.showNotification('📋 正在生成报告...', 'info');
+        
+        // Simulate report generation
         setTimeout(() => {
-            this.showNotification('📋 Báo cáo đã được tạo thành công', 'success');
-        }, 2000);
+            // Reset button state
+            if (generateBtn) {
+                const loadingDiv = generateBtn.querySelector('.btn-loading');
+                const textSpan = generateBtn.querySelector('span');
+                if (loadingDiv && textSpan) {
+                    loadingDiv.hidden = true;
+                    textSpan.textContent = '生成报告';
+                    generateBtn.disabled = false;
+                }
+            }
+            
+            this.showNotification('✅ 报告生成成功！', 'success');
+            
+            // Reset form
+            form.reset();
+        }, 3000);
+    }
+
+    handleCancelReport() {
+        console.log('❌ [BUTTONS] Cancel report');
+        
+        // Reset form
+        const form = document.getElementById('reportGenerateForm');
+        if (form) {
+            form.reset();
+        }
+        
+        // Reset any loading states
+        const generateBtn = document.getElementById('generateReportBtn');
+        if (generateBtn) {
+            const loadingDiv = generateBtn.querySelector('.btn-loading');
+            const textSpan = generateBtn.querySelector('span');
+            if (loadingDiv && textSpan) {
+                loadingDiv.hidden = true;
+                textSpan.textContent = '生成报告';
+                generateBtn.disabled = false;
+            }
+        }
+        
+        this.showNotification('🔄 已重置报告设置', 'info');
     }
 
     handleDownloadReport(button) {
@@ -522,6 +606,189 @@ class AdminPanelButtons {
             }, 300);
         }, 3000);
     }
+
+    setupSettingsButtons() {
+        console.log('⚙️ [BUTTONS] Setting up settings buttons...');
+        
+        // Save Settings button
+        const saveSettingsBtns = document.querySelectorAll('[data-action="save-settings"]');
+        saveSettingsBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.handleSaveSettings();
+            });
+        });
+
+        // Reset Settings button
+        const resetSettingsBtns = document.querySelectorAll('[data-action="reset-settings"]');
+        resetSettingsBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.handleResetSettings();
+            });
+        });
+
+        // Export Settings button
+        const exportSettingsBtns = document.querySelectorAll('[data-action="export-settings"]');
+        exportSettingsBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.handleExportSettings();
+            });
+        });
+
+        // Setup toggle switches
+        this.setupToggleSwitches();
+        
+        // Setup select dropdowns
+        this.setupSettingsSelects();
+        
+        // Setup input fields
+        this.setupSettingsInputs();
+    }
+
+    setupToggleSwitches() {
+        const toggleSwitches = document.querySelectorAll('#settings .toggle-switch input[type="checkbox"]');
+        toggleSwitches.forEach(toggle => {
+            toggle.addEventListener('change', (e) => {
+                const settingName = e.target.id;
+                const isEnabled = e.target.checked;
+                
+                console.log(`🔄 [SETTINGS] Toggle ${settingName}: ${isEnabled}`);
+                this.showNotification(
+                    `${settingName} ${isEnabled ? 'enabled' : 'disabled'}`,
+                    'info'
+                );
+                
+                // Save to localStorage
+                localStorage.setItem(`setting_${settingName}`, isEnabled);
+            });
+        });
+    }
+
+    setupSettingsSelects() {
+        const settingsSelects = document.querySelectorAll('#settings .modern-select');
+        settingsSelects.forEach(select => {
+            select.addEventListener('change', (e) => {
+                const settingName = e.target.id;
+                const value = e.target.value;
+                
+                console.log(`📝 [SETTINGS] Select ${settingName}: ${value}`);
+                
+                // Save to localStorage
+                localStorage.setItem(`setting_${settingName}`, value);
+                
+                this.showNotification(`Setting updated: ${settingName}`, 'info');
+            });
+        });
+    }
+
+    setupSettingsInputs() {
+        const settingsInputs = document.querySelectorAll('#settings .modern-input');
+        settingsInputs.forEach(input => {
+            input.addEventListener('change', (e) => {
+                const settingName = e.target.id;
+                const value = e.target.value;
+                
+                console.log(`⌨️ [SETTINGS] Input ${settingName}: ${value}`);
+                
+                // Save to localStorage
+                localStorage.setItem(`setting_${settingName}`, value);
+                
+                this.showNotification(`Setting updated: ${settingName}`, 'info');
+            });
+        });
+    }
+
+    handleSaveSettings() {
+        console.log('💾 [SETTINGS] Saving all settings...');
+        
+        // Collect all settings
+        const settings = {};
+        
+        // Get toggle switches
+        document.querySelectorAll('#settings .toggle-switch input').forEach(toggle => {
+            settings[toggle.id] = toggle.checked;
+        });
+        
+        // Get selects
+        document.querySelectorAll('#settings .modern-select').forEach(select => {
+            settings[select.id] = select.value;
+        });
+        
+        // Get inputs
+        document.querySelectorAll('#settings .modern-input').forEach(input => {
+            settings[input.id] = input.value;
+        });
+        
+        // Save to localStorage
+        localStorage.setItem('adminPanelSettings', JSON.stringify(settings));
+        
+        this.showNotification('✅ Settings saved successfully!', 'success');
+        console.log('💾 [SETTINGS] Settings saved:', settings);
+    }
+
+    handleResetSettings() {
+        console.log('🔄 [SETTINGS] Resetting settings to default...');
+        
+        if (confirm('Are you sure you want to reset all settings to default values?')) {
+            // Reset to default values
+            const defaults = {
+                systemLanguage: 'zh',
+                themeMode: 'dark',
+                autoRefresh: true,
+                sessionTimeout: 30,
+                twoFactorAuth: false,
+                loginAlerts: true,
+                emailNotifications: true,
+                pushNotifications: true,
+                soundAlerts: false,
+                refreshInterval: 10,
+                dataCache: true,
+                animationEffects: true,
+                debugMode: false,
+                logLevel: 'warn',
+                maxConnections: 100,
+                requestTimeout: 30
+            };
+            
+            // Apply defaults to UI
+            Object.keys(defaults).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    if (element.type === 'checkbox') {
+                        element.checked = defaults[key];
+                    } else {
+                        element.value = defaults[key];
+                    }
+                }
+            });
+            
+            // Clear localStorage
+            localStorage.removeItem('adminPanelSettings');
+            
+            this.showNotification('🔄 Settings reset to defaults', 'info');
+        }
+    }
+
+    handleExportSettings() {
+        console.log('📤 [SETTINGS] Exporting settings...');
+        
+        const settings = JSON.parse(localStorage.getItem('adminPanelSettings') || '{}');
+        const dataStr = JSON.stringify(settings, null, 2);
+        const dataBlob = new Blob([dataStr], {type: 'application/json'});
+        
+        const url = URL.createObjectURL(dataBlob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'tini-admin-settings.json';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        
+        this.showNotification('📤 Settings exported successfully!', 'success');
+    }
 }
 
 // Auto-initialize
@@ -535,3 +802,4 @@ if (document.readyState === 'loading') {
 
 // Export for global access
 window.AdminPanelButtons = AdminPanelButtons;
+// ST:TINI_1754998490_e868a412

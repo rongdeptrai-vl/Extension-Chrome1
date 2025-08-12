@@ -1,4 +1,4 @@
-<!-- © 2024 TINI COMPANY - CONFIDENTIAL -->
+﻿<!-- © 2024 TINI COMPANY - CONFIDENTIAL -->
 <!-- Employee: rongdeptrai-vl <rongdz2307@gmail.com> -->
 <!-- Commit: 55548f4 | Time: 2025-08-08T06:33:01Z -->
 <!-- Watermark: TINI_1754634781_e868a412 | TINI_WATERMARK -->
@@ -16,55 +16,100 @@
     <link rel="stylesheet" href="styles/analytics-fullscreen.css">
     <link rel="stylesheet" href="styles/professional-charts.css">
     <link rel="stylesheet" href="styles/reports-unified.css">
+    <style>
+        /* Accessibility improvements */
+        .skip-link {
+            position: absolute;
+            top: -40px;
+            left: 6px;
+            background: #000;
+            color: #fff;
+            padding: 8px;
+            text-decoration: none;
+            border-radius: 4px;
+            z-index: 100;
+        }
+        .skip-link:focus {
+            top: 6px;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0,0,0,0);
+            white-space: nowrap;
+            border: 0;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: none;
+        }
+        .error-message.show {
+            display: block;
+        }
+        fieldset {
+            border: none;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
 </head>
 <body>
+    <!-- Skip to main content link -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
     <div class="container">
         <!-- Sidebar -->
-        <div class="sidebar">
+        <nav class="sidebar" role="navigation" aria-label="Main navigation">
             <div class="logo">
                 <div class="logo-text">TINI</div>
             </div>
-            <ul class="nav-menu">
+            <ul class="nav-menu" role="menubar">
                 <li class="nav-item">
                     <a href="#" class="nav-link active" data-section="dashboard" data-nav="dashboard">
                         <i class="fas fa-tachometer-alt nav-icon"></i>
-                        <span data-i18n="nav_dashboard"></span>
+                        <span data-i18n="nav_dashboard">仪表板</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link" data-section="users" data-nav="users">
                         <i class="fas fa-users nav-icon"></i>
-                        <span data-i18n="nav_users"></span>
+                        <span data-i18n="nav_users">用户管理</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link" data-section="profile" data-nav="profile">
                         <i class="fas fa-user-circle nav-icon"></i>
-                        <span data-i18n="nav_profile"></span>
+                        <span data-i18n="nav_profile">个人资料</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link" data-section="security" data-nav="security">
                         <i class="fas fa-shield-alt nav-icon"></i>
-                        <span data-i18n="nav_security"></span>
+                        <span data-i18n="nav_security">安全设置</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link" data-section="settings" data-nav="settings">
                         <i class="fas fa-cog nav-icon"></i>
-                        <span data-i18n="nav_settings"></span>
+                        <span data-i18n="nav_settings">系统设置</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link" data-section="analytics" data-nav="analytics">
                         <i class="fas fa-chart-line nav-icon"></i>
-                        <span data-i18n="nav_analytics"></span>
+                        <span data-i18n="nav_analytics">数据分析</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link" data-section="reports" data-nav="reports">
                         <i class="fas fa-file-alt nav-icon"></i>
-                        <span data-i18n="nav_reports"></span>
+                        <span data-i18n="nav_reports">报告中心</span>
                     </a>
                 </li>
                 
@@ -75,7 +120,7 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link logout-btn" id="logoutBtn" data-nav="logout">
                         <i class="fas fa-sign-out-alt nav-icon"></i>
-                        <span data-i18n="logout"></span>
+                        <span data-i18n="logout">退出登录</span>
                     </a>
                 </li>
                 
@@ -83,23 +128,23 @@
                 <li class="nav-item">
                     <a href="#" class="nav-link testing-zone" data-section="testing" data-nav="testing">
                         <span class="nav-icon">🧪</span>
-                        <span data-i18n="testing_zone"></span>
+                        <span data-i18n="testing_zone">测试专区</span>
                     </a>
                 </li>
             </ul>
-        </div>
+        </nav>
 
         <!-- Main Content -->
-        <div class="main-content">
+        <main class="main-content" role="main" id="main-content">
             <!-- Dashboard Section -->
             <div id="dashboard" class="content-section active">
                 <div class="header">
-                    <h1 class="header-title" data-i18n="nav_dashboard"></h1>
+                    <h1 class="header-title" data-i18n="nav_dashboard">仪表板</h1>
                     <div class="user-profile">
                         <div class="user-avatar">AD</div>
                         <div>
                             <div data-i18n="super_admin">Quản Trị Cấp Cao</div>
-                            <div class="font-size-12 color-text-secondary" data-i18n="super_admin"></div>
+                            <div class="font-size-12 color-text-secondary" data-i18n="super_admin">超级管理员</div>
                         </div>
                     </div>
                 </div>
@@ -107,24 +152,24 @@
                 <!-- Dashboard Stats -->
                 <div class="dashboard-grid">
                     <div class="dashboard-card animated-card">
-                        <div class="card-title" data-i18n="active_users"></div>
+                        <div class="card-title" data-i18n="active_users">活跃用户</div>
                         <div class="card-value">1,428</div>
                         <div class="card-change positive">
-                            <i class="fas fa-arrow-up"></i> <span data-i18n="new_this_week"></span>
+                            <i class="fas fa-arrow-up"></i> <span data-i18n="new_this_week">本周新增</span>
                         </div>
                     </div>
                     <div class="dashboard-card animated-card delay-1">
-                        <div class="card-title" data-i18n="blocked_items"></div>
+                        <div class="card-title" data-i18n="blocked_items">拦截项目</div>
                         <div class="card-value">24,901</div>
                         <div class="card-change positive">
-                            <i class="fas fa-arrow-up"></i> <span data-i18n="new_this_week"></span>
+                            <i class="fas fa-arrow-up"></i> <span data-i18n="new_this_week">本周新增</span>
                         </div>
                     </div>
                     <div class="dashboard-card animated-card delay-2">
-                        <div class="card-title" data-i18n="system_health"></div>
+                        <div class="card-title" data-i18n="system_health">系统健康</div>
                         <div class="card-value">99.9%</div>
                         <div class="card-change negative">
-                            <i class="fas fa-arrow-down"></i> <span data-i18n="from_yesterday"></span>
+                            <i class="fas fa-arrow-down"></i> <span data-i18n="from_yesterday">较昨日</span>
                         </div>
                     </div>
                 </div>
@@ -132,50 +177,50 @@
                 <!-- Recent Activity -->
                 <div class="activity-section">
                     <div class="section-header">
-                        <h2 class="section-title" data-i18n="recent_activity_title"></h2>
-                        <button class="btn-link" data-translate="view_all">
-                            <span data-translate="view_all">查看全部</span>
+                        <h2 class="section-title" data-i18n="recent_activity_title">最近活动</h2>
+                        <button type="button" name="viewAllBtn" class="btn-link" data-i18n="view_all">
+                            <span data-i18n="view_all">查看全部</span>
                         </button>
                     </div>
                     <div class="table-container">
                         <table>
                             <thead>
                                 <tr>
-                                    <th data-i18n="table_user"></th>
-                                    <th data-i18n="table_action"></th>
-                                    <th data-i18n="table_version"></th>
-                                    <th data-i18n="table_time"></th>
-                                    <th data-i18n="table_status"></th>
+                                    <th data-i18n="table_user">用户</th>
+                                    <th data-i18n="table_action">操作</th>
+                                    <th data-i18n="table_version">版本</th>
+                                    <th data-i18n="table_time">时间</th>
+                                    <th data-i18n="table_status">状态</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>EMP001</td>
-                                    <td data-i18n="switched_to_power">Switched to POWER</td>
+                                    <td data-i18n="switched_to_power">切换到POWER模式</td>
                                     <td>v4.0.0</td>
-                                    <td data-i18n="minutes_ago_2">2 minutes ago</td>
-                                    <td><span class="status-badge status-active" data-i18n="active">Active</span></td>
+                                    <td data-i18n="minutes_ago_2">2分钟前</td>
+                                    <td><span class="status-badge status-active" data-i18n="active">活跃</span></td>
                                 </tr>
                                 <tr>
                                     <td>EMP003</td>
-                                    <td data-i18n="login_attempt">Login attempt</td>
+                                    <td data-i18n="login_attempt">登录尝试</td>
                                     <td>-</td>
-                                    <td data-i18n="minutes_ago_15">15 minutes ago</td>
-                                    <td><span class="status-badge status-inactive" data-i18n="failed">Failed</span></td>
+                                    <td data-i18n="minutes_ago_15">15分钟前</td>
+                                    <td><span class="status-badge status-inactive" data-i18n="failed">失败</span></td>
                                 </tr>
                                 <tr>
                                     <td>EMP002</td>
-                                    <td data-i18n="updated_settings">Updated settings</td>
+                                    <td data-i18n="updated_settings">更新设置</td>
                                     <td>v3.0.0</td>
-                                    <td data-i18n="hour_ago">1 hour ago</td>
-                                    <td><span class="status-badge status-active" data-i18n="completed">Completed</span></td>
+                                    <td data-i18n="hour_ago">1小时前</td>
+                                    <td><span class="status-badge status-active" data-i18n="completed">已完成</span></td>
                                 </tr>
                                 <tr>
                                     <td>EMP005</td>
-                                    <td data-i18n="device_registration">Device registration</td>
+                                    <td data-i18n="device_registration">设备注册</td>
                                     <td>-</td>
-                                    <td data-i18n="hours_ago_3">3 hours ago</td>
-                                    <td><span class="status-badge status-pending" data-i18n="pending">Pending</span></td>
+                                    <td data-i18n="hours_ago_3">3小时前</td>
+                                    <td><span class="status-badge status-pending" data-i18n="pending">待处理</span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -186,7 +231,7 @@
                 <div class="activity-section">
                     <div class="section-header">
                         <h2 class="section-title" data-i18n="user_management_title">用户管理</h2>
-                        <button data-i18n="add_user_btn">
+                        <button type="button" name="addUserBtn" data-i18n="add_user_btn">
                             <i class="fas fa-plus"></i> <span data-i18n="add_user_btn">添加用户</span>
                         </button>
                     </div>
@@ -210,10 +255,10 @@
                                     <td data-i18n="just_now">刚刚</td>
                                     <td>2</td>
                                     <td>
-                                        <button class="edit-user-btn">
+                                        <button type="button" name="editUser1" class="edit-user-btn" aria-label="Edit user">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="delete-user-btn">
+                                        <button type="button" name="deleteUser1" class="delete-user-btn" aria-label="Delete user">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
@@ -225,10 +270,10 @@
                                     <td data-i18n="hour_ago">1小时前</td>
                                     <td>1</td>
                                     <td>
-                                        <button class="edit-user-btn">
+                                        <button type="button" name="editUser2" class="edit-user-btn" aria-label="Edit user">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="delete-user-btn">
+                                        <button type="button" name="deleteUser2" class="delete-user-btn" aria-label="Delete user">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
@@ -286,7 +331,7 @@
                             </h3>
                             
                             <div class="system-status">
-                                <span>Bypass Integration Manager:</span>
+                                <span data-i18n="bypass_integration_manager_label">Bypass Integration Manager:</span>
                                 <div>
                                     <span data-i18n="active">ACTIVE</span>
                                     <div class="status-indicator"></div>
@@ -294,7 +339,7 @@
                             </div>
                             
                             <div class="system-status">
-                                <span>Core Systems (73 files):</span>
+                                <span data-i18n="core_systems_files_label">Core Systems (73 files):</span>
                                 <div>
                                     <span data-i18n="all_ready">ALL READY</span>
                                     <div class="status-indicator"></div>
@@ -302,25 +347,25 @@
                             </div>
                             
                             <div class="system-status">
-                                <span>BOSS Protection:</span>
+                                <span data-i18n="boss_protection_label">BOSS Protection:</span>
                                 <div>
-                                    <span>LEVEL 10000</span>
+                                    <span data-i18n="level_10000">LEVEL 10000</span>
                                     <div class="status-indicator"></div>
                                 </div>
                             </div>
                             
                             <div class="system-status">
-                                <span>Admin Immunity:</span>
+                                <span data-i18n="admin_immunity_label">Admin Immunity:</span>
                                 <div>
-                                    <span>ENABLED</span>
+                                    <span data-i18n="enabled">ENABLED</span>
                                     <div class="status-indicator"></div>
                                 </div>
                             </div>
                             
                             <div class="system-status">
-                                <span>Emergency Systems:</span>
+                                <span data-i18n="emergency_systems_label">Emergency Systems:</span>
                                 <div>
-                                    <span>STANDBY</span>
+                                    <span data-i18n="standby">STANDBY</span>
                                     <div class="status-indicator"></div>
                                 </div>
                             </div>
@@ -346,8 +391,8 @@
                 <div class="activity-section">
                     <div class="section-header">
                         <h2 class="section-title" data-i18n="user_management">User Management</h2>
-                        <button id="addUserBtn">
-                            <i class="fas fa-plus"></i> <span data-translate="add_user">Add User</span>
+                        <button type="button" id="addUserBtn" name="addUserBtn">
+                            <i class="fas fa-plus"></i> <span data-i18n="add_user">添加用户</span>
                         </button>
                     </div>
                     <div class="table-container">
@@ -370,10 +415,10 @@
                                     <td data-i18n="just_now">刚刚</td>
                                     <td>2</td>
                                     <td>
-                                        <button class="edit-user-btn">
+                                        <button type="button" name="editUser3" class="edit-user-btn" aria-label="Edit user">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="delete-user-btn">
+                                        <button type="button" name="deleteUser3" class="delete-user-btn" aria-label="Delete user">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
@@ -385,10 +430,10 @@
                                     <td data-i18n="hour_ago">1小时前</td>
                                     <td>1</td>
                                     <td>
-                                        <button class="edit-user-btn">
+                                        <button type="button" name="editUser4" class="edit-user-btn" aria-label="Edit user">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="delete-user-btn">
+                                        <button type="button" name="deleteUser4" class="delete-user-btn" aria-label="Delete user">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
@@ -400,10 +445,10 @@
                                     <td data-i18n="hours_ago_2">2 hours ago</td>
                                     <td>1</td>
                                     <td>
-                                        <button class="edit-user-btn">
+                                        <button type="button" name="editUser5" class="edit-user-btn" aria-label="Edit user">
                                             <i class="fas fa-edit"></i>
                                         </button>
-                                        <button class="delete-user-btn">
+                                        <button type="button" name="deleteUser5" class="delete-user-btn" aria-label="Delete user">
                                             <i class="fas fa-trash"></i>
                                         </button>
                                     </td>
@@ -418,40 +463,42 @@
                             <h3 id="formTitle" data-i18n="add_new_user">Add New User</h3>
                         </div>
                         <form id="userForm">
-                            <div>
+                            <fieldset>
+                                <legend class="sr-only">User Information</legend>
                                 <div>
                                     <label for="userName" data-i18n="full_name">Full Name</label>
-                                    <input type="text" id="userName" name="userName" required 
-                                          >
+                                    <input type="text" id="userName" name="userName" required autocomplete="name" aria-describedby="userName-error">
+                                    <div id="userName-error" class="error-message" role="alert" aria-live="polite"></div>
                                 </div>
                                 <div>
                                     <label for="userEmail" data-i18n="email">Email</label>
-                                    <input type="email" id="userEmail" name="userEmail" required 
-                                          >
+                                    <input type="email" id="userEmail" name="userEmail" required autocomplete="email" aria-describedby="userEmail-error">
+                                    <div id="userEmail-error" class="error-message" role="alert" aria-live="polite"></div>
                                 </div>
-                            </div>
-                            <div>
+                            </fieldset>
+                            <fieldset>
+                                <legend class="sr-only">User Permissions and Status</legend>
                                 <div>
                                     <label for="userRole" data-i18n="role">Role</label>
-                                    <select id="userRole" name="userRole" required 
-                                           >
+                                    <select id="userRole" name="userRole" required aria-describedby="userRole-error">
                                         <option value="admin" data-i18n="admin">Admin</option>
                                         <option value="user" selected data-i18n="user">User</option>
                                         <option value="employee" data-i18n="employee">Employee</option>
                                         <option value="manager" data-i18n="manager">Manager</option>
                                     </select>
+                                    <div id="userRole-error" class="error-message" role="alert" aria-live="polite"></div>
                                 </div>
                                 <div>
                                     <label for="userStatus" data-i18n="status">Status</label>
-                                    <select id="userStatus" name="userStatus" required 
-                                           >
+                                    <select id="userStatus" name="userStatus" required aria-describedby="userStatus-error">
                                         <option value="active" selected data-i18n="active">Active</option>
                                         <option value="pending" data-i18n="pending">Pending</option>
                                         <option value="inactive" data-i18n="inactive">Inactive</option>
                                         <option value="suspended" data-i18n="suspended">Suspended</option>
                                     </select>
+                                    <div id="userStatus-error" class="error-message" role="alert" aria-live="polite"></div>
                                 </div>
-                            </div>
+                            </fieldset>
                             <div>
                                 <button type="button" id="cancelUserForm" 
                                        >
@@ -459,7 +506,7 @@
                                 </button>
                                 <button type="submit" id="saveUserBtn" 
                                        >
-                                    <span data-translate="add_user">Add User</span>
+                                    <span data-i18n="add_user">添加用户</span>
                                 </button>
                             </div>
                         </form>
@@ -519,11 +566,11 @@
                             <div id="previewAvatar">
                                 <i class="fas fa-user"></i>
                             </div>
-                            <input type="file" id="avatarUpload" accept="image/*">
-                            <button id="uploadAvatarBtn" data-translate="uploadAvatar">
-                                <i class="fas fa-upload"></i> <span data-translate="uploadAvatar">Upload Image</span>
+                            <input type="file" id="avatarUpload" name="avatarUpload" accept="image/*">
+                            <button type="button" id="uploadAvatarBtn" name="uploadAvatarBtn" data-i18n="uploadAvatar">
+                                <i class="fas fa-upload"></i> <span data-i18n="uploadAvatar">上传头像</span>
                             </button>
-                            <button id="saveAvatarBtn" data-i18n="save_changes">
+                            <button type="button" id="saveAvatarBtn" name="saveAvatarBtn" data-i18n="save_changes">
                                 <i class="fas fa-save"></i> <span data-i18n="save_changes">Save Changes</span>
                             </button>
                         </div>
@@ -537,7 +584,7 @@
                             </div>
                             <div>
                                 <label for="email" data-i18n="email">Email Address</label>
-                                <input id="email" type="email" value="admin@tini.com">
+                                <input id="email" name="email" type="email" value="admin@tini.com" autocomplete="email">
                             </div>
                             <div>
                                 <label for="employeeId" data-i18n="employee_id">Employee ID</label>
@@ -559,16 +606,16 @@
                         <div>
                             <h3 data-i18n="basic_info">Basic Information</h3>
                             <div>
-                                <label data-i18n="full_name">Full Name</label>
-                                <input id="fullNamePref" type="text" data-i18n-value="admin_user">
+                                <label for="fullNamePref" data-i18n="full_name">Full Name</label>
+                                <input id="fullNamePref" name="fullNamePref" type="text" data-i18n-value="admin_user" autocomplete="name">
                             </div>
                             <div>
-                                <label data-i18n="email">Email Address</label>
-                                <input id="emailPref" type="email" value="admin@tini.com">
+                                <label for="emailPref" data-i18n="email">Email Address</label>
+                                <input id="emailPref" name="emailPref" type="email" value="admin@tini.com" autocomplete="email">
                             </div>
                             <div>
-                                <label data-i18n="employee_id">Employee ID</label>
-                                <input id="employeeIdPref" type="text" value="EMP001" readonly>
+                                <label for="employeeIdPref" data-i18n="employee_id">Employee ID</label>
+                                <input id="employeeIdPref" name="employeeIdPref" type="text" value="EMP001" readonly>
                             </div>
                         </div>
                         <div>
@@ -576,11 +623,11 @@
                             <div>
                                 <label for="language" data-i18n="language">🌍 Language / Ngôn ngữ / 语言</label>
                                 <select id="language">
-                                    <option value="en" selected>🇺🇸 English (United States)</option>
-                                    <option value="vi">🇻🇳 Tiếng Việt (Vietnamese)</option>
-                                    <option value="zh">🇨🇳 中文 (Chinese Simplified)</option>
-                                    <option value="hi">🇮🇳 हिन्दी (Hindi - India)</option>
-                                    <option value="ko">🇰🇷 한국어 (Korean)</option>
+                                    <option value="en" selected data-i18n="lang_english">🇺🇸 English (United States)</option>
+                                    <option value="vi" data-i18n="lang_vietnamese">🇻🇳 Tiếng Việt (Vietnamese)</option>
+                                    <option value="zh" data-i18n="lang_chinese">🇨🇳 中文 (Chinese Simplified)</option>
+                                    <option value="hi" data-i18n="lang_hindi">🇮🇳 हिन्दी (Hindi - India)</option>
+                                    <option value="ko" data-i18n="lang_korean">🇰🇷 한국어 (Korean)</option>
                                 </select>
                             </div>
                             <div>
@@ -636,16 +683,16 @@
                                 <!-- Hidden username for accessibility compliance -->
                                 <input type="text" name="username" autocomplete="username" style="display:none;" value="admin">
                                 <div>
-                                    <label data-i18n="current_password">Current Password</label>
-                                    <input id="currentPassword" type="password" autocomplete="current-password" data-i18n-placeholder="enter_current_password">
+                                    <label for="currentPassword" data-i18n="current_password">Current Password</label>
+                                    <input id="currentPassword" name="currentPassword" type="password" autocomplete="current-password" data-i18n-placeholder="enter_current_password">
                                 </div>
                                 <div>
-                                    <label data-i18n="new_password">New Password</label>
-                                    <input id="newPassword" type="password" autocomplete="new-password" data-i18n-placeholder="enter_new_password">
+                                    <label for="newPassword" data-i18n="new_password">New Password</label>
+                                    <input id="newPassword" name="newPassword" type="password" autocomplete="new-password" data-i18n-placeholder="enter_new_password">
                                 </div>
                                 <div>
-                                    <label data-i18n="confirm_new_password">Confirm New Password</label>
-                                    <input id="confirmPassword" type="password" autocomplete="new-password" data-i18n-placeholder="confirm_new_password_placeholder">
+                                    <label for="confirmPassword" data-i18n="confirm_new_password">Confirm New Password</label>
+                                    <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" data-i18n-placeholder="confirm_new_password_placeholder">
                                 </div>
                             </form>
                         </div>
@@ -666,7 +713,7 @@
                             </div>
                             <div>
                                 <label>
-                                    <input type="checkbox" checked>
+                                    <input type="checkbox" id="emailVerification" name="emailVerification" checked>
                                     <span data-i18n="email_verification">📧 Email Verification</span>
                                 </label>
                             </div>
@@ -681,8 +728,8 @@
                 <div class="activity-section">
                     <div class="section-header">
                         <h2 class="section-title" data-i18n="recent_activity">Recent Activity</h2>
-                        <button data-translate="view_all_activity">
-                            View All Activity
+                        <button data-i18n="view_all_activity">
+                            <span data-i18n="view_all_activities">查看所有活动</span>
                         </button>
                     </div>
                     <div class="table-container">
@@ -726,13 +773,13 @@
 
             <div id="security" class="content-section">
                 <div class="header">
-                    <h1 class="header-title" data-i18n="security_settings"></h1>
+                    <h1 class="header-title" data-i18n="security_settings">安全设置</h1>
                     <div class="section-toolbar">
                         <div class="filter-group">
-                            <select data-i18n-placeholder="time_range" data-filter="security-range">
-                                <option value="24h" data-i18n="time_last_24h"></option>
+                            <select id="securityRange" name="securityRange" data-i18n-placeholder="time_range" data-filter="security-range">
+                                <option value="24h" data-i18n="time_last_24h">过去24小时</option>
                                 <option value="7d" data-i18n="time_last_7d" selected></option>
-                                <option value="30d" data-i18n="time_last_30d"></option>
+                                <option value="30d" data-i18n="time_last_30d">过去30天</option>
                             </select>
                             <button class="btn-ghost" data-i18n="btn_refresh" data-action="refresh-security"></button>
                         </div>
@@ -743,34 +790,34 @@
                 <div class="metric-grid">
                     <div class="stat-card" data-card="active-threats">
                         <div class="stat-head">
-                            <span class="stat-label" data-i18n="security_active_threats"></span>
-                            <span class="stat-trend positive" data-i18n="trend_down_12"></span>
+                            <span class="stat-label" data-i18n="security_active_threats">活跃威胁</span>
+                            <span class="stat-trend positive" data-i18n="trend_down_12">下降12%</span>
                         </div>
-                        <div class="stat-value" data-i18n="security_active_threats_value"></div>
+                        <div class="stat-value" data-i18n="security_active_threats_value">0</div>
                         <div class="sparkline" data-chart="activeThreats"></div>
                     </div>
                     <div class="stat-card" data-card="blocked-today">
                         <div class="stat-head">
-                            <span class="stat-label" data-i18n="security_blocked_today"></span>
-                            <span class="stat-trend neutral" data-i18n="trend_flat"></span>
+                            <span class="stat-label" data-i18n="security_blocked_today">今日拦截</span>
+                            <span class="stat-trend neutral" data-i18n="trend_flat">持平</span>
                         </div>
-                        <div class="stat-value" data-i18n="security_blocked_today_value"></div>
+                        <div class="stat-value" data-i18n="security_blocked_today_value">2,847</div>
                         <div class="sparkline" data-chart="blockedToday"></div>
                     </div>
                     <div class="stat-card" data-card="risk-score">
                         <div class="stat-head">
-                            <span class="stat-label" data-i18n="security_risk_score"></span>
-                            <span class="stat-trend positive" data-i18n="trend_up_secure"></span>
+                            <span class="stat-label" data-i18n="security_risk_score">风险评分</span>
+                            <span class="stat-trend positive" data-i18n="trend_up_secure">更安全</span>
                         </div>
-                        <div class="stat-value" data-i18n="security_risk_score_value"></div>
+                        <div class="stat-value" data-i18n="security_risk_score_value">95/100</div>
                         <div class="progress-bar" data-progress="riskScore"><div></div></div>
                     </div>
                     <div class="stat-card" data-card="patch-level">
                         <div class="stat-head">
-                            <span class="stat-label" data-i18n="security_patch_level"></span>
-                            <span class="stat-trend positive" data-i18n="trend_up"></span>
+                            <span class="stat-label" data-i18n="security_patch_level">补丁级别</span>
+                            <span class="stat-trend positive" data-i18n="trend_up">上升</span>
                         </div>
-                        <div class="stat-value" data-i18n="security_patch_level_value"></div>
+                        <div class="stat-value" data-i18n="security_patch_level_value">98.5%</div>
                         <div class="progress-bar" data-progress="patchLevel"><div></div></div>
                     </div>
                 </div>
@@ -779,7 +826,7 @@
                 <div class="grid-2">
                     <div class="panel">
                         <div class="panel-header">
-                            <h2 class="panel-title" data-i18n="security_threat_timeline"></h2>
+                            <h2 class="panel-title" data-i18n="security_threat_timeline">威胁时间线</h2>
                             <div class="panel-actions">
                                 <button class="btn-ghost small" data-i18n="btn_refresh" data-action="refresh-threats"></button>
                             </div>
@@ -788,58 +835,58 @@
                             <table class="table-tight">
                                 <thead>
                                     <tr>
-                                        <th>Time</th>
-                                        <th>Type</th>
-                                        <th>Severity</th>
-                                        <th>Status</th>
-                                        <th>Action</th>
+                                        <th data-i18n="time_label">时间</th>
+                                        <th data-i18n="type_label">类型</th>
+                                        <th data-i18n="severity_label">严重程度</th>
+                                        <th data-i18n="status_label">状态</th>
+                                        <th data-i18n="operation_label">操作</th>
                                     </tr>
                                 </thead>
                                 <tbody data-dynamic="threatTimeline">
                                     <tr>
-                                        <td colspan="5" style="text-align: center; color: #6b7280; padding: 20px;">
-                                            Loading threat timeline...
+                                        <td colspan="5" style="text-align: center; color: #6b7280; padding: 20px;" data-i18n="loading_threat_timeline">
+                                            正在加载威胁时间线...
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                             <div class="empty-state" data-empty="threatTimeline" hidden>
                                 <i class="fas fa-shield-alt"></i>
-                                <p data-i18n="security_no_threats"></p>
+                                <p data-i18n="security_no_threats">🎉 没有检测到威胁！系统安全运行中。</p>
                             </div>
                         </div>
                     </div>
                     <div class="panel">
                         <div class="panel-header">
-                            <h2 class="panel-title" data-i18n="security_controls_matrix"></h2>
+                            <h2 class="panel-title" data-i18n="security_controls_matrix">安全控制矩阵</h2>
                             <div class="panel-actions">
                                 <button class="btn-ghost small" data-i18n="btn_refresh" data-action="refresh-controls"></button>
                             </div>
                         </div>
                         <div class="controls-matrix">
                             <div class="control-item" data-control="mfa">
-                                <span data-i18n="security_control_mfa"></span>
-                                <span class="control-status enabled" data-i18n="security_enabled"></span>
+                                <span data-i18n="security_control_mfa">多因素认证</span>
+                                <span class="control-status enabled" data-i18n="security_enabled">已启用</span>
                             </div>
                             <div class="control-item" data-control="passwordPolicy">
-                                <span data-i18n="security_control_password_policy"></span>
-                                <span class="control-status enabled" data-i18n="security_enabled"></span>
+                                <span data-i18n="security_control_password_policy">密码策略</span>
+                                <span class="control-status enabled" data-i18n="security_enabled">已启用</span>
                             </div>
                             <div class="control-item" data-control="ipFiltering">
-                                <span data-i18n="security_control_ip_filtering"></span>
-                                <span class="control-status disabled" data-i18n="security_disabled"></span>
+                                <span data-i18n="security_control_ip_filtering">IP过滤</span>
+                                <span class="control-status disabled" data-i18n="security_disabled">已禁用</span>
                             </div>
                             <div class="control-item" data-control="waf">
-                                <span data-i18n="security_control_waf"></span>
-                                <span class="control-status enabled" data-i18n="security_enabled"></span>
+                                <span data-i18n="security_control_waf">网络应用防火墙</span>
+                                <span class="control-status enabled" data-i18n="security_enabled">已启用</span>
                             </div>
                             <div class="control-item" data-control="rateLimit">
-                                <span data-i18n="security_control_rate_limit"></span>
-                                <span class="control-status enabled" data-i18n="security_enabled"></span>
+                                <span data-i18n="security_control_rate_limit">速率限制</span>
+                                <span class="control-status enabled" data-i18n="security_enabled">已启用</span>
                             </div>
                             <div class="control-item" data-control="ids">
-                                <span data-i18n="security_control_intrusion_detection"></span>
-                                <span class="control-status disabled" data-i18n="security_disabled"></span>
+                                <span data-i18n="security_control_intrusion_detection">入侵检测</span>
+                                <span class="control-status disabled" data-i18n="security_disabled">已禁用</span>
                             </div>
                         </div>
                     </div>
@@ -848,7 +895,7 @@
 
             <div id="analytics" class="content-section">
                 <div class="header">
-                    <h1 class="header-title" data-i18n="analytics_insights"></h1>
+                    <h1 class="header-title" data-i18n="analytics_insights">分析洞察</h1>
                     <div class="section-toolbar">
                         <button class="btn-primary" id="exportAnalyticsBtn" onclick="exportAnalytics()">
                             <i class="fas fa-download"></i>
@@ -858,75 +905,75 @@
                 </div>
                 <div class="metric-grid">
                     <div class="stat-card mini" data-stat="avg-session">
-                        <span class="stat-label" data-i18n="analytics_avg_session">Average Session Duration</span>
-                        <span class="stat-value">Loading...</span>
-                        <span class="stat-trend positive"></span>
+                        <span class="stat-label" data-i18n="analytics_avg_session">平均会话时长</span>
+                        <span class="stat-value" data-i18n="loading_text">加载中...</span>
+                        <span class="stat-trend positive" data-i18n="loading_text">加载中...</span>
                     </div>
                     <div class="stat-card mini" data-stat="bounce">
-                        <span class="stat-label" data-i18n="analytics_bounce_rate">Bounce Rate</span>
-                        <span class="stat-value">Loading...</span>
-                        <span class="stat-trend positive"></span>
+                        <span class="stat-label" data-i18n="analytics_bounce_rate">跳出率</span>
+                        <span class="stat-value" data-i18n="loading_text">加载中...</span>
+                        <span class="stat-trend positive" data-i18n="loading_text">加载中...</span>
                     </div>
                     <div class="stat-card mini" data-stat="conversion">
-                        <span class="stat-label" data-i18n="analytics_conversion_rate">Conversion Rate</span>
-                        <span class="stat-value">Loading...</span>
-                        <span class="stat-trend positive"></span>
+                        <span class="stat-label" data-i18n="analytics_conversion_rate">转化率</span>
+                        <span class="stat-value" data-i18n="loading_text">加载中...</span>
+                        <span class="stat-trend positive" data-i18n="loading_text">加载中...</span>
                     </div>
                     <div class="stat-card mini" data-stat="retention">
-                        <span class="stat-label" data-i18n="analytics_user_retention">User Retention</span>
-                        <span class="stat-value">Loading...</span>
-                        <span class="stat-trend positive"></span>
+                        <span class="stat-label" data-i18n="analytics_user_retention">用户留存率</span>
+                        <span class="stat-value" data-i18n="loading_text">加载中...</span>
+                        <span class="stat-trend positive" data-i18n="loading_text">加载中...</span>
                     </div>
                 </div>
                 <div class="grid-2">
                     <div class="panel large" data-panel="traffic">
                         <div class="panel-header">
-                            <h2 class="panel-title" data-i18n="analytics_traffic_title">Traffic Analytics</h2>
+                            <h2 class="panel-title" data-i18n="analytics_traffic_title">流量分析</h2>
                             <div class="panel-metric">
-                                <span class="metric-label" data-i18n="metric_active_users">ACTIVE USERS</span>
-                                <span class="metric-value" id="traffic-value">Loading...</span>
+                                <span class="metric-label" data-i18n="metric_active_users">活跃用户</span>
+                                <span class="metric-value" id="traffic-value" data-i18n="loading_text">加载中...</span>
                             </div>
                         </div>
                         <div class="chart-placeholder" data-chart="traffic">
-                            <div class="chart-loading">Loading real-time traffic data...</div>
+                            <div class="chart-loading" data-i18n="loading_traffic_data">正在加载实时流量数据...</div>
                         </div>
                     </div>
                     <div class="panel large" data-panel="performance">
                         <div class="panel-header">
-                            <h2 class="panel-title" data-i18n="analytics_performance_title">Performance Metrics</h2>
+                            <h2 class="panel-title" data-i18n="analytics_performance_title">性能指标</h2>
                             <div class="panel-metric">
-                                <span class="metric-label" data-i18n="metric_response_time">RESPONSE TIME</span>
-                                <span class="metric-value" id="performance-value">Loading...</span>
+                                <span class="metric-label" data-i18n="metric_response_time">响应时间</span>
+                                <span class="metric-value" id="performance-value" data-i18n="loading_text">加载中...</span>
                             </div>
                         </div>
                         <div class="chart-placeholder" data-chart="performance">
-                            <div class="chart-loading">Loading performance metrics...</div>
+                            <div class="chart-loading" data-i18n="loading_performance_data">正在加载性能指标...</div>
                         </div>
                     </div>
                 </div>
                 <div class="grid-2">
                     <div class="panel" data-panel="retention">
                         <div class="panel-header">
-                            <h2 class="panel-title" data-i18n="analytics_retention_title">User Retention Analysis</h2>
+                            <h2 class="panel-title" data-i18n="analytics_retention_title">用户留存分析</h2>
                             <div class="panel-metric">
-                                <span class="metric-label" data-i18n="metric_retention_rate">RETENTION RATE</span>
-                                <span class="metric-value" id="retention-value">Loading...</span>
+                                <span class="metric-label" data-i18n="metric_retention_rate">留存率</span>
+                                <span class="metric-value" id="retention-value" data-i18n="loading_text">加载中...</span>
                             </div>
                         </div>
                         <div class="chart-placeholder" data-chart="retention">
-                            <div class="chart-loading">Loading retention analysis...</div>
+                            <div class="chart-loading" data-i18n="loading_retention_analysis">正在加载留存分析...</div>
                         </div>
                     </div>
                     <div class="panel" data-panel="security-analytics">
                         <div class="panel-header">
-                            <h2 class="panel-title" data-i18n="analytics_security_title">Security Analytics</h2>
+                            <h2 class="panel-title" data-i18n="analytics_security_title">安全分析</h2>
                             <div class="panel-metric">
-                                <span class="metric-label" data-i18n="metric_threat_level">THREAT LEVEL</span>
-                                <span class="metric-value" id="security-value">Loading...</span>
+                                <span class="metric-label" data-i18n="metric_threat_level">威胁等级</span>
+                                <span class="metric-value" id="security-value" data-i18n="loading_text">加载中...</span>
                             </div>
                         </div>
                         <div class="chart-placeholder" data-chart="security">
-                            <div class="chart-loading">Loading security analytics...</div>
+                            <div class="chart-loading" data-i18n="loading_security_analysis">正在加载安全分析...</div>
                         </div>
                     </div>
                 </div>
@@ -937,18 +984,18 @@
                     <h1 class="header-title" data-i18n="reports_analytics">报告与日志</h1>
                     <div class="section-toolbar">
                         <div class="filter-group">
-                            <select data-filter="report-range" class="modern-select">
+                            <select id="reportRange" name="reportRange" data-filter="report-range" class="modern-select">
                                 <option value="7d" data-i18n="time_last_7d" selected>过去7天</option>
                                 <option value="30d" data-i18n="time_last_30d">过去30天</option>
                                 <option value="90d" data-i18n="time_last_90d">过去90天</option>
                             </select>
-                            <select data-filter="report-status" class="modern-select">
+                            <select id="reportStatus" name="reportStatus" data-filter="report-status" class="modern-select">
                                 <option value="all" data-i18n="reports_filter_status">所有状态</option>
                                 <option value="ready" data-i18n="status_ready">已完成</option>
                                 <option value="processing" data-i18n="status_processing">处理中</option>
                                 <option value="failed" data-i18n="status_failed">失败</option>
                             </select>
-                            <button class="btn-ghost" data-action="refresh-reports" title="刷新">
+                            <button class="btn-ghost" data-action="refresh-reports" data-i18n-title="refresh_tooltip" title="刷新">
                                 <i class="fas fa-sync-alt"></i>
                             </button>
                         </div>
@@ -968,7 +1015,7 @@
                         <div class="card-content">
                             <span class="stat-label" data-i18n="reports_total">总报告数</span>
                             <span class="stat-value" data-counter="156">156</span>
-                            <span class="stat-trend positive">+12 本月</span>
+                            <span class="stat-trend positive" data-i18n="trend_this_month">+12 本月</span>
                         </div>
                     </div>
                     <div class="stat-card mini modern-card" data-summary="avg-time">
@@ -978,7 +1025,7 @@
                         <div class="card-content">
                             <span class="stat-label" data-i18n="reports_avg_time">平均生成时间</span>
                             <span class="stat-value" data-counter="2.3">2.3s</span>
-                            <span class="stat-trend neutral">-0.1s vs 上月</span>
+                            <span class="stat-trend neutral" data-i18n="trend_vs_last_month_time">-0.1s vs 上月</span>
                         </div>
                     </div>
                     <div class="stat-card mini modern-card" data-summary="success-rate">
@@ -988,7 +1035,7 @@
                         <div class="card-content">
                             <span class="stat-label" data-i18n="reports_success_rate">成功率</span>
                             <span class="stat-value" data-counter="99.2">99.2%</span>
-                            <span class="stat-trend positive">+0.3% vs 上月</span>
+                            <span class="stat-trend positive" data-i18n="trend_vs_last_month_percent">+0.3% vs 上月</span>
                         </div>
                     </div>
                     <div class="stat-card mini modern-card" data-summary="in-queue">
@@ -998,7 +1045,7 @@
                         <div class="card-content">
                             <span class="stat-label" data-i18n="reports_queue">队列中报告</span>
                             <span class="stat-value" data-counter="3">3</span>
-                            <span class="stat-trend neutral">实时</span>
+                            <span class="stat-trend neutral" data-i18n="trend_realtime">实时</span>
                         </div>
                     </div>
                 </div>
@@ -1011,9 +1058,9 @@
                             <div class="panel-actions">
                                 <div class="search-container">
                                     <i class="fas fa-search search-icon"></i>
-                                    <input type="text" class="search-input modern-input" placeholder="搜索报告..." data-filter="report-search" />
+                                    <input type="text" id="reportSearch" name="reportSearch" class="search-input modern-input" placeholder="搜索报告..." data-filter="report-search" data-i18n-placeholder="search_reports_placeholder" />
                                 </div>
-                                <button class="btn-ghost small" title="导出列表">
+                                <button class="btn-ghost small" data-i18n-title="export_list_tooltip" title="导出列表">
                                     <i class="fas fa-download"></i>
                                 </button>
                             </div>
@@ -1022,12 +1069,12 @@
                             <table class="table-tight modern-table">
                                 <thead>
                                     <tr>
-                                        <th data-sort="name">报告名称 <i class="fas fa-sort"></i></th>
-                                        <th data-sort="category">类别 <i class="fas fa-sort"></i></th>
-                                        <th data-sort="created">创建时间 <i class="fas fa-sort"></i></th>
-                                        <th data-sort="size">大小</th>
-                                        <th data-sort="status">状态</th>
-                                        <th>操作</th>
+                                        <th data-sort="name" data-i18n="reports_table_name">报告名称 <i class="fas fa-sort"></i></th>
+                                        <th data-sort="category" data-i18n="reports_table_category">类别 <i class="fas fa-sort"></i></th>
+                                        <th data-sort="created" data-i18n="reports_table_created">创建时间 <i class="fas fa-sort"></i></th>
+                                        <th data-sort="size" data-i18n="reports_table_size">大小</th>
+                                        <th data-sort="status" data-i18n="reports_table_status">状态</th>
+                                        <th data-i18n="reports_table_actions">操作</th>
                                     </tr>
                                 </thead>
                                 <tbody data-dynamic="reportsTable">
@@ -1038,14 +1085,14 @@
                                                 <span>RPT-001234</span>
                                             </div>
                                         </td>
-                                        <td><span class="category-badge performance">性能报告</span></td>
-                                        <td>2小时前</td>
+                                        <td><span class="category-badge performance" data-i18n="performance_report">性能报告</span></td>
+                                        <td data-i18n="time_2_hours_ago">2小时前</td>
                                         <td>2.4 MB</td>
-                                        <td><span class="status-badge ready">已完成</span></td>
+                                        <td><span class="status-badge ready" data-i18n="status_completed">已完成</span></td>
                                         <td class="actions-cell">
-                                            <button class="btn-icon" title="下载"><i class="fas fa-download"></i></button>
-                                            <button class="btn-icon" title="查看"><i class="fas fa-eye"></i></button>
-                                            <button class="btn-icon" title="分享"><i class="fas fa-share"></i></button>
+                                            <button class="btn-icon" data-i18n-title="download_tooltip" title="下载"><i class="fas fa-download"></i></button>
+                                            <button class="btn-icon" data-i18n-title="view_tooltip" title="查看"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon" data-i18n-title="share_tooltip" title="分享"><i class="fas fa-share"></i></button>
                                         </td>
                                     </tr>
                                     <tr class="report-row">
@@ -1055,14 +1102,14 @@
                                                 <span>RPT-001233</span>
                                             </div>
                                         </td>
-                                        <td><span class="category-badge security">安全报告</span></td>
-                                        <td>4小时前</td>
+                                        <td><span class="category-badge security" data-i18n="security_report">安全报告</span></td>
+                                        <td data-i18n="time_4_hours_ago">4小时前</td>
                                         <td>1.8 MB</td>
-                                        <td><span class="status-badge ready">已完成</span></td>
+                                        <td><span class="status-badge ready" data-i18n="status_completed">已完成</span></td>
                                         <td class="actions-cell">
-                                            <button class="btn-icon" title="下载"><i class="fas fa-download"></i></button>
-                                            <button class="btn-icon" title="查看"><i class="fas fa-eye"></i></button>
-                                            <button class="btn-icon" title="分享"><i class="fas fa-share"></i></button>
+                                            <button class="btn-icon" data-i18n-title="download_tooltip" title="下载"><i class="fas fa-download"></i></button>
+                                            <button class="btn-icon" data-i18n-title="view_tooltip" title="查看"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon" data-i18n-title="share_tooltip" title="分享"><i class="fas fa-share"></i></button>
                                         </td>
                                     </tr>
                                     <tr class="report-row">
@@ -1072,14 +1119,14 @@
                                                 <span>RPT-001232</span>
                                             </div>
                                         </td>
-                                        <td><span class="category-badge activity">活动报告</span></td>
-                                        <td>6小时前</td>
+                                        <td><span class="category-badge activity" data-i18n="activity_report">活动报告</span></td>
+                                        <td data-i18n="time_6_hours_ago">6小时前</td>
                                         <td>3.1 MB</td>
-                                        <td><span class="status-badge ready">已完成</span></td>
+                                        <td><span class="status-badge ready" data-i18n="status_completed">已完成</span></td>
                                         <td class="actions-cell">
-                                            <button class="btn-icon" title="下载"><i class="fas fa-download"></i></button>
-                                            <button class="btn-icon" title="查看"><i class="fas fa-eye"></i></button>
-                                            <button class="btn-icon" title="分享"><i class="fas fa-share"></i></button>
+                                            <button class="btn-icon" data-i18n-title="download_tooltip" title="下载"><i class="fas fa-download"></i></button>
+                                            <button class="btn-icon" data-i18n-title="view_tooltip" title="查看"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon" data-i18n-title="share_tooltip" title="分享"><i class="fas fa-share"></i></button>
                                         </td>
                                     </tr>
                                     <tr class="report-row">
@@ -1089,13 +1136,13 @@
                                                 <span>RPT-001231</span>
                                             </div>
                                         </td>
-                                        <td><span class="category-badge performance">性能报告</span></td>
-                                        <td>1天前</td>
+                                        <td><span class="category-badge performance" data-i18n="performance_report">性能报告</span></td>
+                                        <td data-i18n="time_1_day_ago">1天前</td>
                                         <td>4.2 MB</td>
-                                        <td><span class="status-badge processing">处理中</span></td>
+                                        <td><span class="status-badge processing" data-i18n="status_processing">处理中</span></td>
                                         <td class="actions-cell">
                                             <button class="btn-icon" disabled><i class="fas fa-hourglass-half"></i></button>
-                                            <button class="btn-icon" title="取消"><i class="fas fa-times"></i></button>
+                                            <button class="btn-icon" data-i18n-title="cancel_tooltip" title="取消"><i class="fas fa-times"></i></button>
                                         </td>
                                     </tr>
                                     <tr class="report-row">
@@ -1105,14 +1152,14 @@
                                                 <span>RPT-001230</span>
                                             </div>
                                         </td>
-                                        <td><span class="category-badge security">安全报告</span></td>
-                                        <td>2天前</td>
+                                        <td><span class="category-badge security" data-i18n="security_report">安全报告</span></td>
+                                        <td data-i18n="time_2_days_ago">2天前</td>
                                         <td>2.8 MB</td>
-                                        <td><span class="status-badge ready">已完成</span></td>
+                                        <td><span class="status-badge ready" data-i18n="status_completed">已完成</span></td>
                                         <td class="actions-cell">
-                                            <button class="btn-icon" title="下载"><i class="fas fa-download"></i></button>
-                                            <button class="btn-icon" title="查看"><i class="fas fa-eye"></i></button>
-                                            <button class="btn-icon" title="分享"><i class="fas fa-share"></i></button>
+                                            <button class="btn-icon" data-i18n-title="download_tooltip" title="下载"><i class="fas fa-download"></i></button>
+                                            <button class="btn-icon" data-i18n-title="view_tooltip" title="查看"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon" data-i18n-title="share_tooltip" title="分享"><i class="fas fa-share"></i></button>
                                         </td>
                                     </tr>
                                     <tr class="report-row">
@@ -1122,14 +1169,14 @@
                                                 <span>RPT-001229</span>
                                             </div>
                                         </td>
-                                        <td><span class="category-badge activity">活动报告</span></td>
-                                        <td>3天前</td>
+                                        <td><span class="category-badge activity" data-i18n="activity_report">活动报告</span></td>
+                                        <td data-i18n="time_3_days_ago">3天前</td>
                                         <td>1.5 MB</td>
-                                        <td><span class="status-badge ready">已完成</span></td>
+                                        <td><span class="status-badge ready" data-i18n="status_completed">已完成</span></td>
                                         <td class="actions-cell">
-                                            <button class="btn-icon" title="下载"><i class="fas fa-download"></i></button>
-                                            <button class="btn-icon" title="查看"><i class="fas fa-eye"></i></button>
-                                            <button class="btn-icon" title="分享"><i class="fas fa-share"></i></button>
+                                            <button class="btn-icon" data-i18n-title="download_tooltip" title="下载"><i class="fas fa-download"></i></button>
+                                            <button class="btn-icon" data-i18n-title="view_tooltip" title="查看"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon" data-i18n-title="share_tooltip" title="分享"><i class="fas fa-share"></i></button>
                                         </td>
                                     </tr>
                                     <tr class="report-row">
@@ -1139,14 +1186,14 @@
                                                 <span>RPT-001228</span>
                                             </div>
                                         </td>
-                                        <td><span class="category-badge performance">性能报告</span></td>
-                                        <td>4天前</td>
+                                        <td><span class="category-badge performance" data-i18n="performance_report">性能报告</span></td>
+                                        <td data-i18n="time_4_days_ago">4天前</td>
                                         <td>5.1 MB</td>
-                                        <td><span class="status-badge ready">已完成</span></td>
+                                        <td><span class="status-badge ready" data-i18n="status_completed">已完成</span></td>
                                         <td class="actions-cell">
-                                            <button class="btn-icon" title="下载"><i class="fas fa-download"></i></button>
-                                            <button class="btn-icon" title="查看"><i class="fas fa-eye"></i></button>
-                                            <button class="btn-icon" title="分享"><i class="fas fa-share"></i></button>
+                                            <button class="btn-icon" data-i18n-title="download_tooltip" title="下载"><i class="fas fa-download"></i></button>
+                                            <button class="btn-icon" data-i18n-title="view_tooltip" title="查看"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon" data-i18n-title="share_tooltip" title="分享"><i class="fas fa-share"></i></button>
                                         </td>
                                     </tr>
                                     <tr class="report-row">
@@ -1156,14 +1203,14 @@
                                                 <span>RPT-001227</span>
                                             </div>
                                         </td>
-                                        <td><span class="category-badge security">安全报告</span></td>
-                                        <td>5天前</td>
+                                        <td><span class="category-badge security" data-i18n="security_report">安全报告</span></td>
+                                        <td data-i18n="time_5_days_ago">5天前</td>
                                         <td>7.3 MB</td>
-                                        <td><span class="status-badge ready">已完成</span></td>
+                                        <td><span class="status-badge ready" data-i18n="status_completed">已完成</span></td>
                                         <td class="actions-cell">
-                                            <button class="btn-icon" title="下载"><i class="fas fa-download"></i></button>
-                                            <button class="btn-icon" title="查看"><i class="fas fa-eye"></i></button>
-                                            <button class="btn-icon" title="分享"><i class="fas fa-share"></i></button>
+                                            <button class="btn-icon" title="下载" data-i18n-title="download_tooltip"><i class="fas fa-download"></i></button>
+                                            <button class="btn-icon" title="查看" data-i18n-title="view_tooltip"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon" title="分享" data-i18n-title="share_tooltip"><i class="fas fa-share"></i></button>
                                         </td>
                                     </tr>
                                     <tr class="report-row">
@@ -1173,14 +1220,14 @@
                                                 <span>RPT-001226</span>
                                             </div>
                                         </td>
-                                        <td><span class="category-badge activity">活动报告</span></td>
-                                        <td>1周前</td>
+                                        <td><span class="category-badge activity" data-i18n="activity_report">活动报告</span></td>
+                                        <td data-i18n="time_1_week_ago">1周前</td>
                                         <td>3.7 MB</td>
-                                        <td><span class="status-badge ready">已完成</span></td>
+                                        <td><span class="status-badge ready" data-i18n="status_completed">已完成</span></td>
                                         <td class="actions-cell">
-                                            <button class="btn-icon" title="下载"><i class="fas fa-download"></i></button>
-                                            <button class="btn-icon" title="查看"><i class="fas fa-eye"></i></button>
-                                            <button class="btn-icon" title="分享"><i class="fas fa-share"></i></button>
+                                            <button class="btn-icon" title="下载" data-i18n-title="download_tooltip"><i class="fas fa-download"></i></button>
+                                            <button class="btn-icon" title="查看" data-i18n-title="view_tooltip"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon" title="分享" data-i18n-title="share_tooltip"><i class="fas fa-share"></i></button>
                                         </td>
                                     </tr>
                                     <tr class="report-row">
@@ -1190,14 +1237,14 @@
                                                 <span>RPT-001230</span>
                                             </div>
                                         </td>
-                                        <td><span class="category-badge compliance">合规报告</span></td>
-                                        <td>2天前</td>
+                                        <td><span class="category-badge compliance" data-i18n="compliance_report">合规报告</span></td>
+                                        <td data-i18n="time_2_days_ago">2天前</td>
                                         <td>5.7 MB</td>
-                                        <td><span class="status-badge ready">已完成</span></td>
+                                        <td><span class="status-badge ready" data-i18n="status_completed">已完成</span></td>
                                         <td class="actions-cell">
-                                            <button class="btn-icon" title="下载"><i class="fas fa-download"></i></button>
-                                            <button class="btn-icon" title="查看"><i class="fas fa-eye"></i></button>
-                                            <button class="btn-icon" title="分享"><i class="fas fa-share"></i></button>
+                                            <button class="btn-icon" title="下载" data-i18n-title="download_tooltip"><i class="fas fa-download"></i></button>
+                                            <button class="btn-icon" title="查看" data-i18n-title="view_tooltip"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon" title="分享" data-i18n-title="share_tooltip"><i class="fas fa-share"></i></button>
                                         </td>
                                     </tr>
                                     <tr class="report-row">
@@ -1207,14 +1254,14 @@
                                                 <span>RPT-001224</span>
                                             </div>
                                         </td>
-                                        <td><span class="category-badge performance">性能报告</span></td>
-                                        <td>2周前</td>
+                                        <td><span class="category-badge performance" data-i18n="performance_report">性能报告</span></td>
+                                        <td data-i18n="time_2_weeks_ago">2周前</td>
                                         <td>2.1 MB</td>
-                                        <td><span class="status-badge ready">已完成</span></td>
+                                        <td><span class="status-badge ready" data-i18n="status_completed">已完成</span></td>
                                         <td class="actions-cell">
-                                            <button class="btn-icon" title="下载"><i class="fas fa-download"></i></button>
-                                            <button class="btn-icon" title="查看"><i class="fas fa-eye"></i></button>
-                                            <button class="btn-icon" title="分享"><i class="fas fa-share"></i></button>
+                                            <button class="btn-icon" title="下载" data-i18n-title="download_tooltip"><i class="fas fa-download"></i></button>
+                                            <button class="btn-icon" title="查看" data-i18n-title="view_tooltip"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon" title="分享" data-i18n-title="share_tooltip"><i class="fas fa-share"></i></button>
                                         </td>
                                     </tr>
                                     <tr class="report-row">
@@ -1224,14 +1271,14 @@
                                                 <span>RPT-001223</span>
                                             </div>
                                         </td>
-                                        <td><span class="category-badge security">安全报告</span></td>
-                                        <td>2周前</td>
+                                        <td><span class="category-badge security" data-i18n="security_report">安全报告</span></td>
+                                        <td data-i18n="time_2_weeks_ago">2周前</td>
                                         <td>8.4 MB</td>
-                                        <td><span class="status-badge ready">已完成</span></td>
+                                        <td><span class="status-badge ready" data-i18n="status_completed">已完成</span></td>
                                         <td class="actions-cell">
-                                            <button class="btn-icon" title="下载"><i class="fas fa-download"></i></button>
-                                            <button class="btn-icon" title="查看"><i class="fas fa-eye"></i></button>
-                                            <button class="btn-icon" title="分享"><i class="fas fa-share"></i></button>
+                                            <button class="btn-icon" title="下载" data-i18n-title="download_tooltip"><i class="fas fa-download"></i></button>
+                                            <button class="btn-icon" title="查看" data-i18n-title="view_tooltip"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon" title="分享" data-i18n-title="share_tooltip"><i class="fas fa-share"></i></button>
                                         </td>
                                     </tr>
                                     <tr class="report-row">
@@ -1241,14 +1288,14 @@
                                                 <span>RPT-001222</span>
                                             </div>
                                         </td>
-                                        <td><span class="category-badge activity">活动报告</span></td>
-                                        <td>3周前</td>
+                                        <td><span class="category-badge activity" data-i18n="activity_report">活动报告</span></td>
+                                        <td data-i18n="time_3_weeks_ago">3周前</td>
                                         <td>1.9 MB</td>
-                                        <td><span class="status-badge ready">已完成</span></td>
+                                        <td><span class="status-badge ready" data-i18n="status_completed">已完成</span></td>
                                         <td class="actions-cell">
-                                            <button class="btn-icon" title="下载"><i class="fas fa-download"></i></button>
-                                            <button class="btn-icon" title="查看"><i class="fas fa-eye"></i></button>
-                                            <button class="btn-icon" title="分享"><i class="fas fa-share"></i></button>
+                                            <button class="btn-icon" title="下载" data-i18n-title="download_tooltip"><i class="fas fa-download"></i></button>
+                                            <button class="btn-icon" title="查看" data-i18n-title="view_tooltip"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon" title="分享" data-i18n-title="share_tooltip"><i class="fas fa-share"></i></button>
                                         </td>
                                     </tr>
                                     <tr class="report-row">
@@ -1258,14 +1305,14 @@
                                                 <span>RPT-001221</span>
                                             </div>
                                         </td>
-                                        <td><span class="category-badge performance">性能报告</span></td>
-                                        <td>3周前</td>
+                                        <td><span class="category-badge performance" data-i18n="performance_report">性能报告</span></td>
+                                        <td data-i18n="time_3_weeks_ago">3周前</td>
                                         <td>6.2 MB</td>
-                                        <td><span class="status-badge ready">已完成</span></td>
+                                        <td><span class="status-badge ready" data-i18n="status_completed">已完成</span></td>
                                         <td class="actions-cell">
-                                            <button class="btn-icon" title="下载"><i class="fas fa-download"></i></button>
-                                            <button class="btn-icon" title="查看"><i class="fas fa-eye"></i></button>
-                                            <button class="btn-icon" title="分享"><i class="fas fa-share"></i></button>
+                                            <button class="btn-icon" title="下载" data-i18n-title="download_tooltip"><i class="fas fa-download"></i></button>
+                                            <button class="btn-icon" title="查看" data-i18n-title="view_tooltip"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon" title="分享" data-i18n-title="share_tooltip"><i class="fas fa-share"></i></button>
                                         </td>
                                     </tr>
                                     <tr class="report-row">
@@ -1275,14 +1322,14 @@
                                                 <span>RPT-001220</span>
                                             </div>
                                         </td>
-                                        <td><span class="category-badge security">安全报告</span></td>
-                                        <td>1个月前</td>
+                                        <td><span class="category-badge security" data-i18n="security_report">安全报告</span></td>
+                                        <td data-i18n="time_1_month_ago">1个月前</td>
                                         <td>12.3 MB</td>
-                                        <td><span class="status-badge ready">已完成</span></td>
+                                        <td><span class="status-badge ready" data-i18n="status_completed">已完成</span></td>
                                         <td class="actions-cell">
-                                            <button class="btn-icon" title="下载"><i class="fas fa-download"></i></button>
-                                            <button class="btn-icon" title="查看"><i class="fas fa-eye"></i></button>
-                                            <button class="btn-icon" title="分享"><i class="fas fa-share"></i></button>
+                                            <button class="btn-icon" title="下载" data-i18n-title="download_tooltip"><i class="fas fa-download"></i></button>
+                                            <button class="btn-icon" title="查看" data-i18n-title="view_tooltip"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon" title="分享" data-i18n-title="share_tooltip"><i class="fas fa-share"></i></button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -1290,13 +1337,13 @@
                         </div>
                         <div class="table-footer">
                             <div class="table-info">
-                                <span class="records-count">显示 1-14 条，共 156 条记录</span>
+                                <span class="records-count" data-i18n="records_count_display">显示 1-14 条，共 156 条记录</span>
                             </div>
                             <div class="table-pagination">
                                 <button class="pagination-btn" disabled>
                                     <i class="fas fa-chevron-left"></i>
                                 </button>
-                                <span class="pagination-info">第 1 页，共 20 页</span>
+                                <span class="pagination-info" data-i18n="pagination_info">第 1 页，共 20 页</span>
                                 <button class="pagination-btn">
                                     <i class="fas fa-chevron-right"></i>
                                 </button>
@@ -1306,26 +1353,26 @@
                                 <div class="empty-icon">
                                     <i class="fas fa-folder-open"></i>
                                 </div>
-                                <h3>暂无报告</h3>
+                                <h3 data-i18n="no_reports_title">暂无报告</h3>
                                 <p data-i18n="reports_no_results">没有找到符合条件的报告</p>
                                 <button class="btn-primary" data-action="open-report-modal">
-                                    <i class="fas fa-plus"></i> 创建第一个报告
+                                    <i class="fas fa-plus"></i> <span data-i18n="create_first_report">创建第一个报告</span>
                                 </button>
                             </div>
                         </div> <!-- end first panel -->
                     <div class="panel generate-panel full-height modern-panel">
                         <div class="panel-header">
                             <h2 class="panel-title" data-i18n="report_creation">创建新报告</h2>
-                            <span class="panel-subtitle">生成专业的系统报告</span>
+                            <span class="panel-subtitle" data-i18n="generate_professional_reports">生成专业的系统报告</span>
                         </div>
                         <form id="reportGenerateForm" class="form-vertical modern-form">
                             <div class="form-group">
-                                <label class="form-label">
+                                <label for="reportType" class="form-label">
                                     <i class="fas fa-tag"></i>
                                     <span data-i18n="reports_field_type">报告类型</span>
                                 </label>
-                                <select name="type" required class="modern-select">
-                                    <option value="">选择报告类型...</option>
+                                <select id="reportType" name="type" required class="modern-select">
+                                    <option value="" data-i18n="select_report_type">选择报告类型...</option>
                                     <option value="activity" data-i18n="user_activity_type">用户活动报告</option>
                                     <option value="security" data-i18n="security_type">安全分析报告</option>
                                     <option value="performance" data-i18n="performance_type">性能监控报告</option>
@@ -1334,15 +1381,15 @@
                             </div>
                             
                             <div class="form-group">
-                                <label class="form-label">
+                                <label for="reportRange" class="form-label">
                                     <i class="fas fa-calendar-alt"></i>
                                     <span data-i18n="reports_field_range">时间范围</span>
                                 </label>
-                                <select name="range" required class="modern-select">
+                                <select id="reportRange" name="range" required class="modern-select">
                                     <option value="24h" data-i18n="time_last_24h">过去24小时</option>
                                     <option value="7d" data-i18n="time_last_7d" selected>过去7天</option>
                                     <option value="30d" data-i18n="time_last_30d">过去30天</option>
-                                    <option value="custom">自定义范围</option>
+                                    <option value="custom" data-i18n="custom_range">自定义范围</option>
                                 </select>
                             </div>
                             
@@ -1353,74 +1400,287 @@
                                 </label>
                                 <div class="format-options">
                                     <label class="format-option">
-                                        <input type="radio" name="format" value="pdf" checked>
+                                        <input type="radio" id="formatPdf" name="format" value="pdf" checked>
                                         <span class="format-card">
                                             <i class="fas fa-file-pdf"></i>
-                                            <span>PDF</span>
+                                            <span data-i18n="pdf_format">PDF</span>
                                         </span>
                                     </label>
                                     <label class="format-option">
-                                        <input type="radio" name="format" value="excel">
+                                        <input type="radio" id="formatExcel" name="format" value="excel">
                                         <span class="format-card">
                                             <i class="fas fa-file-excel"></i>
-                                            <span>Excel</span>
+                                            <span data-i18n="format_excel">Excel</span>
                                         </span>
                                     </label>
                                     <label class="format-option">
-                                        <input type="radio" name="format" value="csv">
+                                        <input type="radio" id="formatCsv" name="format" value="csv">
                                         <span class="format-card">
                                             <i class="fas fa-file-csv"></i>
-                                            <span>CSV</span>
+                                            <span data-i18n="csv_format">CSV</span>
                                         </span>
                                     </label>
                                 </div>
                             </div>
                             
                             <div class="form-group">
-                                <label class="form-label">
-                                    <i class="fas fa-cog"></i>
-                                    <span>高级选项</span>
-                                </label>
-                                <div class="checkbox-group">
-                                    <label class="checkbox-option modern-checkbox">
-                                        <input type="checkbox" name="includeCharts" checked>
-                                        <span class="checkmark"></span>
-                                        <span>包含图表和可视化</span>
-                                    </label>
-                                    <label class="checkbox-option modern-checkbox">
-                                        <input type="checkbox" name="notify" checked>
-                                        <span class="checkmark"></span>
-                                        <span data-i18n="reports_field_notify">完成时发送通知</span>
-                                    </label>
-                                    <label class="checkbox-option modern-checkbox">
-                                        <input type="checkbox" name="encrypt">
-                                        <span class="checkmark"></span>
-                                        <span>加密敏感数据</span>
-                                    </label>
-                                </div>
+                                <fieldset>
+                                    <legend>
+                                        <i class="fas fa-cog"></i>
+                                        <span data-i18n="advanced_options">高级选项</span>
+                                    </legend>
+                                    <div class="checkbox-group">
+                                        <label class="checkbox-option modern-checkbox">
+                                            <input type="checkbox" id="includeCharts" name="includeCharts" checked>
+                                            <span class="checkmark"></span>
+                                            <span data-i18n="include_charts">包含图表和可视化</span>
+                                        </label>
+                                        <label class="checkbox-option modern-checkbox">
+                                            <input type="checkbox" id="notify" name="notify" checked>
+                                            <span class="checkmark"></span>
+                                            <span data-i18n="reports_field_notify">完成时发送通知</span>
+                                        </label>
+                                        <label class="checkbox-option modern-checkbox">
+                                            <input type="checkbox" id="encrypt" name="encrypt">
+                                            <span class="checkmark"></span>
+                                            <span data-i18n="encrypt_sensitive_data">加密敏感数据</span>
+                                        </label>
+                                    </div>
+                                </fieldset>
                             </div>
                             
                             <div class="form-actions">
-                                <button type="submit" class="btn-primary w-100 modern-btn" data-i18n="reports_submit_generate">
+                                <button type="submit" id="generateReportBtn" name="generateReportBtn" class="btn-primary w-100 modern-btn" data-i18n="reports_submit_generate">
                                     <i class="fas fa-rocket"></i>
-                                    <span>生成报告</span>
+                                    <span data-i18n="generate_report">生成报告</span>
                                     <div class="btn-loading" hidden>
                                         <i class="fas fa-spinner fa-spin"></i>
                                     </div>
                                 </button>
-                                <button type="button" class="btn-secondary w-100" style="margin-top: 10px;" data-i18n="cancel">
+                                <button type="button" id="cancelReportForm" name="cancelReportForm" class="btn-secondary w-100" style="margin-top: 10px;" data-i18n="cancel">
                                     取消
                                 </button>
                                 <p class="form-note">
                                     <i class="fas fa-info-circle"></i>
-                                    报告生成通常需要2-5秒，复杂报告可能需要更长时间
+                                    <span data-i18n="report_generation_note">报告生成通常需要2-5秒，复杂报告可能需要更长时间</span>
                                 </p>
                             </div>
                         </form>
                     </div> <!-- end generate panel -->
                 </div> <!-- end grid container -->
             </div>
-        </div>
+
+            <!-- Settings Section -->
+            <div id="settings" class="content-section">
+                <div class="header">
+                    <h1 class="header-title" data-i18n="nav_settings">系统设置</h1>
+                    <div class="section-toolbar">
+                        <button class="btn-primary modern-btn" data-action="save-settings">
+                            <i class="fas fa-save"></i>
+                            <span data-i18n="save_settings">保存设置</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Settings Categories -->
+                <div class="settings-grid">
+                    <!-- General Settings -->
+                    <div class="settings-card modern-panel">
+                        <div class="panel-header">
+                            <h3 class="panel-title">
+                                <i class="fas fa-cog"></i>
+                                <span data-i18n="general_settings">常规设置</span>
+                            </h3>
+                        </div>
+                        <div class="settings-content">
+                            <div class="form-group">
+                                <label for="systemLanguage" data-i18n="system_language">系统语言</label>
+                                <select id="systemLanguage" name="systemLanguage" class="modern-select">
+                                    <option value="zh" data-i18n="chinese">中文</option>
+                                    <option value="en" data-i18n="english">English</option>
+                                    <option value="ko" data-i18n="korean">한국어</option>
+                                    <option value="vi" data-i18n="vietnamese">Tiếng Việt</option>
+                                    <option value="hi" data-i18n="hindi">हिन्दी</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="themeMode" data-i18n="theme_mode">主题模式</label>
+                                <select id="themeMode" name="themeMode" class="modern-select">
+                                    <option value="dark" data-i18n="dark_mode">深色模式</option>
+                                    <option value="light" data-i18n="light_mode">浅色模式</option>
+                                    <option value="auto" data-i18n="auto_mode">自动</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="autoRefresh" data-i18n="auto_refresh">自动刷新</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="autoRefresh" checked>
+                                    <span class="slider"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Settings -->
+                    <div class="settings-card modern-panel">
+                        <div class="panel-header">
+                            <h3 class="panel-title">
+                                <i class="fas fa-shield-alt"></i>
+                                <span data-i18n="security_settings">安全设置</span>
+                            </h3>
+                        </div>
+                        <div class="settings-content">
+                            <div class="form-group">
+                                <label for="sessionTimeout" data-i18n="session_timeout">会话超时 (分钟)</label>
+                                <input type="number" id="sessionTimeout" name="sessionTimeout" class="modern-input" value="30" min="5" max="480" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="twoFactorAuth" data-i18n="two_factor_auth">双因素认证</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="twoFactorAuth">
+                                    <span class="slider"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="loginAlerts" data-i18n="login_alerts">登录提醒</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="loginAlerts" checked>
+                                    <span class="slider"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notification Settings -->
+                    <div class="settings-card modern-panel">
+                        <div class="panel-header">
+                            <h3 class="panel-title">
+                                <i class="fas fa-bell"></i>
+                                <span data-i18n="notification_settings">通知设置</span>
+                            </h3>
+                        </div>
+                        <div class="settings-content">
+                            <div class="form-group">
+                                <label for="emailNotifications" data-i18n="email_notifications">邮件通知</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="emailNotifications" checked>
+                                    <span class="slider"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="pushNotifications" data-i18n="push_notifications">推送通知</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="pushNotifications" checked>
+                                    <span class="slider"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="soundAlerts" data-i18n="sound_alerts">声音提醒</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="soundAlerts">
+                                    <span class="slider"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Performance Settings -->
+                    <div class="settings-card modern-panel">
+                        <div class="panel-header">
+                            <h3 class="panel-title">
+                                <i class="fas fa-tachometer-alt"></i>
+                                <span data-i18n="performance_settings">性能设置</span>
+                            </h3>
+                        </div>
+                        <div class="settings-content">
+                            <div class="form-group">
+                                <label for="refreshInterval" data-i18n="refresh_interval">刷新间隔 (秒)</label>
+                                <select id="refreshInterval" name="refreshInterval" class="modern-select">
+                                    <option value="5" data-i18n="time_5_seconds">5秒</option>
+                                    <option value="10" selected data-i18n="time_10_seconds">10秒</option>
+                                    <option value="30" data-i18n="time_30_seconds">30秒</option>
+                                    <option value="60" data-i18n="time_1_minute">1分钟</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="dataCache" data-i18n="data_cache">数据缓存</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="dataCache" checked>
+                                    <span class="slider"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="animationEffects" data-i18n="animation_effects">动画效果</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="animationEffects" checked>
+                                    <span class="slider"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Advanced Settings -->
+                <div class="advanced-settings modern-panel">
+                    <div class="panel-header">
+                        <h3 class="panel-title">
+                            <i class="fas fa-cogs"></i>
+                            <span data-i18n="advanced_settings">高级设置</span>
+                        </h3>
+                    </div>
+                    <div class="settings-content">
+                        <div class="warning-card">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span data-i18n="advanced_warning">警告：修改以下设置可能影响系统稳定性</span>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="debugMode" data-i18n="debug_mode">调试模式</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="debugMode">
+                                    <span class="slider"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="logLevel" data-i18n="log_level">日志级别</label>
+                                <select id="logLevel" name="logLevel" class="modern-select">
+                                    <option value="error" data-i18n="log_level_error">ERROR</option>
+                                    <option value="warn" selected data-i18n="log_level_warn">WARN</option>
+                                    <option value="info" data-i18n="log_level_info">INFO</option>
+                                    <option value="debug" data-i18n="log_level_debug">DEBUG</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="maxConnections" data-i18n="max_connections">最大连接数</label>
+                                <input type="number" id="maxConnections" name="maxConnections" class="modern-input" value="100" min="10" max="1000" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="requestTimeout" data-i18n="request_timeout">请求超时 (秒)</label>
+                                <input type="number" id="requestTimeout" name="requestTimeout" class="modern-input" value="30" min="5" max="300" autocomplete="off">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="settings-actions">
+                    <button class="btn-primary" data-action="save-settings">
+                        <i class="fas fa-save"></i>
+                        <span data-i18n="save_changes">保存更改</span>
+                    </button>
+                    <button class="btn-secondary" data-action="reset-settings">
+                        <i class="fas fa-undo"></i>
+                        <span data-i18n="reset_defaults">重置默认值</span>
+                    </button>
+                    <button class="btn-ghost" data-action="export-settings">
+                        <i class="fas fa-download"></i>
+                        <span data-i18n="export_settings">导出设置</span>
+                    </button>
+                </div>
+            </div>
+        </main>
     </div>
 
     <script src="scripts/config/tini-env-config.js"></script>
@@ -1428,18 +1688,11 @@
     <script src="scripts/SECURITY/secure-admin-helper.js"></script>
     <!-- Ensure API_CONFIG and fallbacks exist before any utils -->
     <script src="scripts/error-fix.js"></script>
-    <!-- Validation system for content scripts / forms -->
     <script src="scripts/tini-validation-system.js"></script>
-    <!-- Chrome API Compatibility Layer (must be first) -->
     <script src="scripts/chrome-api-compat.js"></script>
-    <!-- Browser-compatible security systems (global classes) -->
     <script src="scripts/security-systems-browser.js"></script>
-    <!-- Existing utilities and i18n (kept after config) -->
-    <!-- Auto Chinese script - should be first -->
     <script src="auto-chinese.js"></script>
     <script src="scripts/utils/secure-storage.js"></script>
-    <script src="scripts/utils/language-sync.js"></script>
-    <script src="scripts/utils/i18n-system.js"></script>
     <script src="scripts/admin-panel-main.js"></script>
     <script>
         (function(){
@@ -1461,24 +1714,12 @@
             }
         })();
     </script>
-    <!-- Debug i18n script -->
-    <script src="debug-i18n.js"></script>
-    <!-- Emergency fallback translations -->
-    <script src="emergency-translations.js"></script>
-    <!-- Initialize I18n System -->
-    <script src="init-i18n.js"></script>
-    <!-- Debug translations structure -->
-    <script src="debug-translations-structure.js"></script>
-    <!-- Production i18n scripts removed -->
     <script src="scripts/professional-data-handler.js"></script>
     <script src="scripts/demo-bypass.js"></script>
     <script src="scripts/realtime-charts.js"></script>
     <script src="scripts/reports-enhancement.js"></script>
-    <script src="scripts/reports-enhanced.js"></script>
+    <script src="scripts/button-handlers.js"></script>
 </body>
 </html>
 
-<!-- ST:TINI_1754644960_e868a412 -->
-<!-- ST:TINI_1754716154_e868a412 -->
-<!-- ST:TINI_1754752705_e868a412 -->
-<!-- ST:TINI_1754879322_e868a412 -->
+<!-- ST:TINI_1754998490_e868a412 -->

@@ -363,3 +363,41 @@
     pointer-events: none;
     z-index: 2;
 }
+
+/* Handle empty content professionally */
+.chart-container:empty::before,
+.chart-placeholder:empty::before {
+    content: '数据加载中...';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 3;
+}
+
+/* Hide sections with no meaningful content */
+.section-empty {
+    display: none !important;
+}
+
+/* Professional empty state styling */
+.chart-loading,
+.data-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.chart-loading::before {
+    content: '📊';
+    margin-right: 8px;
+    font-size: 20px;
+}
+/* ST:TINI_1754998490_e868a412 */
