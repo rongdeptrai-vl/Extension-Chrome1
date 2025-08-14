@@ -47,6 +47,9 @@ class AdminPanelButtons {
         // Setup settings buttons
         this.setupSettingsButtons();
         
+        // NEW: Security grid (grid-2) buttons
+        this.setupSecurityButtons();
+        
         console.log('✅ [BUTTONS] All button handlers setup complete');
     }
 
@@ -238,6 +241,19 @@ class AdminPanelButtons {
                 });
             }
         });
+    }
+
+    setupSecurityButtons() {
+        console.log('🛡️ [BUTTONS] Setting up security grid buttons...');
+        const hook = (selector, handler) => {
+            document.querySelectorAll(selector).forEach(btn => {
+                if (btn.dataset.bound) return; btn.dataset.bound = '1';
+                btn.addEventListener('click', (e) => { e.preventDefault(); handler(btn); });
+            });
+        };
+        hook('[data-action="refresh-security"]', (btn)=> this.handleRefreshSecurity(btn));
+        hook('[data-action="refresh-threats"]', (btn)=> this.handleRefreshThreats(btn));
+        hook('[data-action="refresh-controls"]', (btn)=> this.handleRefreshControls(btn));
     }
 
     // Event Handlers
@@ -525,6 +541,26 @@ class AdminPanelButtons {
         }, 1000);
     }
 
+    handleRefreshSecurity(btn){
+        this.animateButtonSpin(btn);
+        this.showNotification('🔄 Security KPIs refreshed', 'info');
+        // Optionally trigger data reload hooks here
+    }
+    handleRefreshThreats(btn){
+        this.animateButtonSpin(btn);
+        this.showNotification('🔄 Threat timeline refreshed', 'info');
+    }
+    handleRefreshControls(btn){
+        this.animateButtonSpin(btn);
+        this.showNotification('🔄 Controls matrix refreshed', 'info');
+    }
+
+    animateButtonSpin(btn){
+        if (!btn) return;
+        btn.classList.add('spinning');
+        setTimeout(()=> btn.classList.remove('spinning'), 900);
+    }
+
     // Utility Functions
     addUserToTable(userName) {
         const userTableBody = document.getElementById('userTableBody');
@@ -542,7 +578,7 @@ class AdminPanelButtons {
                     <button class="edit-user-btn" style="background: none; border: 1px solid var(--accent); color: var(--accent); padding: 4px 8px; border-radius: 4px; margin-right: 5px; cursor: pointer;" title="Edit user">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="delete-user-btn" style="background: none; border: 1px solid var(--danger); color: var(--danger); padding: 4px 8px; border-radius: 4px; cursor: pointer;" title="Delete user">
+                    <button class="delete-user-btn" style="background: none; border: 1px solid var(--danger); color: var,--danger); padding: 4px 8px; border-radius: 4px; cursor: pointer;" title="Delete user">
                         <i class="fas fa-trash"></i>
                     </button>
                 </td>
@@ -648,20 +684,58 @@ class AdminPanelButtons {
     }
 
     setupToggleSwitches() {
-        const toggleSwitches = document.querySelectorAll('#settings .toggle-switch input[type="checkbox"]');
-        toggleSwitches.forEach(toggle => {
-            toggle.addEventListener('change', (e) => {
+        const toggleInputs = document.querySelectorAll('#settings .toggle-switch input[type="checkbox"]');
+
+        toggleInputs.forEach(input => {
+            const container = input.closest('.toggle-switch');
+            if (!container) return;
+
+            // Accessibility attributes
+            container.setAttribute('role', 'switch');
+            container.setAttribute('tabindex', input.disabled ? '-1' : '0');
+            container.setAttribute('aria-checked', input.checked ? 'true' : 'false');
+            container.setAttribute('aria-labelledby', input.id);
+
+            // When the real input changes, persist and reflect state
+            input.addEventListener('change', (e) => {
                 const settingName = e.target.id;
                 const isEnabled = e.target.checked;
-                
+
+                // Keep ARIA in sync
+                container.setAttribute('aria-checked', isEnabled ? 'true' : 'false');
+
                 console.log(`🔄 [SETTINGS] Toggle ${settingName}: ${isEnabled}`);
                 this.showNotification(
                     `${settingName} ${isEnabled ? 'enabled' : 'disabled'}`,
                     'info'
                 );
-                
+
                 // Save to localStorage
-                localStorage.setItem(`setting_${settingName}`, isEnabled);
+                try {
+                    localStorage.setItem(`setting_${settingName}`, isEnabled);
+                } catch (err) {
+                    console.warn('⚠️ Failed to persist setting to localStorage:', err);
+                }
+            });
+
+            // Make the whole visual control clickable
+            const toggleViaContainer = (event) => {
+                // Avoid double-trigger when clicking directly on the input
+                if (event && event.target === input) return;
+                if (input.disabled) return;
+                input.checked = !input.checked;
+                // Emit change so existing logic runs
+                input.dispatchEvent(new Event('change', { bubbles: true }));
+            };
+
+            container.addEventListener('click', toggleViaContainer);
+
+            // Keyboard accessibility (Enter/Space)
+            container.addEventListener('keydown', (e) => {
+                if (e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    toggleViaContainer(e);
+                }
             });
         });
     }
@@ -803,3 +877,4 @@ if (document.readyState === 'loading') {
 // Export for global access
 window.AdminPanelButtons = AdminPanelButtons;
 // ST:TINI_1754998490_e868a412
+// ST:TINI_1755139708_e868a412

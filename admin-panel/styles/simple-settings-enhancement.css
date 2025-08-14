@@ -1,0 +1,146 @@
+/* © 2024 TINI COMPANY - CONFIDENTIAL */
+/* Employee: rongdeptrai-vl <rongdz2307@gmail.com> */
+/* Commit: 2f8b8da | Time: 2025-08-14T02:48:28Z */
+/* Watermark: TINI_1755139708_e868a412 | TINI_WATERMARK */
+/* WARNING: Unauthorized distribution is prohibited */
+/* Simple Settings Enhancement - Safe and Minimal */
+/* Chỉ cải thiện visual, không thay đổi layout */
+
+/* Subtle improvements for settings cards */
+.settings-card.modern-panel {
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.settings-card.modern-panel:hover {
+    box-shadow: 0 8px 25px rgba(0, 240, 255, 0.1);
+    border-color: rgba(0, 240, 255, 0.3);
+}
+
+/* Enhance panel headers */
+.settings-card .panel-header {
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--border);
+}
+
+.settings-card .panel-title i {
+    color: var(--accent);
+    margin-right: 8px;
+}
+
+/* Improve form elements */
+.modern-select:focus,
+.modern-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.1);
+}
+
+/* Better toggle switches */
+.toggle-switch {
+    cursor: pointer;
+}
+
+.toggle-switch:hover .slider {
+    border-color: rgba(0, 240, 255, 0.5);
+}
+
+/* Enhanced warning card */
+.warning-card {
+    background: rgba(255, 145, 0, 0.1);
+    border: 1px solid rgba(255, 145, 0, 0.2);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 20px;
+    color: var(--warning);
+}
+
+.warning-card i {
+    margin-right: 8px;
+}
+
+/* Simple animation for cards */
+.settings-card {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Better responsive */
+@media (max-width: 768px) {
+    .settings-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+}
+
+/* Account Security: make password form compact and readable */
+#profile #passwordChangeForm {
+    max-width: clamp(480px, 58vw, 720px); /* giới hạn độ rộng, vẫn responsive */
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    #profile #passwordChangeForm { max-width: 100%; }
+}
+
+/* Centered grid for Account Security section */
+#profile .activity-section > div:has(#passwordChangeForm) {
+    display: grid;
+    grid-template-columns: minmax(420px, 560px) minmax(360px, 520px);
+    justify-content: center; /* đặt ở giữa khung */
+    gap: 28px;
+    align-items: start;
+}
+
+/* Left form card look */
+#profile #passwordChangeForm { max-width: 100%; }
+
+/* Right tips panel */
+#profile .security-tips-panel {
+    background: linear-gradient(180deg, rgba(0, 120, 255, 0.10) 0%, rgba(0, 120, 255, 0.04) 100%);
+    border: 1px solid rgba(0, 120, 255, 0.18);
+    border-radius: 14px;
+    padding: 16px 18px 22px;
+    position: relative;
+    overflow: hidden;
+}
+#profile .security-tips-panel h3 { margin: 4px 0 12px; }
+#profile .tips-list { list-style: none; padding: 0; margin: 0 0 6px; }
+#profile .tips-list li { display: flex; align-items: center; gap: 10px; padding: 8px 6px; color: var(--text, #e5e7eb); }
+#profile .tips-list i { color: #9fc5ff; min-width: 16px; }
+#profile .shield-illustration { position: absolute; right: 14px; bottom: 10px; opacity: .95; }
+#profile .shield-illustration svg { width: 180px; height: 180px; filter: drop-shadow(0 10px 22px rgba(0,0,0,.25)); }
+
+/* Tighten right panel layout and even alignment with inputs */
+#profile .security-tips-panel { display: grid; grid-template-columns: 1fr auto; column-gap: 18px; align-items: center; }
+#profile .security-tips-panel .tips-list { margin-right: 8px; }
+#profile .security-tips-panel .shield-illustration { position: static; }
+#profile .security-tips-panel .shield-illustration svg { width: 200px; height: 200px; }
+#profile .tips-list li { font-size: 16px; }
+#profile .tips-list i { color: #b6d6ff; }
+
+/* Ensure overall section centered and tidy */
+#profile .activity-section > div:has(#passwordChangeForm) { gap: 32px; }
+
+/* Responsive: stack neatly */
+@media (max-width: 1024px) {
+    #profile .activity-section > div:has(#passwordChangeForm) {
+        grid-template-columns: 1fr; justify-content: stretch;
+    }
+    #profile .shield-illustration svg { width: 140px; height: 140px; }
+}

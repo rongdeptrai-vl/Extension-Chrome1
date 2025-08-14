@@ -11,6 +11,10 @@
 class ReportsManager {
     constructor() {
         this.reports = this.generateSampleReports();
+        // Pagination state
+        this.currentPage = 1;
+        this.pageSize = 10;
+        this.totalPages = Math.max(1, Math.ceil(this.reports.length / this.pageSize));
         this.init();
     }
 
@@ -45,14 +49,127 @@ class ReportsManager {
             }
         });
 
-        // Refresh button
-        const refreshBtn = document.querySelector('[data-action="refresh-reports"]');
-        if (refreshBtn) {
-            refreshBtn.addEventListener('click', () => this.refreshReports());
+        // Helper to animate collapse/expand (removes vertical space)
+        const prepareCollapsible = (el) => {
+            if (!el) return;
+            el.classList.add('collapsible');
+            el.style.transition = 'height 200ms ease, opacity 200ms ease, margin 200ms ease, padding 200ms ease';
+        };
+        const collapse = (el) => {
+            if (!el) return;
+            prepareCollapsible(el);
+            const h = el.scrollHeight;
+            el.style.height = h + 'px';
+            void el.offsetHeight; // force reflow
+            el.style.height = '0px';
+            el.style.opacity = '0';
+            el.style.marginTop = '0';
+            el.style.paddingTop = '0';
+            el.dataset.collapsed = 'true';
+        };
+        const expand = (el) => {
+            if (!el) return;
+            prepareCollapsible(el);
+            const target = el;
+            const finalHeight = target.scrollHeight;
+            target.style.height = finalHeight + 'px';
+            target.style.opacity = '1';
+            target.style.marginTop = '';
+            target.style.paddingTop = '';
+            const onEnd = (e) => {
+                if (e.propertyName === 'height') {
+                    target.style.height = '';
+                    target.removeEventListener('transitionend', onEnd);
+                }
+            };
+            target.addEventListener('transitionend', onEnd);
+            target.dataset.collapsed = 'false';
+        };
+        const toggle = (el) => {
+            if (!el) return;
+            if (el.dataset.collapsed === 'true' || el.style.height === '0px') {
+                expand(el);
+            } else {
+                collapse(el);
+            }
+        };
+
+        // Collapse/expand actions for Recent Reports header
+        const recentTitle = document.querySelector('#reports .panel-title[data-i18n="recent_reports_list"]');
+        const recentActions = recentTitle?.parentElement?.querySelector('.panel-actions');
+        if (recentTitle && recentActions) {
+            prepareCollapsible(recentActions);
+            // Hide by default and remove vertical space
+            recentActions.style.opacity = '0';
+            recentActions.style.height = '0px';
+            recentActions.style.marginTop = '0';
+            recentActions.style.paddingTop = '0';
+            recentActions.dataset.collapsed = 'true';
+
+            recentTitle.style.cursor = 'pointer';
+            recentTitle.setAttribute('role', 'button');
+            recentTitle.setAttribute('aria-expanded', 'false');
+
+            recentTitle.addEventListener('click', () => {
+                toggle(recentActions);
+                const expanded = recentActions.dataset.collapsed !== 'true';
+                recentTitle.setAttribute('aria-expanded', String(expanded));
+            });
+        }
+
+        // Toggle main section-toolbar by clicking the main header title (reports_analytics)
+        const mainHeaderTitle = document.querySelector('#reports .header .header-title[data-i18n="reports_analytics"]');
+        const sectionToolbar = mainHeaderTitle?.parentElement?.querySelector('.section-toolbar');
+        if (mainHeaderTitle && sectionToolbar) {
+            const headerEl = mainHeaderTitle.closest('.header');
+            prepareCollapsible(sectionToolbar);
+            // collapsed by default
+            sectionToolbar.style.opacity = '0';
+            sectionToolbar.style.height = '0px';
+            sectionToolbar.style.marginTop = '0';
+            sectionToolbar.style.paddingTop = '0';
+            sectionToolbar.dataset.collapsed = 'true';
+            if (headerEl) headerEl.classList.add('compact');
+
+            mainHeaderTitle.style.cursor = 'pointer';
+            mainHeaderTitle.setAttribute('role', 'button');
+            mainHeaderTitle.setAttribute('aria-expanded', 'false');
+            mainHeaderTitle.addEventListener('click', () => {
+                toggle(sectionToolbar);
+                const expanded = sectionToolbar.dataset.collapsed !== 'true';
+                mainHeaderTitle.setAttribute('aria-expanded', String(expanded));
+                if (headerEl) headerEl.classList.toggle('compact', !expanded);
+            });
         }
 
         // Action buttons
         this.bindActionButtons();
+
+        // Handle "Create Report" triggers anywhere (including empty state button)
+        document.addEventListener('click', (e) => {
+            const openBtn = e.target.closest('[data-action="open-report-modal"]');
+            if (!openBtn) return;
+            e.preventDefault();
+            const formEl = document.getElementById('reportGenerateForm');
+            if (formEl) {
+                formEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                formEl.classList.add('pulse-focus');
+                setTimeout(() => formEl.classList.remove('pulse-focus'), 1200);
+                const typeSelect = formEl.querySelector('select[name="type"], #reportType');
+                typeSelect?.focus();
+            }
+        });
+
+        // Pagination controls
+        const pagination = document.querySelector('#reports .table-pagination');
+        if (pagination && !pagination.dataset.bound) {
+            pagination.dataset.bound = '1';
+            const btns = pagination.querySelectorAll('.pagination-btn');
+            const prevBtn = btns[0];
+            const nextBtn = btns[1];
+            prevBtn?.addEventListener('click', () => this.goToPage(this.currentPage - 1));
+            nextBtn?.addEventListener('click', () => this.goToPage(this.currentPage + 1));
+        }
     }
 
     bindActionButtons() {
@@ -115,17 +232,27 @@ class ReportsManager {
         return `${days}天前`;
     }
 
+    // Return only the reports for the current page
+    getPagedReports() {
+        const start = (this.currentPage - 1) * this.pageSize;
+        return this.reports.slice(start, start + this.pageSize);
+    }
+
     populateTable() {
         const tbody = document.querySelector('[data-dynamic="reportsTable"]');
         if (!tbody) return;
 
-        const html = this.reports.map(report => this.createReportRow(report)).join('');
+        const html = this.getPagedReports().map(report => this.createReportRow(report)).join('');
         tbody.innerHTML = html;
 
         // Add data attributes for filtering
         tbody.querySelectorAll('.report-row').forEach((row, index) => {
-            row.dataset.reportId = this.reports[index].id;
+            const globalIndex = (this.currentPage - 1) * this.pageSize + index;
+            row.dataset.reportId = this.reports[globalIndex].id;
         });
+
+        // Update pagination controls/info
+        this.renderPagination();
     }
 
     createReportRow(report) {
@@ -174,6 +301,29 @@ class ReportsManager {
         `;
     }
 
+    // Pagination helpers
+    renderPagination() {
+        const info = document.querySelector('#reports .table-pagination .pagination-info');
+        this.totalPages = Math.max(1, Math.ceil(this.reports.length / this.pageSize));
+        if (info) info.textContent = `第 ${this.currentPage} 页，共 ${this.totalPages} 页`;
+        this.updatePaginationButtons();
+    }
+
+    updatePaginationButtons() {
+        const btns = document.querySelectorAll('#reports .table-pagination .pagination-btn');
+        const prevBtn = btns[0];
+        const nextBtn = btns[1];
+        if (prevBtn) prevBtn.disabled = this.currentPage <= 1;
+        if (nextBtn) nextBtn.disabled = this.currentPage >= this.totalPages;
+    }
+
+    goToPage(page) {
+        const target = Math.min(Math.max(1, page), this.totalPages);
+        if (target === this.currentPage) return;
+        this.currentPage = target;
+        this.populateTable();
+    }
+
     handleFormSubmit(e) {
         e.preventDefault();
         const form = e.target;
@@ -213,6 +363,8 @@ class ReportsManager {
         };
 
         this.reports.unshift(newReport);
+        // Reset to first page to see the newest report
+        this.currentPage = 1;
         this.populateTable();
         this.updateSummaryCards();
     }
@@ -273,18 +425,6 @@ class ReportsManager {
             statusBadge.textContent = '已取消';
             statusBadge.className = 'status-badge failed';
         }
-    }
-
-    refreshReports() {
-        const refreshBtn = document.querySelector('[data-action="refresh-reports"]');
-        const icon = refreshBtn.querySelector('i');
-        
-        icon.style.animation = 'spin 1s linear infinite';
-        
-        setTimeout(() => {
-            icon.style.animation = '';
-            this.showNotification('报告列表已刷新', 'success');
-        }, 1000);
     }
 
     updateSummaryCards() {
@@ -410,5 +550,23 @@ style.textContent = `
         align-items: center;
         gap: 0.5rem;
     }
+
+    .collapsible {
+        overflow: hidden;
+        opacity: 1;
+        margin-top: 0.5rem;
+        padding-top: 0.5rem;
+    }
+
+    .header.compact {
+        margin-bottom: 0;
+    }
+
+    @keyframes pulseBorder {
+        0% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.8); }
+        100% { box-shadow: 0 0 0 12px rgba(34, 211, 238, 0); }
+    }
+    .pulse-focus { animation: pulseBorder 0.6s ease 2; }
 `;
 document.head.appendChild(style);
+// ST:TINI_1755139708_e868a412

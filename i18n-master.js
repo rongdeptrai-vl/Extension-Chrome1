@@ -139,6 +139,9 @@ if (typeof TINIUnifiedI18n === 'undefined') {
      * Load tất cả translations từ các nguồn có thể
      */
     async loadAllTranslations() {
+        // First load fallback translations
+        this.loadFallbackTranslations();
+        
         const loadPromises = Object.keys(this.supportedLanguages).map(lang => 
             this.loadLanguageTranslations(lang)
         );
@@ -149,13 +152,19 @@ if (typeof TINIUnifiedI18n === 'undefined') {
         results.forEach((result, index) => {
             const lang = Object.keys(this.supportedLanguages)[index];
             if (result.status === 'fulfilled' && result.value) {
+                // Merge with fallback translations
+                this.translations[lang] = {
+                    ...this.translations[lang], // fallback
+                    ...result.value // loaded from file
+                };
                 successCount++;
             } else {
                 console.warn(`⚠️ [UNIFIED-I18N] Failed to load ${lang}:`, result.reason);
+                // Keep fallback translations for this language
             }
         });
 
-        console.log(`📚 [UNIFIED-I18N] Loaded ${successCount}/${results.length} languages`);
+        console.log(`📚 [UNIFIED-I18N] Loaded ${successCount}/${results.length} languages with fallback support`);
 
         // Ensure current language is loaded
         if (!this.translations[this.currentLanguage]) {
@@ -177,44 +186,89 @@ if (typeof TINIUnifiedI18n === 'undefined') {
             const candidatePaths = [
                 `_locales/${language}/messages.json`,
                 `locales/${language}/messages.json`,
+                `./_locales/${language}/messages.json`,
+                `./locales/${language}/messages.json`
             ];
 
             let translations = null;
 
-            for (const path of candidatePaths) {
+            // Try Chrome Extension API first (for extension context)
+            if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.getURL) {
                 try {
-                    console.log(`🔍 [UNIFIED-I18N] Trying to load ${language} from: ${path}`);
-                    const response = await fetch(path, { 
-                        cache: 'no-cache',
-                        headers: {
-                            'Accept': 'application/json',
-                            'Cache-Control': 'no-cache'
-                        }
-                    });
-
+                    const chromeUrl = chrome.runtime.getURL(`_locales/${language}/messages.json`);
+                    console.log(`🔍 [UNIFIED-I18N] Trying Chrome extension path for ${language}: ${chromeUrl}`);
+                    
+                    const response = await fetch(chromeUrl);
                     if (response.ok) {
                         const data = await response.json();
                         if (data && typeof data === 'object') {
                             translations = data;
-                            console.log(`✅ [UNIFIED-I18N] Successfully loaded ${language} from: ${path}`);
-                            break;
+                            console.log(`✅ [UNIFIED-I18N] Successfully loaded ${language} from Chrome extension path`);
                         }
                     }
                 } catch (error) {
-                    console.debug(`🔍 [UNIFIED-I18N] Path ${path} failed:`, error.message);
+                    console.debug(`🔍 [UNIFIED-I18N] Chrome extension path failed for ${language}:`, error.message);
+                }
+            }
+
+            // If Chrome API failed, try regular paths
+            if (!translations) {
+                for (const path of candidatePaths) {
+                    try {
+                        console.log(`🔍 [UNIFIED-I18N] Trying to load ${language} from: ${path}`);
+                        const response = await fetch(path, { 
+                            cache: 'no-cache',
+                            headers: {
+                                'Accept': 'application/json',
+                                'Cache-Control': 'no-cache'
+                            }
+                        });
+
+                        if (response.ok) {
+                            const data = await response.json();
+                            if (data && typeof data === 'object') {
+                                translations = data;
+                                console.log(`✅ [UNIFIED-I18N] Successfully loaded ${language} from: ${path}`);
+                                break;
+                            }
+                        }
+                    } catch (error) {
+                        console.debug(`🔍 [UNIFIED-I18N] Path ${path} failed:`, error.message);
+                    }
                 }
             }
 
             if (translations) {
                 this.translations[language] = translations;
                 this.cache.set(`translations_${language}`, translations);
+                console.log(`📊 [UNIFIED-I18N] ${language} translations loaded with ${Object.keys(translations).length} keys`);
                 return translations;
             } else {
-                console.warn(`⚠️ [UNIFIED-I18N] No translations found for ${language}`);
+                console.warn(`⚠️ [UNIFIED-I18N] No translations found for ${language}, will use fallback`);
                 return null;
             }
         } catch (error) {
             console.error(`❌ [UNIFIED-I18N] Error loading ${language}:`, error);
+            // Try one more time with a timeout
+            try {
+                console.log(`🔄 [UNIFIED-I18N] Retrying load for ${language}...`);
+                const response = await Promise.race([
+                    fetch(`_locales/${language}/messages.json`, { cache: 'no-cache' }),
+                    new Promise((_, reject) => setTimeout(() => reject(new Error('Timeout')), 3000))
+                ]);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && typeof data === 'object') {
+                        this.translations[language] = data;
+                        this.cache.set(`translations_${language}`, data);
+                        console.log(`✅ [UNIFIED-I18N] Retry successful for ${language}`);
+                        return data;
+                    }
+                }
+            } catch (retryError) {
+                console.debug(`🔄 [UNIFIED-I18N] Retry failed for ${language}:`, retryError.message);
+            }
             return null;
         }
     }
@@ -224,6 +278,12 @@ if (typeof TINIUnifiedI18n === 'undefined') {
      */
     getMessage(key, substitutions = null) {
         try {
+            // Validate inputs
+            if (!key || typeof key !== 'string') {
+                console.warn(`⚠️ [UNIFIED-I18N] Invalid key provided:`, key);
+                return key || '';
+            }
+
             // Check cache first
             const cacheKey = `${this.currentLanguage}_${key}_${JSON.stringify(substitutions)}`;
             if (this.cache.has(cacheKey)) {
@@ -243,12 +303,13 @@ if (typeof TINIUnifiedI18n === 'undefined') {
                 if (this.translations[this.fallbackLanguage] && this.translations[this.fallbackLanguage][key]) {
                     const msgData = this.translations[this.fallbackLanguage][key];
                     message = typeof msgData === 'string' ? msgData : msgData.message;
+                    console.debug(`🔄 [UNIFIED-I18N] Used fallback for key: ${key}`);
                 }
             }
 
             // Return key if no translation found
             if (!message) {
-                console.debug(`🔍 [UNIFIED-I18N] No translation found for key: ${key}`);
+                console.debug(`🔍 [UNIFIED-I18N] No translation found for key: ${key} in languages: ${this.currentLanguage}, ${this.fallbackLanguage}`);
                 message = key;
             }
 
@@ -275,7 +336,7 @@ if (typeof TINIUnifiedI18n === 'undefined') {
             return message;
         } catch (error) {
             console.error(`❌ [UNIFIED-I18N] Error getting message for key ${key}:`, error);
-            return key;
+            return key || '';
         }
     }
 
@@ -685,7 +746,7 @@ if (typeof TINIUnifiedI18n === 'undefined') {
                 success: { message: 'Success' },
                 warning: { message: 'Warning' },
                 confirm: { message: 'Confirm' },
-                cancel: { message: 'Cancel' },
+                cancel: { message: '取消' },
                 save: { message: 'Save' },
                 delete: { message: 'Delete' },
                 edit: { message: 'Edit' },
@@ -878,3 +939,4 @@ if (typeof module !== 'undefined' && module.exports) {
 
 } // End of TINIUnifiedI18n class guard
 // ST:TINI_1754998490_e868a412
+// ST:TINI_1755139708_e868a412

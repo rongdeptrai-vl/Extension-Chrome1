@@ -3,12 +3,14 @@
 /* Commit: 58a24a1 | Time: 2025-08-09T15:18:25Z */
 /* Watermark: TINI_1754752705_e868a412 | TINI_WATERMARK */
 /* WARNING: Unauthorized distribution is prohibited */
-/* Grid Layout Override for Perfect Distribution */
+/* Grid Layout Override for Perfect Distribution - Enhanced Responsive */
+
+/* Base metric grid */
 .metric-grid {
     display: grid !important;
     grid-template-columns: repeat(4, 1fr) !important;
-    gap: 20px !important; /* Optimized for viewport fit */
-    margin-bottom: 24px !important; /* Reduced space */
+    gap: 20px !important;
+    margin-bottom: 24px !important;
     width: 100% !important;
     box-sizing: border-box !important;
 }
@@ -17,24 +19,41 @@
 .grid-2 {
     display: grid !important;
     grid-template-columns: 1fr 1fr !important;
-    gap: 20px !important; /* Reduced gap to fit better */
-    margin-bottom: 20px !important; /* Reduced space */
+    gap: 20px !important;
+    margin-bottom: 20px !important;
     box-sizing: border-box !important;
+}
+
+/* Reports specific grid with responsive enhancements */
+.grid-3-1 {
+    display: grid !important;
+    /* Make the right panel flexible between 320px and 560px */
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 560px) !important;
+    gap: 24px !important;
+    align-items: start !important;
+    /* Allow height to adapt to content */
+    height: auto !important;
+    box-sizing: border-box !important;
+}
+
+.grid-3-1.enhanced-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 560px) !important;
+    height: auto !important;
 }
 
 /* Full width panels with optimized sizing */
 .panel.large {
     width: 100% !important;
-    min-height: 300px !important; /* Reduced base height */
+    min-height: 300px !important;
     box-sizing: border-box !important;
-    margin: 0 !important; /* Remove any margin */
+    margin: 0 !important;
 }
 
 .panel {
     width: 100% !important;
-    min-height: 280px !important; /* Reduced base height */
+    min-height: 280px !important;
     box-sizing: border-box !important;
-    margin: 0 !important; /* Remove any margin */
+    margin: 0 !important;
 }
 
 /* Ensure cards fill the grid properly */
@@ -44,9 +63,14 @@
     min-width: 0 !important;
 }
 
-/* Responsive Grid Adjustments */
+/* Enhanced Responsive Grid Adjustments */
 @media (max-width: 1400px) {
     .metric-grid {
+        gap: 18px !important;
+    }
+    
+    .grid-3-1, .grid-3-1.enhanced-layout {
+        grid-template-columns: 1fr minmax(320px, 480px) !important;
         gap: 20px !important;
     }
 }
@@ -54,14 +78,53 @@
 @media (max-width: 1200px) {
     .metric-grid {
         grid-template-columns: repeat(2, 1fr) !important;
-        gap: 18px !important;
+        gap: 16px !important;
+    }
+    
+    .grid-2 {
+        gap: 16px !important;
+    }
+    
+    .grid-3-1, .grid-3-1.enhanced-layout {
+        grid-template-columns: 1fr minmax(300px, 420px) !important;
+        gap: 16px !important;
+    }
+}
+
+@media (max-width: 1024px) {
+    .grid-3-1, .grid-3-1.enhanced-layout {
+        grid-template-columns: 1fr !important;
+        grid-template-rows: auto auto !important;
+        height: auto !important;
+        gap: 20px !important;
+    }
+    
+    .grid-2 {
+        grid-template-columns: 1fr !important;
+        gap: 16px !important;
+    }
+    
+    .panel, .panel.large {
+        height: auto !important;
+        min-height: 300px !important;
     }
 }
 
 @media (max-width: 768px) {
     .metric-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+    }
+    
+    .panel, .panel.large {
+        min-height: 250px !important;
+    }
+}
+
+@media (max-width: 640px) {
+    .metric-grid {
         grid-template-columns: 1fr !important;
-        gap: 16px !important;
+        gap: 10px !important;
     }
 }
 
@@ -76,8 +139,14 @@
     }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
     .metric-grid.reports-summary {
         grid-template-columns: 1fr !important;
     }
 }
+
+/* Tweak for reports summary grid spacing */
+#reports .metric-grid.reports-summary.enhanced-cards {
+    margin-top: 8px !important;
+}
+/* ST:TINI_1755139708_e868a412 */

@@ -9,21 +9,24 @@
 /* CRITICAL FIX: Grid Layout Override to fit within red frame and remove scrollbars */
 .grid-3-1.enhanced-layout {
     display: grid !important;
-    grid-template-columns: 2fr 1fr !important;
+    /* Use flexible columns instead of fixed widths */
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 560px) !important;
     gap: 20px !important;
-    height: 733px !important; /* Fixed height to match target */
-    max-height: 733px !important; /* Prevent overflow */
-    min-height: 733px !important;
+    /* Let height adapt */
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
     align-items: stretch !important;
-    overflow: hidden !important; /* Block any overflow */
+    overflow: visible !important;
 }
 
 /* Force all grid children to respect grid boundaries */
 .grid-3-1.enhanced-layout > * {
-    height: 733px !important; /* Fixed height for both panels */
-    max-height: 733px !important;
-    overflow: hidden !important;
-    min-height: 0 !important; /* Allow shrinking */
+    /* Remove forced equal heights */
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    min-height: 0 !important;
 }
 
 /* Container fixes to ensure no overflow outside red frame */
@@ -33,17 +36,19 @@
 .content-wrapper,
 .dashboard-content,
 .reports-section {
-    height: 100% !important;
-    max-height: 100% !important;
-    overflow: hidden !important;
+    /* Previously forced to 100% height and hidden overflow - relax for responsiveness */
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
     box-sizing: border-box !important;
 }
 
 /* Force override table container scroll */
 .panel .table-container.scroll {
-    max-height: calc(100% - 96px) !important; /* Updated: 52px header + 44px footer */
-    overflow: hidden !important;
-    height: calc(100% - 96px) !important;
+    /* Make scroll area relative to its own content instead of fixed parent height */
+    max-height: none !important;
+    overflow: auto !important;
+    height: auto !important;
 }
 
 /* Enhanced Summary Cards */
@@ -624,56 +629,959 @@
     transition: width 0.3s ease;
 }
 
-/* Responsive Design */
+/* ======================= Profile Modernization (clean, professional) ======================= */
+#profile {
+  --profile-surface: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  --profile-surface-dark: linear-gradient(135deg, #0f172a 0%, #111827 100%);
+  --profile-panel: #0f172a;
+  --profile-panel-2: #1e293b;
+  --accent: #22d3ee;
+  --accent-dark: #06b6d4;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --border: rgba(71,85,105,0.45);
+}
+
+/* Section shell: subtle card with original palette */
+#profile .activity-section {
+  background: var(--profile-surface-dark);
+  border: 1px solid rgba(34,211,238,0.14);
+  border-radius: 12px;
+  padding: clamp(14px, 1.6vw, 22px);
+  box-shadow: 0 6px 24px rgba(2,6,23,0.25);
+}
+#profile .activity-section + .activity-section { margin-top: clamp(12px, 1.4vw, 20px); }
+
+/* Section headers: compact, professional */
+#profile .activity-section .section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid rgba(148,163,184,0.14);
+}
+#profile .activity-section .section-title {
+  margin: 0;
+  font-size: clamp(16px, 1.4vw, 20px);
+  font-weight: 700;
+  color: var(--text);
+}
+
+/* Two-column content layout inside each section (auto responsive) */
+#profile .activity-section > div:not(.section-header) {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: clamp(12px, 1.4vw, 22px);
+  align-items: start;
+}
+
+/* Typography and spacing */
+#profile h3, #profile h4 { color: var(--text); margin: 8px 0 10px; font-weight: 600; }
+#profile label { color: var(--muted); font-size: 13px; margin-bottom: 6px; display: inline-block; }
+
+/* Modernize inputs/selects (scoped) */
+#profile input[type="text"],
+#profile input[type="email"],
+#profile input[type="password"],
+#profile input[type="number"],
+#profile select {
+  background: rgba(30,41,59,0.85);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--text);
+  padding: 10px 12px;
+  font-size: 14px;
+  width: 100%;
+  transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
+}
+#profile input:focus, #profile select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(34,211,238,0.12);
+  background: rgba(30,41,59,0.92);
+}
+#profile input[readonly] {
+  opacity: 0.8;
+  cursor: default;
+}
+#profile input[type="checkbox"] { accent-color: var(--accent); width: 16px; height: 16px; }
+
+/* Avatar block */
+#profile #previewAvatar {
+  width: clamp(120px, 12vw, 160px);
+  height: clamp(120px, 12vw, 160px);
+  border-radius: 50%;
+  background: #0b1220;
+  border: 2px solid rgba(34,211,238,0.45);
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.03), 0 0 0 6px rgba(34,211,238,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  overflow: hidden;
+}
+#profile #previewAvatar i { font-size: clamp(28px, 4vw, 48px); color: #6b7280; }
+#profile #avatarUpload { display: none; }
+
+/* Profile actions: quiet, not flashy */
+#profile button {
+  background: rgba(30,41,59,0.6);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all .2s ease;
+}
+#profile button:hover {
+  border-color: rgba(34,211,238,0.5);
+  color: var(--accent);
+}
+#profile #saveAvatarBtn,
+#profile .section-header button#saveProfileBtn {
+  background: linear-gradient(135deg, rgba(34,211,238,0.18), rgba(6,182,212,0.18));
+  border-color: rgba(34,211,238,0.45);
+}
+
+/* Security callouts inside profile */
+#profile .fa-shield-check { color: #10b981; }
+#profile .status-badge { border: 1px solid rgba(148,163,184,0.2); }
+
+/* Profile tables: compact professional look */
+#profile .table-container {
+  background: var(--profile-surface);
+  border: 1px solid rgba(34,211,238,0.14);
+  border-radius: 12px;
+  overflow: hidden;
+}
+#profile .table-container table thead { background: linear-gradient(135deg, #1e293b, #334155); }
+#profile .table-container th { color: var(--muted); font-weight: 600; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; }
+#profile .table-container td { color: var(--text); font-size: 13px; }
+#profile .table-container tbody tr:hover { background: rgba(34,211,238,0.05); }
+
+/* Preferences checkboxes spacing */
+#profile label > input[type="checkbox"] + span { margin-left: 8px; color: var(--text); }
+
+/* Responsive tweaks */
+@media (max-width: 520px) {
+  #profile .activity-section { padding: 12px; }
+  #profile button { width: 100%; justify-content: center; }
+}
+/* ===================== End Profile Modernization ===================== */
+
+/* Unified Reports Styles - Consolidated from reports-enhancement.css and reports-enhanced.css */
+/* This file replaces both reports-enhancement.css and reports-enhanced.css to eliminate conflicts */
+
+/* CRITICAL FIX: Grid Layout Override to fit within red frame and remove scrollbars */
+.grid-3-1.enhanced-layout {
+    display: grid !important;
+    /* Use flexible columns instead of fixed widths */
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 560px) !important;
+    gap: 20px !important;
+    /* Let height adapt */
+    height: auto !important;
+    max-height: none !important;
+    min-height: 0 !important;
+    align-items: stretch !important;
+    overflow: visible !important;
+}
+
+/* Force all grid children to respect grid boundaries */
+.grid-3-1.enhanced-layout > * {
+    /* Remove forced equal heights */
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    min-height: 0 !important;
+}
+
+/* Container fixes to ensure no overflow outside red frame */
+.reports-content,
+.reports-container,
+.main-content,
+.content-wrapper,
+.dashboard-content,
+.reports-section {
+    /* Previously forced to 100% height and hidden overflow - relax for responsiveness */
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    box-sizing: border-box !important;
+}
+
+/* Force override table container scroll */
+.panel .table-container.scroll {
+    /* Make scroll area relative to its own content instead of fixed parent height */
+    max-height: none !important;
+    overflow: auto !important;
+    height: auto !important;
+}
+
+/* Enhanced Summary Cards */
+.reports-summary.enhanced-cards {
+    gap: 20px;
+    margin-bottom: 30px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.modern-card {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    border: 1px solid rgba(34, 211, 238, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.modern-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #22d3ee, #06b6d4);
+}
+
+.card-icon {
+    background: linear-gradient(135deg, #22d3ee, #06b6d4);
+    color: white;
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+}
+
+.card-content {
+    flex: 1;
+}
+
+.card-content .stat-label {
+    font-size: 13px;
+    color: #94a3b8;
+    font-weight: 500;
+    margin-bottom: 4px;
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card-content .stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #22d3ee;
+    margin-bottom: 4px;
+    display: block;
+}
+
+.card-content .stat-trend {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.stat-trend.positive { color: #10b981; }
+.stat-trend.negative { color: #ef4444; }
+.stat-trend.neutral { color: #94a3b8; }
+
+/* Text utilities */
+.text-danger { color: #ef4444; }
+.text-success { color: #10b981; }
+.text-info { color: #22d3ee; }
+
+/* Enhanced Modern Inputs */
+.modern-input {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(71, 85, 105, 0.4);
+    border-radius: 8px;
+    color: #e2e8f0;
+    padding: 12px 16px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.modern-input:focus {
+    outline: none;
+    border-color: #22d3ee;
+    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1);
+    background: rgba(30, 41, 59, 0.9);
+}
+
+.modern-input::placeholder {
+    color: #64748b;
+}
+
+/* Enhanced Modern Buttons */
+.modern-btn {
+    background: linear-gradient(135deg, #22d3ee 0%, #06b6d4 100%);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 12px 24px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.modern-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 25px rgba(34, 211, 238, 0.3);
+}
+
+.modern-btn:active {
+    transform: translateY(0);
+}
+
+/* Unified Modern Panel - combines both versions with height fixes */
+.modern-panel {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important;
+    border: 1px solid rgba(34, 211, 238, 0.2) !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+    height: 100% !important;
+    max-height: 100% !important; /* Ensure no overflow */
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.modern-panel .panel-header {
+    background: linear-gradient(135deg, #334155, #475569) !important;
+    padding: 12px 20px !important; /* Reduced padding from 16px to 12px */
+    border-bottom: 1px solid rgba(34, 211, 238, 0.2) !important;
+    flex-shrink: 0 !important;
+    height: 52px !important; /* Reduced height from 68px to 52px */
+    max-height: 52px !important;
+}
+
+.panel-subtitle {
+    color: #94a3b8;
+    font-size: 13px;
+    margin-top: 4px;
+}
+
+/* Generate Panel - Force it to stay within grid boundaries - OVERRIDE admin-panel.css */
+.panel.generate-panel {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 100% !important;
+    max-height: 100% !important; /* Critical: prevent exceeding grid height */
+    min-height: 0 !important; /* Allow shrinking */
+    overflow: hidden !important; /* Hide overflow instead of expanding */
+}
+
+/* IMPORTANT: Override admin-panel.css .generate-panel rule */
+.grid-3-1.enhanced-layout .panel.generate-panel.full-height.modern-panel {
+    display: flex !important;
+    flex-direction: column !important;
+    height: 733px !important; /* Exact target height */
+    max-height: 733px !important;
+    width: 576px !important; /* Exact target width */
+    max-width: 576px !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+}
+
+.generate-panel .modern-form {
+    padding: 20px !important;
+    flex: 1 !important;
+    overflow-y: auto !important; /* Allow scrolling within the form only */
+    height: calc(100% - 52px) !important; /* Account for header */
+    max-height: calc(100% - 52px) !important;
+}
+
+/* Table Container - No scroll and exact height */
+.table-container {
+    flex: 1 !important;
+    height: calc(100% - 52px - 44px) !important; /* Updated: header 52px + footer 44px */
+    max-height: calc(100% - 52px - 44px) !important;
+    overflow: hidden !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Enhanced Modern Table */
+.enhanced-table {
+    background: #1e293b;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(34, 211, 238, 0.2);
+}
+
+.modern-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    background: transparent !important;
+    height: calc(100% - 44px) !important; /* Updated: Reserve space for smaller footer */
+    max-height: calc(100% - 44px) !important;
+    overflow: hidden !important;
+}
+
+.modern-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: linear-gradient(135deg, #1e293b, #334155);
+}
+
+.modern-table tbody {
+    height: calc(100% - 46px) !important; /* Updated: Account for smaller header */
+    max-height: calc(100% - 46px) !important;
+    overflow: hidden !important;
+    display: block !important;
+}
+
+.modern-table thead,
+.modern-table tbody tr {
+    display: table !important;
+    width: 100% !important;
+    table-layout: fixed !important;
+}
+
+.modern-table th {
+    background: rgba(15, 23, 42, 0.8);
+    color: #94a3b8;
+    font-weight: 600;
+    font-size: 0.65rem; /* Further reduced font size */
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding: 10px 14px; /* Further reduced padding */
+    text-align: left;
+    border-bottom: 2px solid rgba(34, 211, 238, 0.2);
+}
+
+.modern-table td {
+    padding: 10px 14px; /* Further reduced padding to match header */
+    border-bottom: 1px solid rgba(51, 65, 85, 0.3);
+    color: #e2e8f0;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+.modern-table tr:hover {
+    background: rgba(34, 211, 238, 0.05);
+    transition: background 0.2s ease;
+}
+
+.modern-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Report Row Styles */
+.report-row {
+    transition: all 0.2s ease;
+}
+
+.report-row:hover {
+    background: rgba(34, 211, 238, 0.08);
+}
+
+/* Name Container */
+.name-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.name-container .report-name {
+    font-weight: 500;
+    color: #e2e8f0;
+    font-size: 14px;
+}
+
+.name-container .report-description {
+    font-size: 12px;
+    color: #94a3b8;
+    margin-top: 2px;
+}
+
+.name-container .report-icon {
+    width: 32px;
+    height: 32px;
+    background: rgba(34, 211, 238, 0.1);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #22d3ee;
+    font-size: 14px;
+}
+
+/* Category Badge */
+.category-badge {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid transparent;
+}
+
+.category-badge.performance {
+    background: rgba(34, 211, 238, 0.1);
+    color: #22d3ee;
+    border-color: rgba(34, 211, 238, 0.2);
+}
+
+.category-badge.security {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.2);
+}
+
+.category-badge.analytics {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    border-color: rgba(16, 185, 129, 0.2);
+}
+
+.category-badge.system {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+    border-color: rgba(245, 158, 11, 0.2);
+}
+
+/* Status Badge */
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: 1px solid transparent;
+}
+
+.status-badge.active {
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981;
+    border-color: rgba(16, 185, 129, 0.2);
+}
+
+.status-badge.failed,
+.status-badge.inactive {
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.2);
+}
+
+.status-badge.pending {
+    background: rgba(245, 158, 11, 0.1);
+    color: #f59e0b;
+    border-color: rgba(245, 158, 11, 0.2);
+}
+
+.status-badge.completed {
+    background: rgba(34, 211, 238, 0.1);
+    color: #22d3ee;
+    border-color: rgba(34, 211, 238, 0.2);
+}
+
+/* Actions Cell */
+.actions-cell {
+    display: flex;
+    gap: 8px;
+    justify-content: flex-end;
+}
+
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    border: 1px solid rgba(71, 85, 105, 0.3);
+    background: rgba(30, 41, 59, 0.5);
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 12px;
+}
+
+.btn-icon:hover {
+    background: rgba(34, 211, 238, 0.1);
+    border-color: rgba(34, 211, 238, 0.3);
+    color: #22d3ee;
+}
+
+/* Search Container */
+.search-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    pointer-events: none;
+}
+
+.search-container .modern-input {
+    padding-left: 40px;
+}
+
+/* Modern Form */
+.modern-form {
+    padding: 24px;
+    background: transparent;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #e2e8f0;
+    font-weight: 500;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.modern-select {
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(71, 85, 105, 0.4);
+    border-radius: 8px;
+    color: #e2e8f0;
+    padding: 12px 16px;
+    font-size: 14px;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modern-select:focus {
+    outline: none;
+    border-color: #22d3ee;
+    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1);
+}
+
+/* Format Options */
+.format-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.format-option {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.format-card {
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid rgba(71, 85, 105, 0.3);
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+    transition: all 0.2s ease;
+}
+
+.format-option:hover .format-card,
+.format-option.selected .format-card {
+    background: rgba(34, 211, 238, 0.1);
+    border-color: rgba(34, 211, 238, 0.3);
+}
+
+.format-card .format-icon {
+    font-size: 24px;
+    color: #22d3ee;
+    margin-bottom: 8px;
+}
+
+.format-card .format-name {
+    color: #e2e8f0;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+/* Checkbox Group */
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+}
+
+.checkbox-option:hover {
+    background: rgba(34, 211, 238, 0.05);
+}
+
+.checkbox-option input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.checkmark {
+    width: 18px;
+    height: 18px;
+    background: rgba(30, 41, 59, 0.8);
+    border: 1px solid rgba(71, 85, 105, 0.4);
+    border-radius: 4px;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.checkbox-option input:checked ~ .checkmark {
+    background: #22d3ee;
+    border-color: #22d3ee;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 5px;
+    top: 2px;
+    width: 5px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-option input:checked ~ .checkmark:after {
+    display: block;
+}
+
+/* Progress bars */
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(51, 65, 85, 0.5);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #22d3ee, #06b6d4);
+    border-radius: 3px;
+    transition: width 0.3s ease;
+}
+
+/* === Reports header aligns to grid-3-1 ratio === */
+#reports .header {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(320px, 560px) !important;
+    align-items: center !important;
+    column-gap: 20px !important;
+}
+#reports .header .header-title {
+    margin: 0 !important;
+    align-self: center !important;
+}
+#reports .header .section-toolbar {
+    justify-self: end !important;
+    width: 100% !important; /* occupy the right column */
+    display: flex !important;
+    justify-content: flex-end !important;
+    gap: 12px !important;
+}
+#reports .header .filter-group { width: 100% !important; }
+
+@media (max-width: 1400px) {
+    #reports .header { grid-template-columns: 1fr 480px !important; }
+}
+@media (max-width: 1200px) {
+    #reports .header { grid-template-columns: 1fr 420px !important; column-gap: 16px !important; }
+}
+@media (max-width: 1024px) {
+    #reports .header {
+        grid-template-columns: 1fr !important;
+        grid-template-rows: auto auto !important;
+        row-gap: 12px !important;
+    }
+    #reports .header .section-toolbar { justify-self: stretch !important; }
+}
+
+/* Compact header (when toolbar collapsed) */
+#reports .header.compact{row-gap:0 !important}
+#reports .header.compact + .metric-grid{margin-top:8px !important}
+
+/* Responsive Design - Enhanced for all screen sizes */
+@media (max-width: 1400px) {
+    .grid-3-1.enhanced-layout {
+        grid-template-columns: 1fr 480px !important;
+    }
+    
+    .grid-3-1.enhanced-layout .panel.generate-panel.full-height.modern-panel {
+        width: 480px !important;
+        max-width: 480px !important;
+    }
+    
+    #reportGenerateForm.form-vertical.modern-form {
+        width: 456px !important; /* 480px - 24px padding */
+        max-width: 456px !important;
+    }
+}
+
+@media (max-width: 1200px) {
+    .grid-3-1.enhanced-layout {
+        grid-template-columns: 1fr 420px !important;
+        gap: 16px !important;
+    }
+    
+    .grid-3-1.enhanced-layout .panel.generate-panel.full-height.modern-panel {
+        width: 420px !important;
+        max-width: 420px !important;
+    }
+    
+    #reportGenerateForm.form-vertical.modern-form {
+        width: 396px !important; /* 420px - 24px padding */
+        max-width: 396px !important;
+    }
+    
+    .reports-summary.enhanced-cards {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 16px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .grid-3-1.enhanced-layout {
+        grid-template-columns: 1fr !important;
+        grid-template-rows: auto auto !important;
+        height: auto !important;
+        gap: 20px !important;
+    }
+    
+    .grid-3-1.enhanced-layout .panel.generate-panel.full-height.modern-panel {
+        width: 100% !important;
+        max-width: none !important;
+        height: auto !important;
+        max-height: none !important;
+    }
+    
+    #reportGenerateForm.form-vertical.modern-form {
+        width: calc(100% - 24px) !important;
+        max-width: none !important;
+        height: auto !important;
+        max-height: none !important;
+    }
+    
+    .reports-summary.enhanced-cards {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 15px;
+    }
+}
+
 @media (max-width: 768px) {
     .reports-summary.enhanced-cards {
-        grid-template-columns: 1fr;
-        gap: 15px;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
     }
     
     .modern-card {
-        padding: 16px;
+        padding: 14px;
         flex-direction: column;
         text-align: center;
-        gap: 12px;
+        gap: 10px;
     }
     
     .format-options {
         grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
     }
     
     .modern-table th,
     .modern-table td {
-        padding: 12px 8px;
-        font-size: 12px;
+        padding: 10px 6px;
+        font-size: 11px;
     }
     
     .actions-cell {
         justify-content: center;
     }
+    
+    .section-toolbar {
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+    }
+    
+    .filter-group {
+        justify-content: space-between;
+    }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 640px) {
+    .reports-summary.enhanced-cards {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
     .modern-card {
         padding: 12px;
+        flex-direction: row;
+        text-align: left;
+        gap: 12px;
+    }
+    
+    .card-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
     }
     
     .format-options {
         grid-template-columns: 1fr;
+        gap: 6px;
     }
     
     .modern-table {
-        font-size: 11px;
+        font-size: 10px;
     }
     
     .modern-table th,
     .modern-table td {
-        padding: 8px 6px;
+        padding: 8px 4px;
     }
     
     .actions-cell {
         flex-direction: column;
         align-items: center;
+        gap: 4px;
     }
 }
 
@@ -829,10 +1737,11 @@ body, html {
     height: 32px !important; /* Fixed height */
 }
 
-/* Ensure grid column width for generate panel */
-.grid-3-1.enhanced-layout {
-    grid-template-columns: 1fr 576px !important; /* Fixed 576px width for right column */
-}
+/* Ensure grid column width for generate panel - REMOVED FIXED OVERRIDE */
+/* This was preventing responsive design from working */
+/* .grid-3-1.enhanced-layout {
+    grid-template-columns: 1fr 576px !important;
+} */
 
 /* Override any min-height that might cause overflow */
 .panel.generate-panel.full-height.modern-panel {
@@ -841,18 +1750,59 @@ body, html {
     max-height: 100% !important;
 }
 
-/* CRITICAL: Override admin-panel.css form-vertical that's causing the overflow */
+/* CRITICAL: Responsive form adjustments */
 .generate-panel .form-vertical.modern-form {
     display: flex !important;
     flex-direction: column !important;
-    gap: 6px !important; /* Smaller gap for compact design */
-    padding: 12px !important; /* Smaller padding for 576px width */
+    gap: 6px !important;
+    padding: 12px !important;
     height: 681px !important; /* 733px - 52px header */
     max-height: 681px !important;
     width: 552px !important; /* 576px - 24px padding */
     max-width: 552px !important;
     overflow-y: auto !important;
     box-sizing: border-box !important;
+}
+
+/* Responsive form width adjustments with high priority */
+@media screen and (max-width: 1400px) {
+    .generate-panel .form-vertical.modern-form {
+        width: 456px !important; /* 480px - 24px padding */
+        max-width: 456px !important;
+    }
+    
+    .grid-3-1.enhanced-layout .panel.generate-panel.full-height.modern-panel {
+        width: 480px !important;
+        max-width: 480px !important;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .generate-panel .form-vertical.modern-form {
+        width: 396px !important; /* 420px - 24px padding */
+        max-width: 396px !important;
+    }
+    
+    .grid-3-1.enhanced-layout .panel.generate-panel.full-height.modern-panel {
+        width: 420px !important;
+        max-width: 420px !important;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .generate-panel .form-vertical.modern-form {
+        width: calc(100% - 24px) !important;
+        max-width: none !important;
+        height: auto !important;
+        max-height: none !important;
+    }
+    
+    .grid-3-1.enhanced-layout .panel.generate-panel.full-height.modern-panel {
+        width: 100% !important;
+        max-width: none !important;
+        height: auto !important;
+        max-height: none !important;
+    }
 }
 
 /* Target the specific form ID to ensure highest priority */
@@ -879,3 +1829,172 @@ body, html {
     overflow: hidden !important;
     max-height: 100% !important;
 }
+
+/* --- Clickability fix for Generate panel actions (ensure no overlays block clicks) --- */
+/* Make sure the generate panel and its actions sit above any adjacent/sticky elements */
+.grid-3-1.enhanced-layout .panel.generate-panel,
+.grid-3-1.enhanced-layout .panel.generate-panel .form-actions,
+.grid-3-1.enhanced-layout .panel.generate-panel .form-actions button {
+    position: relative !important;
+    z-index: 100 !important;
+    pointer-events: auto !important;
+}
+
+/* ===== Global fix: unify ALL metric-grid variants ===== */
+.metric-grid,
+.metric-grid.reports-summary,
+.metric-grid.reports-summary.enhanced-cards,
+#analytics .metric-grid {
+    display: grid !important;
+    /* Responsive columns that grow/shrink with viewport */
+    grid-template-columns: repeat(auto-fit, minmax(clamp(160px, 22vw, 260px), 1fr)) !important;
+    gap: clamp(12px, 1.5vw, 24px) !important;
+    width: 100% !important;
+}
+
+/* Ensure cards can shrink/grow within the grid */
+.metric-grid > * { min-width: 0 !important; max-width: 100% !important; }
+
+@media (max-width: 520px) {
+    .metric-grid,
+    .metric-grid.reports-summary,
+    .metric-grid.reports-summary.enhanced-cards,
+    #analytics .metric-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+/* Global responsive scaling for metric mini-cards */
+.metric-grid .stat-card.mini {
+    padding: clamp(10px, 1.2vw, 16px) !important;
+    min-height: clamp(78px, 10vh, 120px) !important;
+    border-radius: 10px !important;
+}
+
+/* Typography scales with viewport to keep layout consistent */
+.metric-grid .stat-label, #analytics .stat-label { font-size: clamp(11px, 0.9vw, 13px) !important; }
+.metric-grid .stat-value, #analytics .stat-value { font-size: clamp(20px, 2.2vw, 28px) !important; line-height: 1.1 !important; }
+.metric-grid .stat-trend, #analytics .stat-trend { font-size: clamp(10px, 0.8vw, 12px) !important; }
+
+/* ===== Responsive settings grid (auto resize with viewport) ===== */
+.settings-grid {
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(clamp(260px, 28vw, 420px), 1fr)) !important;
+    gap: clamp(12px, 1.6vw, 24px) !important;
+    width: 100% !important;
+    align-items: stretch !important;
+}
+.settings-grid > * { min-width: 0 !important; max-width: 100% !important; }
+
+/* Scale paddings and text so cards look balanced at all sizes */
+.settings-card .panel-header { padding: clamp(14px, 1.5vw, 20px) !important; }
+.settings-card .panel-title { font-size: clamp(14px, 1.2vw, 18px) !important; }
+.settings-content { padding: clamp(14px, 1.6vw, 22px) !important; }
+
+@media (max-width: 520px) {
+  .settings-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+}
+
+/* ===== Global Auto-size for Admin Panel ===== */
+/* Containers */
+.main-content, .content-section { width: 100% !important; box-sizing: border-box !important; }
+
+/* Dashboard grid becomes responsive */
+.dashboard-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(clamp(240px, 28vw, 380px), 1fr)) !important;
+  gap: clamp(12px, 1.6vw, 24px) !important;
+  width: 100% !important;
+}
+
+/* Dashboard cards scale with viewport */
+.dashboard-card {
+  padding: clamp(14px, 1.6vw, 22px) !important;
+  border-radius: clamp(10px, 1vw, 14px) !important;
+  min-height: clamp(120px, 18vh, 220px) !important;
+}
+.dashboard-card .card-title { font-size: clamp(12px, 1.1vw, 14px) !important; }
+.dashboard-card .card-value { font-size: clamp(22px, 2.6vw, 32px) !important; line-height: 1.1 !important; }
+.dashboard-card .card-change { font-size: clamp(11px, 0.95vw, 13px) !important; }
+
+/* Panels */
+.panel { width: 100% !important; border-radius: clamp(10px, 1vw, 14px) !important; }
+.panel.large { min-height: clamp(220px, 28vh, 360px) !important; }
+.panel-header { padding: clamp(14px, 1.5vw, 20px) !important; }
+.panel-title { font-size: clamp(16px, 1.4vw, 20px) !important; }
+
+/* Tables */
+.table-container { max-height: clamp(240px, 40vh, 520px) !important; overflow: auto !important; }
+.table-container * { font-size: clamp(12px, 1vw, 14px) !important; }
+
+/* Media responsiveness */
+img, canvas, svg, video { max-width: 100% !important; height: auto !important; }
+
+@media (max-width: 520px) {
+  .dashboard-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+}
+
+/* === Hotfix: prevent oversized settings columns wrapping to next row === */
+.settings-grid {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 380px)) !important; /* cap track width to ~380px */
+  justify-content: space-between !important; /* distribute leftover space */
+}
+@media (max-width: 1280px) {
+  .settings-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)) !important; }
+}
+
+/* === Clickability: ensure all action buttons in grid-2 work === */
+.grid-2 { position: relative; z-index: 1; }
+.grid-2 .panel { position: relative !important; z-index: 2 !important; overflow: visible !important; }
+.grid-2 .panel-header, .grid-2 .panel-actions, .grid-2 .panel-actions .btn-ghost {
+  position: relative !important;
+  z-index: 5 !important;
+  pointer-events: auto !important;
+}
+
+/* === Make risk-score & patch-level progress bars look like sparkline cards === */
+.stat-card[data-card="risk-score"] .progress-bar,
+.stat-card[data-card="patch-level"] .progress-bar {
+  height: 54px !important; /* same as .sparkline */
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-start !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  border: 1px dashed var(--border) !important;
+  border-radius: 8px !important;
+  margin-top: auto !important;
+}
+.stat-card[data-card="risk-score"] .progress-bar > div,
+.stat-card[data-card="patch-level"] .progress-bar > div {
+  height: 6px !important;
+  background: linear-gradient(90deg, var(--accent), var(--accent-dark)) !important;
+  border-radius: 4px !important;
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.25) inset !important;
+  margin: 0 10px !important;
+  transition: width .6s ease !important;
+}
+
+/* Align risk-score & patch-level cards to active-threats style */
+.stat-card[data-card="risk-score"],
+.stat-card[data-card="patch-level"] {
+  padding: clamp(12px, 1.4vw, 16px) !important;
+}
+.stat-card[data-card="risk-score"] .stat-head,
+.stat-card[data-card="patch-level"] .stat-head { margin-bottom: 8px !important; }
+.stat-card[data-card="risk-score"] .stat-value,
+.stat-card[data-card="patch-level"] .stat-value { font-size: clamp(22px, 2.3vw, 28px) !important; margin-bottom: 6px !important; }
+
+/* === Iconized ghost buttons for security panels === */
+.panel-actions .btn-ghost.small[data-action="refresh-threats"]::before,
+.panel-actions .btn-ghost.small[data-action="refresh-controls"]::before,
+.header .btn-ghost[data-action="refresh-security"]::before {
+  content: "\f2f1"; /* fa-rotate-right */
+  font-family: "Font Awesome 6 Free"; font-weight: 900;
+}
+/* Place icon-only buttons with proper size */
+.btn-ghost.small::before, .header .btn-ghost::before { display:inline-block; font-size:14px; }
+
+/* Spin animation when JS adds .spinning */
+.btn-ghost.spinning::before, .btn-ghost.small.spinning::before { animation: fa-spin 0.9s linear infinite; }
+@keyframes fa-spin { 0%{transform:rotate(0)} 100%{transform:rotate(360deg)} }
+/* ST:TINI_1755139708_e868a412 */

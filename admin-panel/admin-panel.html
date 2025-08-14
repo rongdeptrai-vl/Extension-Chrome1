@@ -16,7 +16,28 @@
     <link rel="stylesheet" href="styles/analytics-fullscreen.css">
     <link rel="stylesheet" href="styles/professional-charts.css">
     <link rel="stylesheet" href="styles/reports-unified.css">
+    <link rel="stylesheet" href="styles/simple-settings-enhancement.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+    
+    <!-- Professional Minimal Theme overrides (modern, neutral, non-flashy) -->
+    <link rel="stylesheet" href="styles/professional-minimal.css">
     <style>
+        /* EMERGENCY RESPONSIVE OVERRIDE - Highest Priority */
+        @media screen and (max-width: 1400px) {
+            .grid-3-1.enhanced-layout { grid-template-columns: 1fr 480px !important; }
+        }
+        @media screen and (max-width: 1200px) {
+            .grid-3-1.enhanced-layout { grid-template-columns: 1fr 420px !important; }
+        }
+        @media screen and (max-width: 1024px) {
+            .grid-3-1.enhanced-layout { 
+                grid-template-columns: 1fr !important; 
+                grid-template-rows: auto auto !important; 
+                height: auto !important; 
+            }
+        }
+        
         /* Accessibility improvements */
         .skip-link {
             position: absolute;
@@ -56,6 +77,210 @@
             border: none;
             padding: 0;
             margin: 0;
+        }
+
+        /* Final responsive overrides */
+        html, body { min-width: 320px !important; overflow-x: hidden !important; overflow-y: auto !important; }
+        .container { min-height: 100vh !important; height: auto !important; }
+        .grid-3-1, .grid-3-1.enhanced-layout { height: auto !important; }
+        @media (max-width: 1200px) {
+            .grid-3-1, .grid-3-1.enhanced-layout { grid-template-columns: 1fr !important; }
+        }
+
+        /* Security Tips Panel - Legacy (removed for clean design) */
+        /*
+        .security-tips-panel {
+            background: #f9f9f9;
+            border: 1px solid #e1e1e1;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        */
+        .security-tips-panel h3 {
+            font-size: 1.25rem;
+            margin-bottom: 15px;
+        }
+        .tips-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .tips-list li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .tips-list i {
+            color: #007bff;
+            margin-right: 10px;
+        }
+        .shield-illustration {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        .shield-illustration svg {
+            width: 100%;
+            max-width: 180px;
+            height: auto;
+        }
+
+        /* Password Security Grid Layout */
+        .password-security-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 20px;
+            align-items: start;
+        }
+
+        /* Password Settings Panel (Left Column) */
+        .password-settings-panel {
+            background: transparent;
+            padding: 0;
+        }
+
+        .password-settings-panel h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin: 0 0 8px 0;
+        }
+
+        .section-description {
+            color: #8b949e;
+            font-size: 0.875rem;
+            margin: 0 0 24px 0;
+        }
+
+        /* Password Form */
+        .password-form .form-group {
+            margin-bottom: 20px;
+        }
+
+        .password-form label {
+            display: block;
+            font-weight: 500;
+            color: #ffffff;
+            margin-bottom: 8px;
+            font-size: 0.875rem;
+        }
+
+        .password-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        /* Right icon inside password input */
+        .password-input-wrapper .left-icon {
+            position: absolute;
+            right: 12px;
+            color: #8b949e;
+            pointer-events: none;
+            font-size: 1rem;
+            line-height: 1;
+            width: 28px;
+            height: 28px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(110,118,129,0.2);
+            border-radius: 8px;
+        }
+        /* Adjust padding to make room for the right icon */
+        .password-input-wrapper input {
+            width: 100%;
+            padding: 12px 45px 12px 16px;
+            border: 1px solid #30363d;
+            border-radius: 8px;
+            font-size: 0.875rem;
+            background: #21262d;
+            color: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        .password-input-wrapper input:focus {
+            outline: none;
+            border-color: #58a6ff;
+            background: #21262d;
+            box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1);
+        }
+
+        .password-input-wrapper input::placeholder {
+            color: #8b949e;
+        }
+
+        /* Hover/focus state for icon to match input focus */
+        .password-input-wrapper input:focus ~ .left-icon,
+        .password-input-wrapper:hover .left-icon {
+            color: #c9d1d9;
+            background: rgba(88,166,255,0.18);
+        }
+
+        /* Security Tips Panel (Right Column) */
+        .security-tips-panel {
+            background: transparent;
+            padding: 0;
+            text-align: center;
+        }
+
+        .security-tips-panel h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin: 0 0 20px 0;
+        }
+
+        .tips-content {
+            text-align: left;
+        }
+
+        .security-tips-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 24px 0;
+        }
+
+        .tip-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            font-size: 0.875rem;
+            color: #8b949e;
+        }
+
+        .tip-icon {
+            color: #58a6ff;
+            margin-right: 12px;
+            font-size: 1rem;
+            width: 16px;
+            text-align: center;
+        }
+
+        .shield-illustration {
+            display: flex;
+            justify-content: center;
+            margin-top: 16px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .password-security-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .password-security-grid {
+                gap: 16px;
+            }
+            
+            .password-form .form-group {
+                margin-bottom: 16px;
+            }
         }
     </style>
 </head>
@@ -231,8 +456,8 @@
                 <div class="activity-section">
                     <div class="section-header">
                         <h2 class="section-title" data-i18n="user_management_title">用户管理</h2>
-                        <button type="button" name="addUserBtn" data-i18n="add_user_btn">
-                            <i class="fas fa-plus"></i> <span data-i18n="add_user_btn">添加用户</span>
+                        <button type="button" name="addUserBtn" class="btn-outline-accent add-user-trigger" data-i18n="add_user_btn">
+                            <i class="fas fa-user-plus"></i> <span data-i18n="add_user_btn">添加用户</span>
                         </button>
                     </div>
                     <div class="table-container">
@@ -391,8 +616,8 @@
                 <div class="activity-section">
                     <div class="section-header">
                         <h2 class="section-title" data-i18n="user_management">User Management</h2>
-                        <button type="button" id="addUserBtn" name="addUserBtn">
-                            <i class="fas fa-plus"></i> <span data-i18n="add_user">添加用户</span>
+                        <button type="button" id="addUserBtn" name="addUserBtn" class="btn-outline-accent add-user-trigger">
+                            <i class="fas fa-user-plus"></i> <span data-i18n="add_user">添加用户</span>
                         </button>
                     </div>
                     <div class="table-container">
@@ -455,61 +680,6 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
-
-                    <!-- Add/Edit User Form -->
-                    <div id="userFormContainer">
-                        <div class="section-header">
-                            <h3 id="formTitle" data-i18n="add_new_user">Add New User</h3>
-                        </div>
-                        <form id="userForm">
-                            <fieldset>
-                                <legend class="sr-only">User Information</legend>
-                                <div>
-                                    <label for="userName" data-i18n="full_name">Full Name</label>
-                                    <input type="text" id="userName" name="userName" required autocomplete="name" aria-describedby="userName-error">
-                                    <div id="userName-error" class="error-message" role="alert" aria-live="polite"></div>
-                                </div>
-                                <div>
-                                    <label for="userEmail" data-i18n="email">Email</label>
-                                    <input type="email" id="userEmail" name="userEmail" required autocomplete="email" aria-describedby="userEmail-error">
-                                    <div id="userEmail-error" class="error-message" role="alert" aria-live="polite"></div>
-                                </div>
-                            </fieldset>
-                            <fieldset>
-                                <legend class="sr-only">User Permissions and Status</legend>
-                                <div>
-                                    <label for="userRole" data-i18n="role">Role</label>
-                                    <select id="userRole" name="userRole" required aria-describedby="userRole-error">
-                                        <option value="admin" data-i18n="admin">Admin</option>
-                                        <option value="user" selected data-i18n="user">User</option>
-                                        <option value="employee" data-i18n="employee">Employee</option>
-                                        <option value="manager" data-i18n="manager">Manager</option>
-                                    </select>
-                                    <div id="userRole-error" class="error-message" role="alert" aria-live="polite"></div>
-                                </div>
-                                <div>
-                                    <label for="userStatus" data-i18n="status">Status</label>
-                                    <select id="userStatus" name="userStatus" required aria-describedby="userStatus-error">
-                                        <option value="active" selected data-i18n="active">Active</option>
-                                        <option value="pending" data-i18n="pending">Pending</option>
-                                        <option value="inactive" data-i18n="inactive">Inactive</option>
-                                        <option value="suspended" data-i18n="suspended">Suspended</option>
-                                    </select>
-                                    <div id="userStatus-error" class="error-message" role="alert" aria-live="polite"></div>
-                                </div>
-                            </fieldset>
-                            <div>
-                                <button type="button" id="cancelUserForm" 
-                                       >
-                                    <span data-i18n="cancel">Cancel</span>
-                                </button>
-                                <button type="submit" id="saveUserBtn" 
-                                       >
-                                    <span data-i18n="add_user">添加用户</span>
-                                </button>
-                            </div>
-                        </form>
                     </div>
                 </div>
 
@@ -668,58 +838,107 @@
                     </div>
                 </div>
 
-                <!-- Security Settings -->
+                <!-- Account Security Section -->
                 <div class="activity-section">
                     <div class="section-header">
-                        <h2 class="section-title" data-i18n="account_security">Account Security</h2>
-                        <button id="changePasswordBtn">
-                            <i class="fas fa-key"></i> <span data-i18n="change_password">Change Password</span>
+                        <h2 class="section-title" data-i18n="account_security">账户安全</h2>
+                        <button id="changePasswordBtn" class="btn-primary">
+                            <i class="fas fa-edit"></i> <span data-i18n="change_password">更改密码</span>
                         </button>
                     </div>
-                    <div>
-                        <div>
-                            <h3 data-i18n="password_settings">Password Settings</h3>
-                            <form id="passwordChangeForm">
+                    
+                    <!-- Two-column layout for password settings -->
+                    <div class="password-security-grid">
+                        <!-- Left Column: Password Settings -->
+                        <div class="password-settings-panel">
+                            <h3 data-i18n="password_settings">密码设置</h3>
+                            <p class="section-description" data-i18n="current_password_desc">当前密码</p>
+                            
+                            <form id="passwordChangeForm" class="password-form">
                                 <!-- Hidden username for accessibility compliance -->
                                 <input type="text" name="username" autocomplete="username" style="display:none;" value="admin">
-                                <div>
-                                    <label for="currentPassword" data-i18n="current_password">Current Password</label>
-                                    <input id="currentPassword" name="currentPassword" type="password" autocomplete="current-password" data-i18n-placeholder="enter_current_password">
+                                
+                                <div class="form-group">
+                                    <label for="currentPassword" data-i18n="current_password">当前密码</label>
+                                    <div class="password-input-wrapper">
+                                        <input id="currentPassword" name="currentPassword" type="password" 
+                                               autocomplete="current-password" 
+                                               data-i18n-placeholder="enter_current_password"
+                                               placeholder="输入当前密码">
+                                        <span class="left-icon"><i class="fas fa-lock"></i></span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <label for="newPassword" data-i18n="new_password">New Password</label>
-                                    <input id="newPassword" name="newPassword" type="password" autocomplete="new-password" data-i18n-placeholder="enter_new_password">
+                                
+                                <div class="form-group">
+                                    <label for="newPassword" data-i18n="new_password">新密码</label>
+                                    <div class="password-input-wrapper">
+                                        <input id="newPassword" name="newPassword" type="password" 
+                                               autocomplete="new-password" 
+                                               data-i18n-placeholder="enter_new_password"
+                                               placeholder="输入新密码">
+                                        <span class="left-icon"><i class="fas fa-lock"></i></span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <label for="confirmPassword" data-i18n="confirm_new_password">Confirm New Password</label>
-                                    <input id="confirmPassword" name="confirmPassword" type="password" autocomplete="new-password" data-i18n-placeholder="confirm_new_password_placeholder">
+                                
+                                <div class="form-group">
+                                    <label for="confirmPassword" data-i18n="confirm_new_password">确认新密码</label>
+                                    <div class="password-input-wrapper">
+                                        <input id="confirmPassword" name="confirmPassword" type="password" 
+                                               autocomplete="new-password" 
+                                               data-i18n-placeholder="confirm_new_password_placeholder"
+                                               placeholder="确认新密码">
+                                        <span class="left-icon"><i class="fas fa-lock"></i></span>
+                                    </div>
                                 </div>
                             </form>
                         </div>
-                        <div>
-                            <h3 data-i18n="two_factor_auth">Two-Factor Authentication</h3>
-                            <div>
-                                <div>
-                                    <i class="fas fa-shield-check"></i>
-                                    <span data-i18n="two_fa_enabled">2FA Enabled</span>
+                        
+                        <!-- Right Column: Security Tips -->
+                        <div class="security-tips-panel">
+                            <h3>安全提示</h3>
+                            <div class="tips-content">
+                                <ul class="security-tips-list">
+                                    <li class="tip-item">
+                                        <i class="fas fa-lock tip-icon"></i>
+                                        <span>长度至少 12 个字符</span>
+                                    </li>
+                                    <li class="tip-item">
+                                        <i class="fas fa-shield-alt tip-icon"></i>
+                                        <span>使用复杂密码易猜短语</span>
+                                    </li>
+                                    <li class="tip-item">
+                                        <i class="fas fa-ban tip-icon"></i>
+                                        <span>不要在多个网站重复使用</span>
+                                    </li>
+                                </ul>
+                                
+                                <div class="shield-illustration">
+                                    <!-- Simple SVG shield without background/border -->
+                                    <svg width="140" height="140" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <defs>
+                                            <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                <stop offset="0%" stop-color="#58a6ff"/>
+                                                <stop offset="100%" stop-color="#388bfd"/>
+                                            </linearGradient>
+                                        </defs>
+                                        
+                                        <!-- Shield body only -->
+                                        <path d="M100 20C125 35 155 40 180 45C182 125 160 170 100 195C40 170 18 125 20 45C45 40 75 35 100 20Z" 
+                                              fill="url(#shieldGradient)"/>
+                                        
+                                        <!-- Lock body -->
+                                        <rect x="75" y="100" width="50" height="40" rx="8" fill="#ffffff" opacity="0.9"/>
+                                        
+                                        <!-- Lock shackle -->
+                                        <path d="M88 100V88C88 78 93 70 100 70S112 78 112 88V100H105V88C105 82 103 78 100 78S95 82 95 88V100H88Z" 
+                                              fill="#ffffff" opacity="0.9"/>
+                                        
+                                        <!-- Keyhole -->
+                                        <circle cx="100" cy="118" r="4" fill="#58a6ff"/>
+                                        <rect x="98" y="118" width="4" height="10" rx="2" fill="#58a6ff"/>
+                                    </svg>
                                 </div>
-                                <p data-i18n="account_protected">Your account is protected with two-factor authentication</p>
                             </div>
-                            <div>
-                                <label>
-                                    <input type="checkbox" checked disabled>
-                                    <span data-i18n="sms_authentication">📱 SMS Authentication</span>
-                                </label>
-                            </div>
-                            <div>
-                                <label>
-                                    <input type="checkbox" id="emailVerification" name="emailVerification" checked>
-                                    <span data-i18n="email_verification">📧 Email Verification</span>
-                                </label>
-                            </div>
-                            <button>
-                                <i class="fas fa-qrcode"></i> <span data-i18n="view_recovery_codes">View Recovery Codes</span>
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -865,28 +1084,28 @@
                         </div>
                         <div class="controls-matrix">
                             <div class="control-item" data-control="mfa">
-                                <span data-i18n="security_control_mfa">多因素认证</span>
-                                <span class="control-status enabled" data-i18n="security_enabled">已启用</span>
+                                <div class="control-label"><i class="fas fa-user-shield"></i><span data-i18n="security_control_mfa">多因素认证</span></div>
+                                <span class="control-status pill enabled" data-i18n="security_enabled">已启用</span>
                             </div>
                             <div class="control-item" data-control="passwordPolicy">
-                                <span data-i18n="security_control_password_policy">密码策略</span>
-                                <span class="control-status enabled" data-i18n="security_enabled">已启用</span>
+                                <div class="control-label"><i class="fas fa-key"></i><span data-i18n="security_control_password_policy">密码策略</span></div>
+                                <span class="control-status pill enabled" data-i18n="security_enabled">已启用</span>
                             </div>
                             <div class="control-item" data-control="ipFiltering">
-                                <span data-i18n="security_control_ip_filtering">IP过滤</span>
-                                <span class="control-status disabled" data-i18n="security_disabled">已禁用</span>
+                                <div class="control-label"><i class="fas fa-filter"></i><span data-i18n="security_control_ip_filtering">IP过滤</span></div>
+                                <span class="control-status pill disabled" data-i18n="security_disabled">已禁用</span>
                             </div>
                             <div class="control-item" data-control="waf">
-                                <span data-i18n="security_control_waf">网络应用防火墙</span>
-                                <span class="control-status enabled" data-i18n="security_enabled">已启用</span>
+                                <div class="control-label"><i class="fas fa-shield-halved"></i><span data-i18n="security_control_waf">网络应用防火墙</span></div>
+                                <span class="control-status pill enabled" data-i18n="security_enabled">已启用</span>
                             </div>
                             <div class="control-item" data-control="rateLimit">
-                                <span data-i18n="security_control_rate_limit">速率限制</span>
-                                <span class="control-status enabled" data-i18n="security_enabled">已启用</span>
+                                <div class="control-label"><i class="fas fa-gauge-high"></i><span data-i18n="security_control_rate_limit">速率限制</span></div>
+                                <span class="control-status pill enabled" data-i18n="security_enabled">已启用</span>
                             </div>
                             <div class="control-item" data-control="ids">
-                                <span data-i18n="security_control_intrusion_detection">入侵检测</span>
-                                <span class="control-status disabled" data-i18n="security_disabled">已禁用</span>
+                                <div class="control-label"><i class="fas fa-user-secret"></i><span data-i18n="security_control_intrusion_detection">入侵检测</span></div>
+                                <span class="control-status pill disabled" data-i18n="security_disabled">已禁用</span>
                             </div>
                         </div>
                     </div>
@@ -995,9 +1214,6 @@
                                 <option value="processing" data-i18n="status_processing">处理中</option>
                                 <option value="failed" data-i18n="status_failed">失败</option>
                             </select>
-                            <button class="btn-ghost" data-action="refresh-reports" data-i18n-title="refresh_tooltip" title="刷新">
-                                <i class="fas fa-sync-alt"></i>
-                            </button>
                         </div>
                         <button id="createReportBtn" class="btn-primary modern-btn" data-action="open-report-modal">
                             <i class="fas fa-plus"></i>
@@ -1241,9 +1457,6 @@
                                         <td data-i18n="time_2_days_ago">2天前</td>
                                         <td>5.7 MB</td>
                                         <td><span class="status-badge ready" data-i18n="status_completed">已完成</span></td>
-                                        <td class="actions-cell">
-                                            <button class="btn-icon" title="下载" data-i18n-title="download_tooltip"><i class="fas fa-download"></i></button>
-                                            <button class="btn-icon" title="查看" data-i18n-title="view_tooltip"><i class="fas fa-eye"></i></button>
                                             <button class="btn-icon" title="分享" data-i18n-title="share_tooltip"><i class="fas fa-share"></i></button>
                                         </td>
                                     </tr>
@@ -1356,7 +1569,7 @@
                                 <h3 data-i18n="no_reports_title">暂无报告</h3>
                                 <p data-i18n="reports_no_results">没有找到符合条件的报告</p>
                                 <button class="btn-primary" data-action="open-report-modal">
-                                    <i class="fas fa-plus"></i> <span data-i18n="create_first_report">创建第一个报告</span>
+                                    <i class="fas fa-plus" style="font-size:14px"></i> <span data-i18n="create_first_report">创建第一个报告</span>
                                 </button>
                             </div>
                         </div> <!-- end first panel -->
@@ -1380,6 +1593,7 @@
                                 </select>
                             </div>
                             
+
                             <div class="form-group">
                                 <label for="reportRange" class="form-label">
                                     <i class="fas fa-calendar-alt"></i>
@@ -1457,7 +1671,7 @@
                                         <i class="fas fa-spinner fa-spin"></i>
                                     </div>
                                 </button>
-                                <button type="button" id="cancelReportForm" name="cancelReportForm" class="btn-secondary w-100" style="margin-top: 10px;" data-i18n="cancel">
+                                <button type="button" id="cancelReportForm" name="cancelReportForm" class="btn-secondary w-100" style="margin-top: 10px;" data-i18n="取消">
                                     取消
                                 </button>
                                 <p class="form-note">
@@ -1723,3 +1937,4 @@
 </html>
 
 <!-- ST:TINI_1754998490_e868a412 -->
+<!-- ST:TINI_1755139708_e868a412 -->

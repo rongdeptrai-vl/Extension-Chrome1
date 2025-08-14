@@ -42,9 +42,6 @@ class ReportsManager {
 
         // Action buttons
         document.addEventListener('click', (e) => {
-            if (e.target.matches('[data-action="refresh-reports"]')) {
-                this.refreshReports();
-            }
             if (e.target.matches('[data-action="open-report-modal"]')) {
                 this.scrollToForm();
             }
@@ -425,18 +422,6 @@ class ReportsManager {
         });
     }
 
-    refreshReports() {
-        const refreshBtn = document.querySelector('[data-action="refresh-reports"]');
-        if (refreshBtn) {
-            refreshBtn.classList.add('fa-spin');
-            setTimeout(() => {
-                refreshBtn.classList.remove('fa-spin');
-                this.loadReports();
-                this.showNotification('报告列表已刷新', 'info');
-            }, 1000);
-        }
-    }
-
     downloadReport(reportId) {
         this.showNotification(`正在下载报告 ${reportId}...`, 'info');
         // Simulate download
@@ -491,3 +476,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Export for global access
 window.ReportsManager = ReportsManager;
+// ST:TINI_1755139708_e868a412
