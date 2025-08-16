@@ -76,9 +76,25 @@
 
     // Tạo một thực thể duy nhất của Event Bus và gắn nó vào đối tượng window
     // để tất cả các script khác có thể truy cập một cách dễ dàng.
-    if (!window.TINI_SECURITY_BUS) {
-        window.TINI_SECURITY_BUS = new SecurityEventBus();
-        console.log('✅ [BUS] TINI Security Event Bus is now live.');
+    if (typeof window !== 'undefined') {
+        if (!window.TINI_SECURITY_BUS) {
+            window.TINI_SECURITY_BUS = new SecurityEventBus();
+            console.log('✅ [BUS] TINI Security Event Bus is now live.');
+        }
+    } else {
+        // Node.js environment
+        if (typeof global !== 'undefined') {
+            if (!global.TINI_SECURITY_BUS) {
+                global.TINI_SECURITY_BUS = new SecurityEventBus();
+                console.log('✅ [BUS] TINI Security Event Bus is now live (Node.js).');
+            }
+        }
+        
+        // Export for Node.js
+        if (typeof module !== 'undefined' && module.exports) {
+            module.exports = SecurityEventBus;
+        }
     }
 
 })();
+// ST:TINI_1755361782_e868a412

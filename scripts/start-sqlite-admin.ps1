@@ -91,7 +91,7 @@ if (-not $allFilesExist) {
 
 Write-Host ""
 Write-Host "[INFO] Starting TINI Admin Panel with SQLite integration..." -ForegroundColor Yellow
-Write-Host "[INFO] Admin Panel high ports default: 55055 (fallbacks 55056,55057)" -ForegroundColor Cyan
+Write-Host "[INFO] Admin Panel high ports default: 55057 (fallbacks 55058,55059)" -ForegroundColor Cyan
 
 # Start admin dashboard server
 Write-Host "[INFO] Starting admin dashboard server on port 8099..." -ForegroundColor Yellow

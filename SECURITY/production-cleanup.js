@@ -53,30 +53,45 @@ class ProductionCleanup {
     }
 
     cleanTestReferences() {
-        // Remove any test-related global variables
-        if (window.testRunner) {
-            delete window.testRunner;
-            console.log('🧹 Removed testRunner from global scope');
-        }
-        
-        if (window.debugMode) {
-            delete window.debugMode;
-            console.log('🧹 Removed debugMode from global scope');
-        }
-        
-        // Clean localStorage from test data
-        const testKeys = [];
-        for (let i = 0; i < localStorage.length; i++) {
-            const key = localStorage.key(i);
-            if (key && (key.includes('test') || key.includes('debug') || key.includes('temp'))) {
-                testKeys.push(key);
+        // Remove any test-related global variables (browser environment only)
+        if (typeof window !== 'undefined') {
+            if (window.testRunner) {
+                delete window.testRunner;
+                console.log('🧹 Removed testRunner from global scope');
+            }
+            
+            if (window.debugMode) {
+                delete window.debugMode;
+                console.log('🧹 Removed debugMode from global scope');
+            }
+            
+            // Clean localStorage from test data
+            if (typeof localStorage !== 'undefined') {
+                const testKeys = [];
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    if (key && (key.includes('test') || key.includes('debug') || key.includes('temp'))) {
+                        testKeys.push(key);
+                    }
+                }
+                
+                testKeys.forEach(key => {
+                    localStorage.removeItem(key);
+                    console.log(`🧹 Removed test data: ${key}`);
+                });
+            }
+        } else {
+            // In Node.js environment, clean global test variables
+            if (global.testRunner) {
+                delete global.testRunner;
+                console.log('🧹 Removed testRunner from global scope');
+            }
+            
+            if (global.debugMode) {
+                delete global.debugMode;
+                console.log('🧹 Removed debugMode from global scope');
             }
         }
-        
-        testKeys.forEach(key => {
-            localStorage.removeItem(key);
-            console.log(`🧹 Removed test data: ${key}`);
-        });
     }
 
     // Prevent test file loading
@@ -102,19 +117,25 @@ class ProductionCleanup {
 
     // Production mode enforcer
     enforceProductionMode() {
-        // Block debug functions
-        window.debug = () => {
-            console.error('🚫 DEBUG FUNCTIONS DISABLED IN PRODUCTION');
-        };
-        
-        // Block test functions
-        window.test = () => {
-            console.error('🚫 TEST FUNCTIONS DISABLED IN PRODUCTION');
-        };
-        
-        // Set production flag
-        window.PRODUCTION_MODE = true;
-        window.NODE_ENV = 'production';
+        if (typeof window !== 'undefined') {
+            // Block debug functions
+            window.debug = () => {
+                console.error('🚫 DEBUG FUNCTIONS DISABLED IN PRODUCTION');
+            };
+            
+            // Block test functions
+            window.test = () => {
+                console.error('🚫 TEST FUNCTIONS DISABLED IN PRODUCTION');
+            };
+            
+            // Set production flag
+            window.PRODUCTION_MODE = true;
+            window.NODE_ENV = 'production';
+        } else {
+            // Node.js environment
+            global.PRODUCTION_MODE = true;
+            process.env.NODE_ENV = 'production';
+        }
         
         console.log('🔒 PRODUCTION MODE ENFORCED');
     }
@@ -123,8 +144,15 @@ class ProductionCleanup {
 // Initialize production cleanup immediately
 new ProductionCleanup();
 
-// Export for manual cleanup if needed
-window.ProductionCleanup = ProductionCleanup;
+// Export for both browser and Node.js
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = ProductionCleanup;
+}
+
+if (typeof window !== 'undefined') {
+    window.ProductionCleanup = ProductionCleanup;
+}
 
 console.log('✅ PRODUCTION CLEANUP ACTIVE - No test files will be allowed');
 console.log('🔒 This is a PROFESSIONAL PRODUCTION PROJECT');
+// ST:TINI_1755361782_e868a412

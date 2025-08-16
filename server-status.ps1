@@ -10,7 +10,7 @@ Write-Host "╚═════════════════════�
 
 # Server definitions
 $servers = @(
-    @{Name="Panel Server"; Port=55055; Script="admin-panel/server.js"; URL="http://localhost:55055"},
+    @{Name="Panel Server"; Port=55057; Script="admin-panel/server.js"; URL="http://localhost:55057"},
     @{Name="Gateway Server"; Port=8099; Script="scripts/start-gateway.js"; URL="http://localhost:8099"},  
     @{Name="API Server"; Port=5001; Script="core/api-server.js"; URL="http://localhost:5001"},
     @{Name="Dashboard Server"; Port=3004; Script="core/admin-dashboard-server.js"; URL="http://localhost:3004"}
@@ -87,7 +87,7 @@ if ($runningServers -eq $totalServers) {
 
 Write-Host "`n💻 ACCESS URLS:" -ForegroundColor Cyan
 Write-Host "===============" -ForegroundColor Cyan
-Write-Host "📱 Admin Panel: http://localhost:55055/admin-panel.html" -ForegroundColor White
+Write-Host "📱 Admin Panel: http://localhost:55057/admin-panel.html" -ForegroundColor White
 Write-Host "🌐 Gateway: http://localhost:8099" -ForegroundColor White  
 Write-Host "⚡ API: http://localhost:5001" -ForegroundColor White
 Write-Host "📊 Dashboard: http://localhost:3004" -ForegroundColor White

@@ -1,7 +1,7 @@
 /* © 2024 TINI COMPANY - CONFIDENTIAL */
 /* Employee: rongdeptrai-vl <rongdz2307@gmail.com> */
-/* Commit: 2f8b8da | Time: 2025-08-14T02:48:28Z */
-/* Watermark: TINI_1755139708_e868a412 | TINI_WATERMARK */
+/* Commit: 8d90861 | Time: 2025-08-16T16:29:42Z */
+/* Watermark: TINI_1755361782_e868a412 | TINI_WATERMARK */
 /* WARNING: Unauthorized distribution is prohibited */
 /* Professional Minimal Theme (neutral, modern, not flashy)
    Scope: Admin Panel UI overrides
@@ -22,6 +22,14 @@
   --radius: 10px;
   --shadow-sm: 0 1px 2px rgba(0,0,0,0.18);
   --shadow-md: 0 6px 18px rgba(0,0,0,0.22);
+
+  /* spacing scale for consistent rhythm */
+  --space-1: 6px;
+  --space-2: 10px;
+  --space-3: 14px;
+  --space-4: 20px;
+  --space-5: 24px;
+  --space-6: 32px;
 }
 
 /* Base */
@@ -48,20 +56,20 @@ html, body {
 .nav-link { color: var(--muted) !important; padding: 10px 12px; border-radius: 8px; display: flex; align-items: center; gap: 10px; transition: background .15s ease, color .15s ease; }
 .nav-link .nav-icon { color: currentColor; }
 .nav-link:hover { background: rgba(255,255,255,0.04); color: var(--text) !important; }
-.nav-link.active { background: rgba(59,130,246,0.12); color: var(--text) !important; border: 1px solid rgba(59,130,246,0.25); }
+.nav-link.active { border-left: 3px solid var(--accent); }
 .logout-btn { color: var(--muted) !important; }
 .testing-zone .nav-icon { filter: grayscale(100%); }
 
 /* Cards */
 .dashboard-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
-.card-title { color: var(--muted); font-weight: 500; }
-.card-value { font-weight: 700; letter-spacing: 0.3px; }
+.card-title { font-size: 12.5px; color: var(--muted); font-weight: 500; }
+.card-value { font-size: 24px; font-weight: 700; letter-spacing: 0.3px; }
 .card-change { color: var(--muted); }
 .card-change.positive { color: #7dd3fc; }
 .card-change.negative { color: #fca5a5; }
 
 /* Panels */
-.panel, .modern-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); }
+.panel, .modern-panel { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow-sm); margin-bottom: var(--space-5); }
 .panel-header { border-bottom: 1px solid var(--border); }
 .panel-title { font-weight: 600; }
 
@@ -71,12 +79,20 @@ table thead th { background: var(--surface-2); color: var(--muted); font-weight:
 table tbody tr { border-bottom: 1px solid var(--border); }
 table tbody tr:hover { background: rgba(255,255,255,0.03); }
 td, th { padding: 10px 12px; }
+.table-container table tbody tr { min-height: 44px; }
+.table-container.scroll .modern-table thead th,
+.table-container.scroll table thead th { position: sticky; top: 0; z-index: 2; }
+.table-container.scroll { scrollbar-color: #2b3240 transparent; }
+.table-container table tbody tr:hover td { background: rgba(255,255,255,0.025); }
 
 /* Badges */
 .status-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 12px; border: 1px solid transparent; background: rgba(255,255,255,0.04); color: var(--text); }
 .status-badge.ready, .status-active { border-color: rgba(16,185,129,0.35); background: rgba(16,185,129,0.10); color: #b7f7da; }
 .status-badge.processing, .status-pending { border-color: rgba(245,158,11,0.35); background: rgba(245,158,11,0.10); color: #fde68a; }
 .status-badge.failed, .status-inactive { border-color: rgba(239,68,68,0.35); background: rgba(239,68,68,0.10); color: #fca5a5; }
+.status-badge.ready, .status-active { color: #aeead1; }
+.status-badge.processing, .status-pending { color: #f5d08a; }
+.status-badge.failed, .status-inactive { color: #ffb4b4; }
 
 /* Buttons */
 .btn-primary, .modern-btn { background: #2563eb; color: #fff; border: 1px solid rgba(37,99,235,0.6); border-radius: 8px; padding: 8px 12px; font-weight: 600; box-shadow: none; transition: transform .05s ease, background .15s ease, border-color .15s ease; }
@@ -86,18 +102,18 @@ td, th { padding: 10px 12px; }
 .btn-secondary:hover { background: rgba(255,255,255,0.04); }
 .btn-ghost { background: transparent; color: var(--muted); border: 1px solid transparent; border-radius: 8px; }
 .btn-ghost:hover { background: rgba(255,255,255,0.04); color: var(--text); }
-.btn-icon { color: var(--muted); border: 1px solid var(--border); background: transparent; border-radius: 8px; width: 34px; height: 34px; display: inline-grid; place-items: center; }
+.btn-icon { color: var(--muted); border: 1px solid var(--border); background: transparent; border-radius: 8px; width: 32px; height: 32px; display: inline-grid; place-items: center; }
 .btn-icon:hover { color: var(--text); background: rgba(255,255,255,0.04); }
 
 /* Inputs */
-input[type="text"], input[type="email"], input[type="number"], input[type="password"], select, textarea, .modern-input, .modern-select {
-  background: #0f141b; color: var(--text); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; outline: none; transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+input[type="text"], input[type="email"], input[type="number"], input[type="password"], select, .modern-input, .modern-select {
+  background: #0f141b; color: var(--text); border: 1px solid var(--border); border-radius: 8px; height: 36px; line-height: 1.2; padding: 8px 10px; outline: none; transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
 }
 input::placeholder, textarea::placeholder { color: #798392; }
 select { appearance: none; }
 input:focus, select:focus, textarea:focus {
   border-color: rgba(59,130,246,0.5);
-  box-shadow: 0 0 0 3px rgba(59,130,246,0.15);
+  box-shadow: 0 0 0 2px rgba(59,130,246,0.18);
 }
 
 .search-input { background: #0f141b; border: 1px solid var(--border); color: var(--text); }
@@ -122,7 +138,7 @@ input:focus, select:focus, textarea:focus {
 .empty-state { color: var(--muted); }
 
 /* Footer areas */
-.table-footer, .panel-actions { border-top: 1px solid var(--border); }
+.table-footer, .panel-actions { border-top: 1px solid var(--border); padding-top: var(--space-2); }
 .pagination-btn { background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: 8px; width: 34px; height: 34px; display: inline-grid; place-items: center; }
 .pagination-btn:hover { color: var(--text); background: rgba(255,255,255,0.04); }
 

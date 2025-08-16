@@ -6,6 +6,14 @@
 // SYSTEM INTEGRATION BRIDGE
 // 🌉 Cầu nối tích hợp toàn bộ hệ thống TINI
 
+// Import component bridge connector
+let bridgeConnector;
+try {
+    bridgeConnector = require('./component-bridge-connector.js');
+} catch (e) {
+    console.warn('⚠️ [SYSTEM-BRIDGE] Component bridge connector not available');
+}
+
 class SystemIntegrationBridge {
     constructor() {
         this.version = '3.0.0';
@@ -53,45 +61,118 @@ class SystemIntegrationBridge {
     }
     
     registerSystemComponents() {
-        // Register all TINI system components
-        this.registerComponent('BOSS_SECURITY', {
-            priority: 10000,
-            type: 'security',
-            status: 'active',
-            api: window.TINI_BOSS_SECURITY
-        });
+        console.log('🌉 [SYSTEM-BRIDGE] Registering system components...');
         
-        this.registerComponent('GHOST_INTEGRATION', {
-            priority: 9000,
-            type: 'monitoring',
-            status: 'active',
-            api: window.TINI_GHOST_INTEGRATION
-        });
-        
-        this.registerComponent('AUTHENTICATION', {
-            priority: 8000,
-            type: 'auth',
-            status: 'active',
-            api: window.TINI_ROLE_SECURITY
-        });
-        
-        this.registerComponent('PHANTOM_NETWORK', {
-            priority: 7000,
-            type: 'network',
-            status: 'active',
-            api: window.TINI_PHANTOM_NETWORK
-        });
-        
-        this.registerComponent('CONNECTION_MANAGER', {
-            priority: 6000,
-            type: 'connection',
-            status: 'active',
-            api: window.TINI_CONNECTION_MANAGER
-        });
+        // Use bridge connector if available
+        if (bridgeConnector && bridgeConnector.isInitialized()) {
+            console.log('🔧 [SYSTEM-BRIDGE] Using component bridge connector...');
+            
+            const componentNames = ['BOSS_SECURITY', 'GHOST_INTEGRATION', 'AUTHENTICATION', 'PHANTOM_NETWORK', 'CONNECTION_MANAGER'];
+            
+            componentNames.forEach(name => {
+                const component = bridgeConnector.getComponent(name);
+                const api = bridgeConnector.getComponentAPI(name);
+                
+                if (component && api) {
+                    const componentData = {
+                        priority: this.getComponentPriority(name),
+                        type: this.getComponentType(name),
+                        status: 'active',
+                        api: component
+                    };
+                    
+                    this.registerComponent(name, componentData);
+                    console.log(`✅ [SYSTEM-BRIDGE] Registered: ${name}`);
+                } else {
+                    console.warn(`⚠️ [SYSTEM-BRIDGE] Component not available: ${name}`);
+                }
+            });
+        } else {
+            // Fallback to old method for browser environment
+            this.registerComponentsFallback();
+        }
         
         console.log('🌉 [SYSTEM-BRIDGE] Core components registered:', this.components.size);
     }
     
+    getComponentPriority(name) {
+        const priorities = {
+            'BOSS_SECURITY': 10000,
+            'GHOST_INTEGRATION': 9000,
+            'AUTHENTICATION': 8000,
+            'PHANTOM_NETWORK': 7000,
+            'CONNECTION_MANAGER': 6000
+        };
+        return priorities[name] || 1000;
+    }
+    
+    getComponentType(name) {
+        const types = {
+            'BOSS_SECURITY': 'security',
+            'GHOST_INTEGRATION': 'monitoring',
+            'AUTHENTICATION': 'auth',
+            'PHANTOM_NETWORK': 'network',
+            'CONNECTION_MANAGER': 'connection'
+        };
+        return types[name] || 'unknown';
+    }
+    
+    registerComponentsFallback() {
+        // Register all TINI system components - safe for both environments
+        const componentConfigs = [
+            {
+                name: 'BOSS_SECURITY',
+                priority: 10000,
+                type: 'security',
+                status: 'active',
+                windowApi: 'TINI_BOSS_SECURITY'
+            },
+            {
+                name: 'GHOST_INTEGRATION',
+                priority: 9000,
+                type: 'monitoring',
+                status: 'active',
+                windowApi: 'TINI_GHOST_INTEGRATION'
+            },
+            {
+                name: 'AUTHENTICATION',
+                priority: 8000,
+                type: 'auth',
+                status: 'active',
+                windowApi: 'TINI_ROLE_SECURITY'
+            },
+            {
+                name: 'PHANTOM_NETWORK',
+                priority: 7000,
+                type: 'network',
+                status: 'active',
+                windowApi: 'TINI_PHANTOM_NETWORK'
+            },
+            {
+                name: 'CONNECTION_MANAGER',
+                priority: 6000,
+                type: 'connection',
+                status: 'active',
+                windowApi: 'TINI_CONNECTION_MANAGER'
+            }
+        ];
+        
+        componentConfigs.forEach(config => {
+            const componentData = {
+                priority: config.priority,
+                type: config.type,
+                status: config.status,
+                api: typeof window !== 'undefined' ? window[config.windowApi] : null
+            };
+            
+            this.registerComponent(config.name, componentData);
+        });
+    }
+            };
+            
+            this.registerComponent(config.name, componentData);
+     
+        console.log('🌉 [SYSTEM-BRIDGE] Core components registered:', this.components.size);
     registerComponent(name, config) {
         const component = {
             name,
@@ -476,13 +557,25 @@ class SystemIntegrationBridge {
     }
     
     activateBossIntegration() {
-        // 👑 BOSS mode integration using environment config
-        const bossTokenKey = window.tiniConfig ? window.tiniConfig.get('BOSS_LEVEL_TOKEN') : window.tiniConfig?.get('BOSS_LEVEL_TOKEN') || 'bossLevel10000';
-        const bossToken = localStorage.getItem(bossTokenKey);
-        if (bossToken === 'true') {
-            this.bossMode = true;
-            this.activateBossPrivileges();
-            console.log('👑 [SYSTEM-BRIDGE] BOSS integration activated');
+        // 👑 BOSS mode integration - safe for both environments
+        try {
+            let bossToken;
+            if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+                // Browser environment
+                const bossTokenKey = window.tiniConfig?.get('BOSS_LEVEL_TOKEN') || 'bossLevel10000';
+                bossToken = localStorage.getItem(bossTokenKey);
+            } else {
+                // Node.js environment
+                bossToken = process.env.BOSS_LEVEL_10000 || process.env.BOSS_LEVEL_TOKEN;
+            }
+            
+            if (bossToken === 'true') {
+                this.bossMode = true;
+                this.activateBossPrivileges();
+                console.log('👑 [SYSTEM-BRIDGE] BOSS integration activated');
+            }
+        } catch (error) {
+            console.log('👑 [SYSTEM-BRIDGE] BOSS integration check skipped - environment limitation');
         }
     }
     
@@ -925,7 +1018,6 @@ class SystemIntegrationBridge {
             status: this.getSystemStatus()
         };
     }
-}
 
 // Initialize and export
 if (typeof window !== 'undefined') {
@@ -936,3 +1028,4 @@ if (typeof window !== 'undefined') {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = SystemIntegrationBridge;
 }
+// ST:TINI_1755361782_e868a412

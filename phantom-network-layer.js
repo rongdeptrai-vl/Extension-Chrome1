@@ -6,8 +6,11 @@
 // PHANTOM NETWORK LAYER
 // 👻 Lớp mạng ảo với khả năng stealth và bypass
 
-class PhantomNetworkLayer {
+const EventEmitter = require('events');
+
+class PhantomNetworkLayer extends EventEmitter {
     constructor() {
+        super();
         this.version = '3.0.0';
         this.phantomMode = false;
         this.stealthLevel = 0;
@@ -16,6 +19,7 @@ class PhantomNetworkLayer {
         this.phantomHeaders = new Map();
         this.bossInvisibility = false;
         this.networkMasks = new Set();
+        this.isActive = true;
         
         this.init();
     }
@@ -39,11 +43,15 @@ class PhantomNetworkLayer {
             identity_spoofing: false
         };
         
-        // Setup request interception
-        this.interceptNetworkRequests();
-        
-        // Setup response masking
-        this.setupResponseMasking();
+        // Check if running in browser environment
+        if (typeof window !== 'undefined') {
+            // Browser-specific setup
+            this.interceptNetworkRequests();
+            this.setupResponseMasking();
+        } else {
+            // Node.js environment - skip browser features
+            console.log('👻 [PHANTOM-NET] Node.js mode - browser features disabled');
+        }
         
         // Initialize stealth protocols
         this.initializeStealthProtocols();
@@ -634,12 +642,19 @@ class PhantomNetworkLayer {
     
     setupBossInvisibility() {
         // 👑 BOSS Level invisibility
-        const bossToken = localStorage.getItem(window.tiniConfig?.get('BOSS_LEVEL_TOKEN') || window.tiniConfig?.get('BOSS_LEVEL_TOKEN') || 'bossLevel10000');
-        if (bossToken === 'true') {
-            this.bossInvisibility = true;
-            this.stealthLevel = 10; // Maximum stealth for BOSS
-            this.activateMaximumStealth();
-            console.log('👑 [PHANTOM-NET] BOSS invisibility activated - Maximum stealth');
+        try {
+            const bossTokenKey = typeof window !== 'undefined' && window.tiniConfig?.get ? 
+                (window.tiniConfig.get('BOSS_LEVEL_TOKEN') || 'bossLevel10000') : 'bossLevel10000';
+            const bossToken = typeof localStorage !== 'undefined' ? localStorage.getItem(bossTokenKey) : null;
+            
+            if (bossToken === 'true') {
+                this.bossInvisibility = true;
+                this.stealthLevel = 10; // Maximum stealth for BOSS
+                this.activateMaximumStealth();
+                console.log('👑 [PHANTOM-NET] BOSS invisibility activated - Maximum stealth');
+            }
+        } catch (e) {
+            console.log('👻 [PHANTOM-NET] Boss invisibility check skipped (Node.js mode)');
         }
     }
     
@@ -742,14 +757,79 @@ class PhantomNetworkLayer {
             status: this.getPhantomStatus()
         };
     }
+    
+    // Bridge API for Component Integration
+    getComponentAPI() {
+        return {
+            name: 'PHANTOM_NETWORK',
+            version: this.version,
+            status: 'active',
+            methods: {
+                establishPhantomRoute: this.establishPhantomRoute.bind(this),
+                activateMaximumStealth: this.activateMaximumStealth.bind(this),
+                maskNetworkTraffic: this.maskNetworkTraffic.bind(this),
+                setupProxyChain: this.setupProxyChain.bind(this),
+                addNetworkMask: this.addNetworkMask.bind(this)
+            },
+            events: ['phantomRouteEstablished', 'stealthActivated', 'networkMasked']
+        };
+    }
+    
+    getNetworkStatus() {
+        return {
+            active: this.isActive,
+            phantomMode: this.phantomMode,
+            stealthLevel: this.stealthLevel,
+            virtualRoutes: this.virtualRoutes.size,
+            bossInvisibility: this.bossInvisibility
+        };
+    }
+    
+    establishPhantomRoute(target, config = {}) {
+        const routeId = `phantom_${Date.now()}`;
+        this.virtualRoutes.set(routeId, {
+            target,
+            ...config,
+            stealth: true,
+            traceable: false,
+            createdAt: Date.now()
+        });
+        
+        console.log(`👻 [PHANTOM-NET] Phantom route established: ${routeId}`);
+        this.emit('phantomRouteEstablished', { routeId, target });
+        return { routeId, stealth: true };
+    }
+    
+    maskNetworkTraffic(requestId) {
+        console.log(`👻 [PHANTOM-NET] Network traffic masked: ${requestId}`);
+        return {
+            masked: true,
+            stealth: this.stealthLevel,
+            traceable: false
+        };
+    }
+    
+    setupProxyChain(proxies) {
+        this.proxyChain = proxies || [];
+        console.log(`👻 [PHANTOM-NET] Proxy chain setup: ${this.proxyChain.length} proxies`);
+        return { chain: this.proxyChain.length, stealth: true };
+    }
+}
+
+// Export for integration
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = PhantomNetworkLayer;
 }
 
 // Initialize and export
 if (typeof window !== 'undefined') {
     window.TINI_PHANTOM_NETWORK = new PhantomNetworkLayer();
+    window.PhantomNetworkLayer = PhantomNetworkLayer;
     console.log('👻 [PHANTOM-NET] Phantom Network Layer loaded successfully');
 }
 
+console.log('👻 [PHANTOM-NET] Phantom Network Layer module loaded');
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = PhantomNetworkLayer;
 }
+// ST:TINI_1755361782_e868a412

@@ -2085,5 +2085,29 @@
   },
   "csv_format": {
     "message": "CSV"
+  },
+  "signup_queue_title": {
+    "message": "注册审批队列"
+  },
+  "signup_queue_desc": {
+    "message": "来自弹窗的账号注册请求将在此显示，管理员可实时审批。"
+  },
+  "signup_request": {
+    "message": "注册申请"
+  },
+  "approve_btn": {
+    "message": "通过"
+  },
+  "reject_btn": {
+    "message": "拒绝"
+  },
+  "ignore_btn": {
+    "message": "忽略"
+  },
+  "no_pending": {
+    "message": "暂无待审批申请"
+  },
+  "enter_reject_reason": {
+    "message": "请输入拒绝原因"
   }
 }

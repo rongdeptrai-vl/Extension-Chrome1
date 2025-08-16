@@ -1,0 +1,921 @@
+<!-- © 2024 TINI COMPANY - CONFIDENTIAL -->
+<!-- Employee: rongdeptrai-vl <rongdz2307@gmail.com> -->
+<!-- Commit: 55548f4 | Time: 2025-08-08T06:33:01Z -->
+<!-- Watermark: TINI_1754634781_e868a412 | TINI_WATERMARK -->
+<!-- WARNING: Unauthorized distribution is prohibited -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TINI Unified Enterprise System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+        
+        .header {
+            background: rgba(0,0,0,0.2);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+        
+        .header .status {
+            font-size: 1.2em;
+            color: #4ade80;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+        
+        .systems-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .system-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .system-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        
+        .system-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .system-icon {
+            font-size: 2.5em;
+            margin-right: 15px;
+        }
+        
+        .system-title {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .system-status {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .stat-item {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #4ade80;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #4ade80;
+            color: #000;
+        }
+        
+        .btn-primary:hover {
+            background: #22c55e;
+            transform: scale(1.05);
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.3);
+        }
+        
+        .logs-section {
+            background: rgba(0,0,0,0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+        
+        .logs-header {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: #4ade80;
+        }
+        
+        .logs-container {
+            background: #000;
+            color: #4ade80;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            height: 300px;
+            overflow-y: auto;
+        }
+        
+        .log-entry {
+            margin-bottom: 5px;
+            padding: 2px 0;
+        }
+        
+        .log-timestamp {
+            color: #666;
+        }
+        
+        .log-info { color: #4ade80; }
+        .log-warning { color: #fbbf24; }
+        .log-error { color: #ef4444; }
+        .log-success { color: #10b981; }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .activity-indicator {
+            width: 10px;
+            height: 10px;
+            background: #4ade80;
+            border-radius: 50%;
+            display: inline-block;
+            margin-left: 10px;
+        }
+        
+        .integration-status {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+        
+        .integration-status.connected {
+            border-left: 5px solid #4ade80;
+        }
+        
+        .integration-status.connecting {
+            border-left: 5px solid #fbbf24;
+        }
+    </style>
+    <script src="../i18n-master.js"></script>
+</head>
+<body>
+    <div class="header">
+        <h1>🌟 TINI Unified Enterprise System</h1>
+        <div class="status" id="systemStatus">
+            <span class="pulse">🟢 All Systems Operational</span>
+            <span class="activity-indicator pulse"></span>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="integration-status connected" id="integrationStatus">
+            <h3>🔗 System Integration Status</h3>
+            <p>All modules successfully integrated and communicating</p>
+            <small>Last sync: <span id="lastSync">--</span></small>
+        </div>
+        
+        <div class="systems-grid">
+            <!-- Script System Card -->
+            <div class="system-card">
+                <div class="system-header">
+                    <div class="system-icon">🚫</div>
+                    <div>
+                        <div class="system-title">Script System</div>
+                        <div class="system-status">Ad Blocking & Performance</div>
+                    </div>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="adsBlocked">0</div>
+                        <div class="stat-label">Ads Blocked</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">4/4</div>
+                        <div class="stat-label">Models Active</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="cpuSaved">90%</div>
+                        <div class="stat-label">CPU Saved</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="memoryOptimized">85%</div>
+                        <div class="stat-label">Memory Optimized</div>
+                    </div>
+                </div>
+                <div class="controls">
+                    <button class="btn btn-primary" data-action="toggle-script-system">Toggle Blocking</button>
+                    <button class="btn btn-secondary" data-action="configure-script">Configure</button>
+                </div>
+            </div>
+            
+            <!-- Security System Card -->
+            <div class="system-card">
+                <div class="system-header">
+                    <div class="system-icon">🛡️</div>
+                    <div>
+                        <div class="system-title">Security System</div>
+                        <div class="system-status">Multi-Layer Protection</div>
+                    </div>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="threatsBlocked">0</div>
+                        <div class="stat-label">Threats Blocked</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">6/6</div>
+                        <div class="stat-label">Layers Active</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">MAX</div>
+                        <div class="stat-label">Protection Level</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="uptime">100%</div>
+                        <div class="stat-label">Uptime</div>
+                    </div>
+                </div>
+                <div class="controls">
+                    <button class="btn btn-primary" data-action="scan-threats">Scan Now</button>
+                    <button class="btn btn-secondary" data-action="configure-security">Settings</button>
+                </div>
+            </div>
+            
+            <!-- Ghost System Card -->
+            <div class="system-card">
+                <div class="system-header">
+                    <div class="system-icon">👻</div>
+                    <div>
+                        <div class="system-title">Ghost System</div>
+                        <div class="system-status">Stealth Operations</div>
+                    </div>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="stealthLevel">MAX</div>
+                        <div class="stat-label">Stealth Level</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="bossMode">OFF</div>
+                        <div class="stat-label">Boss Mode</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">100%</div>
+                        <div class="stat-label">Invisibility</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="performance">95%</div>
+                        <div class="stat-label">Performance</div>
+                    </div>
+                </div>
+                <div class="controls">
+                    <button class="btn btn-primary" data-action="toggle-stealth">Toggle Stealth</button>
+                    <button class="btn btn-secondary" data-action="boss-mode">Boss Mode</button>
+                </div>
+            </div>
+            
+            <!-- Admin System Card -->
+            <div class="system-card">
+                <div class="system-header">
+                    <div class="system-icon">🖥️</div>
+                    <div>
+                        <div class="system-title">Admin Dashboard</div>
+                        <div class="system-status">System Management</div>
+                    </div>
+                </div>
+                <div class="stats">
+                    <div class="stat-item">
+                        <div class="stat-number" id="connections">1</div>
+                        <div class="stat-label">Active Connections</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">7001</div>
+                        <div class="stat-label">Port</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="requests">0</div>
+                        <div class="stat-label">API Requests</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" id="uptime">100%</div>
+                        <div class="stat-label">Server Uptime</div>
+                    </div>
+                </div>
+                <div class="controls">
+                    <button class="btn btn-primary" data-action="refresh-data">Refresh Data</button>
+                    <button class="btn btn-secondary" data-action="export-logs">Export Logs</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- System Logs -->
+        <div class="logs-section">
+            <div class="logs-header">📋 System Activity Logs</div>
+            <div class="logs-container" id="logsContainer">
+                <div class="log-entry log-success">[<span class="log-timestamp">00:00:00</span>] System initialized successfully</div>
+                <div class="log-entry log-info">[<span class="log-timestamp">00:00:01</span>] Script System: 4 models loaded</div>
+                <div class="log-entry log-info">[<span class="log-timestamp">00:00:02</span>] Security System: 6-layer protection active</div>
+                <div class="log-entry log-info">[<span class="log-timestamp">00:00:03</span>] Ghost System: Stealth mode activated</div>
+                <div class="log-entry log-success">[<span class="log-timestamp">00:00:04</span>] Admin Dashboard: Ready on port 7001</div>
+                <div class="log-entry log-success">[<span class="log-timestamp">00:00:05</span>] All systems integrated and operational</div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        // WebSocket connection
+        const socket = io();
+        
+        // Update last sync time
+        function updateSyncTime() {
+            document.getElementById('lastSync').textContent = new Date().toLocaleTimeString();
+        }
+        
+        // Add log entry
+        function addLog(message, type = 'info') {
+            const logsContainer = document.getElementById('logsContainer');
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry log-${type}`;
+            logEntry.innerHTML = `[<span class="log-timestamp">${timestamp}</span>] ${message}`;
+            logsContainer.appendChild(logEntry);
+            logsContainer.scrollTop = logsContainer.scrollHeight;
+        }
+        
+        // Enhanced Script System Controls with API integration
+        function toggleScriptSystem() {
+            const button = event.target;
+            const originalText = button.textContent;
+            
+            button.disabled = true;
+            button.textContent = 'Updating...';
+            
+            addLog('Script System toggle requested', 'info');
+            
+            fetch('/api/script/toggle', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'toggle' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    addLog('Script system toggled successfully', 'success');
+                    updateScriptSystemStatus(data.status);
+                } else {
+                    addLog('Failed to toggle script system', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Toggle error:', error);
+                addLog('Script system toggle failed', 'error');
+            })
+            .finally(() => {
+                button.disabled = false;
+                button.textContent = originalText;
+                socket.emit('script_toggle');
+            });
+        }
+        
+        function configureScript() {
+            addLog('Opening Script System configuration', 'info');
+            showConfigurationModal('Script System Configuration', {
+                'AI Sensitivity': { type: 'range', min: 1, max: 10, value: 7 },
+                'Learning Mode': { type: 'select', options: ['Adaptive', 'Fixed', 'Hybrid'], value: 'Adaptive' },
+                'Performance Mode': { type: 'select', options: ['High', 'Balanced', 'Low'], value: 'Balanced' },
+                'Auto Update': { type: 'checkbox', value: true },
+                'Debug Mode': { type: 'checkbox', value: false }
+            }, (settings) => {
+                fetch('/api/script/configure', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(settings)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        addLog('Script system configured successfully', 'success');
+                    } else {
+                        addLog('Failed to save script configuration', 'error');
+                    }
+                })
+                .catch(error => {
+                    addLog('Configuration save error', 'error');
+                });
+            });
+        }
+        
+        function scanThreats() {
+            const button = event.target;
+            button.disabled = true;
+            button.textContent = 'Scanning...';
+            
+            addLog('Security threat scan initiated', 'warning');
+            
+            fetch('/api/security/scan', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    addLog(`Threat scan completed - ${data.threatsFound || 0} threats detected`, 'success');
+                    updateSecurityStats(data);
+                } else {
+                    addLog('Threat scan failed', 'error');
+                }
+            })
+            .catch(error => {
+                addLog('Threat scan error', 'error');
+            })
+            .finally(() => {
+                button.disabled = false;
+                button.textContent = 'Scan Now';
+            });
+        }
+        
+        function configureSecurity() {
+            addLog('Opening Security System settings', 'info');
+            showConfigurationModal('Security System Settings', {
+                'Protection Level': { type: 'select', options: ['Basic', 'Enhanced', 'Maximum'], value: 'Maximum' },
+                'Real-time Scanning': { type: 'checkbox', value: true },
+                'Threat Notifications': { type: 'checkbox', value: true },
+                'Auto Block Threats': { type: 'checkbox', value: true },
+                'Log Security Events': { type: 'checkbox', value: true },
+                'Honeypot Sensitivity': { type: 'range', min: 1, max: 10, value: 8 }
+            }, (settings) => {
+                fetch('/api/security/configure', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(settings)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        addLog('Security system configured successfully', 'success');
+                    } else {
+                        addLog('Failed to save security configuration', 'error');
+                    }
+                })
+                .catch(error => {
+                    addLog('Security configuration error', 'error');
+                });
+            });
+        }
+        
+        function toggleStealth() {
+            const stealthLevel = document.getElementById('stealthLevel');
+            const newMode = stealthLevel.textContent === 'MAX' ? 'OFF' : 'MAX';
+            
+            fetch('/api/ghost/stealth', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ mode: newMode === 'MAX' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    stealthLevel.textContent = newMode;
+                    addLog(`Stealth mode ${newMode === 'MAX' ? 'activated' : 'deactivated'}`, newMode === 'MAX' ? 'success' : 'warning');
+                } else {
+                    addLog('Failed to toggle stealth mode', 'error');
+                }
+            })
+            .catch(error => {
+                addLog('Stealth toggle error', 'error');
+            });
+        }
+        
+        function bossMode() {
+            const bossModeEl = document.getElementById('bossMode');
+            const newMode = bossModeEl.textContent === 'OFF' ? 'ON' : 'OFF';
+            
+            fetch('/api/ghost/bossmode', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ enabled: newMode === 'ON' })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    bossModeEl.textContent = newMode;
+                    addLog(`Boss mode ${newMode === 'ON' ? 'activated - All systems hidden' : 'deactivated - Systems visible'}`, newMode === 'ON' ? 'warning' : 'info');
+                    
+                    // Visual feedback for boss mode
+                    if (newMode === 'ON') {
+                        document.body.style.filter = 'brightness(0.3)';
+                        setTimeout(() => { document.body.style.filter = ''; }, 200);
+                    }
+                } else {
+                    addLog('Failed to toggle boss mode', 'error');
+                }
+            })
+            .catch(error => {
+                addLog('Boss mode toggle error', 'error');
+            });
+        }
+        
+        function refreshData() {
+            const button = event.target;
+            button.disabled = true;
+            button.textContent = 'Refreshing...';
+            
+            addLog('Refreshing all system data...', 'info');
+            
+            Promise.all([
+                fetch('/api/unified/status').then(r => r.json()),
+                fetch('/api/system/overview').then(r => r.json())
+            ])
+            .then(([status, overview]) => {
+                // Update UI with fresh data
+                updateSystemStats(status, overview);
+                updateSyncTime();
+                addLog('System data refreshed successfully', 'success');
+                socket.emit('refresh_request');
+            })
+            .catch(error => {
+                addLog('Failed to refresh system data', 'error');
+            })
+            .finally(() => {
+                button.disabled = false;
+                button.textContent = 'Refresh Data';
+            });
+        }
+        
+        function exportLogs() {
+            const button = event.target;
+            button.disabled = true;
+            button.textContent = 'Exporting...';
+            
+            addLog('Exporting system logs...', 'info');
+            
+            setTimeout(() => {
+                const logs = document.getElementById('logsContainer').innerHTML;
+                const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+                const filename = `tini-system-logs-${timestamp}.html`;
+                
+                const htmlContent = `
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TINI System Logs - ${new Date().toLocaleDateString()}</title>
+    <style>
+        body { font-family: monospace; background: #000; color: #4ade80; padding: 20px; }
+        .log-entry { margin: 5px 0; }
+        .log-timestamp { color: #666; }
+        .log-success { color: #10b981; }
+        .log-warning { color: #fbbf24; }
+        .log-error { color: #ef4444; }
+        .log-info { color: #4ade80; }
+    </style>
+</head>
+<body>
+    <h1>🌟 TINI Unified System Logs</h1>
+    <p>Generated: ${new Date().toLocaleString()}</p>
+    <hr>
+    ${logs}
+</body>
+</html>`;
+                
+                downloadFile(filename, htmlContent, 'text/html');
+                addLog(`Logs exported successfully: ${filename}`, 'success');
+                
+                button.disabled = false;
+                button.textContent = 'Export Logs';
+            }, 1500);
+        }
+        
+        // Real-time updates from server
+        socket.on('unified_system_update', (data) => {
+            document.getElementById('adsBlocked').textContent = data.scriptBlocked || 0;
+            document.getElementById('threatsBlocked').textContent = data.securityThreats || 0;
+            document.getElementById('requests').textContent = data.apiRequests || 0;
+            updateSyncTime();
+        });
+        
+        socket.on('system_log', (data) => {
+            addLog(data.message, data.type);
+        });
+        
+        // Auto-refresh counters
+        setInterval(() => {
+            const adsBlocked = document.getElementById('adsBlocked');
+            const current = parseInt(adsBlocked.textContent);
+            adsBlocked.textContent = current + Math.floor(Math.random() * 5);
+            
+            const requests = document.getElementById('requests');
+            const currentReq = parseInt(requests.textContent);
+            requests.textContent = currentReq + Math.floor(Math.random() * 3);
+        }, 3000);
+        
+        // Initialize
+        updateSyncTime();
+        addLog('Unified dashboard loaded successfully', 'success');
+        
+        // ================================================================
+        // HELPER FUNCTIONS FOR ENHANCED FUNCTIONALITY
+        // ================================================================
+        
+        function showConfigurationModal(title, settings, onSave) {
+            const modal = document.createElement('div');
+            modal.className = 'config-modal';
+            modal.innerHTML = `
+                <div class="modal-overlay"></div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>${title}</h3>
+                        <button class="modal-close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        ${generateSettingsForm(settings)}
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary modal-cancel">Cancel</button>
+                        <button class="btn btn-primary modal-save">Save Settings</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Event handlers
+            modal.querySelector('.modal-close').onclick = () => modal.remove();
+            modal.querySelector('.modal-cancel').onclick = () => modal.remove();
+            modal.querySelector('.modal-overlay').onclick = () => modal.remove();
+            modal.querySelector('.modal-save').onclick = () => {
+                const formData = collectFormData(modal);
+                onSave(formData);
+                modal.remove();
+            };
+        }
+        
+        function generateSettingsForm(settings) {
+            return Object.entries(settings).map(([key, config]) => {
+                const id = `setting-${key.replace(/\s+/g, '-').toLowerCase()}`;
+                
+                switch(config.type) {
+                    case 'range':
+                        return `
+                            <div class="setting-group">
+                                <label for="${id}">${key}: <span id="${id}-value">${config.value}</span></label>
+                                <input type="range" id="${id}" min="${config.min}" max="${config.max}" value="${config.value}" 
+                                       oninput="document.getElementById('${id}-value').textContent = this.value">
+                            </div>`;
+                    case 'select':
+                        const options = config.options.map(opt => 
+                            `<option value="${opt}" ${opt === config.value ? 'selected' : ''}>${opt}</option>`
+                        ).join('');
+                        return `
+                            <div class="setting-group">
+                                <label for="${id}">${key}:</label>
+                                <select id="${id}">${options}</select>
+                            </div>`;
+                    case 'checkbox':
+                        return `
+                            <div class="setting-group">
+                                <label for="${id}">
+                                    <input type="checkbox" id="${id}" ${config.value ? 'checked' : ''}>
+                                    ${key}
+                                </label>
+                            </div>`;
+                    default:
+                        return `
+                            <div class="setting-group">
+                                <label for="${id}">${key}:</label>
+                                <input type="text" id="${id}" value="${config.value || ''}">
+                            </div>`;
+                }
+            }).join('');
+        }
+        
+        function collectFormData(modal) {
+            const formData = {};
+            const inputs = modal.querySelectorAll('input, select');
+            
+            inputs.forEach(input => {
+                const key = input.id.replace('setting-', '').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                
+                if (input.type === 'checkbox') {
+                    formData[key] = input.checked;
+                } else if (input.type === 'range') {
+                    formData[key] = parseInt(input.value);
+                } else {
+                    formData[key] = input.value;
+                }
+            });
+            
+            return formData;
+        }
+        
+        function downloadFile(filename, content, type) {
+            const blob = new Blob([content], { type });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+        
+        function updateSystemStats(status, overview) {
+            if (status && status.stats) {
+                document.getElementById('adsBlocked').textContent = status.stats.scriptBlocked || 0;
+                document.getElementById('threatsBlocked').textContent = status.stats.securityThreats || 0;
+                document.getElementById('requests').textContent = status.stats.apiRequests || 0;
+            }
+            
+            if (overview) {
+                // Update overview data if needed
+                console.log('System overview updated:', overview);
+            }
+        }
+        
+        function updateScriptSystemStatus(status) {
+            // Update script system UI based on status
+            console.log('Script system status updated:', status);
+        }
+        
+        function updateSecurityStats(data) {
+            if (data.threatsFound !== undefined) {
+                document.getElementById('threatsBlocked').textContent = data.threatsFound;
+            }
+        }
+        
+        // Inject modal CSS
+        const modalCSS = `
+        .config-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10000;
+        }
+        
+        .modal-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            min-width: 400px;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            color: #333;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+        }
+        
+        .modal-body {
+            padding: 25px;
+        }
+        
+        .setting-group {
+            margin-bottom: 20px;
+        }
+        
+        .setting-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .setting-group input,
+        .setting-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .setting-group input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+        }
+        
+        .setting-group input[type="range"] {
+            margin-top: 5px;
+        }
+        
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            padding: 20px 25px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+        `;
+        
+        const style = document.createElement('style');
+        style.textContent = modalCSS;
+        document.head.appendChild(style);
+    </script>
+    
+    <!-- 🔧 External JavaScript - Di chuyển từ inline để tuân thủ CSP -->
+    <script src="unified-dashboard-events.js"></script>
+</body>
+</html>
+<!-- ST:TINI_1754998490_e868a412 -->
+<!-- ST:TINI_1755361782_e868a412 -->

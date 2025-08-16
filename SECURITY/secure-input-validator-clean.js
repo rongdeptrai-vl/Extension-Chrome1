@@ -10,8 +10,8 @@
  * Author: rongdeptrai-dev & GitHub Copilot
  */
 
-// Browser-compatible crypto alternative
-const crypto = window.crypto || {
+// Browser-compatible crypto alternative with Node.js support
+const crypto = (typeof window !== 'undefined' && window.crypto) || (typeof require !== 'undefined' ? require('crypto') : null) || {
     getRandomValues: function(arr) {
         for (let i = 0; i < arr.length; i++) {
             arr[i] = Math.floor(Math.random() * 256);
@@ -393,8 +393,10 @@ class SecureInputValidator {
     }
 }
 
-// Expose to browser global
-window.SecureInputValidator = SecureInputValidator;
+// Expose to browser global (only in browser environment)
+if (typeof window !== 'undefined') {
+    window.SecureInputValidator = SecureInputValidator;
+}
 
 // CommonJS export (only in Node environments)
 if (typeof module !== 'undefined' && module.exports) {
@@ -402,3 +404,4 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 // ST:TINI_1754644960_e868a412
 // ST:TINI_1754716154_e868a412
+// ST:TINI_1755361782_e868a412

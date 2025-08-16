@@ -591,12 +591,11 @@
             addLog('Refreshing all system data...', 'info');
             
             Promise.all([
-                fetch('/api/unified/status').then(r => r.json()),
-                fetch('/api/system/overview').then(r => r.json())
+                fetch('/dashboard-data').then(r => r.json())
             ])
-            .then(([status, overview]) => {
+            .then(([dashboardData]) => {
                 // Update UI with fresh data
-                updateSystemStats(status, overview);
+                updateSystemStats(dashboardData);
                 updateSyncTime();
                 addLog('System data refreshed successfully', 'success');
                 socket.emit('refresh_request');
@@ -787,16 +786,23 @@
             URL.revokeObjectURL(url);
         }
         
-        function updateSystemStats(status, overview) {
-            if (status && status.stats) {
-                document.getElementById('adsBlocked').textContent = status.stats.scriptBlocked || 0;
-                document.getElementById('threatsBlocked').textContent = status.stats.securityThreats || 0;
-                document.getElementById('requests').textContent = status.stats.apiRequests || 0;
+        function updateSystemStats(dashboardData) {
+            console.log('Dashboard data received:', dashboardData);
+            
+            // Update system status info
+            if (dashboardData && dashboardData.systemStatus) {
+                const status = dashboardData.systemStatus;
+                document.getElementById('adsBlocked').textContent = status.scriptBlocked || 0;
+                document.getElementById('threatsBlocked').textContent = status.securityThreats || 0;
+                document.getElementById('requests').textContent = status.apiRequests || 0;
+                
+                console.log('System status updated:', status);
             }
             
-            if (overview) {
-                // Update overview data if needed
-                console.log('System overview updated:', overview);
+            // Update recent activity if available
+            if (dashboardData && dashboardData.recentActivity) {
+                console.log('Recent activity:', dashboardData.recentActivity);
+                // You can add code here to display recent activity
             }
         }
         
@@ -918,3 +924,4 @@
 </body>
 </html>
 <!-- ST:TINI_1754998490_e868a412 -->
+<!-- ST:TINI_1755361782_e868a412 -->

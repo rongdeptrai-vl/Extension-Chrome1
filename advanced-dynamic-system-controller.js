@@ -498,12 +498,24 @@ class AdvancedDynamicSystemController {
     }
     
     activateBossMode() {
-        // 👑 BOSS mode activation
-        const bossToken = localStorage.getItem('bossLevel10000');
-        if (bossToken === 'true') {
-            this.bossMode = true;
-            this.activateBossPrivileges();
-            console.log('👑 [DYNAMIC-CONTROLLER] BOSS mode activated');
+        // 👑 BOSS mode activation - safe for both environments
+        try {
+            let bossToken;
+            if (typeof localStorage !== 'undefined') {
+                // Browser environment
+                bossToken = localStorage.getItem('bossLevel10000');
+            } else if (typeof process !== 'undefined' && process.env) {
+                // Node.js environment
+                bossToken = process.env.BOSS_LEVEL_10000 || process.env.BOSS_LEVEL_TOKEN;
+            }
+            
+            if (bossToken === 'true') {
+                this.bossMode = true;
+                this.activateBossPrivileges();
+                console.log('👑 [DYNAMIC-CONTROLLER] BOSS mode activated');
+            }
+        } catch (error) {
+            console.log('👑 [DYNAMIC-CONTROLLER] BOSS mode check skipped - environment limitation');
         }
     }
     
@@ -744,7 +756,7 @@ class AdvancedDynamicSystemController {
         });
         
         // Dispatch error event
-        if (window.TINI_UNIVERSAL_DISPATCHER) {
+        if (typeof window !== 'undefined' && window.TINI_UNIVERSAL_DISPATCHER) {
             window.TINI_UNIVERSAL_DISPATCHER.dispatch('controller.command.error', {
                 command,
                 error: error.message,
@@ -786,7 +798,7 @@ class AdvancedDynamicSystemController {
         console.log('📊 [DYNAMIC-CONTROLLER] State change detected in:', moduleName);
         
         // Dispatch state change event
-        if (window.TINI_UNIVERSAL_DISPATCHER) {
+        if (typeof window !== 'undefined' && window.TINI_UNIVERSAL_DISPATCHER) {
             window.TINI_UNIVERSAL_DISPATCHER.dispatch('controller.state.change', {
                 module: moduleName,
                 previousState: Object.fromEntries(previousState),
@@ -942,7 +954,7 @@ class AdvancedDynamicSystemController {
         this.attemptEmergencyRecovery();
         
         // Notify BOSS if available
-        if (this.bossMode && window.TINI_UNIVERSAL_DISPATCHER) {
+        if (this.bossMode && typeof window !== 'undefined' && window.TINI_UNIVERSAL_DISPATCHER) {
             window.TINI_UNIVERSAL_DISPATCHER.dispatchBossEvent('controller.critical_health', health);
         }
     }
@@ -1138,3 +1150,4 @@ if (typeof window !== 'undefined') {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = AdvancedDynamicSystemController;
 }
+// ST:TINI_1755361782_e868a412

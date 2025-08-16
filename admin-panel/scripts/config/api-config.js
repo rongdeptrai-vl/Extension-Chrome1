@@ -4,7 +4,7 @@
 // Watermark: TINI_1754634781_e868a412 | TINI_WATERMARK
 // WARNING: Unauthorized distribution is prohibited
 export const API_CONFIG = {
-    BASE_URL: process.env.API_URL || `http://localhost:${process.env.PORT || process.env.PANEL_PORT || 55055}/api`,
+    BASE_URL: process.env.API_URL || `http://localhost:${process.env.PORT || process.env.PANEL_PORT || 55057}/api`,
     ENDPOINTS: {
         SAVE_LANGUAGE: '/save-language',
         LOAD_PROFILE: '/load-profile',
@@ -35,3 +35,4 @@ function getApiUrl(endpoint) {
 window.API_CONFIG = API_CONFIG;
 window.getApiUrl = getApiUrl;
 // ST:TINI_1754752705_e868a412
+// ST:TINI_1755361782_e868a412

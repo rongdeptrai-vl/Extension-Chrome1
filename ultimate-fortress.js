@@ -143,9 +143,16 @@ class UltimateFortress {
         this.defenseLevel = level;
         this.logDefenseChange(level, 'escalation');
         
-        // Notify other systems
-        if (window.TINI_UNIVERSAL_DISPATCHER) {
+        // Notify other systems - safe for both environments
+        if (typeof window !== 'undefined' && window.TINI_UNIVERSAL_DISPATCHER) {
             window.TINI_UNIVERSAL_DISPATCHER.dispatch('tini:fortress-level-changed', {
+                level: level,
+                activeModules: Array.from(this.activeBarriers),
+                timestamp: Date.now()
+            });
+        } else if (this.eventDispatcher) {
+            // Node.js environment - use injected dispatcher
+            this.eventDispatcher.dispatch('fortress-level-changed', {
                 level: level,
                 activeModules: Array.from(this.activeBarriers),
                 timestamp: Date.now()
@@ -195,9 +202,18 @@ class UltimateFortress {
         // Monitor for intrusion attempts
         this.startIntrusionMonitoring();
         
-        // Set up event listeners for suspicious activity
-        document.addEventListener('contextmenu', (e) => this.detectSuspiciousActivity('context_menu'));
-        document.addEventListener('keydown', (e) => this.detectSuspiciousKeypress(e));
+        // Set up event listeners for suspicious activity - safe for both environments
+        if (typeof document !== 'undefined') {
+            // Browser environment
+            document.addEventListener('contextmenu', (e) => this.detectSuspiciousActivity('context_menu'));
+            document.addEventListener('keydown', (e) => this.detectSuspiciousKeypress(e));
+        } else {
+            // Node.js environment - monitor process events
+            if (typeof process !== 'undefined') {
+                process.on('warning', (warning) => this.detectSuspiciousActivity('process_warning'));
+                process.on('uncaughtException', (error) => this.detectSuspiciousActivity('uncaught_exception'));
+            }
+        }
     }
 
     activateFirewallMatrix() {
@@ -297,9 +313,16 @@ class UltimateFortress {
     activateEmergencyProtocols() {
         console.log('🚨 [Ultimate Fortress] Emergency protocols activated');
         
-        // Lock down admin panel access
-        localStorage.setItem('fortress_mode', 'true');
-        localStorage.setItem('emergency_lockdown', 'true');
+        // Lock down admin panel access - safe for both environments
+        if (typeof localStorage !== 'undefined') {
+            // Browser environment
+            localStorage.setItem('fortress_mode', 'true');
+            localStorage.setItem('emergency_lockdown', 'true');
+        } else {
+            // Node.js environment - use environment variables
+            process.env.FORTRESS_MODE = 'true';
+            process.env.EMERGENCY_LOCKDOWN = 'true';
+        }
         
         // Increase security requirements
         localStorage.setItem('security_level', 'maximum');
@@ -322,13 +345,15 @@ class UltimateFortress {
     }
 
     scanForIntrusions() {
-        // Check for suspicious localStorage changes
-        const suspiciousKeys = ['admin', 'boss', 'auth', 'privilege'];
-        suspiciousKeys.forEach(key => {
-            if (localStorage.getItem(key) && !this.isAuthorizedChange(key)) {
-                this.reportIntrusion('unauthorized_storage_access', key);
-            }
-        });
+        // Check for suspicious localStorage changes (only in browser environment)
+        if (typeof localStorage !== 'undefined') {
+            const suspiciousKeys = ['admin', 'boss', 'auth', 'privilege'];
+            suspiciousKeys.forEach(key => {
+                if (localStorage.getItem(key) && !this.isAuthorizedChange(key)) {
+                    this.reportIntrusion('unauthorized_storage_access', key);
+                }
+            });
+        }
         
         // Check for suspicious global variables
         this.checkSuspiciousGlobals();
@@ -402,16 +427,31 @@ class UltimateFortress {
         ];
         
         // Simple check - in real implementation would be more sophisticated
-        return authorizedSources.some(source => window[source]?.isActive);
+        if (typeof window !== 'undefined') {
+            return authorizedSources.some(source => window[source]?.isActive);
+        }
+        // In Node.js environment, check if authorized processes are running
+        return true; // Assume authorized in server environment
     }
 
     checkSuspiciousGlobals() {
-        const suspiciousPatterns = ['hack', 'crack', 'exploit', 'bypass'];
-        Object.keys(window).forEach(key => {
-            if (suspiciousPatterns.some(pattern => key.toLowerCase().includes(pattern))) {
-                this.reportIntrusion('suspicious_global_variable', key);
-            }
-        });
+        // Only check browser globals if window is available
+        if (typeof window !== 'undefined') {
+            const suspiciousPatterns = ['hack', 'crack', 'exploit', 'bypass'];
+            Object.keys(window).forEach(key => {
+                if (suspiciousPatterns.some(pattern => key.toLowerCase().includes(pattern))) {
+                    this.reportIntrusion('suspicious_global_variable', key);
+                }
+            });
+        } else {
+            // In Node.js environment, check global object instead
+            const suspiciousPatterns = ['hack', 'crack', 'exploit', 'bypass'];
+            Object.keys(global).forEach(key => {
+                if (suspiciousPatterns.some(pattern => key.toLowerCase().includes(pattern))) {
+                    this.reportIntrusion('suspicious_global_variable', key);
+                }
+            });
+        }
     }
 
     logDefenseChange(level, changeType) {
@@ -492,25 +532,34 @@ class UltimateFortress {
     }
 }
 
-// Tạo global instance
-if (!window.TINI_ULTIMATE_FORTRESS) {
-    window.TINI_ULTIMATE_FORTRESS = new UltimateFortress();
-    console.log('✅ [Ultimate Fortress] Global fortress system created');
+// Export and initialize - safe for both environments
+if (typeof window !== 'undefined') {
+    // Browser environment
+    if (!window.TINI_ULTIMATE_FORTRESS) {
+        window.TINI_ULTIMATE_FORTRESS = new UltimateFortress();
+        console.log('✅ [Ultimate Fortress] Global fortress system created');
+    }
+    
+    // Register keyboard shortcut
+    document.addEventListener('keydown', (event) => {
+        // Ctrl+Shift+F+F = Activate Fortress Mode
+        if (event.ctrlKey && event.shiftKey && event.key === 'F') {
+            event.preventDefault();
+            const doublePress = Date.now() - (window.lastFortressKeyPress || 0) < 1000;
+            
+            if (doublePress) {
+                window.TINI_ULTIMATE_FORTRESS.activateFortressMode();
+            }
+            
+            window.lastFortressKeyPress = Date.now();
+        }
+    });
 }
 
-// Đăng ký keyboard shortcut
-document.addEventListener('keydown', (event) => {
-    // Ctrl+Shift+F+F = Activate Fortress Mode
-    if (event.ctrlKey && event.shiftKey && event.key === 'F') {
-        event.preventDefault();
-        const doublePress = Date.now() - (window.lastFortressKeyPress || 0) < 1000;
-        
-        if (doublePress) {
-            window.TINI_ULTIMATE_FORTRESS.activateFortressMode();
-        }
-        
-        window.lastFortressKeyPress = Date.now();
-    }
-});
+if (typeof module !== 'undefined' && module.exports) {
+    // Node.js environment
+    module.exports = UltimateFortress;
+}
 
-console.log('🏰 [Ultimate Fortress] Ultimate Fortress Security System ready - Press Ctrl+Shift+F+F for fortress mode');
+console.log('🏰 [Ultimate Fortress] Ultimate Fortress Security System ready');
+// ST:TINI_1755361782_e868a412

@@ -14,7 +14,7 @@ class TINIDatabaseIntegration {
     constructor() {
         this.version = '4.0-API';
         this.isInitialized = false;
-        this.apiBaseUrl = `http://localhost:${process.env.PORT || 55055}`; // dynamic panel API base
+        this.apiBaseUrl = `http://localhost:${process.env.PORT || 55057}`; // dynamic panel API base
         this.connections = {
             sqlite: {
                 status: 'DISCONNECTED',
@@ -204,3 +204,4 @@ if (typeof module !== 'undefined' && module.exports) {
 }
 // ST:TINI_1754752705_e868a412
 // ST:TINI_1754998490_e868a412
+// ST:TINI_1755361782_e868a412

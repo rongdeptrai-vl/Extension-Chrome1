@@ -34,7 +34,7 @@ class TiniEnvironmentConfig {
         this.config = {
             // Basic System
             NODE_ENV: process.env.NODE_ENV || 'development',
-            PORT: process.env.PORT || 55055,
+            PORT: process.env.PORT || 55057,
             DEBUG: process.env.DEBUG === 'true',
 
             // Security Credentials
@@ -252,3 +252,4 @@ console.log('🌍 TINI Environment Configuration Manager loaded');
 // ST:TINI_1754644960_e868a412
 // ST:TINI_1754716154_e868a412
 // ST:TINI_1754752705_e868a412
+// ST:TINI_1755361782_e868a412

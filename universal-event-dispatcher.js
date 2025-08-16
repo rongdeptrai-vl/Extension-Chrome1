@@ -166,13 +166,25 @@ class UniversalEventDispatcher {
     }
     
     activateBossMode() {
-        // 👑 BOSS mode activation using environment config
-        const bossTokenKey = window.tiniConfig ? window.tiniConfig.get('BOSS_LEVEL_TOKEN') : window.tiniConfig?.get('BOSS_LEVEL_TOKEN') || 'bossLevel10000';
-        const bossToken = localStorage.getItem(bossTokenKey);
-        if (bossToken === 'true') {
-            this.bossMode = true;
-            this.activateBossPrivileges();
-            console.log('👑 [EVENT-DISPATCHER] BOSS mode activated');
+        // 👑 BOSS mode activation - safe for both environments
+        try {
+            let bossToken;
+            if (typeof window !== 'undefined' && typeof localStorage !== 'undefined') {
+                // Browser environment
+                const bossTokenKey = window.tiniConfig?.get('BOSS_LEVEL_TOKEN') || 'bossLevel10000';
+                bossToken = localStorage.getItem(bossTokenKey);
+            } else {
+                // Node.js environment
+                bossToken = process.env.BOSS_LEVEL_10000 || process.env.BOSS_LEVEL_TOKEN;
+            }
+            
+            if (bossToken === 'true') {
+                this.bossMode = true;
+                this.activateBossPrivileges();
+                console.log('👑 [EVENT-DISPATCHER] BOSS mode activated');
+            }
+        } catch (error) {
+            console.log('👑 [EVENT-DISPATCHER] BOSS mode check skipped - environment limitation');
         }
     }
     
@@ -936,3 +948,4 @@ if (typeof window !== 'undefined') {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = UniversalEventDispatcher;
 }
+// ST:TINI_1755361782_e868a412

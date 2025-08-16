@@ -221,6 +221,7 @@ class CrossComponentCommunicator {
             name,
             id: this.generateComponentId(name),
             ...config,
+            events: config.events || [], // Ensure events is always an array
             status: 'registered',
             registeredAt: Date.now(),
             lastCommunication: null,
@@ -255,8 +256,9 @@ class CrossComponentCommunicator {
         
         this.messageBus.set(name, channel);
         
-        // Setup event subscriptions for component
-        component.events.forEach(eventType => {
+        // Setup event subscriptions for component - safe check for events
+        const componentEvents = component.events || [];
+        componentEvents.forEach(eventType => {
             this.subscribeComponent(name, eventType);
         });
     }
@@ -279,12 +281,19 @@ class CrossComponentCommunicator {
     }
     
     activateBossMode() {
-        // 👑 BOSS mode activation
-        const bossToken = localStorage.getItem('bossLevel10000');
-        if (bossToken === 'true') {
-            this.bossMode = true;
-            this.activateBossPrivileges();
-            console.log('👑 [COMMUNICATOR] BOSS mode activated');
+        // 👑 BOSS mode activation - Safe for both Node.js and browser
+        try {
+            const bossToken = typeof localStorage !== 'undefined' 
+                ? localStorage.getItem('bossLevel10000')
+                : process.env.BOSS_LEVEL_10000;
+                
+            if (bossToken === 'true') {
+                this.bossMode = true;
+                this.activateBossPrivileges();
+                console.log('👑 [COMMUNICATOR] BOSS mode activated');
+            }
+        } catch (error) {
+            console.log('👑 [COMMUNICATOR] BOSS mode check skipped - environment limitation');
         }
     }
     
@@ -1029,3 +1038,4 @@ if (typeof window !== 'undefined') {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = CrossComponentCommunicator;
 }
+// ST:TINI_1755361782_e868a412

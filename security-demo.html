@@ -1,0 +1,671 @@
+<!-- © 2024 TINI COMPANY - CONFIDENTIAL -->
+<!-- Employee: rongdeptrai-vl <rongdz2307@gmail.com> -->
+<!-- Commit: 8d90861 | Time: 2025-08-16T16:29:42Z -->
+<!-- Watermark: TINI_1755361782_e868a412 | TINI_WATERMARK -->
+<!-- WARNING: Unauthorized distribution is prohibited -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TINI Security Features Demo</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .demo-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .demo-section {
+            padding: 30px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .demo-section:last-child {
+            border-bottom: none;
+        }
+
+        .demo-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .demo-card {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            border: 1px solid #dee2e6;
+        }
+
+        .demo-card h4 {
+            margin-bottom: 15px;
+            color: #495057;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .input-group input, .input-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        .btn-success {
+            background: #28a745;
+        }
+
+        .btn-success:hover {
+            background: #1e7e34;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .btn-warning {
+            background: #ffc107;
+            color: #212529;
+        }
+
+        .result-box {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 15px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .result-success {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .result-error {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .fingerprint-display {
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 11px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .status-online {
+            background: #28a745;
+        }
+
+        .status-offline {
+            background: #dc3545;
+        }
+
+        .status-pending {
+            background: #ffc107;
+        }
+
+        .server-status {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .qr-code-display {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .backup-codes {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .backup-code {
+            background: #fff3cd;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-weight: bold;
+            text-align: center;
+            border: 1px solid #ffeaa7;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>🛡️ TINI Enterprise Security Demo</h1>
+            <p>Test all implemented security features</p>
+        </div>
+
+        <!-- Server Status -->
+        <div class="demo-section">
+            <div class="server-status">
+                <div>
+                    <span class="status-indicator" id="serverStatus"></span>
+                    <strong>Enhanced Security Server</strong>
+                    <span id="serverStatusText">Checking...</span>
+                </div>
+                <button class="btn" onclick="checkServerStatus()">🔄 Refresh</button>
+            </div>
+        </div>
+
+        <!-- Device Fingerprinting Demo -->
+        <div class="demo-section">
+            <div class="demo-title">
+                👆 Device Fingerprinting System
+            </div>
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <h4>Generate Device Fingerprint</h4>
+                    <button class="btn" onclick="generateFingerprint()">🔍 Generate Fingerprint</button>
+                    <div id="fingerprintResult" class="result-box" style="display: none;"></div>
+                </div>
+                <div class="demo-card">
+                    <h4>Fingerprint Components</h4>
+                    <div id="fingerprintComponents"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Enhanced Login Demo -->
+        <div class="demo-section">
+            <div class="demo-title">
+                🔐 Enhanced Login with Security
+            </div>
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <h4>Login Test</h4>
+                    <div class="input-group">
+                        <label>Employee Name:</label>
+                        <input type="text" id="loginName" value="龙枪 KHẨU RỒNG 79-1" placeholder="Enter full name">
+                    </div>
+                    <div class="input-group">
+                        <label>Device ID:</label>
+                        <input type="text" id="loginDeviceId" value="3b647557-871f-4f8e-990d-9284a7e2cca5" placeholder="Device UUID">
+                    </div>
+                    <div class="input-group">
+                        <label>MFA Token (if required):</label>
+                        <input type="text" id="mfaToken" placeholder="6-digit MFA code">
+                    </div>
+                    <button class="btn btn-success" onclick="testLogin()">🚀 Login</button>
+                    <button class="btn btn-warning" onclick="testLoginNewDevice()">📱 New Device Login</button>
+                    <div id="loginResult" class="result-box" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MFA Demo -->
+        <div class="demo-section">
+            <div class="demo-title">
+                🔐 Multi-Factor Authentication
+            </div>
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <h4>Setup MFA</h4>
+                    <div class="input-group">
+                        <label>Employee ID:</label>
+                        <input type="text" id="mfaEmployeeId" value="EMP_EC3F9592" placeholder="Employee ID">
+                    </div>
+                    <button class="btn" onclick="setupMFADemo()">🔐 Setup MFA</button>
+                    <div id="mfaSetupResult" class="result-box" style="display: none;"></div>
+                </div>
+                <div class="demo-card">
+                    <h4>Verify MFA Setup</h4>
+                    <div class="input-group">
+                        <label>Employee ID:</label>
+                        <input type="text" id="verifyEmployeeId" value="EMP_EC3F9592">
+                    </div>
+                    <div class="input-group">
+                        <label>Verification Token:</label>
+                        <input type="text" id="verifyToken" placeholder="Enter 6-digit code from app">
+                    </div>
+                    <button class="btn btn-success" onclick="verifyMFADemo()">✅ Verify & Enable</button>
+                    <div id="mfaVerifyResult" class="result-box" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Drift Detection Demo -->
+        <div class="demo-section">
+            <div class="demo-title">
+                📊 Device Drift Detection
+            </div>
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <h4>Simulate Device Changes</h4>
+                    <button class="btn" onclick="simulateMinorDrift()">🔧 Minor Hardware Change</button>
+                    <button class="btn btn-warning" onclick="simulateMajorDrift()">⚠️ Major Hardware Change</button>
+                    <button class="btn btn-danger" onclick="simulateDeviceSwap()">🔄 Different Device</button>
+                    <div id="driftResult" class="result-box" style="display: none;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Functions Demo -->
+        <div class="demo-section">
+            <div class="demo-title">
+                👨‍💼 Admin Functions
+            </div>
+            <div class="demo-grid">
+                <div class="demo-card">
+                    <h4>Pending Approvals</h4>
+                    <button class="btn" onclick="loadPendingApprovals()">📋 Load Approvals</button>
+                    <div id="approvalsResult" class="result-box" style="display: none;"></div>
+                </div>
+                <div class="demo-card">
+                    <h4>Admin Panel</h4>
+                    <p>Full-featured admin panel with all security controls.</p>
+                    <button class="btn btn-success" onclick="openAdminPanel()">🚀 Open Admin Panel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:3001';
+        let currentFingerprint = null;
+
+        // Check server status
+        async function checkServerStatus() {
+            try {
+                const response = await fetch(`${API_BASE}/api/admin/pending-approvals`);
+                const statusEl = document.getElementById('serverStatus');
+                const textEl = document.getElementById('serverStatusText');
+                
+                if (response.ok) {
+                    statusEl.className = 'status-indicator status-online';
+                    textEl.textContent = 'Online (Port 3001)';
+                } else {
+                    statusEl.className = 'status-indicator status-offline';
+                    textEl.textContent = 'Server Error';
+                }
+            } catch (error) {
+                document.getElementById('serverStatus').className = 'status-indicator status-offline';
+                document.getElementById('serverStatusText').textContent = 'Offline';
+            }
+        }
+
+        // Generate device fingerprint
+        async function generateFingerprint() {
+            try {
+                const fingerprint = {
+                    userAgent: navigator.userAgent,
+                    language: navigator.language,
+                    platform: navigator.platform,
+                    cookieEnabled: navigator.cookieEnabled,
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                    screen: {
+                        width: screen.width,
+                        height: screen.height,
+                        colorDepth: screen.colorDepth
+                    },
+                    webgl: getWebGLInfo(),
+                    canvas: generateCanvasFingerprint(),
+                    timestamp: new Date().toISOString()
+                };
+
+                currentFingerprint = JSON.stringify(fingerprint);
+                const hash = await hashFingerprint(currentFingerprint);
+
+                document.getElementById('fingerprintResult').style.display = 'block';
+                document.getElementById('fingerprintResult').className = 'result-box result-success';
+                document.getElementById('fingerprintResult').innerHTML = `
+                    <strong>Fingerprint Hash:</strong><br>
+                    ${hash}<br><br>
+                    <strong>Components:</strong><br>
+                    ${JSON.stringify(fingerprint, null, 2)}
+                `;
+
+                // Update components display
+                document.getElementById('fingerprintComponents').innerHTML = `
+                    <div class="fingerprint-display">
+                        <strong>🖥️ Platform:</strong> ${fingerprint.platform}<br>
+                        <strong>🌐 Language:</strong> ${fingerprint.language}<br>
+                        <strong>📺 Screen:</strong> ${fingerprint.screen.width}x${fingerprint.screen.height}<br>
+                        <strong>🎨 Color Depth:</strong> ${fingerprint.screen.colorDepth}bit<br>
+                        <strong>🌍 Timezone:</strong> ${fingerprint.timezone}<br>
+                        <strong>🍪 Cookies:</strong> ${fingerprint.cookieEnabled ? 'Enabled' : 'Disabled'}
+                    </div>
+                `;
+
+            } catch (error) {
+                document.getElementById('fingerprintResult').style.display = 'block';
+                document.getElementById('fingerprintResult').className = 'result-box result-error';
+                document.getElementById('fingerprintResult').textContent = 'Error: ' + error.message;
+            }
+        }
+
+        // Helper functions
+        function getWebGLInfo() {
+            try {
+                const canvas = document.createElement('canvas');
+                const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                if (!gl) return 'WebGL not supported';
+                
+                return {
+                    renderer: gl.getParameter(gl.RENDERER),
+                    vendor: gl.getParameter(gl.VENDOR),
+                    version: gl.getParameter(gl.VERSION)
+                };
+            } catch (e) {
+                return 'WebGL error';
+            }
+        }
+
+        function generateCanvasFingerprint() {
+            try {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                ctx.textBaseline = 'top';
+                ctx.font = '14px Arial';
+                ctx.fillText('TINI Demo 🔍', 2, 2);
+                return canvas.toDataURL();
+            } catch (e) {
+                return 'Canvas error';
+            }
+        }
+
+        async function hashFingerprint(data) {
+            const encoder = new TextEncoder();
+            const dataBuffer = encoder.encode(data);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', dataBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // Test login
+        async function testLogin() {
+            if (!currentFingerprint) {
+                await generateFingerprint();
+            }
+
+            const loginData = {
+                fullName: document.getElementById('loginName').value,
+                deviceId: document.getElementById('loginDeviceId').value,
+                fingerprint: currentFingerprint,
+                mfaToken: document.getElementById('mfaToken').value || null
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(loginData)
+                });
+
+                const result = await response.json();
+                
+                document.getElementById('loginResult').style.display = 'block';
+                document.getElementById('loginResult').className = `result-box ${result.success ? 'result-success' : 'result-error'}`;
+                document.getElementById('loginResult').innerHTML = `
+                    <strong>Login Result:</strong><br>
+                    ${JSON.stringify(result, null, 2)}
+                `;
+
+            } catch (error) {
+                document.getElementById('loginResult').style.display = 'block';
+                document.getElementById('loginResult').className = 'result-box result-error';
+                document.getElementById('loginResult').textContent = 'Error: ' + error.message;
+            }
+        }
+
+        // Test new device login
+        async function testLoginNewDevice() {
+            if (!currentFingerprint) {
+                await generateFingerprint();
+            }
+
+            const loginData = {
+                fullName: document.getElementById('loginName').value,
+                deviceId: 'new-device-' + Math.random().toString(36).substr(2, 9),
+                fingerprint: currentFingerprint
+            };
+
+            try {
+                const response = await fetch(`${API_BASE}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(loginData)
+                });
+
+                const result = await response.json();
+                
+                document.getElementById('loginResult').style.display = 'block';
+                document.getElementById('loginResult').className = `result-box ${result.success ? 'result-success' : 'result-error'}`;
+                document.getElementById('loginResult').innerHTML = `
+                    <strong>New Device Login Result:</strong><br>
+                    ${JSON.stringify(result, null, 2)}
+                `;
+
+            } catch (error) {
+                document.getElementById('loginResult').style.display = 'block';
+                document.getElementById('loginResult').className = 'result-box result-error';
+                document.getElementById('loginResult').textContent = 'Error: ' + error.message;
+            }
+        }
+
+        // Setup MFA demo
+        async function setupMFADemo() {
+            const userId = document.getElementById('mfaEmployeeId').value;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/auth/mfa/setup`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId })
+                });
+
+                const result = await response.json();
+                
+                document.getElementById('mfaSetupResult').style.display = 'block';
+                
+                if (result.success) {
+                    document.getElementById('mfaSetupResult').className = 'result-box result-success';
+                    document.getElementById('mfaSetupResult').innerHTML = `
+                        <strong>✅ MFA Setup Successful!</strong><br><br>
+                        <div class="qr-code-display">
+                            <h4>📱 Scan with Authenticator App</h4>
+                            <img src="${result.qrCode}" alt="QR Code" style="max-width: 200px;">
+                        </div>
+                        <br>
+                        <strong>🔑 Backup Codes (Save These!):</strong><br>
+                        <div class="backup-codes">
+                            ${result.backupCodes.map(code => `<div class="backup-code">${code}</div>`).join('')}
+                        </div>
+                        <br>
+                        <strong>Secret (for testing):</strong> ${result.secret}
+                    `;
+                } else {
+                    document.getElementById('mfaSetupResult').className = 'result-box result-error';
+                    document.getElementById('mfaSetupResult').textContent = 'Setup failed: ' + result.error;
+                }
+
+            } catch (error) {
+                document.getElementById('mfaSetupResult').style.display = 'block';
+                document.getElementById('mfaSetupResult').className = 'result-box result-error';
+                document.getElementById('mfaSetupResult').textContent = 'Error: ' + error.message;
+            }
+        }
+
+        // Verify MFA demo
+        async function verifyMFADemo() {
+            const userId = document.getElementById('verifyEmployeeId').value;
+            const token = document.getElementById('verifyToken').value;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/auth/mfa/verify`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId, token })
+                });
+
+                const result = await response.json();
+                
+                document.getElementById('mfaVerifyResult').style.display = 'block';
+                document.getElementById('mfaVerifyResult').className = `result-box ${result.success ? 'result-success' : 'result-error'}`;
+                document.getElementById('mfaVerifyResult').innerHTML = `
+                    <strong>MFA Verification Result:</strong><br>
+                    ${JSON.stringify(result, null, 2)}
+                `;
+
+            } catch (error) {
+                document.getElementById('mfaVerifyResult').style.display = 'block';
+                document.getElementById('mfaVerifyResult').className = 'result-box result-error';
+                document.getElementById('mfaVerifyResult').textContent = 'Error: ' + error.message;
+            }
+        }
+
+        // Load pending approvals
+        async function loadPendingApprovals() {
+            try {
+                const response = await fetch(`${API_BASE}/api/admin/pending-approvals`);
+                const result = await response.json();
+                
+                document.getElementById('approvalsResult').style.display = 'block';
+                document.getElementById('approvalsResult').className = `result-box ${result.success ? 'result-success' : 'result-error'}`;
+                document.getElementById('approvalsResult').innerHTML = `
+                    <strong>Pending Approvals:</strong><br>
+                    ${JSON.stringify(result, null, 2)}
+                `;
+
+            } catch (error) {
+                document.getElementById('approvalsResult').style.display = 'block';
+                document.getElementById('approvalsResult').className = 'result-box result-error';
+                document.getElementById('approvalsResult').textContent = 'Error: ' + error.message;
+            }
+        }
+
+        // Open admin panel
+        function openAdminPanel() {
+            window.open('/enhanced-admin-panel.html', '_blank');
+        }
+
+        // Drift simulation functions
+        function simulateMinorDrift() {
+            document.getElementById('driftResult').style.display = 'block';
+            document.getElementById('driftResult').className = 'result-box result-success';
+            document.getElementById('driftResult').innerHTML = `
+                <strong>🔧 Minor Drift Simulation</strong><br>
+                Similarity: 85% (Above 80% threshold)<br>
+                Action: ALLOW_WITH_LOG<br>
+                Details: RAM upgraded from 8GB to 16GB
+            `;
+        }
+
+        function simulateMajorDrift() {
+            document.getElementById('driftResult').style.display = 'block';
+            document.getElementById('driftResult').className = 'result-box result-error';
+            document.getElementById('driftResult').innerHTML = `
+                <strong>⚠️ Major Drift Simulation</strong><br>
+                Similarity: 65% (Below 80% threshold)<br>
+                Action: REQUIRE_MFA<br>
+                Details: Graphics card and monitor changed
+            `;
+        }
+
+        function simulateDeviceSwap() {
+            document.getElementById('driftResult').style.display = 'block';
+            document.getElementById('driftResult').className = 'result-box result-error';
+            document.getElementById('driftResult').innerHTML = `
+                <strong>🔄 Device Swap Simulation</strong><br>
+                Similarity: 25% (Critical level)<br>
+                Action: BLOCK_AND_ADMIN_REVIEW<br>
+                Details: Completely different hardware signature
+            `;
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkServerStatus();
+            generateFingerprint();
+        });
+    </script>
+</body>
+</html>

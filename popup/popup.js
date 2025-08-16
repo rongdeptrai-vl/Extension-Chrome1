@@ -26,13 +26,36 @@ if (typeof window.TINI_SYSTEM === 'undefined') {
 
 console.log('🚀 Loading TINI Popup Event Handlers...');
 
+// Dynamic Admin Panel base URL helper (added)
 (function initPanelBaseHelper(){
   try {
     if (typeof window.getPanelBase !== 'function') {
-      const DEFAULT_PORT = 55055;
+      const DEFAULT_PORT = 55057; // Updated to match actual server port
       window.__tiniPanelPort = window.__tiniPanelPort || window.TINI_PANEL_PORT || localStorage.getItem('tini_panel_port') || DEFAULT_PORT;
       window.setPanelPort = function(p){ if(p){ window.__tiniPanelPort = p; localStorage.setItem('tini_panel_port', p); } };
       window.getPanelBase = function(){ return `http://localhost:${window.__tiniPanelPort}`; };
+      // Auto-detect a live panel port (55057 -> 55055 -> 55056)
+      window.resolvePanelBase = async function(){
+        const seen = new Set();
+        const current = Number(window.__tiniPanelPort || DEFAULT_PORT);
+        const candidates = [current, 55057, 55055, 55056].filter(p=>{ if(seen.has(p)) return false; seen.add(p); return true; });
+        const ping = async (port)=>{
+          const url = `http://localhost:${port}/api/health`;
+          const controller = new AbortController();
+          const t = setTimeout(()=>controller.abort(), 1200);
+          try {
+            const res = await fetch(url, { method:'GET', signal: controller.signal, headers: { 'Accept': 'application/json' } });
+            clearTimeout(t);
+            if(res.ok) return true;
+          } catch(_) { /* ignore */ }
+          return false;
+        };
+        for(const p of candidates){
+          const ok = await ping(p);
+          if(ok){ window.setPanelPort(p); return `http://localhost:${p}`; }
+        }
+        return window.getPanelBase();
+      };
       console.log('[popup] Panel base initialized ->', window.getPanelBase());
     }
   } catch(e){ console.warn('[popup] Panel base init failed:', e); }
@@ -50,126 +73,330 @@ function initializePopup() {
         return;
     }
     
+    // Initialize tab switching first so UI responds
     initializeTabSwitching();
+    
+    // Initialize device ID FIRST to check registration status
+    // This will also initialize name helper after device check is complete
+    initializeDeviceId();
+    
     initializeAuthHandlers();
-    initializeBlockerSelection();
-    initializeAdminPanel();
-    initializeProductionMonitor();
+    initializeBlockerSelection && initializeBlockerSelection();
+    initializeAdminPanel && initializeAdminPanel();
+    initializeProductionMonitor && initializeProductionMonitor();
     
     // Only initialize advanced settings if we're in popup context
-    if (window.location.pathname.includes('popup.html') || document.getElementById('settingsToggle')) {
+    const advEl = document.getElementById("advanced-settings");
+    if (advEl && typeof initializeAdvancedSettings === 'function') {
         initializeAdvancedSettings();
     } else {
-        console.log('⏭️ Skipping advanced settings - not in popup context');
+        // Silently skip if not present
     }
     
     // Load saved state
-    loadSavedState();
+    loadSavedState && loadSavedState();
     
-    // Initialize device ID
-    initializeDeviceId();
+    // Apply initial constraints after a short delay to ensure all elements are ready
+    setTimeout(() => {
+        if (typeof applyDeviceRegisteredConstraint === 'function') {
+            applyDeviceRegisteredConstraint();
+        }
+    }, 100);
+
+    // Resolve panel base automatically
+    if (typeof window.resolvePanelBase === 'function') {
+        window.resolvePanelBase().then(base=>console.log('[popup] Resolved panel base:', base));
+    }
+
+    // Populate IP fields (internal/public)
+    updateIpDisplay();
     
     console.log('✅ All popup handlers initialized successfully');
 }
 
-// ================================================================
-// DEVICE ID MANAGEMENT
-// ================================================================
-function initializeDeviceId() {
-    console.log('🔧 Initializing device ID...');
-    
-    const deviceIdField = document.getElementById('deviceId');
-    if (!deviceIdField) {
-        console.warn('⚠️ Device ID field not found');
-        return;
+// Expose utility functions to global scope for testing
+window.TINI_DEBUG = {
+    markDeviceAsRegistered,
+    clearDeviceRegistration,
+    forceUpdateDeviceConstraintHint,
+    getRegistrationInfo: () => window.__registeredDeviceInfo,
+    getDeviceId: () => localStorage.getItem('device_id')
+};
+
+function updateIpDisplay() {
+    const internalEl = document.getElementById('internalIp');
+    const detectedEl = document.getElementById('detectedIp');
+
+    if (internalEl) {
+        internalEl.textContent = 'Detecting...';
+        getInternalIP()
+            .then(ip => {
+                if (!ip || ip === '192.168.1.100') {
+                    internalEl.textContent = 'Unavailable (Chrome privacy)';
+                    internalEl.title = 'Chrome hạn chế truy cập IP nội bộ (mDNS/WebRTC). Đây là bình thường.';
+                } else {
+                    internalEl.textContent = ip;
+                }
+            })
+            .catch(() => {
+                internalEl.textContent = 'Unavailable';
+            });
     }
-    
-    // Check if device ID already exists
-    let deviceId = localStorage.getItem('tini_device_id');
-    
-    if (!deviceId) {
-        // Generate new device ID
-        deviceId = generateDeviceId();
-        localStorage.setItem('tini_device_id', deviceId);
-        console.log('✅ Generated new device ID:', deviceId);
-    } else {
-        console.log('✅ Using existing device ID:', deviceId);
+
+    if (detectedEl) {
+        getPublicIP()
+            .then(ip => { detectedEl.textContent = ip || 'Unknown'; })
+            .catch(() => { detectedEl.textContent = 'Unknown'; });
     }
-    
-    deviceIdField.value = deviceId;
 }
 
-function generateDeviceId() {
-    // Generate UUID v4 format
-    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-        const r = Math.random() * 16 | 0;
-        const v = c == 'x' ? r : (r & 0x3 | 0x8);
-        return v.toString(16);
-    });
+async function getPublicIP() {
+    try {
+        const controller = new AbortController();
+        const t = setTimeout(() => controller.abort(), 3000);
+        const res = await fetch('https://api.ipify.org?format=json', { signal: controller.signal });
+        clearTimeout(t);
+        const data = await res.json();
+        return data?.ip || 'Unknown';
+    } catch (e) {
+        return 'Unknown';
+    }
 }
 
-document.addEventListener('DOMContentLoaded', initializePopup);
-
-// Fallback initialization if DOMContentLoaded already fired
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializePopup);
-} else {
-    // Add small delay to ensure all scripts are loaded
-    setTimeout(initializePopup, 100);
-}
-
-// ================================================================
-// TAB SWITCHING FUNCTIONALITY
-// ================================================================
+// Event handlers initialization
 function initializeTabSwitching() {
-    const tabs = document.querySelectorAll('.tab-btn');
-    const contents = document.querySelectorAll('.tab-content');
+    console.log('🔧 Initializing tab switching...');
     
-    console.log(`🔧 Initializing ${tabs.length} tabs`);
+    // Tab navigation
+    const tabs = document.querySelectorAll('.tab-btn');
+    const forms = document.querySelectorAll('.auth-form');
     
     tabs.forEach(tab => {
-        tab.addEventListener('click', function() {
-            console.log(`📑 Switching to tab: ${this.textContent}`);
-            
-            // Remove active from all
+        tab.addEventListener('click', () => {
+            // Remove active class from all tabs and forms
             tabs.forEach(t => t.classList.remove('active'));
+            forms.forEach(f => f.classList.remove('active'));
             
-            // Add active to current
-            this.classList.add('active');
+            // Add active class to clicked tab
+            tab.classList.add('active');
             
-            // Show/hide content based on tab
-            const tabId = this.id;
-            showTabContent(tabId);
-            
-            // Save active tab
-            window.secureSetStorage && window.secureSetStorage('activeTab', tabId) || localStorage.setItem('activeTab', tabId);
+            // Show corresponding form
+            const targetForm = tab.id === 'loginTab' ? 'loginForm' : 'registerForm';
+            document.getElementById(targetForm)?.classList.add('active');
+
+            // Hide global error messages when switching to Login tab
+            if (targetForm === 'loginForm') {
+                const messageContainer = document.getElementById('errorMessage');
+                if (messageContainer) {
+                    messageContainer.style.display = 'none';
+                }
+            }
+
+            // NEW: when moving to Register, enforce device-registered constraint immediately
+            if (targetForm === 'registerForm' && typeof applyDeviceRegisteredConstraint === 'function') {
+                // Small delay to ensure DOM is ready
+                setTimeout(() => {
+                    applyDeviceRegisteredConstraint();
+                    // Force update hint if device is registered
+                    forceUpdateDeviceConstraintHint();
+                    if (window.__registeredDeviceInfo) {
+                        const hint = document.getElementById('nameFormatHint');
+                        if (hint) {
+                            hint.textContent = 'Thiết Bị Này Đã Được Đăng Ký';
+                            hint.style.color = '#e74c3c';
+                            console.log('🔴 Forced hint update on tab switch');
+                        }
+                        // Show device registered message only on Register tab
+                        const messageContainer = document.getElementById('errorMessage');
+                        if (messageContainer && messageContainer.textContent.includes('Thiết bị này đã được đăng ký')) {
+                            messageContainer.style.display = 'block';
+                        }
+                    }
+                    // Also trigger name validation if there's content
+                    const nameInput = document.getElementById('employeeName');
+                    if (nameInput && nameInput.value.trim() && !window.__registeredDeviceInfo) {
+                        nameInput.dispatchEvent(new Event('input'));
+                    }
+                }, 50);
+            }
         });
     });
 }
 
-function showTabContent(activeTabId) {
-    // Hide all auth forms
-    const allForms = document.querySelectorAll('.auth-form');
-    allForms.forEach(form => {
-        form.classList.remove('active');
-    });
+function initializeAuthHandlers() {
+    console.log('🔧 Initializing auth handlers...');
     
-    // Show relevant form
-    switch(activeTabId) {
-        case 'loginTab':
-            const loginForm = document.getElementById('loginForm');
-            if (loginForm) loginForm.classList.add('active');
-            break;
-        case 'registerTab':
-            const registerForm = document.getElementById('registerForm');
-            if (registerForm) registerForm.classList.add('active');
-            break;
-        case 'adminTab':
-            const adminForm = document.getElementById('adminForm');
-            if (adminForm) adminForm.classList.add('active');
-            break;
-        default:
-            console.warn('⚠️ Unknown tab ID:', activeTabId);
+    // Add login handler
+    const loginBtn = document.getElementById('loginBtn');
+    if (loginBtn) {
+        loginBtn.addEventListener('click', handleLogin);
+    }
+    
+    // Add register handler  
+    const registerBtn = document.getElementById('registerBtn');
+    if (registerBtn) {
+        registerBtn.addEventListener('click', handleRegister);
+    }
+    
+    // Add admin login handler
+    const adminLoginBtn = document.getElementById('adminLoginBtn');
+    if (adminLoginBtn) {
+        adminLoginBtn.addEventListener('click', handleAdminLogin);
+    }
+    
+    // Add server test handler
+    const testServerBtn = document.getElementById('testServerBtn');
+    if (testServerBtn) {
+        testServerBtn.addEventListener('click', handleTestServer);
+    }
+    
+    // Add Enter key support for login form
+    const employeeIdInput = document.getElementById('employeeId');
+    if (employeeIdInput) {
+        employeeIdInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleLogin();
+        });
+    }
+    
+    const deviceIdInput = document.getElementById('deviceId');
+    if (deviceIdInput) {
+        deviceIdInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') handleLogin();
+        });
+    }
+}
+
+function initializePopupComponents() {
+    console.log('🚀 TINI Popup initializing...');
+    
+    // Initialize tab switching first so UI responds
+    initializeTabSwitching();
+    
+    // Initialize device ID FIRST to check registration status
+    // This will also initialize name helper after device check is complete
+    initializeDeviceId();
+    
+    initializeAuthHandlers();
+    
+    // Initialize optional components if they exist
+    if (typeof initializeBlockerSelection === 'function') {
+        initializeBlockerSelection();
+    }
+    if (typeof initializeAdminPanel === 'function') {
+        initializeAdminPanel();
+    }
+    if (typeof initializeProductionMonitor === 'function') {
+        initializeProductionMonitor();
+    }
+    
+    // Only initialize advanced settings if we're in popup context
+    const advEl = document.getElementById("advanced-settings");
+    if (advEl && typeof initializeAdvancedSettings === 'function') {
+        initializeAdvancedSettings();
+    }
+    
+    // Load saved state if function exists
+    if (typeof loadSavedState === 'function') {
+        loadSavedState();
+    }
+    
+    // Initialize device fingerprint
+    initializeDeviceFingerprint();
+
+    // Populate IP fields (internal/public)
+    updateIpDisplay();
+    
+    console.log('✅ All popup handlers initialized successfully');
+}
+
+// Stub functions for missing components
+function initializeBlockerSelection() {
+    console.log('🔧 Blocker selection initialized (stub)');
+}
+
+function initializeAdminPanel() {
+    console.log('🔧 Admin panel initialized');
+    const adminBtn = document.getElementById('adminBtn');
+    if (adminBtn) {
+        adminBtn.addEventListener('click', async () => {
+            console.log('🔧 Admin button clicked');
+            const base = (typeof window.resolvePanelBase === 'function') ? await window.resolvePanelBase() : (typeof getPanelBase==='function'? getPanelBase() : 'http://localhost:55055');
+            openAdminPanelWindow(base);
+        });
+    }
+    const adminPanelBar = document.getElementById('adminPanelBar');
+    if (adminPanelBar) {
+        adminPanelBar.style.cursor = 'pointer';
+        adminPanelBar.addEventListener('click', async () => {
+            console.log('🔧 Admin panel bar clicked');
+            const base = (typeof window.resolvePanelBase === 'function') ? await window.resolvePanelBase() : (typeof getPanelBase==='function'? getPanelBase() : 'http://localhost:55055');
+            openAdminPanelWindow(base);
+        });
+    }
+}
+
+function initializeProductionMonitor() {
+    console.log('🔧 Production monitor initialized (stub)');
+}
+
+function loadSavedState() {
+    console.log('🔧 Loading saved state (stub)');
+}
+
+// Stub functions for missing components
+function initializeBlockerSelection() {
+    console.log('🔧 Blocker selection initialized (stub)');
+}
+
+function initializeAdminPanel() {
+    console.log('🔧 Admin panel initialized');
+    const adminBtn = document.getElementById('adminBtn');
+    if (adminBtn) {
+        adminBtn.addEventListener('click', async () => {
+            console.log('🔧 Admin button clicked');
+            const base = (typeof window.resolvePanelBase === 'function') ? await window.resolvePanelBase() : (typeof getPanelBase==='function'? getPanelBase() : 'http://localhost:55055');
+            openAdminPanelWindow(base);
+        });
+    }
+    const adminPanelBar = document.getElementById('adminPanelBar');
+    if (adminPanelBar) {
+        adminPanelBar.style.cursor = 'pointer';
+        adminPanelBar.addEventListener('click', async () => {
+            console.log('🔧 Admin panel bar clicked');
+            const base = (typeof window.resolvePanelBase === 'function') ? await window.resolvePanelBase() : (typeof getPanelBase==='function'? getPanelBase() : 'http://localhost:55055');
+            openAdminPanelWindow(base);
+        });
+    }
+}
+
+function initializeProductionMonitor() {
+    console.log('🔧 Production monitor initialized (stub)');
+}
+
+function updateIpDisplay() {
+    const internalEl = document.getElementById('internalIp');
+    const detectedEl = document.getElementById('detectedIp');
+
+    if (internalEl) {
+        internalEl.textContent = 'Detecting...';
+        getInternalIP()
+            .then(ip => {
+                if (!ip || ip === '192.168.1.100') {
+                    internalEl.textContent = 'Unavailable (Chrome privacy)';
+                    internalEl.title = 'Chrome hạn chế truy cập IP nội bộ (mDNS/WebRTC). Đây là bình thường.';
+                } else {
+                    internalEl.textContent = ip;
+                }
+            })
+            .catch(() => {
+                internalEl.textContent = 'Unavailable';
+            });
+    }
+
+    if (detectedEl) {
+        getPublicIP()
+            .then(ip => { detectedEl.textContent = ip || 'Unknown'; })
+            .catch(() => { detectedEl.textContent = 'Unknown'; });
     }
 }
 
@@ -229,7 +456,7 @@ async function handleLogin() {
     const deviceIdField = document.getElementById('deviceId');
     
     if (!employeeIdField || !deviceIdField) {
-        showMessage('Login form fields not found. Please contact support.', 'error'); // More helpful message
+        showMessage('Login form fields not found. Please contact support.', 'error');
         return;
     }
     
@@ -237,12 +464,18 @@ async function handleLogin() {
     const deviceId = deviceIdField.value.trim();
     
     if (!employeeId || !deviceId) {
-        showMessage('Please enter both Employee ID and Device ID.', 'error'); // Simpler message
+        showMessage('Please enter both Employee ID and Device ID.', 'error');
         return;
     }
 
-    // FIX: Removed incorrect validation for Employee ID. The server should validate.
-    
+    // Local cooldown to prevent rapid clicks
+    const remainLogin = getCooldownRemaining('tini_cooldown_login');
+    if (remainLogin > 0) {
+        showMessage(`Waiting... ${remainLogin}s.`, 'error');
+        startCountdown(loginBtn, remainLogin, 'Authenticate');
+        return;
+    }
+
     // Validate deviceId format - this is fine to keep
     const deviceRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
     if (!deviceRegex.test(deviceId)) {
@@ -253,27 +486,47 @@ async function handleLogin() {
     // Disable button and show loading
     loginBtn.disabled = true;
     loginBtn.textContent = 'Authenticating...';
+    let underBackoff = false;
+
+    // Start a short local cooldown window
+    setCooldown('tini_cooldown_login', LOCAL_COOLDOWN_LOGIN || 3);
     
     try {
         console.log(`🔍 Attempting secure login for: ${employeeId}`);
-        
+        // Ensure correct base
+        const base = (typeof window.resolvePanelBase === 'function') ? await window.resolvePanelBase() : (typeof getPanelBase==='function'? getPanelBase() : 'http://localhost:55055');
         // Get internal IP for security tracking
         const internalIp = await getInternalIP();
-        
+        // Get device fingerprint
+        const deviceFingerprint = window.deviceFingerprint ? window.deviceFingerprint.hash : null;
+        console.log('🔍 Including device fingerprint in login request:', deviceFingerprint ? 'Yes' : 'No');
         // Authenticate with real server
-        const response = await fetch(getPanelBase() + '/api/auth/validate', {
+        const response = await fetch(base + '/api/auth/validate', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
             body: JSON.stringify({ 
-                username: employeeId, // FIX: Send employeeId value under the `username` key as the API expects
-                deviceId: deviceId
+                username: employeeId,
+                deviceId: deviceId,
+                fingerprint: deviceFingerprint,
+                internalIp: internalIp,
+                userAgent: navigator.userAgent
             })
         });
         
         const result = await response.json();
+        
+        // Handle 429 backoff from server
+        if (response.status === 429) {
+            const sec = parseRetryAfterSeconds(response, result) ?? 10;
+            showMessage(`Bạn thử quá nhanh, vui lòng thử lại sau ${sec} giây.`, 'error');
+            startCountdown(loginBtn, sec, 'Authenticate');
+            setCooldown('tini_cooldown_login', sec);
+            underBackoff = true;
+            return;
+        }
         
         if (response.ok && result.success) {
             console.log('✅ Server authentication successful');
@@ -319,8 +572,37 @@ async function handleLogin() {
         logConnectionFailure(employeeId, deviceId, error.message); // FIX: Use correct variable
         
     } finally {
-        loginBtn.disabled = false;
-        loginBtn.textContent = 'Authenticate';
+        if (!underBackoff) {
+            const remain = getCooldownRemaining('tini_cooldown_login');
+            if (remain > 0) {
+                startCountdown(loginBtn, remain, 'Authenticate');
+            } else {
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Authenticate';
+            }
+        }
+    }
+}
+
+// Check if employee name already exists on server
+async function checkEmployeeNameExists(name) {
+    try {
+        const base = (typeof window.resolvePanelBase === 'function') ? await window.resolvePanelBase() : (typeof getPanelBase==='function'? getPanelBase() : 'http://localhost:55055');
+        const controller = new AbortController();
+        const to = setTimeout(() => controller.abort(), 1500);
+        const res = await fetch(`${base}/api/register/check?name=${encodeURIComponent(name)}`, { method: 'GET', signal: controller.signal });
+        clearTimeout(to);
+        let exists = null;
+        if (res.ok) {
+            const data = await res.json().catch(()=>({}));
+            exists = !!data.nameExists;
+        }
+        // Fallback to local cache if server says not exists or unknown
+        if (exists !== true && nameExistsLocally(name)) return true;
+        return exists;
+    } catch {
+        // On error, fallback to local cache
+        return nameExistsLocally(name) ? true : null;
     }
 }
 
@@ -384,7 +666,7 @@ function logConnectionFailure(fullName, deviceId, error) {
         deviceId,
         error,
         timestamp: new Date().toISOString(),
-        url: 'http://localhost:8080/api/auth/validate'
+        url: (typeof window.getPanelBase==='function'? window.getPanelBase() : 'http://localhost:55055') + '/api/auth/validate'
     });
     
     // Keep only last 5 connection failures
@@ -429,12 +711,9 @@ function switchToAuthenticatedView(user = null) {
             document.querySelector('.container').appendChild(mainContent);
             
             // Add event listeners for new buttons
-            document.getElementById('openAdminPanelBtn')?.addEventListener('click', () => {
-                if (typeof chrome !== 'undefined' && chrome.tabs) {
-                    chrome.tabs.create({ url: getPanelBase() });
-                } else {
-                    window.open(getPanelBase(), '_blank');
-                }
+            document.getElementById('openAdminPanelBtn')?.addEventListener('click', async () => {
+                const base = (typeof window.resolvePanelBase === 'function') ? await window.resolvePanelBase() : getPanelBase();
+                openAdminPanelWindow(base);
             });
             
             document.getElementById('logoutBtn')?.addEventListener('click', () => {
@@ -478,864 +757,985 @@ function handleLogout() {
 
 async function handleRegister() {
     const registerBtn = document.getElementById('registerBtn');
-    
-    // Get form fields (create if they don't exist)
-    const formData = getRegistrationFormData();
-    
-    if (!validateRegistrationData(formData)) {
+    if (!registerBtn) return;
+
+    // Hard stop if this device has already been registered
+    if (window.__registeredDeviceInfo) {
+        // Only show message if user is on Register tab or trying to register
+        const currentTab = document.querySelector('.tab-btn.active');
+        const isRegisterTab = currentTab && currentTab.id === 'registerTab';
+        if (isRegisterTab) {
+            showMessage('Thiết bị này đã được đăng ký. Vui lòng dùng thiết bị khác hoặc liên hệ admin.', 'error');
+        }
+        applyDeviceRegisteredConstraint && applyDeviceRegisteredConstraint();
+        return;
+    }
+
+    // Read name from UI and normalize to "A - B - NN" as server expects
+    const rawName = document.getElementById('employeeName')?.value?.trim() || '';
+    const fullName = normalizeEmployeeName(rawName);
+    if (!fullName) {
+        showMessage('Tên không đúng định dạng. Dùng: Tên Telegram Nội Bộ Của Bạn', 'error');
         return;
     }
     
+    // Local cooldown to prevent rapid clicks
+    const remainReg = getCooldownRemaining('tini_cooldown_register');
+    if (remainReg > 0) {
+        showMessage(`Vui lòng đợi ${remainReg}s rồi thử lại.`, 'error');
+        startCountdown(registerBtn, remainReg, 'Register');
+        return;
+    }
+
+    // Get unified device ID
+    const deviceId = localStorage.getItem('device_id') || document.getElementById('deviceId')?.value?.trim();
+    if (!deviceId) {
+        showMessage('Không tìm thấy Device ID. Vui lòng mở lại popup.', 'error');
+        return;
+    }
+
+    // Best-effort internal IP
+    const internalIp = await getInternalIP();
+    
+    // Get device fingerprint
+    const deviceFingerprint = window.deviceFingerprint ? window.deviceFingerprint.hash : null;
+    console.log('🔍 Including device fingerprint in registration:', deviceFingerprint ? 'Yes' : 'No');
+
     registerBtn.disabled = true;
     registerBtn.textContent = 'Registering...';
+    let underBackoff = false;
     
+    // Start a short local cooldown window
+    setCooldown('tini_cooldown_register', LOCAL_COOLDOWN_REGISTER || 5);
+
     try {
-        console.log('📝 Attempting user registration...');
-        
-        const response = await fetch('http://localhost:5001/api/register', {
+        // Add timeout to avoid hanging UI
+        const controller = new AbortController();
+        const to = setTimeout(() => controller.abort(), 8000);
+        const base = (typeof window.resolvePanelBase === 'function') ? await window.resolvePanelBase() : getPanelBase();
+        const res = await fetch(base + '/api/register', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                fullName, 
+                deviceId, 
+                internalIp,
+                fingerprint: deviceFingerprint,
+                userAgent: navigator.userAgent
+            }),
+            signal: controller.signal
         });
-        
-        const result = await response.json();
-        
-        if (result.success) {
-            console.log('✅ Registration successful');
+        clearTimeout(to);
+
+        const result = await res.json().catch(() => ({}));
+
+        // Handle 429 backoff from server
+        if (res.status === 429) {
+            const sec = parseRetryAfterSeconds(res, result) ?? 10;
+            showMessage(`Bạn thử quá nhanh, vui lòng thử lại sau ${sec} giây.`, 'error');
+            startCountdown(registerBtn, sec, 'Register');
+            setCooldown('tini_cooldown_register', sec);
+            underBackoff = true;
+            return;
+        }
+
+        if (res.ok && result.success) {
             showMessage('Registration successful! Please login.', 'success');
+            // Cache locally so duplicate hint updates immediately
+            addLocalRegisteredName(fullName);
             
-            // Switch to login tab
-            document.getElementById('loginTab').click();
-            
-            // Pre-fill login username
-            const loginUsername = document.getElementById('loginUsername');
-            if (loginUsername) {
-                loginUsername.value = formData.username;
+            // Cache device registration info for future sessions
+            const deviceId = localStorage.getItem('device_id');
+            if (deviceId) {
+                const registrationInfo = {
+                    fullName: fullName,
+                    deviceId: deviceId,
+                    registeredAt: new Date().toISOString(),
+                    source: 'registration_success'
+                };
+                localStorage.setItem(`device_registered_${deviceId}`, JSON.stringify(registrationInfo));
+                console.log('💾 Cached device registration info locally');
             }
             
+            document.getElementById('loginTab')?.click();
+            const employeeIdField = document.getElementById('employeeId');
+            if (employeeIdField) employeeIdField.value = fullName;
         } else {
-            console.log('❌ Registration failed:', result.message);
-            showMessage(result.message || 'Registration failed', 'error');
+            let msg = result.error || result.message || `Registration failed (HTTP ${res.status})`;
+            if (res.status === 409 && result.code) {
+                if (result.code === 'NAME_EXISTS') msg = 'Tên nhân viên đã được đăng ký. Vui lòng đăng nhập hoặc dùng tên khác.';
+                else if (result.code === 'DEVICE_EXISTS') msg = 'Thiết bị này đã được đăng ký. Vui lòng dùng thiết bị khác hoặc liên hệ admin.';
+                else if (result.code === 'NAME_AND_DEVICE_EXISTS') msg = 'Tên và thiết bị đã được đăng ký.';
+            }
+            showMessage(msg, 'error');
         }
-        
     } catch (error) {
-        console.error('🚨 Registration error:', error);
-        showMessage('Registration error - check server connection', 'error');
+        if (error.name === 'AbortError') {
+            showMessage('Registration request timed out. Please try again.', 'error');
+        } else if (error.message && error.message.includes('fetch')) {
+            showMessage(`Cannot connect to server at ${getPanelBase()}. Please check if server is running.`, 'error');
+        } else {
+            showMessage(`Registration error: ${error.message || String(error)}`, 'error');
+        }
     } finally {
-        registerBtn.disabled = false;
-        registerBtn.textContent = 'Register New User';
+        if (!underBackoff) {
+            const remain = getCooldownRemaining('tini_cooldown_register');
+            if (remain > 0) {
+                startCountdown(registerBtn, remain, 'Register');
+            } else {
+                registerBtn.disabled = false;
+                registerBtn.textContent = 'Register';
+            }
+        }
     }
 }
 
-async function handleAdminLogin() {
-    const adminLoginBtn = document.getElementById('adminLoginBtn');
-    const adminUsernameField = document.getElementById('adminUsername');
-    const adminPasswordField = document.getElementById('adminPassword');
-    
-    if (!adminUsernameField || !adminPasswordField) {
-        showMessage('Admin form fields not found', 'error');
-        return;
-    }
-    
-    const adminUsername = adminUsernameField.value.trim();
-    const adminPassword = adminPasswordField.value.trim();
-    
-    if (!adminUsername || !adminPassword) {
-        showMessage('Please enter admin credentials', 'error');
-        return;
-    }
-    
-    adminLoginBtn.disabled = true;
-    adminLoginBtn.textContent = 'Verifying...';
-    
-    try {
-        console.log('👑 Attempting admin authentication...');
-        
-        // Try real server authentication first
-        try {
-            const response = await fetch('http://localhost:8099/api/admin/auth', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ 
-                    username: adminUsername, 
-                    password: adminPassword 
-                })
-            });
-            
-            if (response.ok) {
-                const result = await response.json();
-                
-                if (result.success) {
-                    console.log('✅ Admin authentication successful');
-                    showMessage('Admin access granted!', 'success');
-                    
-                    // Save admin token
-                    localStorage.setItem('adminToken', result.token);
-                    localStorage.setItem('adminData', JSON.stringify(result.admin));
-                    
-                    // Show main content and auto-open dashboard
-                    document.getElementById('authContainer').classList.remove('active');
-                    document.getElementById('mainContent').classList.add('active');
-                    
-                    setTimeout(() => {
-                        openAdminDashboard();
-                    }, 1000);
-                    
-                    return;
-                }
-            }
-        } catch (serverError) {
-            console.log('⚠️ Server auth failed, trying fallback...');
+// Live helper: validate and auto-format employee name
+function initializeEmployeeNameHelper() {
+    const input = document.getElementById('employeeName');
+    const hint = document.getElementById('nameFormatHint');
+    if (!input) return;
+
+    const setHint = (msg, ok = false, level = 'warn') => {
+        if (!hint) return;
+        // If device already registered, always show the red message regardless
+        if (window.__registeredDeviceInfo) {
+            hint.textContent = 'Thiết Bị Này Đã Được Đăng Ký';
+            hint.style.color = '#e74c3c';
+            return;
+        }
+        hint.textContent = msg;
+        if (ok) hint.style.color = '#2ecc71';
+        else if (level === 'error') hint.style.color = '#e74c3c';
+        else hint.style.color = '#f1c40f';
+    };
+
+    let debounceId;
+    const checkAndHint = async (value) => {
+        // IMPORTANT: Immediately stop if device is already registered
+        if (window.__registeredDeviceInfo) {
+            console.log('🛑 Device already registered, skipping name validation');
+            setHint('Thiết Bị Này Đã Được Đăng Ký', false, 'error');
+            return;
         }
         
-        // Fallback authentication for development
-        const validAdmins = {
-            'admin': 'admin123',
-            'boss': 'boss123', 
-            'ghost_boss': 'ghost123',
-            'tini_admin': 'tini123'
-        };
-        
-        if (validAdmins[adminUsername] && 
-            (validAdmins[adminUsername] === adminPassword || adminPassword === 'admin')) {
-            
-            console.log('✅ Admin fallback authentication successful');
-            showMessage('Admin access granted (development mode)!', 'success');
-            
-            // Save fallback admin data
-            localStorage.setItem('adminToken', 'admin_' + Date.now());
-            localStorage.setItem('adminData', JSON.stringify({
-                username: adminUsername,
-                role: 'admin',
-                loginTime: new Date().toISOString()
-            }));
-            
-            // Show main content and auto-open dashboard
-            document.getElementById('authContainer').classList.remove('active');
-            document.getElementById('mainContent').classList.add('active');
-            
-            setTimeout(() => {
-                openAdminDashboard();
-            }, 1000);
-            
+        console.log('✅ Device not registered, proceeding with name validation for:', value);
+        const s = (value || '').trim().replace(/\s+/g, ' ');
+        if (s.length === 0) { setHint('Định dạng: 潘文勇 VĂN DŨNG 79-1 hoặc 潘文勇 VĂN DŨNG 79'); return; }
+        if (s.length < 10 || s.length > 25) { setHint('Độ dài 10–25 ký tự (kể cả dấu)'); return; }
+        const formatted = normalizeEmployeeName(s);
+        if (!formatted) { setHint('Sai định dạng. Ví dụ: 朋友 THÀNH 93 hoặc 朋友 THÀNH 93-1'); return; }
+        // Format OK -> check duplicate on server
+        setHint('Đang kiểm tra trùng tên...', false, 'warn');
+        const exists = await checkEmployeeNameExists(formatted);
+        if (exists === true) {
+            setHint('Tên nhân viên đã tồn tại', false, 'error');
+        } else if (exists === false) {
+            setHint('Tên Hợp lệ', true);
         } else {
-            console.log('❌ Admin authentication failed');
-            showMessage('Invalid admin credentials', 'error');
+            setHint('Hợp lệ (không kiểm tra được trùng tên)', true);
+        }
+    };
+
+    input.addEventListener('input', () => {
+        // Skip validation completely if device is registered
+        if (window.__registeredDeviceInfo) {
+            setHint('Thiết Bị Này Đã Được Đăng Ký', false, 'error');
+            return;
+        }
+        clearTimeout(debounceId);
+        debounceId = setTimeout(() => checkAndHint(input.value), 400);
+    });
+    input.addEventListener('blur', () => {
+        // Skip validation completely if device is registered
+        if (window.__registeredDeviceInfo) {
+            setHint('Thiết Bị Này Đã Được Đăng Ký', false, 'error');
+            return;
+        }
+        clearTimeout(debounceId);
+        checkAndHint(input.value);
+    });
+    // Also apply device-registered state immediately on focus
+    input.addEventListener('focus', () => { 
+        if (window.__registeredDeviceInfo) {
+            setHint('Thiết Bị Này Đã Được Đăng Ký', false, 'error');
+            console.log('🔴 Applied constraint on focus');
+            return;
+        }
+        applyDeviceRegisteredConstraint(); 
+    });
+
+    // Force update on any user interaction if device is registered
+    input.addEventListener('keydown', () => {
+        if (window.__registeredDeviceInfo) {
+            setTimeout(() => {
+                setHint('Thiết Bị Này Đã Được Đăng Ký', false, 'error');
+                forceUpdateDeviceConstraintHint();
+            }, 10);
+        }
+    });
+    
+    // Also override on paste event
+    input.addEventListener('paste', () => {
+        if (window.__registeredDeviceInfo) {
+            setTimeout(() => {
+                setHint('Thiết Bị Này Đã Được Đăng Ký', false, 'error');
+                forceUpdateDeviceConstraintHint();
+            }, 50);
+        }
+    });
+
+    // Initial state - only check if device is not registered
+    if (!window.__registeredDeviceInfo) {
+        console.log('🔍 Device not registered, proceeding with name validation');
+        checkAndHint(input.value);
+    } else {
+        console.log('🛑 Device already registered, setting constraint hint');
+        setHint('Thiết Bị Này Đã Được Đăng Ký', false, 'error');
+    }
+    
+    // Additional safety: force update after a small delay
+    setTimeout(() => {
+        if (window.__registeredDeviceInfo) {
+            console.log('🔄 Force updating hint after delay');
+            setHint('Thiết Bị Này Đã Được Đăng Ký', false, 'error');
+            forceUpdateDeviceConstraintHint();
+        }
+    }, 200);
+    
+    // Periodic check to ensure hint stays correct (safety net)
+    setInterval(() => {
+        if (window.__registeredDeviceInfo) {
+            const hint = document.getElementById('nameFormatHint');
+            if (hint && hint.textContent !== 'Thiết Bị Này Đã Được Đăng Ký') {
+                console.log('🔄 Correcting hint via periodic check');
+                forceUpdateDeviceConstraintHint();
+            }
+        }
+    }, 1000);
+}
+
+// Manual function to mark device as registered (for testing or manual override)
+function markDeviceAsRegistered(fullName) {
+    const deviceId = localStorage.getItem('device_id');
+    if (deviceId) {
+        const registrationInfo = {
+            fullName: fullName || 'Manual Override',
+            deviceId: deviceId,
+            registeredAt: new Date().toISOString(),
+            source: 'manual_override'
+        };
+        localStorage.setItem(`device_registered_${deviceId}`, JSON.stringify(registrationInfo));
+        window.__registeredDeviceInfo = registrationInfo;
+        console.log('🔧 Manually marked device as registered');
+        
+        // Update UI immediately
+        showRegisteredDeviceInfo(registrationInfo);
+        applyDeviceRegisteredConstraint();
+        forceUpdateDeviceConstraintHint();
+        
+        return true;
+    }
+    return false;
+}
+
+// Function to clear device registration (for testing)
+function clearDeviceRegistration() {
+    const deviceId = localStorage.getItem('device_id');
+    if (deviceId) {
+        localStorage.removeItem(`device_registered_${deviceId}`);
+        window.__registeredDeviceInfo = null;
+        console.log('🗑️ Cleared device registration');
+        
+        // Update UI
+        const hint = document.getElementById('nameFormatHint');
+        if (hint) {
+            hint.textContent = 'Định dạng: 潘文勇 VĂN DŨNG 79-1 hoặc 潘文勇 VĂN DŨNG 79';
+            hint.style.color = '#f1c40f';
+        }
+        const registerBtn = document.getElementById('registerBtn');
+        if (registerBtn) {
+            registerBtn.disabled = false;
+            registerBtn.title = '';
         }
         
-    } catch (error) {
-        console.error('🚨 Admin authentication error:', error);
-        showMessage('Admin authentication error', 'error');
-    } finally {
-        adminLoginBtn.disabled = false;
-        adminLoginBtn.textContent = 'Admin Login';
+        return true;
     }
+    return false;
+}
+
+// Force update device constraint hint
+function forceUpdateDeviceConstraintHint() {
+    if (window.__registeredDeviceInfo) {
+        const hint = document.getElementById('nameFormatHint');
+        if (hint) {
+            hint.textContent = 'Thiết Bị Này Đã Được Đăng Ký';
+            hint.style.color = '#e74c3c';
+            console.log('🔴 Force updated device constraint hint');
+        }
+        const registerBtn = document.getElementById('registerBtn');
+        if (registerBtn) {
+            registerBtn.disabled = true;
+            registerBtn.title = 'Thiết bị này đã được đăng ký';
+        }
+        return true;
+    }
+    return false;
+}
+
+// Improve normalization to support multi-word Vietnamese name
+function normalizeEmployeeName(input) {
+    if (!input) return '';
+    const s = input.trim().replace(/\s+/g, ' ');
+    if (s.length < 10 || s.length > 25) return '';
+
+    // Strict spaced format: 中文名 VIỆT_LÓT VIỆT_THẬT 93 or 93-1
+    const spacedStrict = s.match(/^(?<zh>[\p{Script=Han}]+)\s+(?<vi1>[\p{L}]+)\s+(?<vi2>[\p{L}]+)\s(?<code>\d{2}(?:-\d)?)$/u);
+    if (spacedStrict && spacedStrict.groups) {
+        const zh = spacedStrict.groups.zh;
+        const vi1 = spacedStrict.groups.vi1;
+        const vi2 = spacedStrict.groups.vi2;
+        const code = spacedStrict.groups.code;
+        return `${zh} ${vi1} ${vi2} ${code}`;
+    }
+
+    return '';
+}
+
+// Missing auth handler functions
+async function handleAdminLogin() {
+    console.log('🔑 Admin login requested');
+    showMessage('Admin login feature not yet implemented', 'info');
 }
 
 async function handleTestServer() {
-    const testBtn = document.getElementById('testServerBtn');
-    
-    testBtn.disabled = true;
-    testBtn.textContent = 'Testing...';
+    console.log('🔧 Testing server connection');
+    showMessage('Testing server connection...', 'info');
     
     try {
-        console.log('🧪 Testing authentication server connection...');
-        showMessage('Testing server connection...', 'info');
-        
-        const startTime = Date.now();
-        
-        // Test main API server
         const response = await fetch(getPanelBase() + '/api/health', {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
+            headers: { 'Accept': 'application/json' }
         });
-        
-        const ping = Date.now() - startTime;
         
         if (response.ok) {
-            const data = await response.json();
-            console.log('✅ Authentication server online:', data);
+            showMessage('Server connection successful!', 'success');
+        } else {
+            showMessage(`Server returned status: ${response.status}`, 'error');
+        }
+    } catch (error) {
+        console.error('Server test failed:', error);
+        showMessage('Cannot connect to server. Please check if it\'s running.', 'error');
+    }
+}
+
+// Helper to open Admin Panel in a separate window (popup)
+function openAdminPanelWindow(adminURL) {
+    try {
+        if (typeof chrome !== 'undefined' && chrome.windows && chrome.windows.create) {
+            chrome.windows.create({ url: adminURL, type: 'popup', width: 1200, height: 800, focused: true }, (win) => {
+                if (chrome.runtime && chrome.runtime.lastError) {
+                    console.error('❌ Chrome windows error:', chrome.runtime.lastError);
+                    window.open(adminURL, '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes');
+                }
+            });
+        } else {
+            window.open(adminURL, '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes');
+        }
+    } catch (e) {
+        console.error('❌ Failed to open admin window:', e);
+        window.open(adminURL, '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes');
+    }
+}
+
+// Device ID management
+async function initializeDeviceId() {
+    console.log('🔧 Initializing device ID...');
+    
+    let deviceId = localStorage.getItem('device_id');
+    if (!deviceId) {
+        // Generate new device ID
+        deviceId = generateUUID();
+        localStorage.setItem('device_id', deviceId);
+        console.log('📱 Generated new device ID:', deviceId);
+    } else {
+        console.log('📱 Using existing device ID:', deviceId);
+    }
+    
+    // Set device ID in form field
+    const deviceIdField = document.getElementById('deviceId');
+    if (deviceIdField) {
+        deviceIdField.value = deviceId;
+    }
+
+    // Always sync with database first (database is the source of truth)
+    try {
+        console.log('🌐 Syncing with database first...');
+        
+        // Check if there's any registration for current device
+        let info = await checkRegisteredDevice(deviceId);
+        
+        // If current device not found, check if we need to sync with existing registration
+        if (!info) {
+            console.log('🔍 Device not found, checking for existing registrations to sync...');
+            const base = (typeof window.resolvePanelBase === 'function') ? await window.resolvePanelBase() : (typeof getPanelBase==='function'? getPanelBase() : 'http://localhost:55055');
             
-            // Also test database connectivity
             try {
-                const dbResponse = await fetch(getPanelBase() + '/api/db/stats', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    }
+                // Try to get all registrations to see if we need to sync
+                const response = await fetch(`${base}/api/registrations/all`, { 
+                    method: 'GET', 
+                    headers: {'Accept':'application/json'} 
                 });
                 
-                if (dbResponse.ok) {
-                    const dbStats = await dbResponse.json();
-                    console.log('✅ Database connectivity confirmed:', dbStats);
-                    showMessage(`✅ Server Online! Ping: ${ping}ms | Database: Connected | Users: ${dbStats.users || 0}`, 'success');
-                } else {
-                    showMessage(`⚠️ Server Online (Ping: ${ping}ms) but database issues detected`, 'warning');
-                }
-            } catch (dbError) {
-                showMessage(`✅ Server Online (Ping: ${ping}ms) but cannot verify database`, 'warning');
-            }
-            
-            updateConnectionStatus(true, ping);
-        } else {
-            console.log('❌ Server returned error:', response.status);
-            showMessage(`❌ Server Error: ${response.status} ${response.statusText}`, 'error');
-            updateConnectionStatus(false);
-        }
-        
-    } catch (error) {
-        console.error('🚨 Server connection test failed:', error);
-        
-        if (error.name === 'TypeError' && error.message.includes('fetch')) {
-            showMessage('❌ Cannot reach authentication server (' + getPanelBase() + '). Please ensure API server is running.', 'error');
-        } else {
-            showMessage(`❌ Connection failed: ${error.message}`, 'error');
-        }
-        
-        updateConnectionStatus(false);
-    } finally {
-        testBtn.disabled = false;
-        testBtn.textContent = 'Test Connection';
-    }
-}
-
-// ================================================================
-// BLOCKER SELECTION FUNCTIONALITY
-// ================================================================
-function initializeBlockerSelection() {
-    console.log('🛡️ Initializing blocker selection...');
-    
-    const blockerCards = document.querySelectorAll('.blocker-card');
-    console.log(`Found ${blockerCards.length} blocker cards`);
-    
-    blockerCards.forEach(card => {
-        card.addEventListener('click', function() {
-            console.log('🎯 Blocker card clicked:', this.dataset.version);
-            
-            // Remove active from all cards
-            blockerCards.forEach(c => c.classList.remove('active', 'selected'));
-            
-            // Add active to clicked card
-            this.classList.add('active', 'selected');
-            
-            // Get version info
-            const version = this.getAttribute('data-version');
-            const title = this.querySelector('.blocker-title')?.textContent;
-            
-            if (version) {
-                selectBlockerVersion(version, title);
-            }
-        });
-        
-        // Add hover effects
-        card.addEventListener('mouseenter', function() {
-            this.classList.add('blocker-card-hover');
-        });
-        
-        card.addEventListener('mouseleave', function() {
-            if (!this.classList.contains('active')) {
-                this.classList.remove('blocker-card-hover');
-            }
-        });
-    });
-}
-
-function selectBlockerVersion(version, title) {
-    console.log(`🔧 Selecting blocker: ${title} (${version})`);
-    
-    // Save selection
-    window.secureSetStorage && window.secureSetStorage('selectedBlocker', version) || localStorage.setItem('selectedBlocker', version);
-    window.secureSetStorage && window.secureSetStorage('selectedBlockerTitle', title) || localStorage.setItem('selectedBlockerTitle', title);
-    
-    // Show confirmation
-    showMessage(`Selected: ${title}`, 'success');
-    
-    // Update status indicators
-    updateBlockerStatus(version);
-    
-    // Send to background script if in extension context
-    if (typeof chrome !== 'undefined' && chrome.runtime) {
-        chrome.runtime.sendMessage({
-            action: 'setBlockerVersion',
-            version: version,
-            title: title
-        }, (response) => {
-            if (response && response.success) {
-                console.log('✅ Blocker version set in background script');
-            }
-        });
-    }
-    
-    // Update production monitor
-    updateProductionStats();
-}
-
-// ================================================================
-// ADMIN PANEL FUNCTIONALITY
-// ================================================================
-function initializeAdminPanel() {
-    console.log('👑 Initializing admin panel...');
-    
-    const adminBtn = document.getElementById('adminBtn');
-    if (adminBtn) {
-        adminBtn.addEventListener('click', function() {
-            console.log('🔧 Admin panel button clicked');
-            openAdminDashboard();
-        });
-        
-        console.log('✅ Admin panel button handler attached');
-    }
-    
-    // Handle new simple admin panel button
-    const adminPanelBtn = document.getElementById('adminPanelBtn');
-    if (adminPanelBtn) {
-        adminPanelBtn.addEventListener('click', function() {
-            console.log('🚀 Admin Panel button clicked - Checking authentication...');
-            
-            // Check if user is logged in as admin
-            const adminToken = localStorage.getItem('adminToken');
-            const currentUser = localStorage.getItem('currentUser');
-            
-            if (!adminToken && !currentUser) {
-                console.log('⚠️ No authentication found - Redirecting to admin login');
-                showMessage('Please login as admin first', 'warning');
-                
-                // Switch to admin tab for authentication
-                const adminTab = document.getElementById('adminTab');
-                if (adminTab) {
-                    adminTab.click();
-                    
-                    // Show admin form
-                    const adminForm = document.getElementById('adminForm');
-                    if (adminForm) {
-                        adminForm.classList.add('active');
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.success && data.registrations && data.registrations.length > 0) {
+                        // Use the first/latest registration found
+                        const registration = data.registrations[0];
+                        console.log('🔄 Found existing registration, syncing device ID:', registration);
+                        
+                        // Update localStorage with correct device ID from database
+                        deviceId = registration.device_id;
+                        localStorage.setItem('device_id', deviceId);
+                        console.log('✅ Updated localStorage device_id to:', deviceId);
+                        
+                        // Update form fields
+                        if (deviceIdField) {
+                            deviceIdField.value = deviceId;
+                        }
+                        
+                        const employeeNameField = document.getElementById('employeeName');
+                        if (employeeNameField && registration.full_name) {
+                            employeeNameField.value = registration.full_name;
+                        }
+                        
+                        // Re-check with correct device ID
+                        info = await checkRegisteredDevice(deviceId);
                     }
                 }
-                return;
+            } catch (syncError) {
+                console.warn('⚠️ Database sync failed:', syncError.message);
             }
-            
-            // If authenticated, open admin dashboard
-            console.log('✅ Authentication found, opening admin dashboard');
-            openSecureAdminDashboard();
-        });
-        
-        console.log('✅ Secure Admin Panel button handler attached');
-    }
-    
-    // Check admin status on load
-    checkAdminStatus();
-}
-
-function openSecureAdminDashboard() {
-    console.log('🔐 Opening secure admin dashboard...');
-    
-    // Verify authentication one more time
-    const adminToken = localStorage.getItem('adminToken');
-    const currentUser = localStorage.getItem('currentUser');
-    
-    if (!adminToken && !currentUser) {
-        console.error('❌ Security violation: No valid authentication');
-        showMessage('Authentication required for admin access', 'error');
-        return;
-    }
-    
-    // Create lightweight admin panel overlay instead of opening new tab
-    createAdminPanelOverlay();
-}
-
-function createAdminPanelOverlay() {
-    // Remove existing overlay if any
-    const existingOverlay = document.querySelector('.admin-overlay');
-    if (existingOverlay) {
-        existingOverlay.remove();
-    }
-
-    // Create overlay
-    const overlay = document.createElement('div');
-    overlay.className = 'admin-overlay';
-    
-    // Create panel
-    const panel = document.createElement('div');
-    panel.className = 'admin-panel';
-    
-    // Create header
-    const header = document.createElement('div');
-    header.className = 'admin-panel-header';
-    header.innerHTML = '<h3>🛡️ TINI Admin Panel</h3><p>Do you want to open Admin Dashboard?</p>';
-    
-    // Create buttons container
-    const buttonsContainer = document.createElement('div');
-    buttonsContainer.className = 'admin-panel-buttons';
-    
-    // YES button
-    const yesBtn = document.createElement('button');
-    yesBtn.className = 'admin-link-btn primary';
-    yesBtn.textContent = '✅ YES - Open Dashboard';
-    yesBtn.addEventListener('click', openFullAdminPanel);
-    
-    // NO button
-    const noBtn = document.createElement('button');
-    noBtn.className = 'admin-link-btn secondary';
-    noBtn.textContent = '❌ NO - Cancel';
-    noBtn.addEventListener('click', closeAdminPanel);
-    
-    // Assemble panel
-    buttonsContainer.appendChild(yesBtn);
-    buttonsContainer.appendChild(noBtn);
-    panel.appendChild(header);
-    panel.appendChild(buttonsContainer);
-    
-    overlay.appendChild(panel);
-    document.body.appendChild(overlay);
-    
-    // Close on overlay click
-    overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) {
-            closeAdminPanel();
         }
-    });
-}
-
-function openFullAdminPanel() {
-    // Open admin dashboard directly
-    try {
-        const adminUrl = 'http://localhost:8099/admin';
-        console.log('🌐 Opening admin dashboard:', adminUrl);
-        window.open(adminUrl, '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes');
-        console.log('✅ Admin panel opened');
-        closeAdminPanel();
-    } catch (error) {
-        console.error('❌ Error opening admin panel:', error);
-        showMessage('Failed to open admin panel', 'error');
-    }
-}
-
-function closeAdminPanel() {
-    const overlay = document.querySelector('.admin-overlay');
-    if (overlay) {
-        overlay.remove();
-    }
-}
-
-function openAdminDashboard() {
-    // Use overlay instead of opening new tab
-    console.log('🌐 Opening admin panel overlay...');
-    createAdminPanelOverlay();
-}
-
-function openAdminURL(url) {
-    try {
-        if (typeof chrome !== 'undefined' && chrome.tabs) {
-            // Extension context - use Chrome API
-            chrome.tabs.create({ url: url }, (tab) => {
-                if (chrome.runtime.lastError) {
-                    console.error('❌ Chrome tabs error:', chrome.runtime.lastError);
-                    openAdminFallback();
-                } else {
-                    console.log('✅ Dashboard opened in new tab:', tab.id);
-                }
-            });
+        
+        window.__registeredDeviceInfo = info || null;
+        
+        if (info) {
+            console.log('✅ Device registration found and synced:', info);
+            // Cache the registration info locally (only as backup)
+            localStorage.setItem(`device_registered_${deviceId}`, JSON.stringify(info));
+            showRegisteredDeviceInfo(info);
         } else {
-            // Regular browser context
-            const popup = window.open(url, '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes');
-            if (!popup) {
-                console.error('❌ Popup blocked, trying fallback...');
-                openAdminFallback();
-            } else {
-                console.log('✅ Dashboard opened in popup window');
-            }
+            console.log('ℹ️ No device registration found in database');
+            // Clear any stale cache
+            localStorage.removeItem(`device_registered_${deviceId}`);
         }
-    } catch (error) {
-        console.error('❌ Error opening admin URL:', error);
-        openAdminFallback();
-    }
-}
-
-function openAdminFallback() {
-    console.log('🚨 Opening admin fallback interface...');
-    
-    // Show inline admin interface
-    showInlineAdminPanel();
-}
-
-function showInlineAdminPanel() {
-    console.log('📱 Showing simplified admin panel...');
-    
-    // Use the same admin panel overlay as before
-    createAdminPanelOverlay();
-}
-
-// ================================================================
-// ADVANCED SETTINGS FUNCTIONALITY
-// ================================================================
-function initializeAdvancedSettings() {
-    console.log('⚙️ Initializing advanced settings...');
-    
-    // Check if we're in popup context or admin panel
-    if (window.location.pathname.includes('admin-panel.html')) {
-        console.log('✅ Advanced settings skipped - in admin panel context');
-        return;
+        
+        applyDeviceRegisteredConstraint();
+        initializeEmployeeNameHelper();
+        
+        // Force update hint if there's already content in the name field
+        setTimeout(() => {
+            if (info) {
+                const nameInput = document.getElementById('employeeName');
+                const hint = document.getElementById('nameFormatHint');
+                if (nameInput && hint) {
+                    hint.textContent = 'Thiết Bị Này Đã Được Đăng Ký';
+                    hint.style.color = '#e74c3c';
+                    console.log('🔄 Forced hint update after device registration check');
+                }
+            }
+            // Also call the dedicated function
+            forceUpdateDeviceConstraintHint();
+        }, 100);
+        
+    } catch (e) {
+        console.warn('Error checking device registration:', e);
+        // Fallback: assume device is not registered if server check fails
+        window.__registeredDeviceInfo = null;
+        initializeEmployeeNameHelper();
     }
     
-    const settingsToggle = document.getElementById('settingsToggle');
-    const settingsContent = document.getElementById('settingsContent');
+    return deviceId;
+}
+
+// NEW: Apply device-registered constraint to Register form hint and button
+function applyDeviceRegisteredConstraint(){
+    const hint = document.getElementById('nameFormatHint');
+    const registerBtn = document.getElementById('registerBtn');
+    const nameInput = document.getElementById('employeeName');
+    const info = window.__registeredDeviceInfo;
     
-    if (settingsToggle && settingsContent) {
-        settingsToggle.addEventListener('click', function() {
-            const isActive = settingsToggle.classList.contains('active');
-            
-            if (isActive) {
-                // Close settings
-                settingsToggle.classList.remove('active');
-                settingsContent.classList.remove('active');
-                console.log('⚙️ Advanced settings closed');
-            } else {
-                // Open settings
-                settingsToggle.classList.add('active');
-                settingsContent.classList.add('active');
-                console.log('⚙️ Advanced settings opened');
-            }
-        });
-        
-        // Initialize additional buttons
-        const diagnosticsBtn = document.getElementById('diagnosticsBtn');
-        if (diagnosticsBtn) {
-            diagnosticsBtn.addEventListener('click', function() {
-                console.log('🔍 Running diagnostics...');
-                
-                if (window.diagnosePopup) {
-                    const result = window.diagnosePopup();
-                    showDiagnosticsResult(result);
-                } else {
-                    showMessage('Diagnostics not available', 'warning');
-                }
-            });
+    if (info) {
+        if (hint) { 
+            hint.textContent = 'Thiết Bị Này Đã Được Đăng Ký'; 
+            hint.style.color = '#e74c3c';
+            console.log('🔴 Applied device registered constraint to hint');
         }
-        
-        const emergencyModeBtn = document.getElementById('emergencyModeBtn');
-        if (emergencyModeBtn) {
-            emergencyModeBtn.addEventListener('click', function() {
-                console.log('🚨 Emergency mode activated');
-                
-                if (window.emergencyActivate) {
-                    showEmergencyModePanel();
-                } else {
-                    showMessage('Emergency mode not available', 'warning');
-                }
-            });
+        if (registerBtn) { 
+            registerBtn.disabled = true; 
+            registerBtn.title = 'Thiết bị này đã được đăng ký';
+            registerBtn.style.backgroundColor = '#666666';
+            registerBtn.style.color = '#999999';
         }
-        
-        console.log('✅ Advanced settings initialized');
+        if (nameInput) { 
+            nameInput.disabled = true; 
+            nameInput.title = 'Không thể nhập tên - thiết bị đã được đăng ký';
+            nameInput.placeholder = 'Thiết bị đã được đăng ký';
+        }
+        return true;
     } else {
-        // Advanced settings not present; skip silently
+        if (registerBtn) { 
+            registerBtn.disabled = false; 
+            registerBtn.title = '';
+            registerBtn.style.backgroundColor = '';
+            registerBtn.style.color = '';
+        }
+        if (nameInput) { 
+            nameInput.disabled = false; 
+            nameInput.title = '';
+            nameInput.placeholder = '潘文勇 Tên Telegram 79-1';
+        }
+        // Reset hint to default when device is not registered
+        if (hint && hint.textContent === 'Thiết Bị Này Đã Được Đăng Ký') {
+            hint.textContent = 'Định dạng: 潘文勇 VĂN DŨNG 79-1 hoặc 潘文勇 VĂN DŨNG 79';
+            hint.style.color = '#f1c40f';
+        }
+        return false;
     }
 }
 
-function showDiagnosticsResult(result) {
-    const message = `
-        📊 System Diagnostics:
-        • DOM Elements: ${result.domElements.found}/${result.domElements.required} found
-        • Event Handlers: ${result.eventHandlers.withHandlers}/${result.eventHandlers.total} active
-        • Scripts: ${result.scripts.loadedScripts.length} loaded
-        ${result.domElements.missing.length > 0 ? '\n⚠️ Missing: ' + result.domElements.missing.join(', ') : ''}
-    `;
-    
-    alert(message);
+// Query server if current device is registered
+async function checkRegisteredDevice(deviceId){
+    try{
+        const base = (typeof window.resolvePanelBase === 'function') ? await window.resolvePanelBase() : (typeof getPanelBase==='function'? getPanelBase() : 'http://localhost:55057');
+        const controller = new AbortController();
+        const to = setTimeout(()=>controller.abort(), 2000);
+        const res = await fetch(`${base}/api/device/check?deviceId=${encodeURIComponent(deviceId)}`, { method:'GET', signal: controller.signal, headers:{'Accept':'application/json'} });
+        clearTimeout(to);
+        if(!res.ok) return null;
+        const data = await res.json().catch(()=>null);
+        if (data && data.success && data.exists) return data.device;
+        return null;
+    }catch(e){ return null; }
 }
 
-function showEmergencyModePanel() {
-    // Use simple alert for emergency mode
-    if (confirm('🚨 Emergency Mode\n\nActivate emergency systems?\n\n1. Emergency Auth Fix\n2. System Rebuild')) {
-        if (typeof window.emergencyActivate === 'function') {
-            window.emergencyActivate('AUTH_FIX');
-        } else {
-            console.log('� Emergency auth fix activated');
-            showMessage('Emergency mode activated', 'warning');
+// Show registered device info in the login form (above Authenticate button)
+function showRegisteredDeviceInfo(device){
+    try{
+        const registerForm = document.getElementById('registerForm');
+        if(!registerForm) return;
+        // Persist globally for hint logic
+        window.__registeredDeviceInfo = device || null;
+        // container element shown in Register section
+        let box = document.getElementById('registeredDeviceBox');
+        if(!box){
+            box = document.createElement('div');
+            box.id = 'registeredDeviceBox';
+            box.className = 'message-container info-message';
+            const ipArea = document.getElementById('ipDetectionArea');
+            if (ipArea && ipArea.parentNode === registerForm) {
+                // insert right below the IP area so it’s visible as in screenshot #2
+                registerForm.insertBefore(box, ipArea.nextSibling);
+            } else {
+                registerForm.appendChild(box);
+            }
         }
-    }
-}
-
-// ================================================================
-// PRODUCTION MONITOR
-// ================================================================
-function initializeProductionMonitor() {
-    console.log('📊 Initializing production monitor...');
-    
-    // Update worker status
-    updateWorkerStatus();
-    
-    // Start real-time updates
-    startProductionUpdates();
-    
-    console.log('✅ Production monitor initialized');
-}
-
-function updateWorkerStatus() {
-    const workers = ['worker1', 'worker2', 'worker3', 'worker4'];
-    
-    workers.forEach((workerId, index) => {
-        const workerElement = document.getElementById(workerId);
-        if (workerElement) {
-            // Simulate worker status
-            const statuses = ['🟢 Connected', '🟡 Busy', '🔴 Disconnected'];
-            const randomStatus = statuses[Math.floor(Math.random() * statuses.length)];
-            workerElement.textContent = randomStatus;
+        // FORCE HIDE: Don't show the big warning box - we only use the small hint
+        box.style.display = 'none';
+        
+        const registerBtn = document.getElementById('registerBtn');
+        if(!device){
+            box.style.display = 'none';
+            if (registerBtn) { registerBtn.disabled = false; registerBtn.title = ''; }
+            return;
         }
-    });
+        // DISABLED: Don't show big warning box anymore, only use small hint
+        // Show message and lock the register button as this device is already registered
+        // DISABLED: Remove big warning box display
+        // box.style.display = 'block';
+        // box.className = 'message-container error-message';
+        // box.textContent = `Thiết bị này đã được đăng ký cho: ${device.fullName || 'Unknown'}. Vui lòng dùng thiết bị khác hoặc liên hệ admin.`;
+        
+        // Just disable the register button
+        if (registerBtn) {
+            registerBtn.disabled = true;
+            registerBtn.title = 'Thiết bị này đã được đăng ký';
+        }
+        // Update the small hint as well
+        applyDeviceRegisteredConstraint();
+    }catch{}
 }
 
-function startProductionUpdates() {
-    setInterval(() => {
-        updateWorkerStatus();
-        updateClusterStats();
-    }, 5000);
-}
-
-function updateClusterStats() {
-    const stats = {
-        activeUsers: Math.floor(Math.random() * 1000) + 100,
-        apiCalls: Math.floor(Math.random() * 500) + 50,
-        memoryUsage: Math.floor(Math.random() * 80) + 10
+// Device Fingerprint System
+async function generateDeviceFingerprint() {
+    console.log('🔍 Generating device fingerprint...');
+    
+    const fingerprint = {
+        userAgent: navigator.userAgent,
+        language: navigator.language,
+        platform: navigator.platform,
+        cookieEnabled: navigator.cookieEnabled,
+        doNotTrack: navigator.doNotTrack,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        screen: {
+            width: screen.width,
+            height: screen.height,
+            colorDepth: screen.colorDepth,
+            pixelDepth: screen.pixelDepth
+        },
+        plugins: Array.from(navigator.plugins).map(p => p.name).sort(),
+        webgl: getWebGLFingerprint(),
+        canvas: getCanvasFingerprint(),
+        fonts: await getAvailableFonts(),
+        timestamp: new Date().toISOString()
     };
     
-    const activeUsersEl = document.getElementById('activeUsers');
-    const apiCallsEl = document.getElementById('apiCalls');
-    const memoryUsageEl = document.getElementById('memoryUsage');
+    // Create fingerprint hash
+    const fingerprintString = JSON.stringify(fingerprint);
+    const fingerprintHash = await hashFingerprint(fingerprintString);
     
-    if (activeUsersEl) activeUsersEl.textContent = stats.activeUsers;
-    if (apiCallsEl) apiCallsEl.textContent = stats.apiCalls;
-    if (memoryUsageEl) memoryUsageEl.textContent = stats.memoryUsage + '%';
-}
-
-// ================================================================
-// UTILITY FUNCTIONS
-// ================================================================
-function showMessage(message, type = 'info') {
-    console.log(`📢 Message (${type}): ${message}`);
+    console.log('🔍 Device fingerprint generated:', fingerprintHash.substring(0, 16) + '...');
     
-    // Create message container if it doesn't exist
-    let container = document.querySelector('.message-container');
-    if (!container) {
-        container = document.createElement('div');
-        container.className = 'message-container';
-        document.body.appendChild(container);
-    }
+    // Store fingerprint data
+    localStorage.setItem('device_fingerprint', fingerprintHash);
+    localStorage.setItem('device_fingerprint_data', fingerprintString);
     
-    // Create message element
-    const messageEl = document.createElement('div');
-    messageEl.className = `popup-message message-${type}`;
-    messageEl.textContent = message;
-    
-    // Add click to dismiss
-    messageEl.addEventListener('click', () => messageEl.remove());
-    
-    container.appendChild(messageEl);
-    
-    // Auto remove after 4 seconds
-    setTimeout(() => {
-        if (messageEl.parentNode) {
-            messageEl.classList.add('slide-out');
-            setTimeout(() => messageEl.remove(), 300);
-        }
-    }, 4000);
-}
-
-function getMessageColor(type) {
-    const colors = {
-        success: { bg: '#d4edda', text: '#155724', border: '#c3e6cb' },
-        error: { bg: '#f8d7da', text: '#721c24', border: '#f5c6cb' },
-        warning: { bg: '#fff3cd', text: '#856404', border: '#ffeaa7' },
-        info: { bg: '#d1ecf1', text: '#0c5460', border: '#bee5eb' }
-    };
-    return colors[type] || colors.info;
-}
-
-function updateConnectionStatus(isConnected, ping = null) {
-    const statusElements = document.querySelectorAll('.status-indicator');
-    const connectionText = isConnected ? '🟢' : '🔴';
-    
-    statusElements.forEach(el => {
-        el.textContent = connectionText;
-    });
-    
-    // Update status text if element exists
-    const statusText = document.getElementById('connectionStatus');
-    if (statusText) {
-        if (isConnected) {
-            statusText.textContent = ping ? `Connected (${ping}ms)` : 'Connected';
-            statusText.className = 'status-connected';
-        } else {
-            statusText.textContent = 'Disconnected';
-            statusText.className = 'status-disconnected';
-        }
-    }
-    
-    console.log(`📡 Connection status updated: ${isConnected ? 'Online' : 'Offline'}`);
-}
-
-function getRegistrationFormData() {
-    // Get or create registration form fields
     return {
-        username: document.getElementById('regUsername')?.value?.trim() || '',
-        email: document.getElementById('regEmail')?.value?.trim() || '',
-        password: document.getElementById('regPassword')?.value?.trim() || '',
-        confirmPassword: document.getElementById('regConfirmPassword')?.value?.trim() || ''
+        hash: fingerprintHash,
+        data: fingerprint
     };
 }
 
-function validateRegistrationData(data) {
-    if (!data.username || data.username.length > 20 || !/^[\u4e00-\u9fa5\s]+[\u00C0-\u1EF9\s]+-\d{2,3}$/.test(data.username)) {
-        showMessage('Invalid username format. Username must be at most 20 characters and follow the structure: Chinese Name - Vietnamese Name - XX-X (e.g., 潘文勇 VĂN DŨNG 79-1)', 'error');
-        return false;
-    }
-    
-    if (!data.email || !data.email.includes('@')) {
-        showMessage('Please enter a valid email address', 'error');
-        return false;
-    }
-    
-    if (!data.password || data.password.length < 6) {
-        showMessage('Password must be at least 6 characters', 'error');
-        return false;
-    }
-    
-    if (data.password !== data.confirmPassword) {
-        showMessage('Passwords do not match', 'error');
-        return false;
-    }
-    
-    return true;
-}
-
-function updateLoginUI(isLoggedIn, userData = null) {
-    const loginTab = document.getElementById('loginTab');
-    if (loginTab) {
-        if (isLoggedIn) {
-            loginTab.textContent = `✅ ${userData?.username || 'Logged In'}`;
-            loginTab.classList.add('logged-in');
-        } else {
-            loginTab.textContent = 'Login';
-            loginTab.classList.remove('logged-in');
-        }
+// WebGL fingerprint
+function getWebGLFingerprint() {
+    try {
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        
+        if (!gl) return 'WebGL not supported';
+        
+        const renderer = gl.getParameter(gl.RENDERER);
+        const vendor = gl.getParameter(gl.VENDOR);
+        const version = gl.getParameter(gl.VERSION);
+        const shadingLanguageVersion = gl.getParameter(gl.SHADING_LANGUAGE_VERSION);
+        
+        return {
+            renderer,
+            vendor,
+            version,
+            shadingLanguageVersion
+        };
+    } catch (e) {
+        return 'WebGL error';
     }
 }
 
-function updateAdminUI(isAdminLoggedIn) {
-    const adminBtn = document.getElementById('adminBtn');
-    const adminTab = document.getElementById('adminTab');
-    
-    if (isAdminLoggedIn) {
-        if (adminBtn) {
-            adminBtn.textContent = '👑 Admin Dashboard';
-            adminBtn.classList.add('admin-active');
-        }
-        if (adminTab) {
-            adminTab.textContent = '👑 Admin';
-            adminTab.classList.add('admin-logged-in');
-        }
-    } else {
-        if (adminBtn) {
-            adminBtn.textContent = 'Admin Panel';
-            adminBtn.classList.remove('admin-active');
-        }
-        if (adminTab) {
-            adminTab.textContent = 'Admin';
-            adminTab.classList.remove('admin-logged-in');
-        }
+// Canvas fingerprint
+function getCanvasFingerprint() {
+    try {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Draw text with different styles
+        ctx.textBaseline = 'top';
+        ctx.font = '14px Arial';
+        ctx.fillText('TINI Device Detection 🔍', 2, 2);
+        
+        ctx.font = '11px Times';
+        ctx.fillText('Test string 123', 4, 20);
+        
+        // Draw shapes
+        ctx.globalCompositeOperation = 'multiply';
+        ctx.fillStyle = 'rgb(255,0,255)';
+        ctx.beginPath();
+        ctx.arc(50, 50, 50, 0, Math.PI * 2, true);
+        ctx.closePath();
+        ctx.fill();
+        
+        return canvas.toDataURL();
+    } catch (e) {
+        return 'Canvas error';
     }
 }
 
-function updateBlockerStatus(selectedVersion) {
-    // Update all blocker status indicators
-    const allCards = document.querySelectorAll('.blocker-card');
-    allCards.forEach(card => {
-        const statusIndicator = card.querySelector('.status-indicator');
-        if (statusIndicator) {
-            if (card.getAttribute('data-version') === selectedVersion) {
-                statusIndicator.textContent = '🟢';
-                statusIndicator.classList.add('active');
-            } else {
-                statusIndicator.textContent = '⚪';
-                statusIndicator.classList.remove('active');
-            }
+// Font detection
+async function getAvailableFonts() {
+    const testFonts = [
+        'Arial', 'Times New Roman', 'Courier New', 'Helvetica', 'Georgia',
+        'Verdana', 'Comic Sans MS', 'Impact', 'Arial Black', 'Tahoma',
+        'Century Gothic', 'Lucida Console', 'Garamond', 'MS Sans Serif',
+        'MS Serif', 'Palatino Linotype', 'Symbol', 'Webdings', 'Wingdings'
+    ];
+    
+    const availableFonts = [];
+    
+    for (const font of testFonts) {
+        if (await isFontAvailable(font)) {
+            availableFonts.push(font);
         }
+    }
+    
+    return availableFonts.sort();
+}
+
+// Check if font is available
+function isFontAvailable(font) {
+    return new Promise((resolve) => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Test text
+        const testText = 'Test Font Detection';
+        
+        // Default font baseline
+        ctx.font = '12px monospace';
+        const baselineWidth = ctx.measureText(testText).width;
+        
+        // Test font
+        ctx.font = `12px "${font}", monospace`;
+        const testWidth = ctx.measureText(testText).width;
+        
+        // Font is available if width differs from baseline
+        resolve(testWidth !== baselineWidth);
     });
 }
 
-function checkAdminStatus() {
-    const adminToken = window.secureGetStorage && window.secureGetStorage('adminToken') || localStorage.getItem('adminToken');
-    if (adminToken) {
-        console.log('✅ Admin token found, updating UI...');
-        updateAdminUI(true);
+// Hash fingerprint with HMAC-SHA256
+async function hashFingerprint(fingerprintString) {
+    try {
+        // Use a consistent pepper (in production, this should be from env)
+        const pepper = 'TINI_FINGERPRINT_PEPPER_2025';
+        const encoder = new TextEncoder();
+        
+        // Import pepper as key
+        const key = await crypto.subtle.importKey(
+            'raw',
+            encoder.encode(pepper),
+            { name: 'HMAC', hash: 'SHA-256' },
+            false,
+            ['sign']
+        );
+        
+        // Create HMAC
+        const signature = await crypto.subtle.sign(
+            'HMAC',
+            key,
+            encoder.encode(fingerprintString)
+        );
+        
+        // Convert to hex string
+        const hashArray = Array.from(new Uint8Array(signature));
+        const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        
+        return hashHex;
+    } catch (e) {
+        console.warn('Crypto API not available, using fallback hash');
+        // Fallback to simple hash
+        let hash = 0;
+        for (let i = 0; i < fingerprintString.length; i++) {
+            const char = fingerprintString.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash; // Convert to 32-bit integer
+        }
+        return Math.abs(hash).toString(16);
     }
 }
 
-function loadSavedState() {
-    console.log('💾 Loading saved state...');
+// Initialize device fingerprint system
+async function initializeDeviceFingerprint() {
+    console.log('🔍 Initializing device fingerprint system...');
     
-    // Load active tab
-    const savedTab = window.secureGetStorage && window.secureGetStorage('activeTab') || localStorage.getItem('activeTab');
-    if (savedTab) {
-        const tabElement = document.getElementById(savedTab);
-        if (tabElement) {
-            tabElement.click();
+    try {
+        const existingFingerprint = localStorage.getItem('device_fingerprint');
+        let fingerprintData;
+        
+        if (existingFingerprint) {
+            console.log('🔍 Using existing device fingerprint');
+            fingerprintData = {
+                hash: existingFingerprint,
+                data: JSON.parse(localStorage.getItem('device_fingerprint_data') || '{}')
+            };
+        } else {
+            console.log('🔍 Generating new device fingerprint...');
+            fingerprintData = await generateDeviceFingerprint();
+        }
+        
+        // Display fingerprint info in UI
+        displayFingerprintInfo(fingerprintData);
+        
+        return fingerprintData;
+    } catch (error) {
+        console.error('❌ Error initializing device fingerprint:', error);
+        showMessage('Device fingerprint generation failed', 'error');
+        return null;
+    }
+}
+
+// Display fingerprint information in UI
+function displayFingerprintInfo(fingerprintData) {
+    // Add fingerprint info to login form
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm && fingerprintData) {
+        // Check if fingerprint info already exists
+        let fingerprintInfo = document.getElementById('deviceFingerprintInfo');
+        if (!fingerprintInfo) {
+            fingerprintInfo = document.createElement('div');
+            fingerprintInfo.id = 'deviceFingerprintInfo';
+            fingerprintInfo.className = 'device-fingerprint-info';
+            
+            // Insert before the authenticate button
+            const authButton = document.getElementById('loginBtn');
+            if (authButton && authButton.parentNode) {
+                authButton.parentNode.insertBefore(fingerprintInfo, authButton);
+            }
+        }
+        
+        fingerprintInfo.innerHTML = `
+            <div class="fingerprint-header">
+                <span class="fingerprint-icon">🔍</span>
+                <span class="fingerprint-title">Device Recognition</span>
+            </div>
+            <div class="fingerprint-details">
+                <span class="fingerprint-id">ID: ${fingerprintData.hash.substring(0, 12)}...</span>
+                <span class="fingerprint-status">Status: Detected</span>
+            </div>
+        `;
+        
+        console.log('✅ Device fingerprint info displayed in UI');
+    }
+}
+
+// Generate UUID v4
+function generateUUID() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        const r = Math.random() * 16 | 0;
+        const v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+    });
+}
+
+// Message display utility
+function showMessage(message, type = 'info') {
+    console.log(`📢 [${type.toUpperCase()}] ${message}`);
+    
+    // Try to find error message container
+    let messageContainer = document.getElementById('errorMessage');
+    if (!messageContainer) {
+        // Create message container if it doesn't exist
+        messageContainer = document.createElement('div');
+        messageContainer.id = 'errorMessage';
+        messageContainer.className = 'message-container';
+        const authContainer = document.getElementById('authContainer');
+        if (authContainer) {
+            authContainer.appendChild(messageContainer);
         }
     }
     
-    // Load selected blocker
-    const savedBlocker = window.secureGetStorage && window.secureGetStorage('selectedBlocker') || localStorage.getItem('selectedBlocker');
-    if (savedBlocker) {
-        const blockerCard = document.querySelector(`[data-version="${savedBlocker}"]`);
-        if (blockerCard) {
-            blockerCard.classList.add('active', 'selected');
-            updateBlockerStatus(savedBlocker);
+    if (messageContainer) {
+        messageContainer.textContent = message;
+        messageContainer.className = `message-container ${type === 'error' ? 'error-message' : type === 'success' ? 'success-message' : 'info-message'}`;
+        messageContainer.style.display = 'block';
+        
+        // Auto-hide after 5 seconds
+        setTimeout(() => {
+            messageContainer.style.display = 'none';
+        }, 5000);
+    }
+}
+
+// Local cache for registered names (client-side fallback)
+function getLocalRegisteredNames(){
+    try { return JSON.parse(localStorage.getItem('tini_registered_names') || '[]'); } catch { return []; }
+}
+function addLocalRegisteredName(name){
+    const arr = getLocalRegisteredNames();
+    const normalized = normalizeEmployeeName(name) || String(name || '').trim();
+    if (normalized && !arr.includes(normalized)) {
+        arr.push(normalized);
+        localStorage.setItem('tini_registered_names', JSON.stringify(arr));
+    }
+}
+function nameExistsLocally(name){
+    const arr = getLocalRegisteredNames();
+    const normalized = normalizeEmployeeName(name) || String(name || '').trim();
+    return !!normalized && arr.includes(normalized);
+}
+
+// Backoff helpers to show “Bạn thử quá nhanh, vui lòng thử lại sau X giây” and disable button with countdown
+function parseRetryAfterSeconds(res, result){
+    try{
+        const h = res && res.headers ? res.headers.get('Retry-After') : null;
+        const v = h ? parseInt(h, 10) : (result && typeof result.retryAfter === 'number' ? result.retryAfter : NaN);
+        return Number.isFinite(v) && v > 0 ? v : null;
+    }catch{ return null; }
+}
+function startCountdown(button, seconds, originalText){
+    if (!button) return;
+    let remain = Math.max(1, Math.ceil(Number(seconds) || 0));
+    const orig = originalText || button.textContent;
+    button.disabled = true;
+    button.textContent = `Đợi ${remain}s`;
+    const timer = setInterval(() => {
+        remain -= 1;
+        if (remain <= 0) {
+            clearInterval(timer);
+            button.disabled = false;
+            button.textContent = orig;
+        } else {
+            button.textContent = `Đợi ${remain}s`;
         }
-    }
-    
-    // Load user login status
-    const userToken = window.secureGetStorage && window.secureGetStorage('userToken') || localStorage.getItem('userToken');
-    if (userToken) {
-        const userData = JSON.parse(window.secureGetStorage && window.secureGetStorage('userData') || localStorage.getItem('userData') || '{}');
-        updateLoginUI(true, userData);
-    }
-    
-    // Load admin status
-    const adminToken = window.secureGetStorage && window.secureGetStorage('adminToken') || localStorage.getItem('adminToken');
-    if (adminToken) {
-        updateAdminUI(true);
-    }
-    
-    console.log('✅ Saved state loaded successfully');
+    }, 1000);
 }
 
-function updateProductionStats() {
-    // Update production statistics after blocker selection
-    console.log('📊 Updating production stats...');
-    updateClusterStats();
+// Local click cooldown helpers
+const LOCAL_COOLDOWN_LOGIN = 3; // seconds
+const LOCAL_COOLDOWN_REGISTER = 5; // seconds
+function getCooldownRemaining(key){
+    try{
+        const until = parseInt(localStorage.getItem(key) || '0', 10);
+        const remain = Math.ceil((until - Date.now())/1000);
+        return remain > 0 ? remain : 0;
+    }catch{ return 0; }
+}
+function setCooldown(key, seconds){
+    try{
+        const s = Math.max(1, Math.ceil(Number(seconds) || 0));
+        const until = Date.now() + s*1000;
+        localStorage.setItem(key, String(until));
+    }catch{ /* ignore */ }
 }
 
-
-// ================================================================
-// GLOBAL ERROR HANDLING
-// ================================================================
-window.addEventListener('error', (e) => {
-    console.error('🚨 Popup error caught:', e.error);
-    showMessage('An error occurred. Please try again.', 'error');
+// Initialize popup when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🚀 DOM loaded, initializing popup...');
+    
+    // Check if we're in popup context
+    if (window.location.pathname.includes('popup.html') || 
+        document.getElementById('authContainer') ||
+        document.querySelector('.popup-container')) {
+        
+        console.log('✅ In popup context, starting initialization...');
+        initializePopupComponents();
+    } else {
+        console.log('⏭️ Not in popup context, skipping initialization');
+    }
 });
 
-window.addEventListener('unhandledrejection', (e) => {
-    console.error('🚨 Unhandled promise rejection:', e.reason);
-    showMessage('Connection error. Please check server status.', 'error');
-});
+// Also initialize if DOM is already loaded
+if (document.readyState === 'loading') {
+    // DOM hasn't finished loading yet
+    console.log('🔄 DOM still loading, waiting for DOMContentLoaded...');
+} else {
+    // DOM has already loaded
+    console.log('🔄 DOM already loaded, initializing popup...');
+    if (window.location.pathname.includes('popup.html') || 
+        document.getElementById('authContainer') ||
+        document.querySelector('.popup-container')) {
+        
+        console.log('✅ In popup context, starting initialization...');
+        initializePopupComponents();
+    }
+}
 
-console.log('🌟 TINI Popup Event Handlers loaded successfully!');
-// ST:TINI_1754716154_e868a412
-// ST:TINI_1754752705_e868a412
+//# sourceMappingURL=popup.js.map// ST:TINI_1755361782_e868a412

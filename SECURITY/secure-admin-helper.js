@@ -18,6 +18,10 @@ class SecureAdminHelper {
         this.validator = null;
         this.initializeValidator();
         
+        // Check environment
+        this.isBrowser = typeof window !== 'undefined';
+        this.isNode = typeof module !== 'undefined' && module.exports;
+        
         // Clean corrupt storage data on initialization
         setTimeout(() => {
             this.cleanCorruptStorage();
@@ -29,19 +33,34 @@ class SecureAdminHelper {
      */
     getEncryptionKey() {
         // Try to get from environment config first
-        if (window.tiniConfig) {
+        if (this.isBrowser && window.tiniConfig) {
             return window.tiniConfig.get('ENCRYPTION_KEY');
         }
         
         // Fallback to window property or default
-        return window.ENCRYPTION_KEY || window.tiniConfig?.get('ENCRYPTION_KEY') || 'TiniSecureAdminKey2024';
+        if (this.isBrowser) {
+            return window.ENCRYPTION_KEY || window.tiniConfig?.get('ENCRYPTION_KEY') || 'TiniSecureAdminKey2024';
+        }
+        
+        // Node.js environment
+        return process.env.ENCRYPTION_KEY || 'TiniSecureAdminKey2024';
     }
 
     async initializeValidator() {
         try {
-            if (window.SecureInputValidator) {
+            if (this.isBrowser && window.SecureInputValidator) {
                 this.validator = new window.SecureInputValidator();
                 console.log('✅ Secure validator loaded for admin panel');
+            } else if (!this.isBrowser) {
+                // Node.js environment
+                try {
+                    const SecureInputValidator = require('./secure-input-validator.js');
+                    this.validator = new SecureInputValidator();
+                    console.log('✅ Secure validator loaded for Node.js');
+                } catch (error) {
+                    console.log('⚠️ Could not load SecureInputValidator in Node.js');
+                    this.validator = null;
+                }
             } else {
                 this.validator = null;
                 console.warn('⚠️ SecureInputValidator not available, skipping validation');
@@ -555,21 +574,31 @@ class SecureAdminHelper {
     }
 }
 
-// Create global instance for admin panel
-window.SecureAdminHelper = new SecureAdminHelper();
+// Export for both browser and Node.js
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = SecureAdminHelper;
+}
 
-// Replace dangerous functions globally
-window.secureSetHTML = (element, content) => window.SecureAdminHelper.secureSetHTML(element, content);
-window.secureSetStorage = (key, value) => window.SecureAdminHelper.secureSetStorage(key, value);
-window.secureGetStorage = (key) => window.SecureAdminHelper.secureGetStorage(key);
-window.secureRemoveStorage = (key) => window.SecureAdminHelper.secureRemoveStorage(key);
-window.secureFetch = (url, options) => window.SecureAdminHelper.secureFetch(url, options);
-window.secureAddEventListener = (element, type, handler, options) => window.SecureAdminHelper.secureAddEventListener(element, type, handler, options);
-window.secureSetTimeout = (callback, delay) => window.SecureAdminHelper.secureSetTimeout(callback, delay);
-window.cleanCorruptStorage = () => window.SecureAdminHelper.cleanCorruptStorage();
-window.forceCleanAllTiniStorage = () => window.SecureAdminHelper.forceCleanAllTiniStorage();
+// Create global instance for admin panel (browser only)
+if (typeof window !== 'undefined') {
+    window.SecureAdminHelper = new SecureAdminHelper();
+    
+    // Replace dangerous functions globally
+    window.secureSetHTML = (element, content) => window.SecureAdminHelper.secureSetHTML(element, content);
+    window.secureSetStorage = (key, value) => window.SecureAdminHelper.secureSetStorage(key, value);
+    window.secureGetStorage = (key) => window.SecureAdminHelper.secureGetStorage(key);
+    window.secureRemoveStorage = (key) => window.SecureAdminHelper.secureRemoveStorage(key);
+    window.secureFetch = (url, options) => window.SecureAdminHelper.secureFetch(url, options);
+    window.secureAddEventListener = (element, type, handler, options) => window.SecureAdminHelper.secureAddEventListener(element, type, handler, options);
+    window.secureSetTimeout = (callback, delay) => window.SecureAdminHelper.secureSetTimeout(callback, delay);
+    window.cleanCorruptStorage = () => window.SecureAdminHelper.cleanCorruptStorage();
+    window.forceCleanAllTiniStorage = () => window.SecureAdminHelper.forceCleanAllTiniStorage();
+
+    console.log('🛡️ SECURE ADMIN PANEL HELPER LOADED - ALL DANGEROUS FUNCTIONS REPLACED!');
+}
 
 console.log('🛡️ SECURE ADMIN PANEL HELPER LOADED - ALL DANGEROUS FUNCTIONS REPLACED!');
 // ST:TINI_1754644960_e868a412
 // ST:TINI_1754716154_e868a412
 // ST:TINI_1754752705_e868a412
+// ST:TINI_1755361782_e868a412

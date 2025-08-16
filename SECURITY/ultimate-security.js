@@ -143,13 +143,13 @@ class UltimateSecuritySystem {
             
             // 2. Real credential validation - SECURE IMPLEMENTATION
             const validCredentials = {
-                'admin': this.getConfig().get('ADMIN_PASSWORD') || this.generateSecurePassword('admin'),
-                'boss': this.getConfig().get('BOSS_PASSWORD') || this.generateSecurePassword('boss'), 
-                'user': this.getConfig().get('USER_PASSWORD') || this.generateSecurePassword('user')
+                'admin': process.env.ADMIN_PASSWORD || this.generateSecurePassword('admin'),
+                'boss': process.env.BOSS_PASSWORD || this.generateSecurePassword('boss'), 
+                'user': process.env.USER_PASSWORD || this.generateSecurePassword('user')
             };
             
             // Log warning if using default passwords
-            if (!this.getConfig().get('ADMIN_PASSWORD') || !this.getConfig().get('BOSS_PASSWORD') || !this.getConfig().get('USER_PASSWORD')) {
+            if (!process.env.ADMIN_PASSWORD || !process.env.BOSS_PASSWORD || !process.env.USER_PASSWORD) {
                 console.warn('🚨 SECURITY WARNING: Using generated passwords. Set environment variables for production!');
             }
 
@@ -505,3 +505,4 @@ class UltimateSecuritySystem {
 }
 
 module.exports = UltimateSecuritySystem;
+// ST:TINI_1755361782_e868a412

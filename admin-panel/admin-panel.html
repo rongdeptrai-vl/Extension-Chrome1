@@ -8,6 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; img-src 'self' data: https:; connect-src 'self' ws: wss:; font-src 'self' https://cdnjs.cloudflare.com;">
     <title data-i18n="admin_dashboard_title">TINI Admin Dashboard</title>
     <link rel="stylesheet" href="scripts/admin-panel.css">
     <link rel="stylesheet" href="styles/professional-data.css">
@@ -378,23 +379,23 @@
                 <div class="dashboard-grid">
                     <div class="dashboard-card animated-card">
                         <div class="card-title" data-i18n="active_users">活跃用户</div>
-                        <div class="card-value">1,428</div>
-                        <div class="card-change positive">
-                            <i class="fas fa-arrow-up"></i> <span data-i18n="new_this_week">本周新增</span>
+                        <div class="card-value" id="active-users-count" data-i18n="loading_text">加载中...</div>
+                        <div class="card-change" id="active-users-trend">
+                            <i class="fas fa-arrow-up"></i> <span id="active-users-trend-text" data-i18n="loading_text">加载中...</span>
                         </div>
                     </div>
                     <div class="dashboard-card animated-card delay-1">
                         <div class="card-title" data-i18n="blocked_items">拦截项目</div>
-                        <div class="card-value">24,901</div>
-                        <div class="card-change positive">
-                            <i class="fas fa-arrow-up"></i> <span data-i18n="new_this_week">本周新增</span>
+                        <div class="card-value" id="blocked-items-count" data-i18n="loading_text">加载中...</div>
+                        <div class="card-change" id="blocked-items-trend">
+                            <i class="fas fa-arrow-up"></i> <span id="blocked-items-trend-text" data-i18n="loading_text">加载中...</span>
                         </div>
                     </div>
                     <div class="dashboard-card animated-card delay-2">
                         <div class="card-title" data-i18n="system_health">系统健康</div>
-                        <div class="card-value">99.9%</div>
-                        <div class="card-change negative">
-                            <i class="fas fa-arrow-down"></i> <span data-i18n="from_yesterday">较昨日</span>
+                        <div class="card-value" id="system-health-value" data-i18n="loading_text">加载中...</div>
+                        <div class="card-change" id="system-health-trend">
+                            <i class="fas fa-arrow-up"></i> <span id="system-health-trend-text" data-i18n="loading_text">加载中...</span>
                         </div>
                     </div>
                 </div>
@@ -418,34 +419,12 @@
                                     <th data-i18n="table_status">状态</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>EMP001</td>
-                                    <td data-i18n="switched_to_power">切换到POWER模式</td>
-                                    <td>v4.0.0</td>
-                                    <td data-i18n="minutes_ago_2">2分钟前</td>
-                                    <td><span class="status-badge status-active" data-i18n="active">活跃</span></td>
-                                </tr>
-                                <tr>
-                                    <td>EMP003</td>
-                                    <td data-i18n="login_attempt">登录尝试</td>
-                                    <td>-</td>
-                                    <td data-i18n="minutes_ago_15">15分钟前</td>
-                                    <td><span class="status-badge status-inactive" data-i18n="failed">失败</span></td>
-                                </tr>
-                                <tr>
-                                    <td>EMP002</td>
-                                    <td data-i18n="updated_settings">更新设置</td>
-                                    <td>v3.0.0</td>
-                                    <td data-i18n="hour_ago">1小时前</td>
-                                    <td><span class="status-badge status-active" data-i18n="completed">已完成</span></td>
-                                </tr>
-                                <tr>
-                                    <td>EMP005</td>
-                                    <td data-i18n="device_registration">设备注册</td>
-                                    <td>-</td>
-                                    <td data-i18n="hours_ago_3">3小时前</td>
-                                    <td><span class="status-badge status-pending" data-i18n="pending">待处理</span></td>
+                            <tbody id="recent-activities-table">
+                                <!-- Dữ liệu sẽ được load từ realtime API -->
+                                <tr id="loading-activities">
+                                    <td colspan="5" style="text-align: center;">
+                                        <span data-i18n="loading_text">加载中...</span>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -456,8 +435,8 @@
                 <div class="activity-section">
                     <div class="section-header">
                         <h2 class="section-title" data-i18n="user_management_title">用户管理</h2>
-                        <button type="button" name="addUserBtn" class="btn-outline-accent add-user-trigger" data-i18n="add_user_btn">
-                            <i class="fas fa-user-plus"></i> <span data-i18n="add_user_btn">添加用户</span>
+                        <button type="button" name="addUserBtn" data-i18n="add_user_btn">
+                            <i class="fas fa-plus"></i> <span data-i18n="add_user_btn">添加用户</span>
                         </button>
                     </div>
                     <div class="table-container">
@@ -472,40 +451,30 @@
                                     <th data-i18n="actions_col">Thao Tác</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <td>EMP001</td>
-                                    <td data-i18n="admin_user">管理员用户</td>
-                                    <td data-i18n="admin">管理员</td>
-                                    <td data-i18n="just_now">刚刚</td>
-                                    <td>2</td>
-                                    <td>
-                                        <button type="button" name="editUser1" class="edit-user-btn" aria-label="Edit user">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button type="button" name="deleteUser1" class="delete-user-btn" aria-label="Delete user">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>EMP002</td>
-                                    <td data-i18n="regular_user">普通用户</td>
-                                    <td data-i18n="user">用户</td>
-                                    <td data-i18n="hour_ago">1小时前</td>
-                                    <td>1</td>
-                                    <td>
-                                        <button type="button" name="editUser2" class="edit-user-btn" aria-label="Edit user">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button type="button" name="deleteUser2" class="delete-user-btn" aria-label="Delete user">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                            <tbody id="users-management-table">
+                                <!-- Dữ liệu sẽ được load từ realtime API -->
+                                <tr id="loading-users">
+                                    <td colspan="6" style="text-align: center;">
+                                        <span data-i18n="loading_text">加载中...</span>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+
+                    <!-- Add/Edit User Form -->
+                    <div id="userFormContainer" style="display:none;">
+                        <!-- 已弃用: 添加用户表单 (改为待注册审批队列) -->
+                    </div>
+
+                    <!-- 待注册审批队列 -->
+                    <section id="signupApprovalSection" class="approval-queue" aria-live="polite">
+                        <div class="section-header">
+                            <h3 data-i18n="signup_queue_title">注册审批队列</h3>
+                            <p class="section-description" data-i18n="signup_queue_desc">来自弹窗注册的账号申请将在此显示，可实时审核。</p>
+                        </div>
+                        <div id="signupQueueList" class="approval-list" data-i18n-scope="signup_queue"></div>
+                    </section>
                 </div>
             </div>
 
@@ -616,8 +585,8 @@
                 <div class="activity-section">
                     <div class="section-header">
                         <h2 class="section-title" data-i18n="user_management">User Management</h2>
-                        <button type="button" id="addUserBtn" name="addUserBtn" class="btn-outline-accent add-user-trigger">
-                            <i class="fas fa-user-plus"></i> <span data-i18n="add_user">添加用户</span>
+                        <button type="button" id="addUserBtn" name="addUserBtn">
+                            <i class="fas fa-plus"></i> <span data-i18n="add_user">添加用户</span>
                         </button>
                     </div>
                     <div class="table-container">
@@ -633,77 +602,59 @@
                                 </tr>
                             </thead>
                             <tbody id="userTableBody">
-                                <tr>
-                                    <td>EMP001</td>
-                                    <td data-i18n="admin_user">管理员用户</td>
-                                    <td><span class="status-badge status-active" data-i18n="admin">管理员</span></td>
-                                    <td data-i18n="just_now">刚刚</td>
-                                    <td>2</td>
-                                    <td>
-                                        <button type="button" name="editUser3" class="edit-user-btn" aria-label="Edit user">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button type="button" name="deleteUser3" class="delete-user-btn" aria-label="Delete user">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>EMP002</td>
-                                    <td data-i18n="regular_user">普通用户</td>
-                                    <td><span class="status-badge status-pending" data-i18n="user">用户</span></td>
-                                    <td data-i18n="hour_ago">1小时前</td>
-                                    <td>1</td>
-                                    <td>
-                                        <button type="button" name="editUser4" class="edit-user-btn" aria-label="Edit user">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button type="button" name="deleteUser4" class="delete-user-btn" aria-label="Delete user">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>EMP003</td>
-                                    <td data-i18n="employee_user_3">潘文勇 PanVuong 79-1</td>
-                                    <td><span class="status-badge status-pending" data-i18n="employee">Employee</span></td>
-                                    <td data-i18n="hours_ago_2">2 hours ago</td>
-                                    <td>1</td>
-                                    <td>
-                                        <button type="button" name="editUser5" class="edit-user-btn" aria-label="Edit user">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button type="button" name="deleteUser5" class="delete-user-btn" aria-label="Delete user">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                <!-- 动态加载用户数据 -->
+                                <tr id="loading-users-main">
+                                    <td colspan="6" style="text-align: center;">
+                                        <span data-i18n="loading_text">加载中...</span>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+
+                    <!-- Add/Edit User Form -->
+                    <div id="userFormContainer" style="display:none;">
+                        <!-- 已弃用: 添加用户表单 (改为待注册审批队列) -->
+                    </div>
+
+                    <!-- 待注册审批队列 -->
+                    <section id="signupApprovalSection" class="approval-queue" aria-live="polite">
+                        <div class="section-header">
+                            <h3 data-i18n="signup_queue_title">注册审批队列</h3>
+                            <p class="section-description" data-i18n="signup_queue_desc">来自弹窗注册的账号申请将在此显示，可实时审核。</p>
+                        </div>
+                        <div id="signupQueueList" class="approval-list" data-i18n-scope="signup_queue"></div>
+                    </section>
                 </div>
 
                 <!-- User Statistics -->
                 <div class="dashboard-grid">
                     <div class="dashboard-card animated-card">
                         <div class="card-title" data-i18n="total_users">Total Users</div>
-                        <div class="card-value">3</div>
-                        <div class="card-change positive">
-                            <i class="fas fa-arrow-up"></i> <span data-i18n="new_this_week_users">1 new this week</span>
+                        <div class="card-value" id="total-users-count" data-i18n="loading_text">加载中...</div>
+                        <div class="card-change" id="total-users-trend">
+                            <i class="fas fa-arrow-up"></i> <span id="total-users-trend-text" data-i18n="loading_text">加载中...</span>
                         </div>
                     </div>
                     <div class="dashboard-card animated-card delay-1">
+                        <div class="card-title" data-i18n="device_registrations">Device Registrations</div>
+                        <div class="card-value" id="total-registrations-count" data-i18n="loading_text">加载中...</div>
+                        <div class="card-change" id="total-registrations-trend">
+                            <i class="fas fa-arrow-up"></i> <span id="total-registrations-trend-text" data-i18n="loading_text">加载中...</span>
+                        </div>
+                    </div>
+                    <div class="dashboard-card animated-card delay-2">
                         <div class="card-title" data-i18n="active_sessions">Active Sessions</div>
-                        <div class="card-value">2</div>
-                        <div class="card-change positive">
-                            <i class="fas fa-arrow-up"></i> <span data-i18n="active_rate">66% active rate</span>
+                        <div class="card-value" id="active-sessions-count" data-i18n="loading_text">加载中...</div>
+                        <div class="card-change" id="active-sessions-trend">
+                            <i class="fas fa-arrow-up"></i> <span id="active-sessions-trend-text" data-i18n="loading_text">加载中...</span>
                         </div>
                     </div>
                     <div class="dashboard-card animated-card delay-2">
                         <div class="card-title" data-i18n="admin_users">管理员用户</div>
-                        <div class="card-value">1</div>
-                        <div class="card-change">
-                            <i class="fas fa-shield-alt"></i> <span data-i18n="super_admin_level">超级管理员级别</span>
+                        <div class="card-value" id="admin-users-count" data-i18n="loading_text">加载中...</div>
+                        <div class="card-change" id="admin-users-trend">
+                            <i class="fas fa-shield-alt"></i> <span id="admin-users-trend-text" data-i18n="loading_text">加载中...</span>
                         </div>
                     </div>
                 </div>
@@ -1010,33 +961,33 @@
                     <div class="stat-card" data-card="active-threats">
                         <div class="stat-head">
                             <span class="stat-label" data-i18n="security_active_threats">活跃威胁</span>
-                            <span class="stat-trend positive" data-i18n="trend_down_12">下降12%</span>
+                            <span class="stat-trend" id="active-threats-trend" data-i18n="loading_text">加载中...</span>
                         </div>
-                        <div class="stat-value" data-i18n="security_active_threats_value">0</div>
+                        <div class="stat-value" id="active-threats-value" data-i18n="loading_text">加载中...</div>
                         <div class="sparkline" data-chart="activeThreats"></div>
                     </div>
                     <div class="stat-card" data-card="blocked-today">
                         <div class="stat-head">
                             <span class="stat-label" data-i18n="security_blocked_today">今日拦截</span>
-                            <span class="stat-trend neutral" data-i18n="trend_flat">持平</span>
+                            <span class="stat-trend" id="blocked-today-trend" data-i18n="loading_text">加载中...</span>
                         </div>
-                        <div class="stat-value" data-i18n="security_blocked_today_value">2,847</div>
+                        <div class="stat-value" id="blocked-today-value" data-i18n="loading_text">加载中...</div>
                         <div class="sparkline" data-chart="blockedToday"></div>
                     </div>
                     <div class="stat-card" data-card="risk-score">
                         <div class="stat-head">
                             <span class="stat-label" data-i18n="security_risk_score">风险评分</span>
-                            <span class="stat-trend positive" data-i18n="trend_up_secure">更安全</span>
+                            <span class="stat-trend" id="risk-score-trend" data-i18n="loading_text">加载中...</span>
                         </div>
-                        <div class="stat-value" data-i18n="security_risk_score_value">95/100</div>
+                        <div class="stat-value" id="risk-score-value" data-i18n="loading_text">加载中...</div>
                         <div class="progress-bar" data-progress="riskScore"><div></div></div>
                     </div>
                     <div class="stat-card" data-card="patch-level">
                         <div class="stat-head">
                             <span class="stat-label" data-i18n="security_patch_level">补丁级别</span>
-                            <span class="stat-trend positive" data-i18n="trend_up">上升</span>
+                            <span class="stat-trend" id="patch-level-trend" data-i18n="loading_text">加载中...</span>
                         </div>
-                        <div class="stat-value" data-i18n="security_patch_level_value">98.5%</div>
+                        <div class="stat-value" id="patch-level-value" data-i18n="loading_text">加载中...</div>
                         <div class="progress-bar" data-progress="patchLevel"><div></div></div>
                     </div>
                 </div>
@@ -1569,7 +1520,7 @@
                                 <h3 data-i18n="no_reports_title">暂无报告</h3>
                                 <p data-i18n="reports_no_results">没有找到符合条件的报告</p>
                                 <button class="btn-primary" data-action="open-report-modal">
-                                    <i class="fas fa-plus" style="font-size:14px"></i> <span data-i18n="create_first_report">创建第一个报告</span>
+                                    <i class="fas fa-plus"></i> <span data-i18n="create_first_report">创建第一个报告</span>
                                 </button>
                             </div>
                         </div> <!-- end first panel -->
@@ -1898,43 +1849,115 @@
     </div>
 
     <script src="scripts/config/tini-env-config.js"></script>
-    <script src="scripts/SECURITY/secure-input-validator-clean.js"></script>
-    <script src="scripts/SECURITY/secure-admin-helper.js"></script>
-    <!-- Ensure API_CONFIG and fallbacks exist before any utils -->
-    <script src="scripts/error-fix.js"></script>
-    <script src="scripts/tini-validation-system.js"></script>
-    <script src="scripts/chrome-api-compat.js"></script>
-    <script src="scripts/security-systems-browser.js"></script>
-    <script src="auto-chinese.js"></script>
-    <script src="scripts/utils/secure-storage.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    
+    <!-- Load TINIAdminPanel class first -->
     <script src="scripts/admin-panel-main.js"></script>
+    
     <script>
-        (function(){
-            function start(){
-                try {
-                    // Guard against multiple inits
-                    if (!window.adminPanel && typeof window.TINIAdminPanel === 'function') {
-                        window.adminPanel = new window.TINIAdminPanel();
-                        console.log('🚀 AdminPanel bootstrap initialized');
-                    }
-                } catch ( e ) {
-                    console.error('❌ AdminPanel bootstrap error:', e);
-                }
+    (function(){
+        try {
+            // Guard against multiple inits
+            if (!window.adminPanel && typeof TINIAdminPanel === 'function') {
+                window.adminPanel = new TINIAdminPanel();
+                console.log('🚀 AdminPanel bootstrap initialized');
             }
-            if ( document.readyState === 'loading' ) {
-                document.addEventListener('DOMContentLoaded', start);
-            } else {
-                start();
-            }
-        })();
+        } catch ( e ) {
+            console.error('❌ AdminPanel bootstrap error:', e);
+        }
+    })();
     </script>
     <script src="scripts/professional-data-handler.js"></script>
     <script src="scripts/demo-bypass.js"></script>
     <script src="scripts/realtime-charts.js"></script>
     <script src="scripts/reports-enhancement.js"></script>
     <script src="scripts/button-handlers.js"></script>
+    <script>
+    (function initSignupQueue(){
+        const apiBase = '';
+        const $list = document.getElementById('signupQueueList');
+        const i18n = (k, d) => (window.adminPanel && window.adminPanel.getMessage ? window.adminPanel.getMessage(k) : d || k);
+        function rowHtml(item){
+            const data = item.request_data || {}; const created = item.created_at || '';
+            const name = item.full_name || data.fullName || item.user_id || '—';
+            const email = data.email || '—';
+            const ip = (data.ipAddress || data.internalIp || '—');
+            const ua = (data.userAgent || '—');
+            const pr = item.priority || 'MEDIUM';
+            return `
+            <div class="approval-item ${pr==='HIGH'?'high-risk':(pr==='MEDIUM'?'medium-risk':'')}">
+                <div class="approval-header">
+                    <span class="approval-type" data-i18n="signup_request">注册申请</span>
+                    <span class="time" title="${created}">${new Date(created).toLocaleString()}</span>
+                </div>
+                <div class="approval-details">
+                    <div class="detail-item"><div class="detail-label" data-i18n="full_name">全名</div><div class="detail-value">${name}</div></div>
+                    <div class="detail-item"><div class="detail-label" data-i18n="email">邮箱地址</div><div class="detail-value">${email}</div></div>
+                    <div class="detail-item"><div class="detail-label" data-i18n="device">设备</div><div class="detail-value">${item.device_id||data.deviceId||'—'}</div></div>
+                    <div class="detail-item"><div class="detail-label" data-i18n="ip_address">互联网协议地址</div><div class="detail-value">${ip}</div></div>
+                </div>
+                <div class="approval-actions">
+                    <button class="btn btn-approve" data-action="approve" data-id="${item.id}" data-i18n="approve_btn">通过</button>
+                    <button class="btn btn-reject" data-action="reject" data-id="${item.id}" data-i18n="reject_btn">拒绝</button>
+                    <button class="btn btn-details" data-action="ignore" data-id="${item.id}" data-i18n="ignore_btn">忽略</button>
+                </div>
+            </div>`;
+        }
+        async function refresh(){
+            try{
+                $list.innerHTML = `<div class="loading"><div class="spinner"></div><span data-i18n="loading_text">加载中...</span></div>`;
+                const res = await fetch(apiBase + '/api/admin/pending-approvals');
+                const json = await res.json();
+                const items = (json && json.approvals) || [];
+                if(!items.length){
+                    $list.innerHTML = `<div style="text-align:center;color:#6c757d;padding:24px;" data-i18n="no_pending">暂无待审批申请</div>`;
+                } else {
+                    $list.innerHTML = items.map(rowHtml).join('');
+                }
+                if(window.adminPanel && window.adminPanel.applyI18nToPanel){ window.adminPanel.applyI18nToPanel(); }
+            }catch(e){
+                $list.innerHTML = `<div class="alert alert-danger">${e.message}</div>`;
+            }
+        }
+        async function act(action, id, reason){
+            const url = `/api/admin/pending-approvals/${action}`;
+            const res = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ id, reason })});
+            const j = await res.json();
+            if(!j.success){ throw new Error(j.error || 'Failed'); }
+            refresh();
+            if(window.adminPanel && window.adminPanel.showNotification){
+                const map = { approve: '已通过', reject: '已拒绝', ignore: '已忽略' };
+                window.adminPanel.showNotification(`${i18n('signup_request','注册申请')} #${id} ${map[action]||''}`, 'success');
+            }
+        }
+        document.addEventListener('click', (e)=>{
+            const btn = e.target.closest('[data-action]');
+            if(!btn) return;
+            const action = btn.getAttribute('data-action');
+            const id = Number(btn.getAttribute('data-id'));
+            if(action==='reject'){
+                const reason = prompt(i18n('enter_reject_reason','请输入拒绝原因')) || '';
+                act('reject', id, reason);
+            } else if(action==='approve'){
+                act('approve', id);
+            } else if(action==='ignore'){
+                act('ignore', id);
+            }
+        });
+        // socket realtime
+        try{
+            if(typeof io !== 'undefined'){
+                const s = io(window.location.origin);
+                s.on('pending_approvals:update', ()=> refresh());
+            }
+        }catch{}
+        // first load
+        document.addEventListener('DOMContentLoaded', refresh);
+        window.refreshSignupQueue = refresh;
+    })();
+    </script>
 </body>
 </html>
 
 <!-- ST:TINI_1754998490_e868a412 -->
-<!-- ST:TINI_1755139708_e868a412 -->
+<!-- ST:TINI_1755361782_e868a412 -->

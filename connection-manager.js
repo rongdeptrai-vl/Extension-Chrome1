@@ -6,8 +6,11 @@
 // CONNECTION MANAGER SYSTEM
 // 🌐 Hệ thống quản lý kết nối toàn diện
 
-class ConnectionManagerSystem {
+const EventEmitter = require('events');
+
+class ConnectionManagerSystem extends EventEmitter {
     constructor() {
+        super();
         this.version = '3.0.0';
         this.activeConnections = new Map();
         this.connectionPool = new Map();
@@ -17,6 +20,7 @@ class ConnectionManagerSystem {
         this.bossMode = false;
         this.maxConnections = 10;
         this.connectionTimeout = 30000;
+        this.isActive = true;
         
         this.init();
     }
@@ -32,15 +36,17 @@ class ConnectionManagerSystem {
     
     initializeConnectionPool() {
         // Initialize connection pool with default configurations
+        const baseURL = typeof window !== 'undefined' ? window.location.origin : 'http://localhost:55057';
+        
         this.connectionConfigs = {
             api_primary: {
-                baseURL: window.location.origin,
+                baseURL: baseURL,
                 timeout: 10000,
                 retries: 3,
                 priority: 'high'
             },
             api_secondary: {
-                baseURL: window.location.origin + '/api',
+                baseURL: baseURL + '/api',
                 timeout: 15000,
                 retries: 2,
                 priority: 'medium'
@@ -52,7 +58,7 @@ class ConnectionManagerSystem {
                 autoReconnect: true
             },
             admin_panel: {
-                baseURL: window.location.origin + '/admin',
+                baseURL: (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:55057') + '/admin',
                 timeout: 5000,
                 retries: 5,
                 priority: 'critical'
@@ -70,45 +76,50 @@ class ConnectionManagerSystem {
     }
     
     getWebSocketURL() {
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        return protocol + '//' + window.location.host + '/ws';
+        // Return WebSocket URL based on environment
+        if (typeof window !== 'undefined') {
+            const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+            return protocol + '//' + window.location.host + '/socket.io/';
+        } else {
+            // Node.js environment - connect to admin panel server
+            return 'ws://localhost:55057/socket.io/';
+        }
     }
     
     getGhostBackendURL() {
         // Ghost backend URL detection
-        const ghostConfig = localStorage.getItem('ghostConfig');
-        if (ghostConfig) {
-            try {
-                const config = JSON.parse(ghostConfig);
-                return config.backendURL || window.location.origin;
-            } catch (e) {
-                return window.location.origin;
+        try {
+            const ghostConfig = typeof localStorage !== 'undefined' ? localStorage.getItem('ghostConfig') : null;
+            if (ghostConfig) {
+                try {
+                    const config = JSON.parse(ghostConfig);
+                    return config.backendURL || (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:55057');
+                } catch (e) {
+                    return typeof window !== 'undefined' ? window.location.origin : 'http://localhost:55057';
+                }
             }
+            return typeof window !== 'undefined' ? window.location.origin : 'http://localhost:55057';
+        } catch (e) {
+            return 'http://localhost:55057';
         }
-        return window.location.origin;
     }
     
     setupConnectionMonitoring() {
-        // Monitor connection health
-        setInterval(() => {
-            this.checkConnectionHealth();
-            this.optimizeConnections();
-            this.cleanupDeadConnections();
-        }, 10000);
+        // Only setup browser event listeners if in browser environment
+        if (typeof window !== 'undefined') {
+            // Setup network status monitoring
+            window.addEventListener('online', () => {
+                console.log('🌐 [CONNECTION-MGR] Network online - reconnecting');
+                this.handleNetworkOnline();
+            });
         
-        // Monitor network events
-        window.addEventListener('online', () => {
-            this.handleNetworkOnline();
-        });
-        
-        window.addEventListener('offline', () => {
-            this.handleNetworkOffline();
-        });
-        
-        // Monitor tab visibility
-        document.addEventListener('visibilitychange', () => {
-            this.handleVisibilityChange();
-        });
+            window.addEventListener('offline', () => {
+                console.log('🌐 [CONNECTION-MGR] Network offline - pausing connections');
+                this.handleNetworkOffline();
+            });
+        } else {
+            console.log('🌐 [CONNECTION-MGR] Node.js mode - network monitoring disabled');
+        }
     }
     
     establishDefaultConnections() {
@@ -122,7 +133,7 @@ class ConnectionManagerSystem {
         this.createWebSocketConnection('websocket_main', this.connectionConfigs.websocket_main);
         
         // Admin panel connection (if admin user)
-        const userRole = localStorage.getItem('userRole');
+        const userRole = typeof localStorage !== 'undefined' ? localStorage.getItem('userRole') : null;
         if (userRole === 'admin' || userRole === 'boss') {
             this.createConnection('admin_panel', this.connectionConfigs.admin_panel);
         }
@@ -132,7 +143,7 @@ class ConnectionManagerSystem {
     
     initializeBossMode() {
         // 👑 BOSS Mode initialization
-        const bossToken = localStorage.getItem('bossLevel10000');
+        const bossToken = typeof localStorage !== 'undefined' ? localStorage.getItem('bossLevel10000') : null;
         if (bossToken === 'true') {
             this.bossMode = true;
             this.optimizeForBoss();
@@ -154,7 +165,7 @@ class ConnectionManagerSystem {
         
         // Establish BOSS-specific connections
         this.createConnection('boss_priority', {
-            baseURL: window.location.origin + '/boss',
+            baseURL: (typeof window !== 'undefined' ? window.location.origin : 'http://localhost:55057') + '/boss',
             timeout: 5000,
             retries: Infinity,
             priority: 'boss'
@@ -410,14 +421,16 @@ class ConnectionManagerSystem {
         try {
             const message = JSON.parse(data);
             
-            // Dispatch message to appropriate handlers
-            window.dispatchEvent(new CustomEvent('websocketMessage', {
-                detail: {
-                    connectionId,
-                    message,
-                    timestamp: Date.now()
-                }
-            }));
+            // Dispatch message to appropriate handlers (only in browser)
+            if (typeof window !== 'undefined') {
+                window.dispatchEvent(new CustomEvent('websocketMessage', {
+                    detail: {
+                        connectionId,
+                        message,
+                        timestamp: Date.now()
+                    }
+                }));
+            }
             
             this.recordConnectionMetric(connectionId, 'ws_message_received', {
                 size: data.length,
@@ -569,7 +582,9 @@ class ConnectionManagerSystem {
         this.connectionStatus = 'offline';
         
         // Enable offline mode
-        localStorage.setItem('connectionManagerMode', 'offline');
+        if (typeof localStorage !== 'undefined') {
+            localStorage.setItem('connectionManagerMode', 'offline');
+        }
     }
     
     handleVisibilityChange() {
@@ -608,14 +623,16 @@ class ConnectionManagerSystem {
             };
         }
         
-        // Notify error handlers
-        window.dispatchEvent(new CustomEvent('connectionError', {
-            detail: {
-                connectionId,
-                error: error.message,
-                timestamp: Date.now()
-            }
-        }));
+        // Notify error handlers (only in browser environment)
+        if (typeof window !== 'undefined') {
+            window.dispatchEvent(new CustomEvent('connectionError', {
+                detail: {
+                    connectionId,
+                    error: error.message,
+                    timestamp: Date.now()
+                }
+            }));
+        }
         
         // Auto-recovery for critical connections
         if (connection && connection.config.priority === 'critical') {
@@ -697,14 +714,58 @@ class ConnectionManagerSystem {
             status: this.getConnectionStatus()
         };
     }
+    
+    // Bridge API for Component Integration
+    getComponentAPI() {
+        return {
+            name: 'CONNECTION_MANAGER',
+            version: this.version,
+            status: 'active',
+            methods: {
+                createConnection: this.createConnection.bind(this),
+                closeConnection: this.closeConnection.bind(this),
+                getConnectionStatus: this.getConnectionStatus.bind(this),
+                resetConnectionPool: this.resetConnectionPool.bind(this)
+            },
+            events: ['connectionEstablished', 'connectionClosed', 'connectionFailed']
+        };
+    }
+    
+    getManagerStatus() {
+        return {
+            active: this.isActive,
+            activeConnections: this.activeConnections.size,
+            connectionStatus: this.connectionStatus,
+            bossMode: this.bossMode,
+            maxConnections: this.maxConnections
+        };
+    }
+    
+    resetConnectionPool() {
+        console.log('🌐 [CONNECTION-MGR] Resetting connection pool');
+        this.activeConnections.clear();
+        this.connectionMetrics.clear();
+        this.retryAttempts.clear();
+        this.emit('connectionPoolReset', { timestamp: Date.now() });
+        return { success: true, poolReset: true };
+    }
+}
+
+// Export for integration
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = ConnectionManagerSystem;
 }
 
 // Initialize and export
 if (typeof window !== 'undefined') {
     window.TINI_CONNECTION_MANAGER = new ConnectionManagerSystem();
+    window.ConnectionManagerSystem = ConnectionManagerSystem;
     console.log('🌐 [CONNECTION-MGR] System loaded successfully');
 }
+
+console.log('🌐 [CONNECTION-MGR] Connection Manager System module loaded');
 
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = ConnectionManagerSystem;
 }
+// ST:TINI_1755361782_e868a412

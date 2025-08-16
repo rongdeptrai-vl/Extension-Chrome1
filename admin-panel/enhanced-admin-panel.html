@@ -1,0 +1,694 @@
+<!-- © 2024 TINI COMPANY - CONFIDENTIAL -->
+<!-- Employee: rongdeptrai-vl <rongdz2307@gmail.com> -->
+<!-- Commit: 8d90861 | Time: 2025-08-16T16:29:42Z -->
+<!-- Watermark: TINI_1755361782_e868a412 | TINI_WATERMARK -->
+<!-- WARNING: Unauthorized distribution is prohibited -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TINI Enterprise Security Admin Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .admin-header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .admin-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .security-status {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .status-card {
+            background: rgba(255,255,255,0.1);
+            padding: 15px 25px;
+            border-radius: 10px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-value {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .status-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .admin-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .tab-button.active {
+            background: white;
+            color: #007bff;
+        }
+
+        .tab-button.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: #007bff;
+        }
+
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .approval-queue {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .approval-item {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #ffc107;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .approval-item.high-risk {
+            border-left-color: #dc3545;
+        }
+
+        .approval-item.medium-risk {
+            border-left-color: #fd7e14;
+        }
+
+        .approval-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .approval-type {
+            background: #007bff;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .approval-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            border-radius: 5px;
+        }
+
+        .detail-label {
+            font-weight: bold;
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .detail-value {
+            font-family: monospace;
+            font-size: 0.9rem;
+            word-break: break-all;
+        }
+
+        .approval-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-approve {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-reject {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-details {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .security-logs {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        .log-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border-left: 3px solid #007bff;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .log-item.error {
+            border-left-color: #dc3545;
+            background: #fff5f5;
+        }
+
+        .log-item.warning {
+            border-left-color: #ffc107;
+            background: #fffbf0;
+        }
+
+        .log-item.success {
+            border-left-color: #28a745;
+            background: #f0fff4;
+        }
+
+        .log-timestamp {
+            color: #6c757d;
+            margin-right: 15px;
+        }
+
+        .log-level {
+            font-weight: bold;
+            margin-right: 15px;
+        }
+
+        .mfa-setup {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .qr-code {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        .backup-codes {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .backup-codes-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .backup-code {
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .drift-analysis {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .drift-score {
+            font-size: 2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .drift-score.good {
+            color: #28a745;
+        }
+
+        .drift-score.warning {
+            color: #ffc107;
+        }
+
+        .drift-score.danger {
+            color: #dc3545;
+        }
+
+        .changes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .change-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #007bff;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-danger {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>🛡️ TINI Enterprise Security</h1>
+            <p>Advanced Security Management & Monitoring System</p>
+            
+            <div class="security-status">
+                <div class="status-card">
+                    <div class="status-value" id="activeUsers">Loading...</div>
+                    <div class="status-label">Active Users</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-value" id="pendingApprovals">Loading...</div>
+                    <div class="status-label">Pending Approvals</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-value" id="securityEvents">Loading...</div>
+                    <div class="status-label">Security Events</div>
+                </div>
+                <div class="status-card">
+                    <div class="status-value" id="mfaEnabled">Loading...</div>
+                    <div class="status-label">MFA Enabled</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-tabs">
+            <button class="tab-button active" onclick="showTab('approvals')">
+                🔍 Pending Approvals
+            </button>
+            <button class="tab-button" onclick="showTab('security')">
+                🛡️ Security Events
+            </button>
+            <button class="tab-button" onclick="showTab('drift')">
+                📊 Drift Analysis
+            </button>
+            <button class="tab-button" onclick="showTab('mfa')">
+                🔐 MFA Management
+            </button>
+            <button class="tab-button" onclick="showTab('audit')">
+                📋 Audit Logs
+            </button>
+        </div>
+
+        <!-- Pending Approvals Tab -->
+        <div id="approvals" class="tab-content active">
+            <h2>🔍 Device Approval Queue</h2>
+            <div id="approvalsContent">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading pending approvals...
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Events Tab -->
+        <div id="security" class="tab-content">
+            <h2>🛡️ Security Event Monitor</h2>
+            <div id="securityContent">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading security events...
+                </div>
+            </div>
+        </div>
+
+        <!-- Drift Analysis Tab -->
+        <div id="drift" class="tab-content">
+            <h2>📊 Device Drift Analysis</h2>
+            <div id="driftContent">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading drift analysis...
+                </div>
+            </div>
+        </div>
+
+        <!-- MFA Management Tab -->
+        <div id="mfa" class="tab-content">
+            <h2>🔐 Multi-Factor Authentication</h2>
+            <div id="mfaContent">
+                <div class="mfa-setup">
+                    <h3>Setup MFA for User</h3>
+                    <input type="text" id="mfaUserId" placeholder="Enter Employee ID" style="padding: 10px; margin: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                    <button class="btn btn-approve" onclick="setupMFA()">Setup MFA</button>
+                    
+                    <div id="mfaResult" style="margin-top: 20px;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Audit Logs Tab -->
+        <div id="audit" class="tab-content">
+            <h2>📋 System Audit Trail</h2>
+            <div id="auditContent">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading audit logs...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        function showTab(tabName) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            // Load tab content
+            loadTabContent(tabName);
+        }
+
+        // Load tab content
+        async function loadTabContent(tabName) {
+            switch(tabName) {
+                case 'approvals':
+                    await loadPendingApprovals();
+                    break;
+                case 'security':
+                    await loadSecurityEvents();
+                    break;
+                case 'drift':
+                    await loadDriftAnalysis();
+                    break;
+                case 'audit':
+                    await loadAuditLogs();
+                    break;
+            }
+        }
+
+        // Load pending approvals
+        async function loadPendingApprovals() {
+            try {
+                const response = await fetch('/api/admin/pending-approvals');
+                const data = await response.json();
+
+                const container = document.getElementById('approvalsContent');
+                
+                if (data.success && data.approvals.length > 0) {
+                    container.innerHTML = data.approvals.map(approval => `
+                        <div class="approval-item ${getRiskClass(approval.priority)}">
+                            <div class="approval-header">
+                                <span class="approval-type">${approval.request_type}</span>
+                                <span style="color: #6c757d; font-size: 0.9rem;">
+                                    ${new Date(approval.created_at).toLocaleString()}
+                                </span>
+                            </div>
+                            
+                            <div class="approval-details">
+                                <div class="detail-item">
+                                    <div class="detail-label">Employee</div>
+                                    <div class="detail-value">${approval.full_name || approval.user_id}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Device ID</div>
+                                    <div class="detail-value">${approval.device_id}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">Priority</div>
+                                    <div class="detail-value">${approval.priority}</div>
+                                </div>
+                                <div class="detail-item">
+                                    <div class="detail-label">IP Address</div>
+                                    <div class="detail-value">${approval.request_data.ipAddress || 'N/A'}</div>
+                                </div>
+                            </div>
+                            
+                            <div class="approval-actions">
+                                <button class="btn btn-approve" onclick="approveDevice(${approval.id})">
+                                    ✅ Approve
+                                </button>
+                                <button class="btn btn-reject" onclick="rejectDevice(${approval.id})">
+                                    ❌ Reject
+                                </button>
+                                <button class="btn btn-details" onclick="viewDetails(${approval.id})">
+                                    📋 Details
+                                </button>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    container.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: #6c757d;">
+                            <h3>✅ No Pending Approvals</h3>
+                            <p>All devices have been reviewed and approved.</p>
+                        </div>
+                    `;
+                }
+
+                // Update status
+                document.getElementById('pendingApprovals').textContent = data.approvals?.length || 0;
+
+            } catch (error) {
+                console.error('Error loading approvals:', error);
+                document.getElementById('approvalsContent').innerHTML = `
+                    <div class="alert alert-danger">
+                        ❌ Failed to load pending approvals: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Get risk class for styling
+        function getRiskClass(priority) {
+            switch(priority) {
+                case 'HIGH': return 'high-risk';
+                case 'MEDIUM': return 'medium-risk';
+                default: return '';
+            }
+        }
+
+        // Setup MFA for user
+        async function setupMFA() {
+            const userId = document.getElementById('mfaUserId').value;
+            if (!userId) {
+                alert('Please enter an Employee ID');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/mfa/setup', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    document.getElementById('mfaResult').innerHTML = `
+                        <div class="alert alert-success">
+                            ✅ MFA Setup Successful for ${userId}
+                        </div>
+                        
+                        <div class="qr-code">
+                            <h4>Scan QR Code with Authenticator App</h4>
+                            <img src="${data.qrCode}" alt="MFA QR Code" style="max-width: 256px;">
+                        </div>
+                        
+                        <div class="backup-codes">
+                            <h4>⚠️ Backup Codes (Save These Securely)</h4>
+                            <div class="backup-codes-grid">
+                                ${data.backupCodes.map(code => `
+                                    <div class="backup-code">${code}</div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('mfaResult').innerHTML = `
+                        <div class="alert alert-danger">
+                            ❌ MFA Setup Failed: ${data.error}
+                        </div>
+                    `;
+                }
+
+            } catch (error) {
+                document.getElementById('mfaResult').innerHTML = `
+                    <div class="alert alert-danger">
+                        ❌ Setup Error: ${error.message}
+                    </div>
+                `;
+            }
+        }
+
+        // Placeholder functions for other features
+        async function loadSecurityEvents() {
+            document.getElementById('securityContent').innerHTML = `
+                <div class="alert alert-warning">
+                    🚧 Security events monitoring will be implemented in the next phase.
+                </div>
+            `;
+        }
+
+        async function loadDriftAnalysis() {
+            document.getElementById('driftContent').innerHTML = `
+                <div class="alert alert-warning">
+                    🚧 Drift analysis dashboard will be implemented in the next phase.
+                </div>
+            `;
+        }
+
+        async function loadAuditLogs() {
+            document.getElementById('auditContent').innerHTML = `
+                <div class="alert alert-warning">
+                    🚧 Audit logs viewer will be implemented in the next phase.
+                </div>
+            `;
+        }
+
+        // Initialize dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadPendingApprovals();
+            
+            // Load status data
+            document.getElementById('activeUsers').textContent = '1';
+            document.getElementById('securityEvents').textContent = '0';
+            document.getElementById('mfaEnabled').textContent = '0';
+        });
+    </script>
+</body>
+</html>

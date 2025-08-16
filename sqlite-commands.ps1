@@ -13,8 +13,8 @@ Write-Host "HOẶC" -ForegroundColor Gray
 Write-Host "node admin-panel/server.js" -ForegroundColor White
 
 Write-Host "`nLệnh với cổng tùy chỉnh:" -ForegroundColor Yellow
-Write-Host "cross-env PORT=55055 node admin-panel/server.js" -ForegroundColor White
-Write-Host "cross-env PORT=55056 node admin-panel/server.js" -ForegroundColor White
+Write-Host "cross-env PORT=55057 node admin-panel/server.js" -ForegroundColor White
+Write-Host "cross-env PORT=55058 node admin-panel/server.js" -ForegroundColor White
 
 Write-Host "`n🗄️ 2. TẠO VÀ THIẾT LẬP DATABASE:" -ForegroundColor Green
 Write-Host "=================================" -ForegroundColor Green
@@ -38,19 +38,19 @@ Write-Host "`nKiểm tra chi tiết database:" -ForegroundColor Yellow
 Write-Host "powershell -ExecutionPolicy Bypass -File complete-sqlite-test.ps1" -ForegroundColor White
 
 Write-Host "`nKiểm tra server đang chạy:" -ForegroundColor Yellow
-Write-Host "netstat -ano | findstr :55055" -ForegroundColor White
+Write-Host "netstat -ano | findstr :55057" -ForegroundColor White
 
 Write-Host "`n💻 4. TRUY CẬP DATABASE QUA WEB:" -ForegroundColor Green
 Write-Host "===============================" -ForegroundColor Green
 
 Write-Host "Admin Panel (giao diện web):" -ForegroundColor Yellow
-Write-Host "http://localhost:55055/admin-panel.html" -ForegroundColor White
+Write-Host "http://localhost:55057/admin-panel.html" -ForegroundColor White
 
 Write-Host "`nAPI endpoint chính:" -ForegroundColor Yellow
-Write-Host "http://localhost:55055" -ForegroundColor White
+Write-Host "http://localhost:55057" -ForegroundColor White
 
 Write-Host "`nTest HTTP response:" -ForegroundColor Yellow
-Write-Host "Invoke-WebRequest -Uri 'http://localhost:55055' -Method GET" -ForegroundColor White
+Write-Host "Invoke-WebRequest -Uri 'http://localhost:55057' -Method GET" -ForegroundColor White
 
 Write-Host "`n🛠️ 5. LỆNH QUẢN LÝ TRỰC TIẾP SQLITE:" -ForegroundColor Green
 Write-Host "====================================" -ForegroundColor Green
@@ -114,10 +114,10 @@ if (Test-Path "admin-panel\tini_admin.db") {
 }
 
 Write-Host "`nBước 2: Kiểm tra server" -ForegroundColor Yellow
-$serverRunning = netstat -ano | findstr ":55055"
+$serverRunning = netstat -ano | findstr ":55057"
 if ($serverRunning) {
     Write-Host "✅ SQLite Database Server đang chạy!" -ForegroundColor Green
-    Write-Host "👉 Truy cập: http://localhost:55055/admin-panel.html" -ForegroundColor Cyan
+    Write-Host "👉 Truy cập: http://localhost:55057/admin-panel.html" -ForegroundColor Cyan
 } else {
     Write-Host "❌ Server chưa chạy" -ForegroundColor Red
     Write-Host "👉 Chạy ngay: npm run start:panel" -ForegroundColor Cyan

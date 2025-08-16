@@ -14,7 +14,7 @@
     class AIPoweredCounterattackSystem {
         constructor() {
             this.version = "4.1";
-            this.apiEndpoint = `http://localhost:${process.env.PORT || 55055}/api`; // Centralized API Endpoint
+            this.apiEndpoint = `http://localhost:${process.env.PORT || 55057}/api`; // Centralized API Endpoint
             this.threatDatabase = new Map();
             this.learningMode = true;
             this.counterattackEnabled = true;
@@ -44,6 +44,13 @@
                 // Fallback Directory Traversal
                 { type: 'DIRECTORY_TRAVERSAL', pattern: /(\.\.)|(\.\/)/gi, severity: 'HIGH' }
             ];
+
+            // In Node.js environment, skip API call and use fallback patterns directly
+            if (typeof window === 'undefined') {
+                console.log('🤖 [AI] Node.js environment detected - using fallback patterns');
+                this.threatPatterns = fallbackPatterns;
+                return;
+            }
 
             try {
                 console.log(`🤖 [AI] Fetching latest threat patterns from ${this.apiEndpoint}...`);
@@ -96,8 +103,8 @@
                 },
                 response: response,
                 environment: {
-                    userAgent: navigator.userAgent,
-                    url: window.location.href,
+                    userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'Node.js',
+                    url: typeof window !== 'undefined' ? window.location.href : 'N/A',
                     // Potentially add more environment data like user ID, session ID, etc.
                 }
             };
@@ -129,23 +136,29 @@
             });
 
             // Also notify other local security systems via the event bus
-            if (window.TINI_SECURITY_BUS) {
+            if (typeof window !== 'undefined' && window.TINI_SECURITY_BUS) {
                 window.TINI_SECURITY_BUS.emit('tini:threat-detected', incident);
             }
         }
 
         saveIncidentLocally(incident) {
             try {
-                let localIncidents = JSON.parse(localStorage.getItem('tini_offline_incidents') || '[]');
-                localIncidents.push(incident);
-                // Keep the list from growing too large
-                if (localIncidents.length > 50) {
-                    localIncidents = localIncidents.slice(-50);
+                if (typeof localStorage !== 'undefined') {
+                    // Browser environment
+                    let localIncidents = JSON.parse(localStorage.getItem('tini_offline_incidents') || '[]');
+                    localIncidents.push(incident);
+                    // Keep the list from growing too large
+                    if (localIncidents.length > 50) {
+                        localIncidents = localIncidents.slice(-50);
+                    }
+                    localStorage.setItem('tini_offline_incidents', JSON.stringify(localIncidents));
+                    console.warn('🤖 [AI] Incident saved to local storage as a fallback.');
+                } else {
+                    // Node.js environment - log incident
+                    console.warn('🤖 [AI] Incident logged locally (Node.js):', JSON.stringify(incident, null, 2));
                 }
-                localStorage.setItem('tini_offline_incidents', JSON.stringify(localIncidents));
-                console.warn('🤖 [AI] Incident saved to local storage as a fallback.');
             } catch (e) {
-                console.error('🤖 [AI] Failed to save incident to local storage.', e);
+                console.error('🤖 [AI] Failed to save incident locally.', e);
             }
         }
 
@@ -260,7 +273,7 @@
             }
 
             // Check if in iframe
-            if (window !== window.top) {
+            if (typeof window !== 'undefined' && window !== window.top) {
                 contextScore += 15; // Iframe context
             }
 
@@ -302,14 +315,21 @@
         }
 
         setupThreatDetection() {
-            // Monitor all inputs
-            this.monitorFormInputs();
-            this.monitorURLChanges();
-            this.monitorDOMChanges();
-            this.monitorNetworkRequests();
+            // Monitor all inputs - only in browser environment
+            if (typeof document !== 'undefined') {
+                this.monitorFormInputs();
+                this.monitorURLChanges();
+                this.monitorDOMChanges();
+                this.monitorNetworkRequests();
+                console.log('🤖 [AI] Browser threat monitoring activated');
+            } else {
+                console.log('🤖 [AI] Node.js environment - browser monitoring disabled');
+            }
         }
 
         monitorFormInputs() {
+            if (typeof document === 'undefined') return;
+            
             document.addEventListener('input', (e) => {
                 if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
                     this.analyzeInput(e.target.value, 'FORM_INPUT');
@@ -318,6 +338,8 @@
         }
 
         monitorURLChanges() {
+            if (typeof window === 'undefined') return;
+            
             let currentURL = window.location.href;
             
             setInterval(() => {
@@ -329,6 +351,8 @@
         }
 
         monitorDOMChanges() {
+            if (typeof window === 'undefined' || typeof MutationObserver === 'undefined') return;
+            
             const observer = new MutationObserver((mutations) => {
                 mutations.forEach((mutation) => {
                     if (mutation.type === 'childList') {
@@ -341,26 +365,36 @@
                 });
             });
 
-            observer.observe(document.body, {
-                childList: true,
-                subtree: true
-            });
+            if (typeof document !== 'undefined') {
+                observer.observe(document.body, {
+                    childList: true,
+                    subtree: true
+                });
+            }
         }
 
         monitorNetworkRequests() {
+            if (typeof window === 'undefined') return;
+            
             // Monitor fetch requests
-            const originalFetch = window.fetch;
-            window.fetch = (...args) => {
-                this.analyzeInput(args[0], 'NETWORK_REQUEST');
-                return originalFetch.apply(this, args);
-            };
+            if (typeof window.fetch !== 'undefined') {
+                const originalFetch = window.fetch;
+                window.fetch = (...args) => {
+                    this.analyzeInput(args[0], 'NETWORK_REQUEST');
+                    return originalFetch.apply(this, args);
+                };
+            }
 
             // Monitor XMLHttpRequest
-            const originalXHR = window.XMLHttpRequest.prototype.open;
-            window.XMLHttpRequest.prototype.open = function(method, url) {
-                window.TINI_AI_COUNTERATTACK.analyzeInput(url, 'XHR_REQUEST');
-                return originalXHR.apply(this, arguments);
-            };
+            if (typeof window.XMLHttpRequest !== 'undefined') {
+                const originalXHR = window.XMLHttpRequest.prototype.open;
+                window.XMLHttpRequest.prototype.open = function(method, url) {
+                    if (window.TINI_AI_COUNTERATTACK) {
+                        window.TINI_AI_COUNTERATTACK.analyzeInput(url, 'XHR_REQUEST');
+                    }
+                    return originalXHR.apply(this, arguments);
+                };
+            }
         }
 
         analyzeInput(input, context) {
@@ -453,10 +487,12 @@
                 event.stopPropagation();
             }
             
-            // Clear dangerous content
+            // Clear dangerous content - SECURE VERSION
             document.querySelectorAll('*').forEach(el => {
                 if (el.innerHTML && el.innerHTML.includes(input.substring(0, 50))) {
-                    el.innerHTML = '[CONTENT BLOCKED BY AI SECURITY]';
+                    // SECURE: Use textContent instead of innerHTML to prevent XSS
+                    el.textContent = '[CONTENT BLOCKED BY AI SECURITY]';
+                    console.warn('🛡️ [AI] Blocked dangerous content in:', el.tagName);
                 }
             });
         }
@@ -497,20 +533,25 @@
                 input: input.substring(0, 200),
                 analysis: analysis,
                 context: context,
-                userAgent: navigator.userAgent,
-                url: window.location.href
+                userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : 'Node.js',
+                url: typeof window !== 'undefined' ? window.location.href : 'N/A'
             };
 
-            // Store in local storage for review
-            let logs = JSON.parse(localStorage.getItem('aiThreatLogs') || '[]');
-            logs.push(logEntry);
-            
-            // Keep only last 100 logs
-            if (logs.length > 100) {
-                logs = logs.slice(-100);
+            // Store in local storage for review - safe for both environments
+            if (typeof localStorage !== 'undefined') {
+                let logs = JSON.parse(localStorage.getItem('aiThreatLogs') || '[]');
+                logs.push(logEntry);
+                
+                // Keep only last 100 logs
+                if (logs.length > 100) {
+                    logs = logs.slice(-100);
+                }
+                
+                localStorage.setItem('aiThreatLogs', JSON.stringify(logs));
+            } else {
+                // Node.js environment - log to console
+                console.log('🤖 [AI] Threat log (Node.js):', JSON.stringify(logEntry, null, 2));
             }
-            
-            localStorage.setItem('aiThreatLogs', JSON.stringify(logs));
         }
 
         learnFromInput(input, analysis) {
@@ -522,15 +563,21 @@
                 timestamp: Date.now()
             };
 
-            let learningData = JSON.parse(localStorage.getItem('aiLearningData') || '[]');
-            learningData.push(pattern);
-            
-            // Keep only last 1000 learning samples
-            if (learningData.length > 1000) {
-                learningData = learningData.slice(-1000);
+            if (typeof localStorage !== 'undefined') {
+                // Browser environment
+                let learningData = JSON.parse(localStorage.getItem('aiLearningData') || '[]');
+                learningData.push(pattern);
+                
+                // Keep only last 1000 learning samples
+                if (learningData.length > 1000) {
+                    learningData = learningData.slice(-1000);
+                }
+                
+                localStorage.setItem('aiLearningData', JSON.stringify(learningData));
+            } else {
+                // Node.js environment - log learning data
+                console.log('🤖 [AI] Learning data (Node.js):', JSON.stringify(pattern, null, 2));
             }
-            
-            localStorage.setItem('aiLearningData', JSON.stringify(learningData));
         }
 
         activateCounterattack() {
@@ -559,7 +606,13 @@
                 console.warn('🤖 [AI] System integrity compromised:', healthMetrics.systemIntegrity + '%');
             }
 
-            localStorage.setItem('aiHealthMetrics', JSON.stringify(healthMetrics));
+            // Safe localStorage usage
+            if (typeof localStorage !== 'undefined') {
+                localStorage.setItem('aiHealthMetrics', JSON.stringify(healthMetrics));
+            } else {
+                // Node.js environment - log instead of storing
+                console.log('🤖 [AI] Health metrics (Node.js):', JSON.stringify(healthMetrics, null, 2));
+            }
         }
 
         checkSystemIntegrity() {
@@ -610,8 +663,16 @@
     const aiCounterattack = new AIPoweredCounterattackSystem();
     
     // Export for other modules
-    window.TINI_AI_COUNTERATTACK = aiCounterattack;
+    if (typeof window !== 'undefined') {
+        window.TINI_AI_COUNTERATTACK = aiCounterattack;
+    }
+    
+    // Export for Node.js module system
+    if (typeof module !== 'undefined' && module.exports) {
+        module.exports = AIPoweredCounterattackSystem;
+    }
     
     console.log('🤖 [AI] Counterattack system ready for deployment');
 
 })();// ST:TINI_1754752705_e868a412
+// ST:TINI_1755361782_e868a412

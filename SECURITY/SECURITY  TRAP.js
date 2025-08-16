@@ -5,7 +5,8 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
-const PersistentEmployeeSystem = require('./persistent-employee-system');
+// Fix path to persistent-employee-system
+const PersistentEmployeeSystem = require('../persistent-employee-system.js');
 
 class UltimateSecuritySystem {
     constructor() {

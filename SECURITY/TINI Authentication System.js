@@ -329,9 +329,14 @@ class SecureAuthenticationSystem extends EventEmitter {
     initializeUsers()
      {
         // Initialize with secure default users using environment variables (guard window in Node.js)
-        const adminPassword = this.getConfig().get('ADMIN_PASSWORD') || (typeof window !== 'undefined' ? window.tiniConfig?.get('ADMIN_PASSWORD') : undefined) || 'CHANGE_THIS_ADMIN_PASSWORD';
-        const bossPassword = this.getConfig().get('BOSS_PASSWORD') || (typeof window !== 'undefined' ? window.tiniConfig?.get('BOSS_PASSWORD') : undefined) || 'CHANGE_THIS_BOSS_PASSWORD';
-        const staffPassword = this.getConfig().get('STAFF_PASSWORD') || (typeof window !== 'undefined' ? window.tiniConfig?.get('STAFF_PASSWORD') : undefined) || 'CHANGE_THIS_STAFF_PASSWORD';
+        const adminPassword = this.getConfig().get('ADMIN_PASSWORD') || (typeof window !== 'undefined' ? window.tiniConfig?.get('ADMIN_PASSWORD') : undefined);
+        const bossPassword = this.getConfig().get('BOSS_PASSWORD') || (typeof window !== 'undefined' ? window.tiniConfig?.get('BOSS_PASSWORD') : undefined);
+        const staffPassword = this.getConfig().get('STAFF_PASSWORD') || (typeof window !== 'undefined' ? window.tiniConfig?.get('STAFF_PASSWORD') : undefined);
+
+        // Security: Throw error if passwords not found in environment
+        if (!adminPassword || !bossPassword || !staffPassword) {
+            throw new Error('🔐 SECURITY ERROR: Admin/Boss/Staff passwords must be set in environment variables. Check .env file.');
+        }
 
         this.users.set('admin', {
             username: 'admin',

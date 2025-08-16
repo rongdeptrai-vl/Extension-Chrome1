@@ -14,6 +14,9 @@ class TINIAdminPanel {
         this.systemStats = this.loadSystemStats();
         this.currentAvatar = localStorage.getItem('adminAvatar') || null;
         
+        // Initialize Socket.IO for real-time updates
+        this.initializeSocket();
+        
         // Initialize i18n system
         this.initializeI18nSystem();
         
@@ -21,6 +24,67 @@ class TINIAdminPanel {
         this.initializeLanguageFirst();
         
         this.init();
+    }
+
+    // ========================================
+    // 🔌 SOCKET.IO REAL-TIME CONNECTION
+    // ========================================
+    
+    initializeSocket() {
+        try {
+            // Check if Socket.IO is available
+            if (typeof io !== 'undefined') {
+                // Force connect to current server origin to avoid proxy/port issues
+                const socketUrl = window.location.origin;
+                this.socket = io(socketUrl);
+                
+                // Listen for user status updates
+                this.socket.on('user_status_update', (data) => {
+                    console.log('🔄 Received user status update:', data);
+                    
+                    // Refresh users table when status changes
+                    if (this.currentSection === 'users' || this.currentSection === 'dashboard') {
+                        this.loadUsersTable();
+                    }
+                    
+                    // Also refresh recent activities table if it exists
+                    if (window.realTimeChartHandler && window.realTimeChartHandler.loadRealActivityData) {
+                        window.realTimeChartHandler.loadRealActivityData();
+                    }
+                });
+                
+                // Listen for new activities to update recent activity table
+                this.socket.on('registration:new', (data) => {
+                    console.log('📝 New registration received:', data);
+                    if (window.realTimeChartHandler && window.realTimeChartHandler.handleNewRegistration) {
+                        window.realTimeChartHandler.handleNewRegistration(data);
+                    }
+                });
+                
+                // Listen for new activities to update recent activity table
+                this.socket.on('activity:new', (data) => {
+                    console.log('📊 New activity received:', data);
+                    if (window.realTimeChartHandler && window.realTimeChartHandler.addActivityToTable && data.activity) {
+                        window.realTimeChartHandler.addActivityToTable(data.activity);
+                    }
+                });
+                
+                // Listen for connection status
+                this.socket.on('connect', () => {
+                    console.log(`✅ Socket.IO connected to ${socketUrl}`);
+                });
+                
+                this.socket.on('disconnect', () => {
+                    console.log('❌ Socket.IO disconnected');
+                });
+                
+                console.log('🔌 Socket.IO initialized with explicit URL:', socketUrl);
+            } else {
+                console.warn('⚠️ Socket.IO not available');
+            }
+        } catch (error) {
+            console.error('❌ Failed to initialize Socket.IO:', error);
+        }
     }
 
     // ========================================
@@ -726,60 +790,162 @@ class TINIAdminPanel {
     }
 
     loadUsersTable() {
-        const usersData = JSON.parse(localStorage.getItem('usersData') || '[]');
-        const tableBody = document.querySelector('#users .table-container tbody');
-        
-        if (tableBody && usersData.length > 0) {
-            tableBody.innerHTML = '';
-            
-            usersData.forEach((user, index) => {
-                const row = document.createElement('tr');
-                // Use direct translation keys instead of dynamic generation
-                let roleText = user.role;
-                if (user.role === 'Admin') {
-                    roleText = this.getMessage('admin') || '管理员';
-                } else if (user.role === 'User') {
-                    roleText = this.getMessage('user') || '用户';
-                } else if (user.role === 'Employee') {
-                    roleText = this.getMessage('employee_role') || '员工';
-                }
+        // Load users from real-time API instead of localStorage
+        fetch('/api/users/list')
+            .then(response => response.json())
+            .then(usersData => {
+                const tableBody = document.querySelector('#users-management-table');
                 
-                // Direct lastActive translation
-                let lastActiveText = user.lastActive;
-                if (user.lastActive.includes('now') || user.lastActive === '刚刚') {
-                    lastActiveText = this.getMessage('just_now') || '刚刚';
-                } else if (user.lastActive.includes('1 hour') || user.lastActive === '1小时前') {
-                    lastActiveText = this.getMessage('one_hour_ago') || '1小时前';
-                } else if (user.lastActive.includes('2 hour') || user.lastActive === '2小时前') {
-                    lastActiveText = this.getMessage('two_hours_ago') || '2小时前';
+                if (tableBody && usersData.length > 0) {
+                    // Clear loading message
+                    tableBody.innerHTML = '';
+                    
+                    usersData.forEach((user, index) => {
+                        const row = document.createElement('tr');
+                        
+                        // Use direct translation keys instead of dynamic generation
+                        let roleText = user.role;
+                        if (user.role === 'admin') {
+                            roleText = this.getMessage('admin') || '管理员';
+                        } else if (user.role === 'user') {
+                            roleText = this.getMessage('user') || '用户';
+                        } else if (user.role === 'employee') {
+                            roleText = this.getMessage('employee_role') || '员工';
+                        }
+                        
+                        // Use server-provided display time
+                        const lastActiveText = user.last_active_display || this.getMessage('never') || '从未';
+                        
+                        // Online status indicator
+                        const statusIcon = user.online_status === 'online' ? 
+                            '<i class="fas fa-circle" style="color: #4ade80;"></i>' : 
+                            '<i class="fas fa-circle" style="color: #6b7280;"></i>';
+                        
+                        row.innerHTML = `
+                            <td>${user.employee_id}</td>
+                            <td>${user.full_name || user.username}</td>
+                            <td>${roleText}</td>
+                            <td>${statusIcon} ${lastActiveText}</td>
+                            <td>${user.device_count || 0}</td>
+                            <td>
+                                <button class="btn-ghost" onclick="adminPanel.editUser('${user.id}')">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-danger" onclick="adminPanel.deleteUserById('${user.id}', '${user.full_name || user.username}')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        `;
+                        
+                        tableBody.appendChild(row);
+                    });
+                } else if (tableBody) {
+                    // Show empty state or loading message
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="6" style="text-align: center;">
+                                <span data-i18n="no_users_found">暂无用户数据</span>
+                            </td>
+                        </tr>
+                    `;
                 }
-                
-                row.innerHTML = `
-                    <td>${user.id}</td>
-                    <td>${user.name}</td>
-                    <td>${roleText}</td>
-                    <td>${lastActiveText}</td>
-                    <td>${user.devices}</td>
-                    <td>
-                        <button class="edit-user-btn" data-user-index="${index}" style="background: none; border: 1px solid var(--accent); color: var(--accent); padding: 4px 8px; border-radius: 4px; margin-right: 5px; cursor: pointer;">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="delete-user-btn" data-user-index="${index}" style="background: none; border: 1px solid var(--danger); color: var(--danger); padding: 4px 8px; border-radius: 4px; cursor: pointer;">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                `;
-                tableBody.appendChild(row);
+            })
+            .catch(error => {
+                console.error('❌ Failed to load users:', error);
+                const tableBody = document.querySelector('#users-management-table');
+                if (tableBody) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: #ef4444;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span data-i18n="load_users_error">加载用户数据失败</span>
+                            </td>
+                        </tr>
+                    `;
+                }
             });
-            
-            console.log(`📊 Loaded ${usersData.length} users to table`);
-            
-            // Apply i18n to newly created table
-            this.applyI18nToPanel();
-            
-            // Re-setup event listeners after loading
-            this.setupUserActionListeners();
-        }
+    }
+
+    // Load users for the main userTableBody (second table)
+    loadMainUsersTable() {
+        fetch('/api/users/list')
+            .then(response => response.json())
+            .then(usersData => {
+                const tableBody = document.querySelector('#userTableBody');
+                
+                if (tableBody && usersData.length > 0) {
+                    // Clear loading message
+                    tableBody.innerHTML = '';
+                    
+                    usersData.forEach((user, index) => {
+                        const row = document.createElement('tr');
+                        
+                        // Use direct translation keys instead of dynamic generation
+                        let roleText = user.role;
+                        if (user.role === 'admin') {
+                            roleText = this.getMessage('admin') || '管理员';
+                        } else if (user.role === 'user') {
+                            roleText = this.getMessage('user') || '用户';
+                        } else if (user.role === 'employee') {
+                            roleText = this.getMessage('employee_role') || '员工';
+                        }
+                        
+                        // Use server-provided display time
+                        const lastActiveText = user.last_active_display || this.getMessage('never') || '从未';
+                        
+                        // Online status with badge
+                        let statusBadge = '';
+                        if (user.role === 'admin') {
+                            statusBadge = `<span class="status-badge status-active" data-i18n="admin">${roleText}</span>`;
+                        } else if (user.online_status === 'online') {
+                            statusBadge = `<span class="status-badge status-active" data-i18n="${user.role}">${roleText}</span>`;
+                        } else {
+                            statusBadge = `<span class="status-badge status-pending" data-i18n="${user.role}">${roleText}</span>`;
+                        }
+                        
+                        row.innerHTML = `
+                            <td>${user.employee_id}</td>
+                            <td>${user.full_name || user.username}</td>
+                            <td>${statusBadge}</td>
+                            <td>${lastActiveText}</td>
+                            <td>${user.device_count || 0}</td>
+                            <td>
+                                <button type="button" class="edit-user-btn" onclick="adminPanel.editUser('${user.id}')" aria-label="Edit user">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button type="button" class="delete-user-btn" onclick="adminPanel.deleteUserById('${user.id}', '${user.full_name || user.username}')" aria-label="Delete user">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        `;
+                        
+                        tableBody.appendChild(row);
+                    });
+                } else if (tableBody) {
+                    // Show empty state or loading message
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="6" style="text-align: center;">
+                                <span data-i18n="no_users_found">暂无用户数据</span>
+                            </td>
+                        </tr>
+                    `;
+                }
+            })
+            .catch(error => {
+                console.error('❌ Failed to load main users table:', error);
+                const tableBody = document.querySelector('#userTableBody');
+                if (tableBody) {
+                    tableBody.innerHTML = `
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: #ef4444;">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                <span data-i18n="load_users_error">加载用户数据失败</span>
+                            </td>
+                        </tr>
+                    `;
+                }
+            });
     }
 
     setupUserActionListeners() {
@@ -910,23 +1076,31 @@ class TINIAdminPanel {
     }
 
     editUser(userIndex) {
-        const users = this.getUsers();
-        console.log(`✏️ Editing user at index ${userIndex} out of ${users.length} users`);
-        
-        if (userIndex < 0 || userIndex >= users.length) {
-            alert(this.getMessage('user_not_found'));
-            console.error(`❌ Invalid user index: ${userIndex}`);
-            return;
-        }
+        try {
+            // Defensive check for getUsers method
+            if (typeof this.getUsers !== 'function') {
+                console.error('❌ getUsers method not available');
+                this.showNotification('编辑用户功能暂时不可用', 'error');
+                return;
+            }
 
-        const user = users[userIndex];
-        console.log(`📝 Editing user:`, user);
+            const users = this.getUsers();
+            console.log(`✏️ Editing user at index ${userIndex} out of ${users.length} users`);
+            
+            if (userIndex < 0 || userIndex >= users.length) {
+                alert(this.getMessage('user_not_found'));
+                console.error(`❌ Invalid user index: ${userIndex}`);
+                return;
+            }
 
-        // Store the index for saving
-        this.editingUserIndex = userIndex;
+            const user = users[userIndex];
+            console.log(`📝 Editing user:`, user);
 
-        // Show form with edit mode
-        this.showUserForm('Edit User', 'Update User');
+            // Store the index for saving
+            this.editingUserIndex = userIndex;
+
+            // Show form with edit mode
+            this.showUserForm('Edit User', 'Update User');
 
         // Populate form with user data
         document.getElementById('userName').value = user.name || '';
@@ -936,50 +1110,134 @@ class TINIAdminPanel {
 
         this.showNotification(`Editing user: ${user.name}`, 'info');
         console.log(`✅ User form populated for editing index ${userIndex}`);
+        } catch (error) {
+            console.error('❌ Error in editUser:', error);
+            this.showNotification('编辑用户时发生错误', 'error');
+        }
     }
 
     deleteUser(userIndex) {
         const confirmed = confirm(this.getMessage('confirm_delete_user'));
         if (confirmed) {
             try {
-                // Get user table body - corrected selector
-                const userTableBody = document.querySelector('#userTableBody');
-                if (userTableBody) {
-                    const userRows = userTableBody.querySelectorAll('tr');
-                    if (userRows[userIndex]) {
-                        // Remove the row from DOM
-                        userRows[userIndex].remove();
-                        
-                        // Update localStorage data
-                        let userData = JSON.parse(localStorage.getItem('usersData') || '[]');
-                        if (userData.length > userIndex) {
-                            userData.splice(userIndex, 1);
-                            localStorage.setItem('usersData', JSON.stringify(userData));
+                // Get user data first to get the user ID
+                let userData = JSON.parse(localStorage.getItem('usersData') || '[]');
+                if (userData.length <= userIndex) {
+                    this.showNotification(this.getMessage('user_not_found_delete'), 'error');
+                    return;
+                }
+
+                const userToDelete = userData[userIndex];
+                const userId = userToDelete.id;
+
+                if (!userId) {
+                    this.showNotification('无法获取用户ID', 'error');
+                    return;
+                }
+
+                // Show loading state
+                this.showNotification('正在删除用户...', 'info');
+
+                // Call API to delete user from database
+                const apiUrl = `${window.location.origin}/api/users/delete`;
+                fetch(apiUrl, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userId: userId
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Remove from DOM
+                        const userTableBody = document.querySelector('#userTableBody');
+                        if (userTableBody) {
+                            const userRows = userTableBody.querySelectorAll('tr');
+                            if (userRows[userIndex]) {
+                                userRows[userIndex].remove();
+                            }
                         }
+
+                        // Update localStorage data
+                        userData.splice(userIndex, 1);
+                        localStorage.setItem('usersData', JSON.stringify(userData));
                         
-                        this.showNotification(this.getMessage('user_deleted_success'), 'success');
-                        console.log(`✅ User ${userIndex} deleted successfully`);
+                        this.showNotification(`用户 ${userToDelete.full_name || userToDelete.username} 已成功删除`, 'success');
+                        console.log(`✅ User ${userId} deleted successfully from database`);
                         
                         // Re-setup event listeners for remaining buttons
                         setTimeout(() => {
                             this.setupUserActionListeners();
                         }, 500);
+
+                        // Refresh users list to ensure consistency
+                        setTimeout(() => {
+                            this.loadUsers();
+                        }, 1000);
+                        
                     } else {
-                        this.showNotification(this.getMessage('user_not_found_delete'), 'error');
+                        this.showNotification(`删除失败: ${data.error || '未知错误'}`, 'error');
+                        console.error('Delete API error:', data.error);
                     }
-                } else {
-                    this.showNotification(this.getMessage('user_table_not_found'), 'error');
-                }
+                })
+                .catch(error => {
+                    console.error('Error calling delete API:', error);
+                    this.showNotification('删除用户时发生网络错误', 'error');
+                });
+
             } catch (error) {
                 console.error('Error deleting user:', error);
                 this.showNotification(this.getMessage('error_deleting_user'), 'error');
             }
         } else {
-            console.log('❌ User deletion cancelled - refreshing page to ensure consistency...');
-            // Refresh page even if cancelled to ensure UI consistency
-            setTimeout(() => {
-                window.location.reload();
-            }, 500);
+            console.log('❌ User deletion cancelled');
+        }
+    }
+
+    // New method to delete user by ID directly
+    deleteUserById(userId, userName) {
+        const confirmed = confirm(`您确定要删除用户 "${userName}" 吗？此操作不可撤销。`);
+        if (confirmed) {
+            // Show loading state
+            this.showNotification('正在删除用户...', 'info');
+
+            // Call API to delete user from database
+            const apiUrl = `${window.location.origin}/api/users/delete`;
+            fetch(apiUrl, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    userId: userId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    this.showNotification(`用户 ${userName} 已成功删除`, 'success');
+                    console.log(`✅ User ${userId} deleted successfully from database`);
+                    
+                    // Refresh both users tables to reflect changes
+                    setTimeout(() => {
+                        this.loadUsersTable(); // Refresh #users-management-table
+                        this.loadMainUsersTable(); // Refresh #userTableBody
+                    }, 500);
+                    
+                } else {
+                    this.showNotification(`删除失败: ${data.error || '未知错误'}`, 'error');
+                    console.error('Delete API error:', data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error calling delete API:', error);
+                this.showNotification('删除用户时发生网络错误', 'error');
+            });
+        } else {
+            console.log('❌ User deletion cancelled');
         }
     }
 
@@ -1080,6 +1338,13 @@ class TINIAdminPanel {
     loadUserManagementContent() {
         this.showNotification('👥 Loading user management...', 'info');
         console.log('👥 User management section loaded');
+        
+        // Load users from API for both tables
+        setTimeout(() => {
+            this.loadUsersTable(); // For #users-management-table
+            this.loadMainUsersTable(); // For #userTableBody
+        }, 200);
+        
         // Apply i18n after loading user management content
         this.applyI18nToPanel();
     }
@@ -1587,6 +1852,11 @@ ${'='.repeat(60)}
     loadUsers() {
         // Load users from localStorage or return default
         return JSON.parse(localStorage.getItem('tini_admin_users') || '[]');
+    }
+
+    getUsers() {
+        // Get current users data from localStorage or return empty array
+        return JSON.parse(localStorage.getItem('usersData') || '[]');
     }
 
     loadActivities() {
@@ -3096,3 +3366,4 @@ ${'='.repeat(60)}
 window.TINIAdminPanel = TINIAdminPanel;
 // ST:TINI_1754752705_e868a412
 // ST:TINI_1754879322_e868a412
+// ST:TINI_1755361782_e868a412

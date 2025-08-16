@@ -366,7 +366,7 @@
                 const path = (window.location.pathname || '').toLowerCase();
                 const host = window.location.hostname;
                 // Common local admin ports and path heuristics
-                if (host === 'localhost' && (port === '8099' || port === '8080')) return true;
+                if (host === 'localhost' && (port === '8099' || port === '8080' || port === '55057' || port === '55058' || port === '55059')) return true;
                 if (path.includes('admin-panel') || path.includes('admin') && document.title.toLowerCase().includes('tini')) return true;
                 // Look for known admin panel markers
                 if (document.querySelector('.sidebar .logo-text')?.textContent?.trim() === 'TINI') return true;
@@ -398,3 +398,4 @@
     
 })();
 // ST:TINI_1754716154_e868a412
+// ST:TINI_1755361782_e868a412
