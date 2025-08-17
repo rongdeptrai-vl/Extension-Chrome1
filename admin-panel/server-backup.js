@@ -1,10 +1,8 @@
 // © 2024 TINI COMPANY - CONFIDENTIAL
 // Employee: rongdeptrai-vl <rongdz2307@gmail.com>
-// Commit: 661d2ea | Time: 2025-08-17T12:09:46Z
-// Watermark: TINI_1755432586_e868a412 | TINI_WATERMARK
-// WARNING: Unauthorized distribution is prohibited
-// © 2024 TINI COMPANY - CONFIDENTIAL
 // Commit: 55548f4 | Time: 2025-08-08T06:33:01Z
+// Watermark: TINI_1754634781_e868a412 | TINI_WATERMARK
+// WARNING: Unauthorized distribution is prohibited
 // Load environment variables
 require('dotenv').config({ path: '../.env' });
 
@@ -33,16 +31,6 @@ let io; // socket.io instance
 // Load TINI Environment Config
 const TiniEnvironmentConfig = require('../config/tini-env-config.js');
 const envConfig = new TiniEnvironmentConfig();
-
-// Load Enterprise Components
-const BulkDeviceManager = require('./bulk-device-manager.js');
-const EnterpriseAlertSystem = require('./enterprise-alert-system.js');
-const EnterprisePerformanceOptimizer = require('./enterprise-performance-optimizer.js');
-
-// Initialize Enterprise Components
-let bulkDeviceManager;
-let alertSystem;
-let performanceOptimizer;
 
 // Database connection
 const dbPath = path.join(__dirname, 'tini_admin.db');
@@ -110,6 +98,20 @@ let bucketIndex = 0;
 function minuteStart(t=Date.now()){ const d=new Date(t); d.setSeconds(0,0); return d.getTime(); }
 function rotateBucket(){ const nowStart = minuteStart(); if(minuteBuckets[bucketIndex].ts !== nowStart){ bucketIndex = (bucketIndex+1)%ROLLING_MINUTES; minuteBuckets[bucketIndex] = {ts: nowStart, actions:0, conversions:0, bounces:0, sessions:0, sessionDur:0}; } }
 function sweepInactive(){ const cutoff = Date.now() - 60*60*1000; for(const [u,t] of activeUsersMap){ if(t < cutoff) activeUsersMap.delete(u); } }
+
+// Parse cookie string to object
+function parseCookies(cookieHeader) {
+    const cookies = {};
+    if (cookieHeader) {
+        cookieHeader.split(';').forEach(cookie => {
+            const parts = cookie.trim().split('=');
+            if (parts.length === 2) {
+                cookies[parts[0]] = decodeURIComponent(parts[1]);
+            }
+        });
+    }
+    return cookies;
+}
 function currentMetrics(){ // aggregate last hour
   const now = Date.now();
   const hourBuckets = minuteBuckets.filter(b => now - b.ts < 60*60*1000);
@@ -183,9 +185,6 @@ try {
         } else {
             console.log('✅ Database connected successfully');
             
-            // Initialize Enterprise Components
-            initializeEnterpriseComponents();
-            
             // Create device_registrations table if not exists
             const createTableSQL = `
                 CREATE TABLE IF NOT EXISTS device_registrations (
@@ -231,9 +230,6 @@ try {
                     });
                 }
             });
-
-            // Initialize performance monitoring
-            startPerformanceMonitoring();
 
             // NEW: Ensure pending_approvals table exists for registration approval workflow
             const createPendingApprovalsSQL = `
@@ -855,52 +851,6 @@ function handleAPIRequest(req, res, pathname) {
             }
             break;
 
-        // =================== ENTERPRISE BULK OPERATIONS ===================
-        case '/api/bulk/devices/approve':
-            if (method === 'POST') {
-                handleBulkApproveDevices(req, res);
-            } else {
-                res.writeHead(405, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: false, error: 'Method not allowed' }));
-            }
-            break;
-
-        case '/api/bulk/devices/reject':
-            if (method === 'POST') {
-                handleBulkRejectDevices(req, res);
-            } else {
-                res.writeHead(405, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: false, error: 'Method not allowed' }));
-            }
-            break;
-
-        case '/api/bulk/devices/report':
-            if (method === 'GET') {
-                handleBulkDeviceReport(req, res);
-            } else {
-                res.writeHead(405, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: false, error: 'Method not allowed' }));
-            }
-            break;
-
-        case '/api/alerts/test':
-            if (method === 'POST') {
-                handleTestAlert(req, res);
-            } else {
-                res.writeHead(405, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: false, error: 'Method not allowed' }));
-            }
-            break;
-
-        case '/api/performance/stats':
-            if (method === 'GET') {
-                handlePerformanceStats(req, res);
-            } else {
-                res.writeHead(405, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: false, error: 'Method not allowed' }));
-            }
-            break;
-
         case '/api/users/delete':
             console.log(`🔍 Users delete endpoint hit with method: ${method}`);
             if (method === 'DELETE' || method === 'POST') {
@@ -953,57 +903,6 @@ function handleAPIRequest(req, res, pathname) {
         case '/api/admin/permissions':
             if (method === 'GET') {
                 handleAdminPermissions(req, res);
-            } else {
-                res.writeHead(405, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: false, error: 'Method not allowed' }));
-            }
-            break;
-        
-        // =================== ENTERPRISE BULK OPERATIONS ROUTES ===================
-        
-        case '/api/bulk/approve-devices':
-            if (method === 'POST') {
-                handleBulkApproveDevices(req, res);
-            } else {
-                res.writeHead(405, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: false, error: 'Method not allowed' }));
-            }
-            break;
-            
-        case '/api/bulk/reject-devices':
-            if (method === 'POST') {
-                handleBulkRejectDevices(req, res);
-            } else {
-                res.writeHead(405, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: false, error: 'Method not allowed' }));
-            }
-            break;
-            
-        case '/api/bulk/device-report':
-            if (method === 'GET') {
-                handleBulkDeviceReport(req, res);
-            } else {
-                res.writeHead(405, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: false, error: 'Method not allowed' }));
-            }
-            break;
-        
-        // =================== ENTERPRISE ALERT SYSTEM ROUTES ===================
-        
-        case '/api/alerts/test':
-            if (method === 'POST') {
-                handleTestAlert(req, res);
-            } else {
-                res.writeHead(405, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ success: false, error: 'Method not allowed' }));
-            }
-            break;
-        
-        // =================== ENTERPRISE PERFORMANCE ROUTES ===================
-        
-        case '/api/performance/stats':
-            if (method === 'GET') {
-                handlePerformanceStats(req, res);
             } else {
                 res.writeHead(405, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ success: false, error: 'Method not allowed' }));
@@ -1353,7 +1252,7 @@ function handleUsersList(req, res) {
         }
         
         const stmt = db.prepare(`
-            SELECT id, username, full_name, email, role, employee_id, created_at, last_active,
+            SELECT id, username, full_name, email, role, created_at, last_active,
                    (SELECT COUNT(*) FROM device_registrations WHERE user_id = users.id) as device_count
             FROM users 
             ORDER BY created_at DESC 
@@ -1441,7 +1340,6 @@ function handleUsersList(req, res) {
             u.username,
             u.full_name,
             u.role,
-            u.employee_id,
             u.created_at,
             u.last_login,
             COUNT(dr.id) as device_count,
@@ -1450,7 +1348,7 @@ function handleUsersList(req, res) {
         FROM users u
         LEFT JOIN device_registrations dr ON u.username = dr.full_name
         LEFT JOIN sessions s ON u.id = s.user_id
-        GROUP BY u.id, u.username, u.full_name, u.role, u.employee_id, u.created_at, u.last_login
+        GROUP BY u.id, u.username, u.full_name, u.role, u.created_at, u.last_login
         ORDER BY u.created_at DESC
     `;
     
@@ -1478,13 +1376,13 @@ function handleUsersList(req, res) {
                 username: row.username,
                 full_name: row.full_name || row.username,
                 role: row.role || 'user',
-                employee_id: row.employee_id || `EMP${String(row.id).padStart(3, '0')}`,
                 created_at: row.created_at,
                 last_active: lastActiveTime,
                 last_active_display: timeAgo,
                 device_count: row.device_count || 0,
                 active_sessions: row.active_sessions || 0,
                 online_status: isOnline ? 'online' : 'offline',
+                employee_id: `EMP${String(row.id).padStart(3, '0')}`,
                 updated_at: currentTime
             };
         });
@@ -1518,6 +1416,46 @@ function handleUserDelete(req, res) {
                 return;
             }
 
+            // Check admin session to prevent self-deletion
+            const cookies = parseCookies(req.headers.cookie || '');
+            const sessionId = cookies['admin_session'];
+            
+            if (sessionId) {
+                // Check if user is trying to delete themselves
+                db.get('SELECT username FROM admin_sessions WHERE session_id = ?', [sessionId], (err, session) => {
+                    if (session) {
+                        // Get user being deleted
+                        db.get('SELECT username, employee_id FROM users WHERE id = ?', [userId], (err, targetUser) => {
+                            if (targetUser && (
+                                targetUser.username === session.username ||
+                                targetUser.employee_id === session.username ||
+                                userId.toString() === session.username
+                            )) {
+                                res.writeHead(403, { 'Content-Type': 'application/json' });
+                                res.end(JSON.stringify({ success: false, error: 'Cannot delete yourself!' }));
+                                return;
+                            }
+                            // Continue with deletion if not self
+                            deleteUserProcess(userId, res);
+                        });
+                    } else {
+                        deleteUserProcess(userId, res);
+                    }
+                });
+            } else {
+                deleteUserProcess(userId, res);
+            }
+
+        } catch (parseError) {
+            console.error('Error parsing request body:', parseError);
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ success: false, error: 'Invalid JSON' }));
+        }
+    });
+}
+
+function deleteUserProcess(userId, res) {
+
             // Start transaction
             db.serialize(() => {
                 db.run('BEGIN TRANSACTION');
@@ -1541,6 +1479,8 @@ function handleUserDelete(req, res) {
 
                     // Delete related data in order
                     const deleteQueries = [
+                        // Delete admin sessions first (critical for security)
+                        { sql: 'DELETE FROM admin_sessions WHERE username = ? OR username = ?', params: [user.username, user.full_name], optional: true },
                         // Delete sessions (optional - may not exist)
                         { sql: 'DELETE FROM sessions WHERE user_id = ?', params: [userId], optional: true },
                         // Delete activities (optional - may not exist)
@@ -1610,20 +1550,97 @@ function handleUserDelete(req, res) {
                                             id: userId,
                                             username: user.username,
                                             fullName: user.full_name
-                                        }
-                                    }));
-                                });
+function deleteUserProcess(userId, res) {
+    // Start transaction
+    db.serialize(() => {
+        db.run('BEGIN TRANSACTION');
+
+        // First get user info for logging
+        db.get('SELECT username, full_name FROM users WHERE id = ?', [userId], (err, user) => {
+            if (err) {
+                db.run('ROLLBACK');
+                console.error('Error fetching user info:', err);
+                res.writeHead(500, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, error: 'Database error' }));
+                return;
+            }
+
+            if (!user) {
+                db.run('ROLLBACK');
+                res.writeHead(404, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ success: false, error: 'User not found' }));
+                return;
+            }
+
+            // Delete related data in order
+            const deleteQueries = [
+                // Delete sessions (optional - may not exist)
+                { sql: 'DELETE FROM sessions WHERE user_id = ?', params: [userId], optional: true },
+                // Delete activities (optional - may not exist)
+                { sql: 'DELETE FROM activities WHERE user_id = ?', params: [userId], optional: true },
+                // Delete device registrations by user_id or username (optional)
+                { sql: 'DELETE FROM device_registrations WHERE user_id = ? OR full_name = ?', params: [userId, user.full_name || user.username], optional: true },
+                // Delete pending approvals related to this user (optional)
+                { sql: 'DELETE FROM pending_approvals WHERE user_id = ?', params: [userId], optional: true },
+                // Finally delete the user (required)
+                { sql: 'DELETE FROM users WHERE id = ?', params: [userId], optional: false }
+            ];
+
+            let completed = 0;
+            let hasError = false;
+
+            deleteQueries.forEach((query, index) => {
+                db.run(query.sql, query.params, function(err) {
+                    if (err) {
+                        // If this is an optional query and error is "no such table/column", continue
+                        if (query.optional && (err.message.includes('no such table') || err.message.includes('no such column'))) {
+                            console.log(`⚠️ Skipping optional delete query ${index}: ${err.message}`);
+                        } else if (!hasError) {
+                            hasError = true;
+                            db.run('ROLLBACK');
+                            console.error(`Error in delete query ${index}:`, err);
+                            res.writeHead(500, { 'Content-Type': 'application/json' });
+                            res.end(JSON.stringify({ success: false, error: 'Failed to delete user data' }));
+                            return;
+                        }
+                    }
+
+                    completed++;
+                    if (completed === deleteQueries.length && !hasError) {
+                        // All queries completed successfully, commit transaction
+                        db.run('COMMIT', (err) => {
+                            if (err) {
+                                console.error('Error committing transaction:', err);
+                                res.writeHead(500, { 'Content-Type': 'application/json' });
+                                res.end(JSON.stringify({ success: false, error: 'Failed to commit deletion' }));
+                            } else {
+                                console.log(`✅ User deleted successfully: ${user.username} (ID: ${userId})`);
+                                
+                                // Broadcast update to admin panel via Socket.IO
+                                if (io) {
+                                    io.emit('userDeleted', {
+                                        userId: userId,
+                                        username: user.username,
+                                        fullName: user.full_name
+                                    });
+                                }
+                                
+                                res.writeHead(200, { 'Content-Type': 'application/json' });
+                                res.end(JSON.stringify({
+                                    success: true,
+                                    message: `User ${user.username} deleted successfully`,
+                                    user: {
+                                        id: userId,
+                                        username: user.username,
+                                        fullName: user.full_name
+                                    }
+                                }));
                             }
                         });
-                    });
+                    }
                 });
             });
-
-        } catch (parseError) {
-            console.error('Error parsing request body:', parseError);
-            res.writeHead(400, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ success: false, error: 'Invalid JSON' }));
-        }
+        });
     });
 }
 
@@ -2507,253 +2524,6 @@ function handleAdminPermissions(req, res) {
     });
 }
 
-// =================== ENTERPRISE BULK OPERATIONS HANDLERS ===================
-
-/**
- * Handle bulk approve devices
- */
-function handleBulkApproveDevices(req, res) {
-    const sessionId = req.headers['x-admin-session'];
-    
-    verifyAdminSession(sessionId, async (admin) => {
-        if (!admin) {
-            res.writeHead(401, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ success: false, error: 'Unauthorized' }));
-            return;
-        }
-        
-        let body = '';
-        req.on('data', chunk => body += chunk);
-        req.on('end', async () => {
-            try {
-                const criteria = JSON.parse(body);
-                console.log('🔄 Bulk approve request:', { admin: admin.admin_id, criteria });
-                
-                if (!bulkDeviceManager) {
-                    throw new Error('Bulk device manager not initialized');
-                }
-                
-                const results = await bulkDeviceManager.bulkApproveDevices(admin.admin_id, criteria);
-                
-                // Send alert about bulk operation
-                if (alertSystem) {
-                    await alertSystem.sendBulkOperationAlert(admin.admin_id, 'BULK_APPROVE', results);
-                }
-                
-                // Broadcast to connected clients
-                if (io) {
-                    io.emit('bulk_operation_completed', {
-                        type: 'approve',
-                        admin: admin.admin_id,
-                        results
-                    });
-                }
-                
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ 
-                    success: true, 
-                    results,
-                    message: `Bulk approval completed: ${results.processed}/${results.total} devices processed`
-                }));
-                
-            } catch (error) {
-                console.error('❌ Bulk approve error:', error);
-                res.writeHead(500, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ 
-                    success: false, 
-                    error: error.message 
-                }));
-            }
-        });
-    });
-}
-
-/**
- * Handle bulk reject devices
- */
-function handleBulkRejectDevices(req, res) {
-    const sessionId = req.headers['x-admin-session'];
-    
-    verifyAdminSession(sessionId, async (admin) => {
-        if (!admin) {
-            res.writeHead(401, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ success: false, error: 'Unauthorized' }));
-            return;
-        }
-        
-        let body = '';
-        req.on('data', chunk => body += chunk);
-        req.on('end', async () => {
-            try {
-                const { criteria, reason } = JSON.parse(body);
-                console.log('🔄 Bulk reject request:', { admin: admin.admin_id, criteria, reason });
-                
-                if (!bulkDeviceManager) {
-                    throw new Error('Bulk device manager not initialized');
-                }
-                
-                const results = await bulkDeviceManager.bulkRejectDevices(admin.admin_id, criteria, reason);
-                
-                // Send alert about bulk operation
-                if (alertSystem) {
-                    await alertSystem.sendBulkOperationAlert(admin.admin_id, 'BULK_REJECT', results);
-                }
-                
-                // Broadcast to connected clients
-                if (io) {
-                    io.emit('bulk_operation_completed', {
-                        type: 'reject',
-                        admin: admin.admin_id,
-                        results
-                    });
-                }
-                
-                res.writeHead(200, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ 
-                    success: true, 
-                    results,
-                    message: `Bulk rejection completed: ${results.processed}/${results.total} devices processed`
-                }));
-                
-            } catch (error) {
-                console.error('❌ Bulk reject error:', error);
-                res.writeHead(500, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ 
-                    success: false, 
-                    error: error.message 
-                }));
-            }
-        });
-    });
-}
-
-/**
- * Handle bulk device report
- */
-function handleBulkDeviceReport(req, res) {
-    const sessionId = req.headers['x-admin-session'];
-    
-    verifyAdminSession(sessionId, async (admin) => {
-        if (!admin) {
-            res.writeHead(401, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ success: false, error: 'Unauthorized' }));
-            return;
-        }
-        
-        try {
-            const url = require('url');
-            const parsedUrl = url.parse(req.url, true);
-            const filters = parsedUrl.query;
-            
-            console.log('📊 Bulk report request:', { admin: admin.admin_id, filters });
-            
-            if (!bulkDeviceManager) {
-                throw new Error('Bulk device manager not initialized');
-            }
-            
-            const report = await bulkDeviceManager.generatePendingReport(filters);
-            
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ 
-                success: true, 
-                report,
-                timestamp: new Date().toISOString()
-            }));
-            
-        } catch (error) {
-            console.error('❌ Bulk report error:', error);
-            res.writeHead(500, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ 
-                success: false, 
-                error: error.message 
-            }));
-        }
-    });
-}
-
-/**
- * Handle test alert
- */
-function handleTestAlert(req, res) {
-    const sessionId = req.headers['x-admin-session'];
-    
-    verifyAdminSession(sessionId, async (admin) => {
-        if (!admin) {
-            res.writeHead(401, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ success: false, error: 'Unauthorized' }));
-            return;
-        }
-        
-        try {
-            console.log('🧪 Test alert request from admin:', admin.admin_id);
-            
-            if (!alertSystem) {
-                throw new Error('Alert system not initialized');
-            }
-            
-            const result = await alertSystem.testAlertSystem();
-            
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ 
-                success: true, 
-                result,
-                message: 'Test alert sent successfully'
-            }));
-            
-        } catch (error) {
-            console.error('❌ Test alert error:', error);
-            res.writeHead(500, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ 
-                success: false, 
-                error: error.message 
-            }));
-        }
-    });
-}
-
-/**
- * Handle performance stats
- */
-function handlePerformanceStats(req, res) {
-    const sessionId = req.headers['x-admin-session'];
-    
-    verifyAdminSession(sessionId, async (admin) => {
-        if (!admin) {
-            res.writeHead(401, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ success: false, error: 'Unauthorized' }));
-            return;
-        }
-        
-        try {
-            console.log('📊 Performance stats request from admin:', admin.admin_id);
-            
-            const stats = {
-                server: {
-                    uptime: process.uptime(),
-                    memory: process.memoryUsage(),
-                    cpuUsage: process.cpuUsage()
-                },
-                database: performanceOptimizer ? performanceOptimizer.getPerformanceStats() : null,
-                timestamp: new Date().toISOString()
-            };
-            
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ 
-                success: true, 
-                stats
-            }));
-            
-        } catch (error) {
-            console.error('❌ Performance stats error:', error);
-            res.writeHead(500, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ 
-                success: false, 
-                error: error.message 
-            }));
-        }
-    });
-}
-
 // Verify admin session
 function verifyAdminSession(sessionId, callback) {
     if (!sessionId) {
@@ -2862,10 +2632,6 @@ process.on('SIGTERM', () => {
             if (db) {
                 db.close();
             }
-            // Close enterprise components
-            if (performanceOptimizer) {
-                performanceOptimizer.close();
-            }
             process.exit(0);
         });
     } else {
@@ -2873,78 +2639,10 @@ process.on('SIGTERM', () => {
     }
 });
 
-// =================== ENTERPRISE COMPONENT INITIALIZATION ===================
-
-/**
- * Initialize Enterprise Components
- */
-function initializeEnterpriseComponents() {
-    try {
-        console.log('🚀 Initializing Enterprise Components...');
-
-        // Initialize Performance Optimizer
-        performanceOptimizer = new EnterprisePerformanceOptimizer({
-            dbPath: dbPath,
-            maxConnections: 15,
-            cacheTimeout: 300,
-            enableMemoryCache: true,
-            enableQueryOptimization: true
-        });
-
-        // Initialize Alert System
-        alertSystem = new EnterpriseAlertSystem({
-            email: {
-                host: process.env.SMTP_HOST || 'smtp.gmail.com',
-                port: process.env.SMTP_PORT || 587,
-                auth: {
-                    user: process.env.SMTP_USER,
-                    pass: process.env.SMTP_PASS
-                }
-            }
-        });
-
-        // Initialize Bulk Device Manager
-        bulkDeviceManager = new BulkDeviceManager(db);
-
-        // Setup global reference for alerts
-        global.io = io;
-
-        console.log('✅ Enterprise Components initialized successfully');
-
-        // Test alert system
-        if (process.env.NODE_ENV !== 'production') {
-            setTimeout(() => {
-                alertSystem.testAlertSystem().then(result => {
-                    console.log('🧪 Alert system test result:', result);
-                });
-            }, 5000);
-        }
-
-    } catch (error) {
-        console.error('❌ Enterprise Components initialization failed:', error);
-    }
-}
-
-/**
- * Start Performance Monitoring
- */
-function startPerformanceMonitoring() {
-    if (performanceOptimizer) {
-        // Optimize schema on startup
-        performanceOptimizer.optimizeSchema().then(() => {
-            console.log('📊 Database schema optimized');
-        }).catch(error => {
-            console.error('❌ Schema optimization failed:', error);
-        });
-
-        // Start monitoring
-        performanceOptimizer.startPerformanceMonitoring();
-    }
-}
-
 // Start the server
 startServer();
 
 // ST:TINI_1754879322_e868a412
 // ST:TINI_1754998490_e868a412
 // ST:TINI_1755361782_e868a412
+// ST:TINI_1755432586_e868a412

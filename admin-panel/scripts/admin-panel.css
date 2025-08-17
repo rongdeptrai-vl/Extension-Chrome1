@@ -1708,5 +1708,89 @@ input:focus, select:focus {
 @media (max-width: 420px) {
     .main-content { padding: 12px !important; }
 }
+
+/* =================
+   ROLE MANAGEMENT BUTTONS 
+   ================= */
+.btn-promote, .btn-demote {
+    padding: 4px 8px;
+    margin: 0 2px;
+    border: none;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-promote {
+    background: linear-gradient(45deg, #4CAF50, #66BB6A);
+    color: white;
+    box-shadow: 0 2px 4px rgba(76, 175, 80, 0.3);
+}
+
+.btn-promote:hover {
+    background: linear-gradient(45deg, #66BB6A, #81C784);
+    box-shadow: 0 4px 8px rgba(76, 175, 80, 0.4);
+    transform: translateY(-1px);
+}
+
+.btn-demote {
+    background: linear-gradient(45deg, #FF9800, #FFB74D);
+    color: white;
+    box-shadow: 0 2px 4px rgba(255, 152, 0, 0.3);
+}
+
+.btn-demote:hover {
+    background: linear-gradient(45deg, #FFB74D, #FFCC02);
+    box-shadow: 0 4px 8px rgba(255, 152, 0, 0.4);
+    transform: translateY(-1px);
+}
+
+.btn-delete:disabled {
+    background: #666 !important;
+    color: #999 !important;
+    cursor: not-allowed !important;
+    opacity: 0.5;
+    box-shadow: none !important;
+}
+
+.btn-delete:disabled:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+.role-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-left: 5px;
+}
+
+.role-badge.admin {
+    background: linear-gradient(45deg, #FF6B35, #F7931E);
+    color: white;
+    box-shadow: 0 1px 3px rgba(255, 107, 53, 0.3);
+}
+
+.role-badge.super-admin {
+    background: linear-gradient(45deg, #E91E63, #AD1457);
+    color: white;
+    box-shadow: 0 1px 3px rgba(233, 30, 99, 0.4);
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { box-shadow: 0 1px 3px rgba(233, 30, 99, 0.4); }
+    to { box-shadow: 0 2px 8px rgba(233, 30, 99, 0.6); }
+}
+
 /* ST:TINI_1755139708_e868a412 */
 /* ST:TINI_1755361782_e868a412 */
+/* ST:TINI_1755432586_e868a412 */

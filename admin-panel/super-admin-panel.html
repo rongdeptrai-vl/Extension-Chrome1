@@ -1,0 +1,700 @@
+<!-- © 2024 TINI COMPANY - CONFIDENTIAL -->
+<!-- Employee: rongdeptrai-vl <rongdz2307@gmail.com> -->
+<!-- Commit: 661d2ea | Time: 2025-08-17T12:09:46Z -->
+<!-- Watermark: TINI_1755432586_e868a412 | TINI_WATERMARK -->
+<!-- WARNING: Unauthorized distribution is prohibited -->
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 TINI Admin Tổng - Quản Lý Hệ Thống</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .header {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .header h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+        
+        .admin-info {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+        
+        .dashboard {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .sidebar {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 25px;
+            height: fit-content;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .main-content {
+            background: rgba(255,255,255,0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .menu-item {
+            display: block;
+            padding: 12px 20px;
+            margin: 5px 0;
+            text-decoration: none;
+            color: #34495e;
+            border-radius: 8px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .menu-item:hover, .menu-item.active {
+            background: #3498db;
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .section {
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+        }
+        
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .btn-danger {
+            background: #e74c3c;
+        }
+        
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+        
+        .btn-success {
+            background: #27ae60;
+        }
+        
+        .btn-success:hover {
+            background: #229954;
+        }
+        
+        .btn-warning {
+            background: #f39c12;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        
+        .table th, .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .table th {
+            background: #f8f9fa;
+            font-weight: 600;
+        }
+        
+        .table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .status-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .status-super {
+            background: #ff6b6b;
+            color: white;
+        }
+        
+        .status-admin {
+            background: #4ecdc4;
+            color: white;
+        }
+        
+        .status-user {
+            background: #95a5a6;
+            color: white;
+        }
+        
+        .real-time-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #27ae60;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+        
+        .modal-content {
+            background: white;
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 500px;
+            max-width: 90%;
+        }
+        
+        .input-group {
+            margin: 15px 0;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            z-index: 2000;
+            opacity: 0;
+            transform: translateX(100%);
+            transition: all 0.3s;
+        }
+        
+        .notification.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        
+        .notification.success {
+            background: #27ae60;
+        }
+        
+        .notification.error {
+            background: #e74c3c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏆 TINI ADMIN TỔNG</h1>
+            <div class="admin-info" id="adminInfo">
+                <span class="real-time-indicator"></span>
+                <strong id="adminName">Đang tải...</strong> | 
+                <span id="adminRole">Super Admin</span>
+            </div>
+            <p>Hệ thống quản lý phân quyền với cập nhật realtime</p>
+        </div>
+        
+        <div class="dashboard">
+            <div class="sidebar">
+                <h3 style="margin-bottom: 20px;">🎛️ Menu Quản Lý</h3>
+                <a class="menu-item active" onclick="showSection('users')">👥 Quản Lý Users</a>
+                <a class="menu-item" onclick="showSection('admins')">👨‍💼 Quản Lý Admins</a>
+                <a class="menu-item" onclick="showSection('promote')">⬆️ Thăng Chức</a>
+                <a class="menu-item" onclick="showSection('audit')">📋 Nhật Ký Audit</a>
+                <a class="menu-item" onclick="showSection('permissions')">🔐 Quyền Hạn</a>
+                <a class="menu-item" onclick="showSection('realtime')">📡 Realtime Monitor</a>
+            </div>
+            
+            <div class="main-content">
+                <!-- Users Section -->
+                <div id="users" class="section active">
+                    <h2>👥 Quản Lý Users</h2>
+                    <p>Danh sách tất cả users trong hệ thống</p>
+                    <button class="btn" onclick="loadUsers()">🔄 Tải Lại</button>
+                    <div id="usersTable">
+                        <p>Đang tải dữ liệu users...</p>
+                    </div>
+                </div>
+                
+                <!-- Admins Section -->
+                <div id="admins" class="section">
+                    <h2>👨‍💼 Quản Lý Admins</h2>
+                    <p>Danh sách và quản lý tất cả admins</p>
+                    <button class="btn" onclick="loadAdmins()">🔄 Tải Lại</button>
+                    <div id="adminsTable">
+                        <p>Đang tải dữ liệu admins...</p>
+                    </div>
+                </div>
+                
+                <!-- Promote Section -->
+                <div id="promote" class="section">
+                    <h2>⬆️ Thăng Chức User</h2>
+                    <p>Chỉ Super Admin mới có quyền thăng chức user thành admin</p>
+                    <div class="input-group">
+                        <label>Chọn User để thăng chức:</label>
+                        <select id="promoteUserSelect">
+                            <option value="">-- Chọn User --</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-success" onclick="promoteUser()">⬆️ Thăng Chức thành Admin</button>
+                </div>
+                
+                <!-- Audit Section -->
+                <div id="audit" class="section">
+                    <h2>📋 Nhật Ký Audit</h2>
+                    <p>Theo dõi tất cả hoạt động admin</p>
+                    <button class="btn" onclick="loadAuditLog()">🔄 Tải Lại</button>
+                    <div id="auditTable">
+                        <p>Đang tải nhật ký audit...</p>
+                    </div>
+                </div>
+                
+                <!-- Permissions Section -->
+                <div id="permissions" class="section">
+                    <h2>🔐 Quyền Hạn Của Bạn</h2>
+                    <div id="permissionsInfo">
+                        <p>Đang tải thông tin quyền hạn...</p>
+                    </div>
+                </div>
+                
+                <!-- Realtime Section -->
+                <div id="realtime" class="section">
+                    <h2>📡 Realtime Monitor</h2>
+                    <p><span class="real-time-indicator"></span>Theo dõi hoạt động realtime</p>
+                    <div id="realtimeLog" style="background: #f8f9fa; padding: 20px; border-radius: 8px; height: 400px; overflow-y: auto;">
+                        <p>Khởi tạo realtime monitor...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Notification -->
+    <div id="notification" class="notification"></div>
+    
+    <!-- Demote Confirmation Modal -->
+    <div id="demoteModal" class="modal">
+        <div class="modal-content">
+            <h3>⚠️ Xác Nhận Giáng Chức</h3>
+            <p>Bạn có chắc muốn giáng chức admin này?</p>
+            <p><strong id="demoteTargetName"></strong></p>
+            <div style="text-align: right; margin-top: 20px;">
+                <button class="btn" onclick="closeDemoteModal()">Hủy</button>
+                <button class="btn btn-danger" onclick="confirmDemotion()">Giáng Chức</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let currentAdmin = null;
+        let adminSession = localStorage.getItem('adminSession');
+        let socket = null;
+        let demoteTargetId = null;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            if (adminSession) {
+                initializeAdmin();
+            } else {
+                loginAsAdmin();
+            }
+        });
+        
+        function loginAsAdmin() {
+            // Auto-login as Super Admin (in production, use proper authentication)
+            fetch('/api/admin/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    username: 'rongdeptrai-vl',
+                    password: 'admin123', // In production, use secure authentication
+                    adminKey: 'super_admin_key'
+                })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    adminSession = data.sessionId;
+                    localStorage.setItem('adminSession', adminSession);
+                    currentAdmin = data.admin;
+                    initializeAdmin();
+                } else {
+                    showNotification('Lỗi đăng nhập: ' + data.error, 'error');
+                }
+            })
+            .catch(err => {
+                showNotification('Lỗi kết nối server', 'error');
+            });
+        }
+        
+        function initializeAdmin() {
+            // Initialize Socket.IO
+            socket = io();
+            
+            socket.on('connect', () => {
+                console.log('✅ Connected to realtime server');
+                addRealtimeLog('🔗 Kết nối realtime thành công');
+            });
+            
+            socket.on('admin_promoted', (data) => {
+                addRealtimeLog(`⬆️ ${data.userName} được thăng chức bởi ${data.promotedBy}`);
+                showNotification(`${data.userName} đã được thăng chức!`, 'success');
+                loadAdmins();
+                loadUsers();
+            });
+            
+            socket.on('admin_demoted', (data) => {
+                addRealtimeLog(`⬇️ ${data.adminName} bị giáng chức bởi ${data.demotedBy}`);
+                showNotification(`${data.adminName} đã bị giáng chức!`, 'success');
+                loadAdmins();
+            });
+            
+            socket.on('user_deleted', (data) => {
+                addRealtimeLog(`🗑️ User ${data.userName} bị xóa bởi admin`);
+                loadUsers();
+            });
+            
+            // Load initial data
+            loadPermissions();
+            loadUsers();
+            loadAdmins();
+        }
+        
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active from menu items
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show target section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active to clicked menu item
+            event.target.classList.add('active');
+        }
+        
+        function loadUsers() {
+            fetch('/api/users/list', {
+                headers: { 'X-Admin-Session': adminSession }
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    renderUsersTable(data.users);
+                    populatePromoteSelect(data.users);
+                }
+            });
+        }
+        
+        function loadAdmins() {
+            fetch('/api/admin/list', {
+                headers: { 'X-Admin-Session': adminSession }
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    renderAdminsTable(data.admins);
+                }
+            });
+        }
+        
+        function loadPermissions() {
+            fetch('/api/admin/permissions', {
+                headers: { 'X-Admin-Session': adminSession }
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    currentAdmin = data.admin;
+                    document.getElementById('adminName').textContent = data.admin.username;
+                    renderPermissions(data);
+                }
+            });
+        }
+        
+        function renderUsersTable(users) {
+            const html = `
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Tên Đầy Đủ</th>
+                            <th>Device ID</th>
+                            <th>Trạng Thái</th>
+                            <th>Đăng Ký</th>
+                            <th>Hành Động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${users.map(user => `
+                            <tr>
+                                <td>${user.employee_id}</td>
+                                <td>${user.full_name}</td>
+                                <td>${user.device_id.substring(0, 8)}...</td>
+                                <td><span class="status-badge status-user">${user.device_status}</span></td>
+                                <td>${new Date(user.registered_at).toLocaleDateString('vi-VN')}</td>
+                                <td>
+                                    <button class="btn btn-danger" onclick="deleteUser('${user.employee_id}')">🗑️ Xóa</button>
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            document.getElementById('usersTable').innerHTML = html;
+        }
+        
+        function renderAdminsTable(admins) {
+            const html = `
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Tên Đầy Đủ</th>
+                            <th>Vai Trò</th>
+                            <th>Tạo Lúc</th>
+                            <th>Đăng Nhập Cuối</th>
+                            <th>Hành Động</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${admins.map(admin => `
+                            <tr>
+                                <td>${admin.username}</td>
+                                <td>${admin.full_name}</td>
+                                <td><span class="status-badge status-${admin.role === 'super_admin' ? 'super' : 'admin'}">${admin.role === 'super_admin' ? 'Super Admin' : 'Admin'}</span></td>
+                                <td>${new Date(admin.created_at).toLocaleDateString('vi-VN')}</td>
+                                <td>${admin.last_login_at ? new Date(admin.last_login_at).toLocaleDateString('vi-VN') : 'Chưa đăng nhập'}</td>
+                                <td>
+                                    ${admin.canManage && currentAdmin?.role === 'super_admin' ? 
+                                        `<button class="btn btn-danger" onclick="demoteAdmin('${admin.admin_id}', '${admin.username}')">⬇️ Giáng Chức</button>` : 
+                                        '<span class="status-badge status-super">Không thể quản lý</span>'
+                                    }
+                                </td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            document.getElementById('adminsTable').innerHTML = html;
+        }
+        
+        function populatePromoteSelect(users) {
+            const select = document.getElementById('promoteUserSelect');
+            select.innerHTML = '<option value="">-- Chọn User --</option>';
+            
+            users.forEach(user => {
+                select.innerHTML += `<option value="${user.employee_id}">${user.full_name}</option>`;
+            });
+        }
+        
+        function renderPermissions(data) {
+            const html = `
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px;">
+                    <h3>👤 Thông Tin Admin</h3>
+                    <p><strong>Username:</strong> ${data.admin.username}</p>
+                    <p><strong>Vai Trò:</strong> <span class="status-badge status-${data.admin.role === 'super_admin' ? 'super' : 'admin'}">${data.admin.role === 'super_admin' ? 'Super Admin' : 'Admin'}</span></p>
+                    <p><strong>Quyền Hạn:</strong></p>
+                    <ul>
+                        ${data.admin.permissions.map(perm => `<li>✅ ${perm}</li>`).join('')}
+                    </ul>
+                    
+                    <h3 style="margin-top: 20px;">📋 Định Nghĩa Vai Trò</h3>
+                    ${Object.entries(data.roleDefinitions).map(([role, def]) => `
+                        <div style="margin: 10px 0; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+                            <h4>${def.name}</h4>
+                            <p>${def.description}</p>
+                            <p><strong>Quyền:</strong> ${def.permissions.join(', ')}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            document.getElementById('permissionsInfo').innerHTML = html;
+        }
+        
+        function promoteUser() {
+            const userId = document.getElementById('promoteUserSelect').value;
+            if (!userId) {
+                showNotification('Vui lòng chọn user để thăng chức', 'error');
+                return;
+            }
+            
+            fetch('/api/admin/promote', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-Admin-Session': adminSession 
+                },
+                body: JSON.stringify({ targetUserId: userId })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                    loadAdmins();
+                    loadUsers();
+                    document.getElementById('promoteUserSelect').value = '';
+                } else {
+                    showNotification('Lỗi: ' + data.error, 'error');
+                }
+            });
+        }
+        
+        function demoteAdmin(adminId, adminName) {
+            demoteTargetId = adminId;
+            document.getElementById('demoteTargetName').textContent = adminName;
+            document.getElementById('demoteModal').style.display = 'block';
+        }
+        
+        function closeDemoteModal() {
+            document.getElementById('demoteModal').style.display = 'none';
+        }
+        
+        function confirmDemotion() {
+            fetch('/api/admin/demote', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'X-Admin-Session': adminSession 
+                },
+                body: JSON.stringify({ targetAdminId: demoteTargetId })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    showNotification(data.message, 'success');
+                    loadAdmins();
+                    closeDemoteModal();
+                } else {
+                    showNotification('Lỗi: ' + data.error, 'error');
+                }
+            });
+        }
+        
+        function deleteUser(userId) {
+            if (confirm('Bạn có chắc muốn xóa user này?')) {
+                fetch('/api/users/delete', {
+                    method: 'DELETE',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'X-Admin-Session': adminSession 
+                    },
+                    body: JSON.stringify({ employee_id: userId })
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        showNotification('User đã được xóa', 'success');
+                        loadUsers();
+                    } else {
+                        showNotification('Lỗi: ' + data.error, 'error');
+                    }
+                });
+            }
+        }
+        
+        function addRealtimeLog(message) {
+            const log = document.getElementById('realtimeLog');
+            const time = new Date().toLocaleTimeString('vi-VN');
+            log.innerHTML += `<div>[${time}] ${message}</div>`;
+            log.scrollTop = log.scrollHeight;
+        }
+        
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type} show`;
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

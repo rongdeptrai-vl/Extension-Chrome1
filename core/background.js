@@ -6,8 +6,8 @@
 /**
  * TINI BACKGROUND SERVICE WORKER
  * Chrome Extension background script để quản lý toàn bộ hệ thống
- * Author: TINI Security Team
- * Version: 4.0 - Smart Threat Detection
+ * Author: TINI Development
+ * Version: 4.0 - Smart Content Detection
  */
 
 // Background Service Worker Controller
@@ -28,7 +28,7 @@ class TINIBackgroundService {
             advanced: false,
             monitoring: false,
             emergency: false,
-            boss: false,
+            admin: false,
             stealth: false,
             server: false,
             antidetection: false
@@ -261,6 +261,29 @@ class TINIBackgroundService {
             console.log('⏭️ Skipping content script injection for:', tab.url);
             return; // Skip chrome internal pages and admin panel
         }
+
+        // Respect big/restricted sites to avoid breakage/noise
+        try {
+            const u = new URL(tab.url);
+            const host = u.hostname.replace(/^www\./,'');
+            const BIG_SITES = [
+                'google.com','bing.com','yahoo.com','duckduckgo.com','googleusercontent.com','chrome.google.com',
+                'youtube.com','facebook.com','instagram.com','twitter.com','x.com','reddit.com',
+                'amazon.com','wikipedia.org','github.com','gitlab.com','bitbucket.org','microsoft.com','apple.com'
+            ];
+            const isBig = BIG_SITES.some(h => host === h || host.endsWith('.'+h));
+            if (isBig) {
+                console.log('⏭️ Skip injection on big/restricted site:', host);
+                return;
+            }
+            // Check host permission before programmatic injection (MV3 requirement)
+            const originPattern = `${u.protocol}//${u.hostname}/*`;
+            const hasPerm = await chrome.permissions.contains({ origins: [originPattern] }).catch(() => false);
+            if (!hasPerm) {
+                console.log('🔒 No host permission for', originPattern, '— skipping executeScript to avoid errors');
+                return;
+            }
+        } catch(_) { /* ignore URL parse errors and continue */ }
         
         try {
             // Check if content script is already injected and working
@@ -297,9 +320,9 @@ class TINIBackgroundService {
     performDomainSpecificActions(tab) {
         const hostname = new URL(tab.url).hostname;
         
-        // TikTok domain actions
-        if (hostname.includes('tiktok.com') || hostname.includes('douyin.com')) {
-            this.activateTikTokBlocking(tab);
+        // Short video platform domain actions
+        if (hostname.includes('shortvideo-platform.com') || hostname.includes('socialmedia1.com')) {
+            this.activateContentBlocking(tab);
         }
         
         // Internal domain actions
@@ -313,19 +336,19 @@ class TINIBackgroundService {
         }
     }
     
-    async activateTikTokBlocking(tab) {
-        console.log('🚫 Activating TikTok content blocking for tab:', tab.id);
+    async activateContentBlocking(tab) {
+        console.log('🚫 Activating content blocking for tab:', tab.id);
         
         try {
             await chrome.tabs.sendMessage(tab.id, {
-                type: 'ACTIVATE_TIKTOK_BLOCKING',
+                type: 'ACTIVATE_CONTENT_BLOCKING',
                 config: {
                     aggressiveMode: true,
                     liveContentBlocking: true
                 }
             });
         } catch (error) {
-            console.warn('⚠️ Could not activate TikTok blocking:', error);
+            console.warn('⚠️ Could not activate content blocking:', error);
         }
     }
     
@@ -651,7 +674,7 @@ class TINIBackgroundService {
     isSuspiciousDomain(hostname) {
         const suspiciousDomains = [
             'suspicious-site.com',
-            'malware-test.com'
+            'suspicious-test.com'
             // Add more as needed
         ];
         
@@ -734,3 +757,4 @@ globalThis.TINI_BACKGROUND_SERVICE = tiniBackgroundService;
 
 console.log('🎯 TINI Background Service Worker initialization complete');
 // ST:TINI_1754716154_e868a412
+// ST:TINI_1755432586_e868a412

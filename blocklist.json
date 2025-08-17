@@ -1,0 +1,42 @@
+{
+  "_tini_watermark": {
+    "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
+    "employee": "rongdeptrai-vl <rongdz2307@gmail.com>",
+    "commit": "661d2ea",
+    "time": "2025-08-17T12:09:46Z",
+    "watermark_id": "TINI_1755432586_e868a412",
+    "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
+  },
+  "version": "1.0.0",
+  "updated": "2025-08-17T00:00:00Z",
+  "description": "Generic content filtering rules for improved browsing experience",
+  "rules": {
+    "generic_ads": {
+      "selectors": [
+        ".advertisement",
+        ".sponsored-content", 
+        ".popup-overlay",
+        ".modal-backdrop",
+        ".promo-banner",
+        "[class*='ad-']",
+        "[data-ad]",
+        "[data-advertisement]"
+      ]
+    },
+    "social_prompts": {
+      "selectors": [
+        ".social-share-popup",
+        ".follow-prompt", 
+        ".install-app-banner",
+        ".notification-request"
+      ]
+    },
+    "privacy_notices": {
+      "selectors": [
+        ".cookie-banner",
+        ".consent-dialog",
+        ".privacy-popup"
+      ]
+    }
+  }
+}

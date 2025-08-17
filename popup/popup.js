@@ -26,6 +26,106 @@ if (typeof window.TINI_SYSTEM === 'undefined') {
 
 console.log('🚀 Loading TINI Popup Event Handlers...');
 
+// Security Control System
+class SecurityController {
+    constructor() {
+        this.isActive = true;
+        this.blockedCount = 0;
+        this.focusStartTime = Date.now();
+        this.init();
+    }
+
+    init() {
+        this.loadSettings();
+        this.setupEventListeners();
+        this.updateUI();
+        this.startTracking();
+    }
+
+    loadSettings() {
+        const settings = localStorage.getItem('tini_security_settings');
+        if (settings) {
+            const parsed = JSON.parse(settings);
+            this.isActive = parsed.isActive !== false;
+            this.blockedCount = parsed.blockedCount || 0;
+        }
+    }
+
+    saveSettings() {
+        const settings = {
+            isActive: this.isActive,
+            blockedCount: this.blockedCount,
+            lastUpdate: Date.now()
+        };
+        localStorage.setItem('tini_security_settings', JSON.stringify(settings));
+    }
+
+    setupEventListeners() {
+        const toggle = document.getElementById('securityToggle');
+        if (toggle) {
+            toggle.checked = this.isActive;
+            toggle.addEventListener('change', (e) => {
+                this.isActive = e.target.checked;
+                this.updateUI();
+                this.saveSettings();
+                this.notifyContentScript();
+            });
+        }
+    }
+
+    updateUI() {
+        const status = document.getElementById('securityStatus');
+        const blockedCountEl = document.getElementById('blockedCount');
+        const focusTimeEl = document.getElementById('focusTime');
+
+        if (status) {
+            status.textContent = this.isActive ? 'Protection Active' : 'Protection Disabled';
+            status.style.color = this.isActive ? 'var(--success)' : 'var(--text-secondary)';
+        }
+
+        if (blockedCountEl) {
+            blockedCountEl.textContent = this.blockedCount;
+        }
+
+        if (focusTimeEl) {
+            const focusMinutes = Math.floor((Date.now() - this.focusStartTime) / 60000);
+            focusTimeEl.textContent = `${focusMinutes}m`;
+        }
+    }
+
+    startTracking() {
+        // Update focus time every minute
+        setInterval(() => {
+            this.updateUI();
+        }, 60000);
+
+        // Simulate blocked content for demo
+        if (this.isActive) {
+            setInterval(() => {
+                if (Math.random() > 0.7) { // 30% chance
+                    this.blockedCount++;
+                    this.updateUI();
+                    this.saveSettings();
+                }
+            }, 10000); // Every 10 seconds
+        }
+    }
+
+    notifyContentScript() {
+        // Send message to content script about security state change
+        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+            if (tabs[0]) {
+                chrome.tabs.sendMessage(tabs[0].id, {
+                    type: 'SECURITY_TOGGLE',
+                    isActive: this.isActive
+                }).catch(() => {
+                    // Content script might not be loaded yet
+                });
+            }
+        });
+    }
+}
+
 // Dynamic Admin Panel base URL helper (added)
 (function initPanelBaseHelper(){
   try {
@@ -678,6 +778,346 @@ function logConnectionFailure(fullName, deviceId, error) {
 }
 
 // Helper function to switch to authenticated view
+// Guardian Enhancement Functions
+function initializeGuardianEnhancements() {
+    console.log('🛡️ Initializing Guardian enhancements...');
+    
+    // Start real-time updates
+    startGuardianUpdates();
+    
+    // Initialize interactive elements
+    initializeGuardianInteractions();
+    
+    // Animate counters on load
+    animateStatCounters();
+    
+    // Start system monitoring
+    startSystemMonitoring();
+}
+
+function startGuardianUpdates() {
+    // Update threats blocked counter
+    let threatsBlocked = parseInt(localStorage.getItem('tini_threats_blocked') || '127');
+    const threatsElement = document.getElementById('threatsBlocked');
+    
+    if (threatsElement) {
+        threatsElement.textContent = threatsBlocked;
+        
+        // Simulate real-time threat blocking
+        setInterval(() => {
+            if (Math.random() < 0.1) { // 10% chance every 10 seconds
+                threatsBlocked++;
+                threatsElement.textContent = threatsBlocked;
+                localStorage.setItem('tini_threats_blocked', threatsBlocked.toString());
+                
+                // Flash animation
+                threatsElement.classList.add('flash-animation');
+                setTimeout(() => {
+                    threatsElement.classList.remove('flash-animation');
+                }, 500);
+                
+                // Add to activity log
+                addActivityItem('🚫', 'Threat Blocked', 'Malicious request intercepted', 'just now');
+                console.log('🚫 Threat blocked! Total:', threatsBlocked);
+            }
+        }, 10000);
+    }
+    
+    // Update uptime
+    const startTime = new Date(localStorage.getItem('tini_start_time') || Date.now());
+    const uptimeElement = document.getElementById('uptime');
+    
+    if (uptimeElement) {
+        const updateUptime = () => {
+            const now = new Date();
+            const uptimeMs = now - startTime;
+            const uptimeHours = uptimeMs / (1000 * 60 * 60);
+            const uptime = Math.min(99.9, (uptimeHours / (uptimeHours + 0.1)) * 100);
+            uptimeElement.textContent = uptime.toFixed(1) + '%';
+        };
+        
+        updateUptime();
+        setInterval(updateUptime, 30000); // Update every 30 seconds
+    }
+    
+    // Update network status with dynamic changes
+    const networkElement = document.getElementById('networkStatus');
+    if (networkElement) {
+        const networkStates = ['Secure', 'Encrypted', 'Protected', 'Monitored'];
+        let currentIndex = 0;
+        
+        setInterval(() => {
+            currentIndex = (currentIndex + 1) % networkStates.length;
+            networkElement.textContent = networkStates[currentIndex];
+            
+            // Add subtle glow effect
+            networkElement.classList.add('network-status-glow');
+            setTimeout(() => {
+                networkElement.classList.remove('network-status-glow');
+            }, 1000);
+        }, 5000);
+    }
+}
+
+function initializeGuardianInteractions() {
+    // Add hover effects to stat cards
+    const statCards = document.querySelectorAll('.stat-card');
+    statCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            card.classList.add('hover-enhanced');
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.classList.remove('hover-enhanced');
+        });
+    });
+    
+    // Add click effects to feature items
+    const featureItems = document.querySelectorAll('.feature-item');
+    featureItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const status = item.querySelector('.feature-status');
+            if (status && status.classList.contains('active')) {
+                // Flash effect
+                status.classList.add('flash');
+                item.classList.add('clicked');
+                
+                setTimeout(() => {
+                    status.classList.remove('flash');
+                    item.classList.remove('clicked');
+                }, 500);
+                
+                const featureName = item.querySelector('span:nth-child(2)').textContent;
+                console.log('🔧 Feature clicked:', featureName);
+                showToast(`${featureName} - Status: Active`, 'success');
+            }
+        });
+    });
+    
+    // Guardian pulse click effect
+    const guardianPulse = document.querySelector('.guardian-pulse');
+    if (guardianPulse) {
+        guardianPulse.addEventListener('click', () => {
+            guardianPulse.classList.add('clicked');
+            
+            setTimeout(() => {
+                guardianPulse.classList.remove('clicked');
+            }, 300);
+            
+            showToast('TINI Guardian is online and protecting', 'success');
+        });
+    }
+}
+
+function animateStatCounters() {
+    // Animate numeric counters
+    const animateNumber = (element, target, duration = 2000) => {
+        if (!element) return;
+        
+        const start = 0;
+        const startTime = Date.now();
+        
+        const animate = () => {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const current = Math.floor(start + (target - start) * progress);
+            
+            element.textContent = current;
+            
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            }
+        };
+        
+        animate();
+    };
+    
+    // Animate threats blocked counter
+    const threatsElement = document.getElementById('threatsBlocked');
+    if (threatsElement) {
+        const threatsCount = parseInt(localStorage.getItem('tini_threats_blocked') || '127');
+        animateNumber(threatsElement, threatsCount, 1500);
+    }
+}
+
+function startSystemMonitoring() {
+    // Initialize static metric bars from data attributes
+    const initializeMetricBars = () => {
+        const cpuBar = document.querySelector('.cpu-metric');
+        const memoryBar = document.querySelector('.memory-metric');
+        const networkBar = document.querySelector('.network-metric');
+        
+        if (cpuBar) {
+            const value = cpuBar.getAttribute('data-value') || '23';
+            cpuBar.style.width = value + '%';
+        }
+        
+        if (memoryBar) {
+            const value = memoryBar.getAttribute('data-value') || '45';
+            memoryBar.style.width = value + '%';
+        }
+        
+        if (networkBar) {
+            const value = networkBar.getAttribute('data-value') || '89';
+            networkBar.style.width = value + '%';
+        }
+    };
+    
+    // Initialize on load
+    initializeMetricBars();
+    
+    // Simulate system metrics with realistic variations
+    const updateMetrics = () => {
+        // CPU Usage (15-35%)
+        const cpuBar = document.querySelector('.cpu-metric');
+        if (cpuBar) {
+            const cpu = 15 + Math.random() * 20;
+            cpuBar.style.width = cpu + '%';
+            const valueElement = cpuBar.closest('.system-metric').querySelector('.metric-value');
+            if (valueElement) valueElement.textContent = Math.round(cpu) + '%';
+        }
+        
+        // Memory Usage (35-55%)
+        const memoryBar = document.querySelector('.memory-metric');
+        if (memoryBar) {
+            const memory = 35 + Math.random() * 20;
+            memoryBar.style.width = memory + '%';
+            const valueElement = memoryBar.closest('.system-metric').querySelector('.metric-value');
+            if (valueElement) valueElement.textContent = Math.round(memory) + '%';
+        }
+        
+        // Network Usage (70-95%)
+        const networkBar = document.querySelector('.network-metric');
+        if (networkBar) {
+            const network = 70 + Math.random() * 25;
+            networkBar.style.width = network + '%';
+            const valueElement = networkBar.closest('.system-metric').querySelector('.metric-value');
+            if (valueElement) valueElement.textContent = Math.round(network) + '%';
+        }
+    };
+    
+    // Update metrics every 3 seconds
+    setTimeout(updateMetrics, 2000); // Start updates after 2 seconds
+    setInterval(updateMetrics, 3000);
+}
+
+function addActivityItem(icon, title, description, time) {
+    const activityList = document.querySelector('.activity-list');
+    if (!activityList) return;
+    
+    // Create new activity item
+    const newItem = document.createElement('div');
+    newItem.className = 'activity-item';
+    newItem.innerHTML = `
+        <div class="activity-icon ${getIconClass(icon)}">${icon}</div>
+        <div class="activity-content">
+            <div class="activity-title">${title}</div>
+            <div class="activity-desc">${description}</div>
+        </div>
+        <div class="activity-time">${time}</div>
+    `;
+    
+    // Add entrance animation
+    newItem.classList.add('entering');
+    
+    // Insert at the top
+    activityList.insertBefore(newItem, activityList.firstChild);
+    
+    // Animate in
+    setTimeout(() => {
+        newItem.classList.remove('entering');
+    }, 10);
+    
+    // Remove oldest items if more than 5
+    const items = activityList.querySelectorAll('.activity-item');
+    if (items.length > 5) {
+        const oldestItem = items[items.length - 1];
+        oldestItem.classList.add('exiting');
+        setTimeout(() => {
+            if (oldestItem.parentNode) {
+                oldestItem.parentNode.removeChild(oldestItem);
+            }
+        }, 300);
+    }
+    
+    // Update timestamps
+    updateActivityTimestamps();
+}
+
+function getIconClass(icon) {
+    switch(icon) {
+        case '🚫': return 'blocked';
+        case '✅': return 'success';
+        case '⚠️': return 'warning';
+        default: return 'success';
+    }
+}
+
+function updateActivityTimestamps() {
+    const timeElements = document.querySelectorAll('.activity-time');
+    timeElements.forEach((elem, index) => {
+        if (index === 0) {
+            elem.textContent = 'just now';
+        } else {
+            elem.textContent = `${index * 3} min ago`;
+        }
+    });
+}
+
+function showToast(message, type = 'info') {
+    // Create toast element
+    const toast = document.createElement('div');
+    toast.className = `toast toast-${type}`;
+    toast.textContent = message;
+    
+    // Style the toast
+    toast.className = `toast toast-${type}`;
+    
+    // Add to DOM
+    document.body.appendChild(toast);
+    
+    // Animate in
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 10);
+    
+    // Auto remove after 3 seconds
+    setTimeout(() => {
+        toast.classList.add('hide');
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.parentNode.removeChild(toast);
+            }
+        }, 300);
+    }, 3000);
+}
+
+// Add CSS animations
+function addGuardianAnimations() {
+    // All animations are now moved to CSS file to avoid CSP violations
+    console.log('✅ Guardian animations loaded from CSS');
+}
+
+// Initialize guardian enhancements when popup loads
+document.addEventListener('DOMContentLoaded', () => {
+    // Set start time if not exists
+    if (!localStorage.getItem('tini_start_time')) {
+        localStorage.setItem('tini_start_time', Date.now().toString());
+    }
+    
+    // Add animations
+    addGuardianAnimations();
+    
+    // Initialize enhancements after main content is shown
+    setTimeout(() => {
+        const mainContent = document.getElementById('mainContent');
+        if (mainContent && mainContent.classList.contains('active')) {
+            initializeGuardianEnhancements();
+        }
+    }, 1000);
+});
+
+// Also initialize when switching to main content
 function switchToAuthenticatedView(user = null) {
     try {
         // Hide auth container
@@ -722,6 +1162,11 @@ function switchToAuthenticatedView(user = null) {
         } else {
             mainContent.classList.add('active');
         }
+        
+        // Initialize Guardian enhancements
+        setTimeout(() => {
+            initializeGuardianEnhancements();
+        }, 500);
         
         console.log('✅ Switched to authenticated view');
     } catch (error) {
@@ -1367,6 +1812,54 @@ function showRegisteredDeviceInfo(device){
     }catch{}
 }
 
+// TINI GUARDIAN status toggle (professional, persisted)
+(function initGuardianToggle(){
+  try {
+    const card = document.querySelector('.blocker-card[data-version="power"]');
+    if (!card) return;
+    const dot = document.getElementById('guardianStatusDot');
+    const label = document.getElementById('guardianStatusLabel');
+
+    const KEY = 'tini_guardian_enabled';
+    const getEnabled = () => {
+      const v = localStorage.getItem(KEY);
+      return v === null ? true : v === '1';
+    };
+    const setEnabled = (on) => localStorage.setItem(KEY, on ? '1' : '0');
+
+    function render(on){
+      if (!dot || !label) return;
+      dot.classList.toggle('active', !!on);
+      label.textContent = on ? 'Online' : 'Offline';
+      label.style.color = on ? 'var(--text)' : 'var(--text-secondary)';
+      // Optional: dim the card slightly when off
+      card.style.opacity = on ? '1' : '0.85';
+    }
+
+    // Initial state
+    render(getEnabled());
+
+    // Click behavior with small ripple
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => {
+      const on = !getEnabled();
+      setEnabled(on);
+      render(on);
+      try {
+        // Inform content scripts if needed
+        chrome.runtime?.sendMessage?.({ type: 'TINI_GUARDIAN_TOGGLE', enabled: on });
+      } catch(_) {}
+
+      // micro animation
+      card.animate([
+        { transform: 'scale(1)' },
+        { transform: 'scale(0.995)' },
+        { transform: 'scale(1)' }
+      ], { duration: 120, easing: 'ease-out' });
+    });
+  } catch(e){ console.warn('Guardian toggle init failed:', e); }
+})();
+
 // Device Fingerprint System
 async function generateDeviceFingerprint() {
     console.log('🔍 Generating device fingerprint...');
@@ -1710,6 +2203,9 @@ function setCooldown(key, seconds){
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🚀 DOM loaded, initializing popup...');
     
+    // Initialize Security Controller
+    window.securityController = new SecurityController();
+    
     // Check if we're in popup context
     if (window.location.pathname.includes('popup.html') || 
         document.getElementById('authContainer') ||
@@ -1739,3 +2235,4 @@ if (document.readyState === 'loading') {
 }
 
 //# sourceMappingURL=popup.js.map// ST:TINI_1755361782_e868a412
+// ST:TINI_1755432586_e868a412

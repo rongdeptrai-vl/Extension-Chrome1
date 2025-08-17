@@ -142,8 +142,8 @@
   "blocked_items": {
     "message": "Mục Bị Chặn"
   },
-  "boss_protection_label": {
-    "message": "BOSS Protection:"
+  "admin_protection_label": {
+    "message": "Admin Protection:"
   },
   "btn_export_data": {
     "message": "Xuất Dữ Liệu"

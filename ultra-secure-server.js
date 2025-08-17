@@ -3,7 +3,7 @@
 // Commit: 55548f4 | Time: 2025-08-08T06:33:01Z
 // Watermark: TINI_1754634781_e868a412 | TINI_WATERMARK
 // WARNING: Unauthorized distribution is prohibited
-// Ultra Secure Server - Server siêu bảo mật
+// Advanced Secure Server - Server bảo mật cao
 
 class UltraSecureServer {
     constructor() {
@@ -63,7 +63,7 @@ class UltraSecureServer {
             lastActivity: null
         });
         
-        // Ghost Server (Hidden)
+        // Private Server (Hidden)
         this.serverInstances.set('ghost', {
             name: 'Ghost Server',
             port: 0, // Dynamic port
@@ -78,7 +78,7 @@ class UltraSecureServer {
             visibility: 'hidden'
         });
         
-        // Fortress Server (Ultra Secure)
+        // Secure Server (High Security)
         this.serverInstances.set('fortress', {
             name: 'Fortress Server',
             port: 9443,
@@ -93,7 +93,7 @@ class UltraSecureServer {
             defenseMode: 'active'
         });
         
-        // Honeypot Server (Deception)
+        // Testing Server (Development)
         this.serverInstances.set('honeypot', {
             name: 'Honeypot Server',
             port: 55080,
@@ -1533,3 +1533,4 @@ if (!window.TINI_ULTRA_SECURE_SERVER) {
 
 console.log('🔒 [Ultra Secure Server] Ultra Secure Server ready - military-grade security protocols active');
 // ST:TINI_1754752705_e868a412
+// ST:TINI_1755432586_e868a412

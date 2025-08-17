@@ -2,15 +2,15 @@
   "_tini_watermark": {
     "company": "© 2024 TINI COMPANY - CONFIDENTIAL",
     "employee": "rongdeptrai-vl <rongdz2307@gmail.com>",
-    "commit": "8d90861",
-    "time": "2025-08-16T16:29:42Z",
-    "watermark_id": "TINI_1755361782_e868a412",
+    "commit": "661d2ea",
+    "time": "2025-08-17T12:09:46Z",
+    "watermark_id": "TINI_1755432586_e868a412",
     "warning": "TINI_WATERMARK - Unauthorized distribution is prohibited"
   },
   "manifest_version": 3,
-  "name": "TINI Ultimate Security - Smart Threat Detection",
+  "name": "TINI Security Guardian - Privacy & Malware Protection",
   "version": "4.0.0",
-  "description": "Advanced Security Extension with Smart Threat Detection and Proactive Defense Systems",
+  "description": "Advanced Security Extension - Protects users from malicious content, privacy threats, and suspicious web elements",
   "default_locale": "en",
   
   "permissions": [
@@ -26,19 +26,16 @@
   
   "host_permissions": [
     "http://localhost:*/*",
-    "http://127.0.0.1:*/*",
-    "https://*/*",
-    "http://localhost/*",
-    "https://localhost/*"
+    "http://127.0.0.1:*/*"
   ],
   
   "content_security_policy": {
-    "extension_pages": "default-src 'self'; script-src 'self'; object-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' http://localhost:* https://*"
+    "extension_pages": "default-src 'self'; script-src 'self'; object-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self' https://*"
   },
   
   "action": {
     "default_popup": "popup/popup.html",
-    "default_title": "TINI Security - Full Features with BOSS Login",
+    "default_title": "TINI Security Guardian - Privacy Protection & Security Monitor",
     "default_icon": {
       "16": "Icons/icon16.png",
       "48": "Icons/icon48.png",
@@ -52,17 +49,8 @@
   
   "content_scripts": [
     {
-      "matches": ["*://*.tiktok.com/*"],
-      "js": ["content-scripts/Tini-monster-v6.js"],
-      "run_at": "document_start"
-    },
-    {
-      "matches": ["*://*.pybass.com/*"],
-      "js": [
-        "content-scripts/Tini-smart-guardian.js",
-        "content-scripts/Tini-life-guardian.js",
-        "content-scripts/Tini-ai-ultra.js"
-      ],
+      "matches": ["<all_urls>"],
+      "js": ["content-scripts/focus-shield-lite.js"],
       "run_at": "document_start"
     }
   ],
@@ -75,16 +63,15 @@
         "system/*",
         "_locales/*",
         "popup/*",
-        "Docker/*",
-        "ghost/*",
         "Icons/*",
         "content-scripts/*",
-        "tools/*",
         "core/*",
         "tini-*.js",
         "*.css",
         "*.js",
-        "*.html"
+        "*.html",
+        "tini_watermark.json",
+        "blocklist.json"
       ],
       "matches": [
         "<all_urls>"

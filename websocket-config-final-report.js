@@ -15,8 +15,8 @@ console.log('\n🔧 WHAT WAS CONFIGURED:');
 console.log('1. CONNECTION_MANAGER WebSocket URL: ws://localhost:55057/socket.io/ ✅');
 console.log('2. API Primary URL: http://localhost:55057 ✅');
 console.log('3. Admin Panel URL: http://localhost:55057/admin ✅');
-console.log('4. Boss Priority URL: http://localhost:55057/boss ✅');
-console.log('5. Ghost Backend URL: http://localhost:55057 ✅');
+console.log('4. Admin Priority URL: http://localhost:55057/admin ✅');
+console.log('5. Backend Server URL: http://localhost:55057 ✅');
 
 console.log('\n🚀 WEBSOCKET SERVER DETAILS:');
 console.log('📍 Server Location: admin-panel/server.js');
@@ -72,3 +72,4 @@ console.log('4. Monitor connection stability');
 
 console.log('\n🎉 WEBSOCKET INTEGRATION READY!');
 console.log('======================================================');
+// ST:TINI_1755432586_e868a412

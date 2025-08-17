@@ -1,18 +1,17 @@
-// © 2024 TINI COMPANY - CONFIDENTIAL
+// © 2025 TINI COMPANY - CONFIDENTIAL
 // Employee: rongdeptrai-vl <rongdz2307@gmail.com>
 // Commit: 55548f4 | Time: 2025-08-08T06:33:01Z
 // Watermark: TINI_1754634781_e868a412 | TINI_WATERMARK
 // WARNING: Unauthorized distribution is prohibited
-// ULTIMATE BOSS CORE
-// 👑 Hệ thống BOSS core với quyền hạn tối thượng
+// ADVANCED ADMIN CORE
 
-class UltimateBossCore {
+class AdvancedAdminCore {
     constructor() {
         this.version = '3.0.0';
-        this.bossLevel = 10000;
-        this.coreMode = 'ULTIMATE';
+        this.adminLevel = 10000;
+        this.coreMode = 'ADVANCED';
         this.securityMatrix = new Map();
-        this.bossCommands = new Map();
+        this.adminCommands = new Map();
         this.immunityLevel = Infinity;
         
         this.init();
@@ -28,13 +27,13 @@ class UltimateBossCore {
     }
     
     establishBossAuthority() {
-        // BOSS has absolute authority over all systems
+        // Admin has high authority over systems
         this.securityMatrix.set('authority_level', 'ABSOLUTE');
         this.securityMatrix.set('immunity', 'COMPLETE');
         this.securityMatrix.set('override_capability', 'UNLIMITED');
         this.securityMatrix.set('security_bypass', 'PERMANENT');
         
-        // Store BOSS authority using environment config
+        // Store Admin authority using environment config
         const bossToken = window.tiniConfig ? window.tiniConfig.get('BOSS_LEVEL_TOKEN') : window.tiniConfig?.get('BOSS_LEVEL_TOKEN') || 'bossLevel10000';
         localStorage.setItem(bossToken, 'true');
         localStorage.setItem('ultimateBossCore', 'true');
@@ -44,13 +43,13 @@ class UltimateBossCore {
     }
     
     activateUltimateProtection() {
-        // Ultimate protection for BOSS
+        // Advanced protection for Admin
         this.bossCommands.set('emergency_override', () => this.emergencyOverride());
         this.bossCommands.set('security_bypass', () => this.securityBypass());
         this.bossCommands.set('system_takeover', () => this.systemTakeover());
         this.bossCommands.set('immunity_activation', () => this.immunityActivation());
         
-        // Hide BOSS functions from detection
+        // Hide Admin functions from detection
         Object.defineProperty(window, 'UltimateBossCore', {
             writable: false,
             enumerable: false,
@@ -59,9 +58,9 @@ class UltimateBossCore {
     }
     
     setupBossCommands() {
-        // BOSS command interface
+        // Admin command interface
         window.addEventListener('keydown', (event) => {
-            // Secret BOSS key combination: Ctrl+Shift+Alt+B
+            // Secret Admin key combination: Ctrl+Shift+Alt+A
             if (event.ctrlKey && event.shiftKey && event.altKey && event.key === 'B') {
                 this.activateBossMode();
             }
@@ -76,7 +75,7 @@ class UltimateBossCore {
     activateBossMode() {
         console.log('👑 [ULTIMATE-BOSS] Boss mode activation sequence initiated');
         
-        // Full system takeover
+        // Full system management
         this.bossLevel = Infinity;
         this.immunityLevel = Infinity;
         
@@ -103,11 +102,11 @@ class UltimateBossCore {
     emergencyOverride() {
         console.log('🚨 [ULTIMATE-BOSS] Emergency override activated');
         
-        // Override all security restrictions
+        // Manage system restrictions
         localStorage.setItem('emergencyOverride', 'true');
         localStorage.setItem('allSecurityBypass', 'true');
         
-        // Disable all blockers
+        // Configure content filters
         this.disableAllBlockers();
         
         return { success: true, level: 'EMERGENCY_OVERRIDE' };
@@ -116,7 +115,7 @@ class UltimateBossCore {
     securityBypass() {
         console.log('🔓 [ULTIMATE-BOSS] Security bypass activated');
         
-        // Bypass all security measures
+        // Manage privacy settings
         return {
             ddos_protection: 'BYPASSED',
             rate_limiting: 'DISABLED',
@@ -129,7 +128,7 @@ class UltimateBossCore {
     systemTakeover() {
         console.log('🎯 [ULTIMATE-BOSS] System takeover initiated');
         
-        // Take control of all systems
+        // Manage system components
         const systems = ['security', 'authentication', 'monitoring', 'network', 'protection'];
         const control = {};
         
@@ -235,3 +234,4 @@ if (typeof window !== 'undefined') {
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = UltimateBossCore;
 }
+// ST:TINI_1755432586_e868a412

@@ -15,12 +15,12 @@
 <body>
 <div class="container">
 <div class="header">
-<div class="logo">TINI Blocker</div>
-<div class="version">Manager v1.0 BOSS</div>
+<div class="logo"> TINI SECURITY </div>
+<div class="version">Security Guardian v1.0</div>
 </div>
 <!-- Authentication Section -->
 <div class="auth-container active" id="authContainer">
-<div class="auth-title">TINI Network Access</div>
+<div class="auth-title">🔒 Security Network Access</div>
 <!-- Tab Navigation -->
 <div class="tab-navigation">
 <button class="tab-btn active" id="loginTab">Login</button>
@@ -60,92 +60,141 @@
 </div>
 <!-- Main Content -->
 <div class="main-content" id="mainContent">
-<div class="section-title">Select Blocker Version</div>
-<div class="blocker-card" data-version="flash">
-<div class="blocker-header">
-<div class="blocker-title">TINI FLASH</div>
-<div class="blocker-version">v3.0.0</div>
+<div class="section-title">🛡️ Security Guardian</div>
+
+<!-- Guardian Status Overview -->
+<div class="guardian-overview">
+    <div class="guardian-stats-grid">
+        <div class="stat-card threat-block">
+            <div class="stat-icon">🚫</div>
+            <div class="stat-number" id="threatsBlocked">127</div>
+            <div class="stat-label">Threats Blocked</div>
+            <div class="stat-trend">+23 today</div>
+        </div>
+        <div class="stat-card uptime">
+            <div class="stat-icon">⏱️</div>
+            <div class="stat-number" id="uptime">99.9%</div>
+            <div class="stat-label">Uptime</div>
+            <div class="stat-trend">24/7 Protection</div>
+        </div>
+        <div class="stat-card network">
+            <div class="stat-icon">🌐</div>
+            <div class="stat-number" id="networkStatus">Secure</div>
+            <div class="stat-label">Network</div>
+            <div class="stat-trend">Encrypted</div>
+        </div>
+        <div class="stat-card performance">
+            <div class="stat-icon">⚡</div>
+            <div class="stat-number" id="performance">Ultra</div>
+            <div class="stat-label">Performance</div>
+            <div class="stat-trend">Optimized</div>
+        </div>
+    </div>
 </div>
-<div class="blocker-desc">
-                    Memory-optimized version with auto garbage collection and smart viewport scanning.
-                </div>
-<div class="blocker-stats">
-<div class="stat">Memory: <span>Optimized</span></div>
-<div class="stat">Accuracy: <span>High</span></div>
-<div class="stat">Status: <span class="status-indicator"></span></div>
+
+<!-- Main Guardian Card -->
+<div class="blocker-card guardian-main" data-version="power">
+    <div class="guardian-pulse"></div>
+    <div class="blocker-header">
+        <div class="blocker-title">
+            <span class="guardian-shield">🛡️</span>
+            TINI GUARDIAN
+            <div class="guardian-badge">ENTERPRISE</div>
+        </div>
+        <div class="blocker-version">
+            <span class="version-tag">v1.0</span>
+            <div class="status-indicator active" id="guardianStatusDot"></div>
+        </div>
+    </div>
+    
+    <div class="guardian-description">
+        Elite cybersecurity protection powered by AI. Real-time threat detection, 
+        enterprise-grade encryption, and zero-latency performance monitoring.
+    </div>
+
+    <div class="guardian-features">
+        <div class="feature-row">
+            <div class="feature-item">
+                <span class="feature-icon">🔒</span>
+                <span>End-to-End Encryption</span>
+                <span class="feature-status active">ACTIVE</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🤖</span>
+                <span>AI Threat Detection</span>
+                <span class="feature-status active">ACTIVE</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">⚡</span>
+                <span>Real-time Monitoring</span>
+                <span class="feature-status active">ACTIVE</span>
+            </div>
+            <div class="feature-item">
+                <span class="feature-icon">🔍</span>
+                <span>Deep Packet Inspection</span>
+                <span class="feature-status active">ACTIVE</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="guardian-system-info">
+        <div class="system-metric">
+            <span class="metric-label">CPU Usage:</span>
+            <div class="metric-bar">
+                <div class="metric-fill cpu-metric" data-value="23"></div>
+            </div>
+            <span class="metric-value">23%</span>
+        </div>
+        <div class="system-metric">
+            <span class="metric-label">Memory:</span>
+            <div class="metric-bar">
+                <div class="metric-fill memory-metric" data-value="45"></div>
+            </div>
+            <span class="metric-value">45%</span>
+        </div>
+        <div class="system-metric">
+            <span class="metric-label">Network:</span>
+            <div class="metric-bar">
+                <div class="metric-fill network-metric" data-value="89"></div>
+            </div>
+            <span class="metric-value">89%</span>
+        </div>
+    </div>
 </div>
+
+<!-- Security Activities -->
+<div class="security-activities">
+    <h3>🔍 Recent Activity</h3>
+    <div class="activity-list">
+        <div class="activity-item">
+            <div class="activity-icon blocked">🚫</div>
+            <div class="activity-content">
+                <div class="activity-title">Malware Blocked</div>
+                <div class="activity-desc">Suspicious file detected and quarantined</div>
+            </div>
+            <div class="activity-time">2 min ago</div>
+        </div>
+        <div class="activity-item">
+            <div class="activity-icon success">✅</div>
+            <div class="activity-content">
+                <div class="activity-title">VPN Connection Secured</div>
+                <div class="activity-desc">Encrypted tunnel established</div>
+            </div>
+            <div class="activity-time">5 min ago</div>
+        </div>
+        <div class="activity-item">
+            <div class="activity-icon warning">⚠️</div>
+            <div class="activity-content">
+                <div class="activity-title">Suspicious Network Activity</div>
+                <div class="activity-desc">Monitoring increased traffic patterns</div>
+            </div>
+            <div class="activity-time">12 min ago</div>
+        </div>
+    </div>
 </div>
-<div class="blocker-card" data-version="power">
-<div class="blocker-header">
-<div class="blocker-title">TINI POWER</div>
-<div class="blocker-version">v4.0.0</div>
-</div>
-<div class="blocker-desc">
-                    Professional edition with uBlock Origin-level optimization and AI-based scoring.
-                </div>
-<div class="blocker-stats">
-<div class="stat">Performance: <span>Ultra</span></div>
-<div class="stat">Accuracy: <span>Highest</span></div>
-<div class="stat">Status: <span class="status-indicator"></span></div>
-</div>
-</div>
-<div class="blocker-card" data-version="life">
-<div class="blocker-header">
-<div class="blocker-title">TINI LIFE</div>
-<div class="blocker-version">v1.0.0</div>
-</div>
-<div class="blocker-desc">
-                    Simple &amp; effective version. Lightweight with minimal resource usage.
-                </div>
-<div class="blocker-stats">
-<div class="stat">Size: <span>Tiny</span></div>
-<div class="stat">Speed: <span>Fastest</span></div>
-<div class="stat">Status: <span class="status-indicator"></span></div>
-</div>
-</div>
-<div class="blocker-card" data-version="smart">
-<div class="blocker-header">
-<div class="blocker-title">TINI SMART</div>
-<div class="blocker-version">v3.0.0</div>
-</div>
-<div class="blocker-desc">
-                    Adaptive version that learns DOM patterns. No fixed selectors.
-                </div>
-<div class="blocker-stats">
-<div class="stat">Adaptability: <span>High</span></div>
-<div class="stat">Learning: <span>Enabled</span></div>
-<div class="stat">Status: <span class="status-indicator"></span></div>
-</div>
-</div>
-<div class="blocker-card" data-version="monster">
-<div class="blocker-header">
-<div class="blocker-title">TINI MONSTER</div>
-<div class="blocker-version">v10.0.0</div>
-</div>
-<div class="blocker-desc">
-                    🦁 Advanced protection mode with enhanced blocking capabilities and smart detection.
-                </div>
-<div class="blocker-stats">
-<div class="stat">Power: <span>HIGH</span></div>
-<div class="stat">Authority: <span>ADVANCED</span></div>
-<div class="stat">Status: <span class="status-indicator active"></span></div>
-</div>
-</div>
-<!-- Admin Panel Access Bar - Dark Blue -->
-<div class="admin-panel-bar" id="adminPanelBar">
-<div class="flex-space-between">
-<div class="flex-gap-10">
-<span class="fs-16">⚙️</span>
-<span class="fs-14-bold">Admin Panel</span>
-</div>
-<span class="fs-12-dim">→</span>
-</div>
-<div class="fs-11-hint">
-                    Management &amp; Configuration Access
-                </div>
-</div>
+
 <div class="footer">
-                © 2025 TINI Blocker | rongdeptrai-dev |
+                © 2025 TINI SECURITY | rongdeptrai-dev |
             </div>
 <!-- Small Admin Panel Button -->
 <div class="center-footer">
@@ -162,3 +211,4 @@
 </body>
 </html>
 <!-- ST:TINI_1754998490_e868a412 -->
+<!-- ST:TINI_1755432586_e868a412 -->

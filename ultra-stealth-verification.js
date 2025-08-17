@@ -3,26 +3,26 @@
 // Commit: 55548f4 | Time: 2025-08-08T06:33:01Z
 // Watermark: TINI_1754634781_e868a412 | TINI_WATERMARK
 // WARNING: Unauthorized distribution is prohibited
-// Ultra Stealth Verification - Xác thực siêu ẩn danh
+// Advanced Stealth Verification - Xác thực nâng cao ẩn danh
 
-class UltraStealthVerification {
+class AdvancedPrivacyVerification {
     constructor() {
-        this.stealthLevels = new Map();
+        this.privacyLevels = new Map();
         this.verificationChallenges = new Map();
         this.anonymityMetrics = new Map();
-        this.stealthProfiles = new Map();
+        this.privacyProfiles = new Map();
         this.verificationHistory = [];
-        this.stealthTokens = new Map();
-        this.cloakingMethods = new Map();
+        this.privacyTokens = new Map();
+        this.encryptionMethods = new Map();
         this.invisibilityStates = new Map();
-        this.phantomIdentities = new Map();
-        this.stealthCounters = new Map();
+        this.anonymousIdentities = new Map();
+        this.privacyCounters = new Map();
         
-        this.initializeStealthVerification();
+        this.initializePrivacyVerification();
         this.setupAnonymityProtocols();
-        this.activateInvisibilityEngine();
+        this.activatePrivacyEngine();
         
-        console.log('👻 [Stealth Verification] Ultra Stealth Verification initialized');
+        console.log('� [Privacy Verification] Advanced Privacy Verification initialized');
     }
 
     initializeStealthVerification() {
@@ -298,14 +298,14 @@ class UltraStealthVerification {
             description: 'Deep invisibility protocols active'
         });
         
-        // State 5: Spectral (Ultra Invisibility)
+        // State 5: Spectral (Advanced Invisibility)
         this.invisibilityStates.set('spectral', {
             name: 'Spectral State',
             stealth_level: 4,
             detection_probability: 0.01,
             anonymity_score: 95,
             active_cloaking: ['browser_cloaking', 'network_cloaking', 'hardware_cloaking', 'behavioral_cloaking'],
-            description: 'Ultra invisibility protocols active'
+            description: 'Advanced privacy protocols active'
         });
         
         // State 6: Void (Absolute Invisibility)
@@ -374,7 +374,7 @@ class UltraStealthVerification {
     }
 
     initializePhantomIdentities() {
-        console.log('👻 [Stealth Verification] Initializing phantom identities...');
+        console.log(' [Stealth Verification] Initializing phantom identities...');
         
         // Create phantom identity pool
         for (let i = 0; i < 10; i++) {
@@ -1116,8 +1116,9 @@ class UltraStealthVerification {
 
 // Tạo global instance
 if (!window.TINI_STEALTH_VERIFICATION) {
-    window.TINI_STEALTH_VERIFICATION = new UltraStealthVerification();
-    console.log('✅ [Stealth Verification] Global ultra stealth verification created');
+    window.TINI_PRIVACY_VERIFICATION = new AdvancedPrivacyVerification();
+    console.log('✅ [Privacy Verification] Global privacy verification created');
 }
 
-console.log('👻 [Stealth Verification] Ultra Stealth Verification ready - absolute anonymity protocols active');
+console.log('� [Privacy Verification] Advanced Privacy Verification ready - enhanced privacy protocols active');
+// ST:TINI_1755432586_e868a412

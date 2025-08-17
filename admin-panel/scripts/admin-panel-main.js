@@ -789,18 +789,21 @@ class TINIAdminPanel {
         this.loadUsersTable();
     }
 
-    loadUsersTable() {
+    async loadUsersTable() {
         // Load users from real-time API instead of localStorage
-        fetch('/api/users/list')
-            .then(response => response.json())
-            .then(usersData => {
-                const tableBody = document.querySelector('#users-management-table');
+        try {
+            const response = await fetch('/api/users/list');
+            const usersData = await response.json();
+            const tableBody = document.querySelector('#users-management-table');
+            
+            if (tableBody && usersData.length > 0) {
+                // Clear loading message
+                tableBody.innerHTML = '';
                 
-                if (tableBody && usersData.length > 0) {
-                    // Clear loading message
-                    tableBody.innerHTML = '';
-                    
-                    usersData.forEach((user, index) => {
+                // Get current admin info to prevent self-deletion
+                const currentAdmin = await this.getCurrentAdminInfo();
+                
+                usersData.forEach((user, index) => {
                         const row = document.createElement('tr');
                         
                         // Use direct translation keys instead of dynamic generation
@@ -821,19 +824,61 @@ class TINIAdminPanel {
                             '<i class="fas fa-circle" style="color: #4ade80;"></i>' : 
                             '<i class="fas fa-circle" style="color: #6b7280;"></i>';
                         
+                        // Check if this is current admin to prevent self-deletion
+                        const isCurrentUser = currentAdmin && (
+                            user.employee_id === currentAdmin.username || 
+                            user.username === currentAdmin.username ||
+                            user.email === currentAdmin.username
+                        );
+                        
+                        // Admin role management buttons (only for Super Admin)
+                        let roleButtons = '';
+                        if (currentAdmin && currentAdmin.role === 'super_admin') {
+                            if (user.role !== 'admin' && !isCurrentUser) {
+                                roleButtons += `
+                                    <button class="btn-success" onclick="adminPanel.promoteToAdmin('${user.employee_id}', '${user.full_name}')" title="Thăng chức thành Admin">
+                                        <i class="fas fa-arrow-up"></i> Admin
+                                    </button>
+                                `;
+                            } else if (user.role === 'admin' && !isCurrentUser) {
+                                roleButtons += `
+                                    <button class="btn-warning" onclick="adminPanel.demoteFromAdmin('${user.employee_id}', '${user.full_name}')" title="Giáng chức khỏi Admin">
+                                        <i class="fas fa-arrow-down"></i> User
+                                    </button>
+                                `;
+                            }
+                        }
+                        
+                        // Delete button logic - can't delete yourself
+                        let deleteButton = '';
+                        if (!isCurrentUser) {
+                            deleteButton = `
+                                <button class="btn-danger" onclick="adminPanel.deleteUserById('${user.employee_id}', '${user.full_name || user.username}')" title="Xóa user">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            `;
+                        } else {
+                            deleteButton = `
+                                <span class="btn-disabled" title="Không thể xóa chính mình">
+                                    <i class="fas fa-shield-alt"></i> Bản thân
+                                </span>
+                            `;
+                        }
+                        
                         row.innerHTML = `
                             <td>${user.employee_id}</td>
                             <td>${user.full_name || user.username}</td>
-                            <td>${roleText}</td>
+                            <td>
+                                <span class="role-badge role-${user.role}">${roleText}</span>
+                            </td>
                             <td>${statusIcon} ${lastActiveText}</td>
                             <td>${user.device_count || 0}</td>
-                            <td>
-                                <button class="btn-ghost" onclick="adminPanel.editUser('${user.id}')">
+                            <td class="actions-cell">
+                                <button class="btn-ghost" onclick="adminPanel.editUser('${user.employee_id}')" title="Chỉnh sửa">
                                     <i class="fas fa-edit"></i>
                                 </button>
-                                <button class="btn-danger" onclick="adminPanel.deleteUserById('${user.id}', '${user.full_name || user.username}')">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                                ${roleButtons}
+                                ${deleteButton}
                             </td>
                         `;
                         
@@ -849,21 +894,20 @@ class TINIAdminPanel {
                         </tr>
                     `;
                 }
-            })
-            .catch(error => {
-                console.error('❌ Failed to load users:', error);
-                const tableBody = document.querySelector('#users-management-table');
-                if (tableBody) {
-                    tableBody.innerHTML = `
-                        <tr>
-                            <td colspan="6" style="text-align: center; color: #ef4444;">
-                                <i class="fas fa-exclamation-triangle"></i>
-                                <span data-i18n="load_users_error">加载用户数据失败</span>
-                            </td>
-                        </tr>
-                    `;
-                }
-            });
+        } catch (error) {
+            console.error('❌ Failed to load users:', error);
+            const tableBody = document.querySelector('#users-management-table');
+            if (tableBody) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; color: #ef4444;">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span data-i18n="load_users_error">加载用户数据失败</span>
+                        </td>
+                    </tr>
+                `;
+            }
+        }
     }
 
     // Load users for the main userTableBody (second table)
@@ -1198,7 +1242,18 @@ class TINIAdminPanel {
     }
 
     // New method to delete user by ID directly
-    deleteUserById(userId, userName) {
+    async deleteUserById(userId, userName) {
+        // First check if this is current admin
+        const currentAdmin = await this.getCurrentAdminInfo();
+        if (currentAdmin && (
+            userId === currentAdmin.username || 
+            userName === currentAdmin.username ||
+            userId.toString().includes(currentAdmin.username)
+        )) {
+            this.showNotification('❌ Bạn không thể xóa chính mình!', 'error');
+            return;
+        }
+
         const confirmed = confirm(`您确定要删除用户 "${userName}" 吗？此操作不可撤销。`);
         if (confirmed) {
             // Show loading state
@@ -3360,6 +3415,75 @@ ${'='.repeat(60)}
             console.error('❌ Error showing notification:', error);
         }
     }
+
+    // =================
+    // ADMIN ROLE MANAGEMENT
+    // =================
+    async getCurrentAdminInfo() {
+        try {
+            const response = await fetch('/api/admin/permissions');
+            if (response.ok) {
+                const data = await response.json();
+                return data.admin;
+            }
+        } catch (error) {
+            console.error('Error getting admin info:', error);
+        }
+        return null;
+    }
+
+    isCurrentUser(userId, currentAdminEmail) {
+        // Check if the user being viewed is the current admin
+        return currentAdminEmail && userId && 
+               (userId.toString() === currentAdminEmail || 
+                userId.toString().includes(currentAdminEmail));
+    }
+
+    async promoteToAdmin(userId, userName) {
+        if (confirm(`Promote ${userName} to Admin?`)) {
+            try {
+                const response = await fetch('/api/admin/promote', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId })
+                });
+                
+                if (response.ok) {
+                    this.showNotification(`${userName} promoted to Admin!`, 'success');
+                    this.loadUsersTable(); // Reload the table
+                } else {
+                    const error = await response.json();
+                    this.showNotification(error.error || 'Promotion failed', 'error');
+                }
+            } catch (error) {
+                console.error('Error promoting user:', error);
+                this.showNotification('Network error during promotion', 'error');
+            }
+        }
+    }
+
+    async demoteFromAdmin(userId, userName) {
+        if (confirm(`Demote ${userName} from Admin role?`)) {
+            try {
+                const response = await fetch('/api/admin/demote', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ userId })
+                });
+                
+                if (response.ok) {
+                    this.showNotification(`${userName} demoted from Admin`, 'success');
+                    this.loadUsersTable(); // Reload the table
+                } else {
+                    const error = await response.json();
+                    this.showNotification(error.error || 'Demotion failed', 'error');
+                }
+            } catch (error) {
+                console.error('Error demoting user:', error);
+                this.showNotification('Network error during demotion', 'error');
+            }
+        }
+    }
 }
 
 // Make it globally available for external initialization
@@ -3367,3 +3491,4 @@ window.TINIAdminPanel = TINIAdminPanel;
 // ST:TINI_1754752705_e868a412
 // ST:TINI_1754879322_e868a412
 // ST:TINI_1755361782_e868a412
+// ST:TINI_1755432586_e868a412

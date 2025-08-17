@@ -15,7 +15,7 @@ class UniversalEventDispatcher {
         this.eventQueue = [];
         this.priorityQueues = new Map();
         this.eventHistory = [];
-        this.bossMode = false;
+        this.adminMode = false;
         this.dispatcherStats = {
             eventsDispatched: 0,
             listenersRegistered: 0,
@@ -32,7 +32,7 @@ class UniversalEventDispatcher {
         this.setupEventInfrastructure();
         this.initializePrioritySystem();
         this.registerSystemEvents();
-        this.activateBossMode();
+        this.activateAdminMode();
         this.startDispatcherServices();
         console.log('🌐 [EVENT-DISPATCHER] Universal event dispatcher active');
     }
@@ -57,14 +57,14 @@ class UniversalEventDispatcher {
             NETWORK: 'network',
             MONITORING: 'monitoring',
             USER: 'user',
-            BOSS: 'boss',
+            ADMIN: 'admin',
             EMERGENCY: 'emergency'
         };
         
         // Event priority levels
         this.eventPriorities = {
             EMERGENCY: 10000,
-            BOSS: 9000,
+            ADMIN: 9000,
             CRITICAL: 8000,
             HIGH: 7000,
             NORMAL: 5000,
@@ -113,11 +113,11 @@ class UniversalEventDispatcher {
             requiresAuth: true
         });
         
-        this.registerEventType('boss.command', {
-            priority: this.eventPriorities.BOSS,
+        this.registerEventType('admin.command', {
+            priority: this.eventPriorities.ADMIN,
             persistent: true,
             requiresAuth: true,
-            bossOnly: true
+            adminOnly: true
         });
         
         this.registerEventType('authentication.success', {
@@ -949,3 +949,4 @@ if (typeof module !== 'undefined' && module.exports) {
     module.exports = UniversalEventDispatcher;
 }
 // ST:TINI_1755361782_e868a412
+// ST:TINI_1755432586_e868a412
